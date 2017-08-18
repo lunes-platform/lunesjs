@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "alwaysStrict": true,
+    "module": "commonjs",
+    "sourceMap": true,
+    "target": "es2015"
+  },
+  "include": [
+    "src"
+  ]
+}
