@@ -25,7 +25,9 @@ const {
     TransferData,
     IssueData,
     ReissueData,
-    CreateAliasData
+    CreateAliasData,
+    LeaseData,
+    CancelLeasingData
 } = waves.TransactionData;
 
 const keys = {
@@ -71,6 +73,21 @@ const createAliasDataJson = {
     timestamp: 1491556329420
 };
 
+const leaseDataJson = {
+    publicKey: keys.publicKey,
+    recipient: '3MsiHfvFVUULdn8bpVoDQ7JLKKjtPXUrCLT',
+    amount: 200000000,
+    fee: 1000000,
+    timestamp: 1491491715188
+};
+
+const cancelLeasingDataJson = {
+    publicKey: keys.publicKey,
+    transactionId: '4X85MhqxukwaPqJC4sSSeN3ptSYHbEca7KgiYtUa2ECX',
+    fee: 10000000,
+    timestamp: 1491491734819
+};
+
 
 describe('TransactionData', function () {
 
@@ -87,7 +104,7 @@ describe('TransactionData', function () {
 
     it('should sign Transfer transaction', function (done) {
 
-        const data = transferDataJson;
+        const data = { ...transferDataJson };
 
         const transferData = new TransferData(data);
 
@@ -173,7 +190,7 @@ describe('TransactionData', function () {
 
     it('should sign Create Alias transaction', function (done) {
 
-        const data = createAliasDataJson;
+        const data = { ...createAliasDataJson };
 
         const createAliasData = new CreateAliasData(data);
 
@@ -195,6 +212,57 @@ describe('TransactionData', function () {
         expect(() => createAliasData.getExactBytes('test')).to.throw();
 
         Promise.all([api, signature, bytesByName]).then(() => done());
+
+    });
+
+    it('should sign Lease transaction', function (done) {
+
+        const data = { ...leaseDataJson };
+
+        const leaseData = new LeaseData(data);
+
+        const expectedSignature = '4KV99VcLG51uej8tcdJBwcc3Kj2tCAxwT7JNwycxNQzAGURxcyo2XhmMTWiD1gVqs4GhkAYHGrjsBR2CJcdU5X6Z';
+
+        const api = leaseData.prepareForAPI(keys.privateKey).then((preparedData) => {
+            checkBasicCases(preparedData, data, 'lease', expectedSignature);
+            expect(preparedData.recipient).to.equal('address:' + data.recipient);
+        });
+
+        Promise.all([api]).then(() => done());
+
+    });
+
+    it('should sign Lease transaction with alias', function (done) {
+
+        const alias = 'test alias';
+        const data = { ...leaseDataJson, recipient: alias };
+
+        const leaseData = new LeaseData(data);
+
+        const expectedSignature = 'HuKk26pPjxusLhch6ehwbFeBc8iiMuKd2pzwhwTf5rEFqSyyUiU3ChpVw3w86daRPMPkVUNkf6b9SmTetFgGxXy';
+
+        const api = leaseData.prepareForAPI(keys.privateKey).then((preparedData) => {
+            checkBasicCases(preparedData, data, 'lease', expectedSignature);
+            expect(preparedData.recipient).to.equal('alias:' + String.fromCharCode(config.getNetworkByte()) + ':' + data.recipient);
+        });
+
+        Promise.all([api]).then(() => done());
+
+    });
+
+    it('should sign Cancel Leasing transaction', function (done) {
+
+        const data = { ...cancelLeasingDataJson };
+
+        const cancelLeasingData = new CancelLeasingData(data);
+
+        const expectedSignature = '2AcYC2TtpHRVhqN4V9cZADDz7bA2f4PVqoisBULYUn39t73jkE5fEpRZFEKgJiBU8NSPqcww9Qt7aY7VeSqpDVcW';
+
+        const api = cancelLeasingData.prepareForAPI(keys.privateKey).then((preparedData) => {
+            checkBasicCases(preparedData, data, 'cancelLeasing', expectedSignature);
+        });
+
+        Promise.all([api]).then(() => done());
 
     });
 

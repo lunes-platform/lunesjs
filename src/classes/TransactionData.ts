@@ -203,6 +203,30 @@ export default {
         new Long('timestamp')
     ]),
 
+    // TODO : BurnData
+
+    LeaseData: createTransactionDataClass('lease', [
+        constants.LEASE_TX,
+        new Base58('publicKey'),
+        new Recipient('recipient'),
+        new Long('amount'),
+        new Long('fee'),
+        new Long('timestamp')
+    ], {
+        recipient: {
+            from: 'raw',
+            to: 'prefixed'
+        }
+    }),
+
+    CancelLeasingData: createTransactionDataClass('cancelLeasing', [
+        constants.CANCEL_LEASING_TX,
+        new Base58('publicKey'),
+        new Long('fee'),
+        new Long('timestamp'),
+        new Base58('transactionId')
+    ]),
+
     CreateAliasData: createTransactionDataClass('createAlias', [
         constants.CREATE_ALIAS_TX,
         new Base58('publicKey'),
