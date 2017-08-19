@@ -5,7 +5,7 @@ import SHA3 from '../libs/sha3';
 import axlsign from '../libs/axlsign';
 import base58 from '../libs/base58';
 import converters from '../libs/converters';
-import { randomUint8Array } from '../libs/secure-random';
+import secureRandom from '../libs/secure-random';
 
 
 function sha256(input) {
@@ -41,7 +41,7 @@ export default {
 
     buildTransactionSignature(dataBytes: Uint8Array, privateKey: string): string {
         const privateKeyBytes = base58.decode(privateKey);
-        const signature = axlsign.sign(privateKeyBytes, dataBytes, randomUint8Array(64));
+        const signature = axlsign.sign(privateKeyBytes, dataBytes, secureRandom.randomUint8Array(64));
         return base58.encode(signature);
     },
 

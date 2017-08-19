@@ -16,16 +16,16 @@
 
 const axlsign = Object.create(null);
 
-var gf = function(init?: any) {
-    var i, r = new Float64Array(16);
+const gf = function(init?: any) {
+    let i, r = new Float64Array(16);
     if (init) for (i = 0; i < init.length; i++) r[i] = init[i];
     return r;
 };
 
-var _0 = new Uint8Array(16);
-var _9 = new Uint8Array(32); _9[0] = 9;
+const _0 = new Uint8Array(16);
+const _9 = new Uint8Array(32); _9[0] = 9;
 
-var gf0 = gf(),
+const gf0 = gf(),
     gf1 = gf([1]),
     _121665 = gf([0xdb41, 1]),
     D = gf([0x78a3, 0x1359, 0x4dca, 0x75eb, 0xd8ab, 0x4141, 0x0a4d, 0x0070, 0xe898, 0x7779, 0x4079, 0x8cc7, 0xfe73, 0x2b6f, 0x6cee, 0x5203]),
@@ -46,7 +46,7 @@ function ts64(x, i, h, l) {
 }
 
 function vn(x, xi, y, yi, n) {
-    var i,d = 0;
+    let i, d = 0;
     for (i = 0; i < n; i++) d |= x[xi+i]^y[yi+i];
     return (1 & ((d - 1) >>> 8)) - 1;
 }
@@ -56,12 +56,11 @@ function crypto_verify_32(x, xi, y, yi) {
 }
 
 function set25519(r, a) {
-    var i;
-    for (i = 0; i < 16; i++) r[i] = a[i]|0;
+    for (let i = 0; i < 16; i++) r[i] = a[i]|0;
 }
 
 function car25519(o) {
-    var i, v, c = 1;
+    let i, v, c = 1;
     for (i = 0; i < 16; i++) {
         v = o[i] + c + 65535;
         c = Math.floor(v / 65536);
@@ -71,8 +70,8 @@ function car25519(o) {
 }
 
 function sel25519(p, q, b) {
-    var t, c = ~(b-1);
-    for (var i = 0; i < 16; i++) {
+    let t, c = ~(b-1);
+    for (let i = 0; i < 16; i++) {
         t = c & (p[i] ^ q[i]);
         p[i] ^= t;
         q[i] ^= t;
@@ -80,8 +79,8 @@ function sel25519(p, q, b) {
 }
 
 function pack25519(o, n) {
-    var i, j, b;
-    var m = gf(), t = gf();
+    let i, j, b;
+    const m = gf(), t = gf();
     for (i = 0; i < 16; i++) t[i] = n[i];
     car25519(t);
     car25519(t);
@@ -104,34 +103,33 @@ function pack25519(o, n) {
 }
 
 function neq25519(a, b) {
-    var c = new Uint8Array(32), d = new Uint8Array(32);
+    const c = new Uint8Array(32), d = new Uint8Array(32);
     pack25519(c, a);
     pack25519(d, b);
     return crypto_verify_32(c, 0, d, 0);
 }
 
 function par25519(a) {
-    var d = new Uint8Array(32);
+    const d = new Uint8Array(32);
     pack25519(d, a);
     return d[0] & 1;
 }
 
 function unpack25519(o, n) {
-    var i;
-    for (i = 0; i < 16; i++) o[i] = n[2*i] + (n[2*i+1] << 8);
+    for (let i = 0; i < 16; i++) o[i] = n[2*i] + (n[2*i+1] << 8);
     o[15] &= 0x7fff;
 }
 
 function A(o, a, b) {
-    for (var i = 0; i < 16; i++) o[i] = a[i] + b[i];
+    for (let i = 0; i < 16; i++) o[i] = a[i] + b[i];
 }
 
 function Z(o, a, b) {
-    for (var i = 0; i < 16; i++) o[i] = a[i] - b[i];
+    for (let i = 0; i < 16; i++) o[i] = a[i] - b[i];
 }
 
 function M(o, a, b) {
-    var v, c,
+    let v, c,
         t0 = 0,  t1 = 0,  t2 = 0,  t3 = 0,  t4 = 0,  t5 = 0,  t6 = 0,  t7 = 0,
         t8 = 0,  t9 = 0, t10 = 0, t11 = 0, t12 = 0, t13 = 0, t14 = 0, t15 = 0,
         t16 = 0, t17 = 0, t18 = 0, t19 = 0, t20 = 0, t21 = 0, t22 = 0, t23 = 0,
@@ -506,8 +504,8 @@ function S(o, a) {
 }
 
 function inv25519(o, i) {
-    var c = gf();
-    var a;
+    const c = gf();
+    let a;
     for (a = 0; a < 16; a++) c[a] = i[a];
     for (a = 253; a >= 0; a--) {
         S(c, c);
@@ -517,8 +515,8 @@ function inv25519(o, i) {
 }
 
 function pow2523(o, i) {
-    var c = gf();
-    var a;
+    const c = gf();
+    let a;
     for (a = 0; a < 16; a++) c[a] = i[a];
     for (a = 250; a >= 0; a--) {
         S(c, c);
@@ -528,9 +526,10 @@ function pow2523(o, i) {
 }
 
 function crypto_scalarmult(q, n, p) {
-    var z = new Uint8Array(32);
-    var x = new Float64Array(80), r, i;
-    var a = gf(), b = gf(), c = gf(),
+    const z = new Uint8Array(32);
+    const x = new Float64Array(80);
+    let r, i;
+    const a = gf(), b = gf(), c = gf(),
         d = gf(), e = gf(), f = gf();
     for (i = 0; i < 31; i++) z[i] = n[i];
     z[31]=(n[31]&127)|64;
@@ -572,8 +571,8 @@ function crypto_scalarmult(q, n, p) {
         x[i+48]=b[i];
         x[i+64]=d[i];
     }
-    var x32 = x.subarray(32);
-    var x16 = x.subarray(16);
+    const x32 = x.subarray(32);
+    const x16 = x.subarray(16);
     inv25519(x32,x32);
     M(x16,x16,x32);
     pack25519(q,x16);
@@ -584,7 +583,7 @@ function crypto_scalarmult_base(q, n) {
     return crypto_scalarmult(q, n, _9);
 }
 
-var K = [
+const K = [
     0x428a2f98, 0xd728ae22, 0x71374491, 0x23ef65cd,
     0xb5c0fbcf, 0xec4d3b2f, 0xe9b5dba5, 0x8189dbbc,
     0x3956c25b, 0xf348b538, 0x59f111f1, 0xb605d019,
@@ -628,12 +627,12 @@ var K = [
 ];
 
 function crypto_hashblocks_hl(hh, hl, m, n) {
-    var wh = new Int32Array(16), wl = new Int32Array(16),
-        bh0, bh1, bh2, bh3, bh4, bh5, bh6, bh7,
+    const wh = new Int32Array(16), wl = new Int32Array(16);
+    let bh0, bh1, bh2, bh3, bh4, bh5, bh6, bh7,
         bl0, bl1, bl2, bl3, bl4, bl5, bl6, bl7,
         th, tl, i, j, h, l, a, b, c, d;
 
-    var ah0 = hh[0],
+    let ah0 = hh[0],
         ah1 = hh[1],
         ah2 = hh[2],
         ah3 = hh[3],
@@ -651,7 +650,7 @@ function crypto_hashblocks_hl(hh, hl, m, n) {
         al6 = hl[6],
         al7 = hl[7];
 
-    var pos = 0;
+    let pos = 0;
     while (n >= 128) {
         for (i = 0; i < 16; i++) {
             j = 8 * i + pos;
@@ -989,10 +988,10 @@ function crypto_hashblocks_hl(hh, hl, m, n) {
 }
 
 function crypto_hash(out, m, n) {
-    var hh = new Int32Array(8),
-        hl = new Int32Array(8),
-        x = new Uint8Array(256),
-        i, b = n;
+    const hh = new Int32Array(8);
+    const hl = new Int32Array(8);
+    const x = new Uint8Array(256);
+    let i, b = n;
 
     hh[0] = 0x6a09e667;
     hh[1] = 0xbb67ae85;
@@ -1029,7 +1028,7 @@ function crypto_hash(out, m, n) {
 }
 
 function add(p, q) {
-    var a = gf(), b = gf(), c = gf(),
+    const a = gf(), b = gf(), c = gf(),
         d = gf(), e = gf(), f = gf(),
         g = gf(), h = gf(), t = gf();
 
@@ -1055,14 +1054,13 @@ function add(p, q) {
 }
 
 function cswap(p, q, b) {
-    var i;
-    for (i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
         sel25519(p[i], q[i], b);
     }
 }
 
 function pack(r, p) {
-    var tx = gf(), ty = gf(), zi = gf();
+    const tx = gf(), ty = gf(), zi = gf();
     inv25519(zi, p[2]);
     M(tx, p[0], zi);
     M(ty, p[1], zi);
@@ -1071,7 +1069,7 @@ function pack(r, p) {
 }
 
 function scalarmult(p, q, s) {
-    var b, i;
+    let b, i;
     set25519(p[0], gf0);
     set25519(p[1], gf1);
     set25519(p[2], gf1);
@@ -1086,7 +1084,7 @@ function scalarmult(p, q, s) {
 }
 
 function scalarbase(p, s) {
-    var q = [gf(), gf(), gf(), gf()];
+    const q = [gf(), gf(), gf(), gf()];
     set25519(q[0], X);
     set25519(q[1], Y);
     set25519(q[2], gf1);
@@ -1094,10 +1092,10 @@ function scalarbase(p, s) {
     scalarmult(p, q, s);
 }
 
-var L = new Float64Array([0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58, 0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x10]);
+const L = new Float64Array([0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58, 0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x10]);
 
 function modL(r, x) {
-    var carry, i, j, k;
+    let carry, i, j, k;
     for (i = 63; i >= 32; --i) {
         carry = 0;
         for (j = i - 32, k = i - 12; j < k; ++j) {
@@ -1122,7 +1120,8 @@ function modL(r, x) {
 }
 
 function reduce(r) {
-    var x = new Float64Array(64), i;
+    const x = new Float64Array(64);
+    let i;
     for (i = 0; i < 64; i++) x[i] = r[i];
     for (i = 0; i < 64; i++) r[i] = 0;
     modL(r, x);
@@ -1130,9 +1129,10 @@ function reduce(r) {
 
 // Like crypto_sign, but uses secret key directly in hash.
 function crypto_sign_direct(sm, m, n, sk) {
-    var d = new Uint8Array(64), h = new Uint8Array(64), r = new Uint8Array(64);
-    var i, j, x = new Float64Array(64);
-    var p = [gf(), gf(), gf(), gf()];
+    const d = new Uint8Array(64), h = new Uint8Array(64), r = new Uint8Array(64);
+    const x = new Float64Array(64);
+    const p = [gf(), gf(), gf(), gf()];
+    let i, j;
 
     for (i = 0; i < n; i++) sm[64 + i] = m[i];
     for (i = 0; i < 32; i++) sm[32 + i] = sk[i];
@@ -1160,9 +1160,10 @@ function crypto_sign_direct(sm, m, n, sk) {
 
 // Note: sm must be n+128.
 function crypto_sign_direct_rnd(sm, m, n, sk, rnd) {
-    var d = new Uint8Array(64), h = new Uint8Array(64), r = new Uint8Array(64);
-    var i, j, x = new Float64Array(64);
-    var p = [gf(), gf(), gf(), gf()];
+    const d = new Uint8Array(64), h = new Uint8Array(64), r = new Uint8Array(64);
+    const x = new Float64Array(64);
+    const p = [gf(), gf(), gf(), gf()];
+    let i, j;
 
     // Hash separation.
     sm[0] = 0xfe;
@@ -1208,10 +1209,10 @@ function curve25519_sign(sm?: any, m?: any, n?: any, sk?: any, opt_rnd?: any) {
     // otherwise it must have n + 64 bytes.
 
     // Convert Curve25519 secret key into Ed25519 secret key (includes pub key).
-    var edsk = new Uint8Array(64);
-    var p = [gf(), gf(), gf(), gf()];
+    const edsk = new Uint8Array(64);
+    const p = [gf(), gf(), gf(), gf()];
 
-    for (var i = 0; i < 32; i++) edsk[i] = sk[i];
+    for (let i = 0; i < 32; i++) edsk[i] = sk[i];
     // Ensure private key is in the correct format.
     edsk[0] &= 248;
     edsk[31] &= 127;
@@ -1221,8 +1222,8 @@ function curve25519_sign(sm?: any, m?: any, n?: any, sk?: any, opt_rnd?: any) {
     pack(edsk.subarray(32), p);
 
     // Remember sign bit.
-    var signBit = edsk[63] & 128;
-    var smlen;
+    const signBit = edsk[63] & 128;
+    let smlen;
 
     if (opt_rnd) {
         smlen = crypto_sign_direct_rnd(sm, m, n, edsk, opt_rnd);
@@ -1236,7 +1237,7 @@ function curve25519_sign(sm?: any, m?: any, n?: any, sk?: any, opt_rnd?: any) {
 }
 
 function unpackneg(r, p) {
-    var t = gf(), chk = gf(), num = gf(),
+    const t = gf(), chk = gf(), num = gf(),
         den = gf(), den2 = gf(), den4 = gf(),
         den6 = gf();
 
@@ -1274,9 +1275,9 @@ function unpackneg(r, p) {
 }
 
 function crypto_sign_open(m, sm, n, pk) {
-    var i, mlen;
-    var t = new Uint8Array(32), h = new Uint8Array(64);
-    var p = [gf(), gf(), gf(), gf()],
+    let i, mlen;
+    const t = new Uint8Array(32), h = new Uint8Array(64);
+    const p = [gf(), gf(), gf(), gf()],
         q = [gf(), gf(), gf(), gf()];
 
     mlen = -1;
@@ -1308,7 +1309,7 @@ function crypto_sign_open(m, sm, n, pk) {
 // Converts Curve25519 public key back to Ed25519 public key.
 // edwardsY = (montgomeryX - 1) / (montgomeryX + 1)
 function convertPublicKey(pk) {
-    var z = new Uint8Array(32),
+    const z = new Uint8Array(32),
         x = gf(), a = gf(), b = gf();
 
     unpack25519(x, pk);
@@ -1324,7 +1325,7 @@ function convertPublicKey(pk) {
 
 function curve25519_sign_open(m, sm, n, pk) {
     // Convert Curve25519 public key into Ed25519 public key.
-    var edpk = convertPublicKey(pk);
+    const edpk = convertPublicKey(pk);
 
     // Restore sign bit from signature.
     edpk[31] |= sm[63] & 128;
@@ -1339,7 +1340,7 @@ function curve25519_sign_open(m, sm, n, pk) {
 /* High-level API */
 
 function checkArrayTypes(...args: any[]) {
-    var t, i;
+    let t, i;
     for (i = 0; i < arguments.length; i++) {
         if ((t = Object.prototype.toString.call(arguments[i])) !== '[object Uint8Array]')
             throw new TypeError('unexpected type ' + t + ', use Uint8Array');
@@ -1350,7 +1351,7 @@ axlsign.sharedKey = function(secretKey, publicKey) {
     checkArrayTypes(publicKey, secretKey);
     if (publicKey.length !== 32) throw new Error('wrong public key length');
     if (secretKey.length !== 32) throw new Error('wrong secret key length');
-    var sharedKey = new Uint8Array(32);
+    const sharedKey = new Uint8Array(32);
     crypto_scalarmult(sharedKey, secretKey, publicKey);
     return sharedKey;
 };
@@ -1361,24 +1362,24 @@ axlsign.signMessage = function(secretKey, msg, opt_random) {
     if (opt_random) {
         checkArrayTypes(opt_random)
         if (opt_random.length !== 64) throw new Error('wrong random data length');
-        var buf = new Uint8Array(128 + msg.length);
+        const buf = new Uint8Array(128 + msg.length);
         curve25519_sign(buf, msg, msg.length, secretKey, opt_random);
         return new Uint8Array(buf.subarray(0, 64 + msg.length));
     } else {
-        var signedMsg = new Uint8Array(64 + msg.length);
+        const signedMsg = new Uint8Array(64 + msg.length);
         curve25519_sign(signedMsg, msg, msg.length, secretKey);
         return signedMsg;
     }
-}
+};
 
 axlsign.openMessage = function(publicKey, signedMsg) {
     checkArrayTypes(signedMsg, publicKey);
     if (publicKey.length !== 32) throw new Error('wrong public key length');
-    var tmp = new Uint8Array(signedMsg.length);
-    var mlen = curve25519_sign_open(tmp, signedMsg, signedMsg.length, publicKey);
+    const tmp = new Uint8Array(signedMsg.length);
+    const mlen = curve25519_sign_open(tmp, signedMsg, signedMsg.length, publicKey);
     if (mlen < 0) return null;
-    var m = new Uint8Array(mlen);
-    for (var i = 0; i < m.length; i++) m[i] = tmp[i];
+    const m = new Uint8Array(mlen);
+    for (let i = 0; i < m.length; i++) m[i] = tmp[i];
     return m;
 };
 
@@ -1389,10 +1390,10 @@ axlsign.sign = function(secretKey, msg, opt_random) {
         checkArrayTypes(opt_random);
         if (opt_random.length !== 64) throw new Error('wrong random data length');
     }
-    var buf = new Uint8Array((opt_random ? 128 : 64) + msg.length);
+    const buf = new Uint8Array((opt_random ? 128 : 64) + msg.length);
     curve25519_sign(buf, msg, msg.length, secretKey, opt_random);
-    var signature = new Uint8Array(64);
-    for (var i = 0; i < signature.length; i++) signature[i] = buf[i];
+    const signature = new Uint8Array(64);
+    for (let i = 0; i < signature.length; i++) signature[i] = buf[i];
     return signature;
 };
 
@@ -1400,9 +1401,9 @@ axlsign.verify = function(publicKey, msg, signature) {
     checkArrayTypes(msg, signature, publicKey);
     if (signature.length !== 64) throw new Error('wrong signature length');
     if (publicKey.length !== 32) throw new Error('wrong public key length');
-    var sm = new Uint8Array(64 + msg.length);
-    var m = new Uint8Array(64 + msg.length);
-    var i;
+    const sm = new Uint8Array(64 + msg.length);
+    const m = new Uint8Array(64 + msg.length);
+    let i;
     for (i = 0; i < 64; i++) sm[i] = signature[i];
     for (i = 0; i < msg.length; i++) sm[i+64] = msg[i];
     return (curve25519_sign_open(m, sm, sm.length, publicKey) >= 0);
@@ -1411,10 +1412,10 @@ axlsign.verify = function(publicKey, msg, signature) {
 axlsign.generateKeyPair = function(seed) {
     checkArrayTypes(seed);
     if (seed.length !== 32) throw new Error('wrong seed length');
-    var sk = new Uint8Array(32);
-    var pk = new Uint8Array(32);
+    const sk = new Uint8Array(32);
+    const pk = new Uint8Array(32);
 
-    for (var i = 0; i < 32; i++) sk[i] = seed[i];
+    for (let i = 0; i < 32; i++) sk[i] = seed[i];
 
     crypto_scalarmult_base(pk, sk);
 

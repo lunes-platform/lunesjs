@@ -52,7 +52,7 @@ function browserRandom(count, options) {
 }
 
 
-export function secureRandom(count, options) {
+function secureRandom(count, options) {
     options = options || { type: 'Array' };
     //we check for process.pid to prevent Browserify from tricking us
     if (typeof process !== 'undefined' && typeof process.pid === 'number') {
@@ -64,14 +64,21 @@ export function secureRandom(count, options) {
     }
 }
 
-export function randomArray(byteCount) {
-    return secureRandom(byteCount, { type: 'Array' });
-}
 
-export function randomUint8Array(byteCount) {
-    return secureRandom(byteCount, { type: 'Uint8Array' });
-}
+export default {
 
-export function randomBuffer(byteCount) {
-    return secureRandom(byteCount, { type: 'Buffer' });
-}
+    secureRandom: secureRandom,
+
+    randomArray(byteCount) {
+        return secureRandom(byteCount, { type: 'Array' });
+    },
+
+    randomUint8Array(byteCount) {
+        return secureRandom(byteCount, { type: 'Uint8Array' });
+    },
+
+    randomBuffer(byteCount) {
+        return secureRandom(byteCount, { type: 'Buffer' });
+    }
+
+};

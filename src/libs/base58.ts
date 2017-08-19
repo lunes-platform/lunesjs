@@ -42,7 +42,7 @@ export default {
             digits.push(0);
         }
 
-        return digits.reverse().map(function(digit) {
+        return digits.reverse().map(function (digit) {
             return ALPHABET[digit];
         }).join('');
 
