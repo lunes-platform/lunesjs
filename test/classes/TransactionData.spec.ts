@@ -2,7 +2,7 @@ import getWavesAPI from '../../src/WavesAPI';
 import { expect } from '../_helpers/getChai';
 import { deterministicSignData } from '../_helpers/deterministicSignData';
 import crypto from '../../src/utils/crypto';
-import { DEFAULT_TESTNET_CONFIG } from '../../src/constants';
+import * as constants from '../../src/constants';
 import base58 from '../../src/libs/base58';
 import config from '../../src/config';
 
@@ -19,7 +19,7 @@ function checkBasicCases(preparedData, data, txType, expectedSignature) {
 }
 
 
-const waves = getWavesAPI(DEFAULT_TESTNET_CONFIG);
+const waves = getWavesAPI(constants.DEFAULT_TESTNET_CONFIG);
 
 const {
     TransferData,
@@ -102,6 +102,22 @@ describe('TransactionData', function () {
         crypto.buildTransactionSignature = tempSignData;
     });
 
+    it('should sign Issue transaction', function (done) {
+
+        const data = { ...issueDataJson };
+
+        const issueData = new IssueData(data);
+
+        const expectedSignature = '5ngquur4nqX1cVPK3Zaf9KqY1qNH6i7gF5EhaWeS8mZp1LADTVuPXmNUi12jeXSniGry5a7ThsMtWcC73pSU196o';
+
+        const api = issueData.prepareForAPI(keys.privateKey).then((preparedData) => {
+            checkBasicCases(preparedData, data, constants.ISSUE_TX_NAME, expectedSignature);
+        });
+
+        Promise.all([api]).then(() => done());
+
+    });
+
     it('should sign Transfer transaction', function (done) {
 
         const data = { ...transferDataJson };
@@ -111,7 +127,7 @@ describe('TransactionData', function () {
         const expectedSignature = '677UVgKBAVZdweVbn6wKhPLP9UxVSh3x4fBXPgepKoHtsV9nSd8HXBMxCdsYn41g3EE63bcihnUHwhXoSu9GZTLf';
 
         const api = transferData.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, 'transfer', expectedSignature);
+            checkBasicCases(preparedData, data, constants.TRANSFER_TX_NAME, expectedSignature);
             expect(preparedData.recipient).to.equal('address:' + data.recipient);
         });
 
@@ -129,7 +145,7 @@ describe('TransactionData', function () {
         const expectedSignature = '2XJAHpRXx12AvdwcDF2HMpTDxffKkmN9qK7r3jZaVExYVjDaciRszymkGXy5QZExz6McYwDf6gicD4XZswJGKAZW';
 
         const api = transferData.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, 'transfer', expectedSignature);
+            checkBasicCases(preparedData, data, constants.TRANSFER_TX_NAME, expectedSignature);
             expect(preparedData.recipient).to.equal('alias:' + String.fromCharCode(config.getNetworkByte()) + ':' + data.recipient);
         });
 
@@ -148,24 +164,8 @@ describe('TransactionData', function () {
         const expectedSignature = 'TrgV7V7meddPs7aU9ZemrCXNVQ8h35cERTBNfvbtVqURbgRS1fnEmzELMAxvqeYrHF6sYiJJ4oc3v4tEZQbn5qD';
 
         const api = transferData.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, 'transfer', expectedSignature);
+            checkBasicCases(preparedData, data, constants.TRANSFER_TX_NAME, expectedSignature);
             expect(preparedData.attachment).to.equal(base58.encode(attachmentBytesWithLength));
-        });
-
-        Promise.all([api]).then(() => done());
-
-    });
-
-    it('should sign Issue transaction', function (done) {
-
-        const data = { ...issueDataJson };
-
-        const issueData = new IssueData(data);
-
-        const expectedSignature = '5ngquur4nqX1cVPK3Zaf9KqY1qNH6i7gF5EhaWeS8mZp1LADTVuPXmNUi12jeXSniGry5a7ThsMtWcC73pSU196o';
-
-        const api = issueData.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, 'issue', expectedSignature);
         });
 
         Promise.all([api]).then(() => done());
@@ -181,7 +181,7 @@ describe('TransactionData', function () {
         const expectedSignature = '4G81NzgHDwXdjqANGE2qxZrC5VpDA7ek3Db8v3iqunpkrXgAy7KBJgdHWUw1TEDBNewtjMJTvB9Po55PZ5d6ztCk';
 
         const api = reissueData.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, 'reissue', expectedSignature);
+            checkBasicCases(preparedData, data, constants.REISSUE_TX_NAME, expectedSignature);
         });
 
         Promise.all([api]).then(() => done());
@@ -197,7 +197,7 @@ describe('TransactionData', function () {
         const expectedSignature = '2fDkcUaPrQjtL1Tfox1ikqfZWA7LkvWKrGZNaxJx98dmeLoopkwvAFa9nMJLww9PERGuQovfv8g9EPM6HkV5VPaH';
 
         const api = createAliasData.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, 'createAlias', expectedSignature);
+            checkBasicCases(preparedData, data, constants.CREATE_ALIAS_TX_NAME, expectedSignature);
         });
 
         const signature = createAliasData.getSignature(keys.privateKey).then((signature) => {
@@ -224,7 +224,7 @@ describe('TransactionData', function () {
         const expectedSignature = '4KV99VcLG51uej8tcdJBwcc3Kj2tCAxwT7JNwycxNQzAGURxcyo2XhmMTWiD1gVqs4GhkAYHGrjsBR2CJcdU5X6Z';
 
         const api = leaseData.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, 'lease', expectedSignature);
+            checkBasicCases(preparedData, data, constants.LEASE_TX_NAME, expectedSignature);
             expect(preparedData.recipient).to.equal('address:' + data.recipient);
         });
 
@@ -242,7 +242,7 @@ describe('TransactionData', function () {
         const expectedSignature = 'HuKk26pPjxusLhch6ehwbFeBc8iiMuKd2pzwhwTf5rEFqSyyUiU3ChpVw3w86daRPMPkVUNkf6b9SmTetFgGxXy';
 
         const api = leaseData.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, 'lease', expectedSignature);
+            checkBasicCases(preparedData, data, constants.LEASE_TX_NAME, expectedSignature);
             expect(preparedData.recipient).to.equal('alias:' + String.fromCharCode(config.getNetworkByte()) + ':' + data.recipient);
         });
 
@@ -259,7 +259,7 @@ describe('TransactionData', function () {
         const expectedSignature = '2AcYC2TtpHRVhqN4V9cZADDz7bA2f4PVqoisBULYUn39t73jkE5fEpRZFEKgJiBU8NSPqcww9Qt7aY7VeSqpDVcW';
 
         const api = cancelLeasingData.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, 'cancelLeasing', expectedSignature);
+            checkBasicCases(preparedData, data, constants.CANCEL_LEASING_TX_NAME, expectedSignature);
         });
 
         Promise.all([api]).then(() => done());

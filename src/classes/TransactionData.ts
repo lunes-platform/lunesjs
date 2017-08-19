@@ -160,7 +160,7 @@ function createTransactionDataClass(txType: string, fields: TTransactionFields, 
 
 export default {
 
-    TransferData: createTransactionDataClass('transfer', [
+    TransferData: createTransactionDataClass(constants.TRANSFER_TX_NAME, [
         constants.TRANSFER_TX,
         new Base58('publicKey'),
         new AssetId('assetId'),
@@ -181,7 +181,7 @@ export default {
         }
     }),
 
-    IssueData: createTransactionDataClass('issue', [
+    IssueData: createTransactionDataClass(constants.ISSUE_TX_NAME, [
         constants.ISSUE_TX,
         new Base58('publicKey'),
         new StringWithLength('name'),
@@ -193,7 +193,7 @@ export default {
         new Long('timestamp')
     ]),
 
-    ReissueData: createTransactionDataClass('reissue', [
+    ReissueData: createTransactionDataClass(constants.REISSUE_TX_NAME, [
         constants.REISSUE_TX,
         new Base58('publicKey'),
         new MandatoryAssetId('assetId'),
@@ -205,7 +205,7 @@ export default {
 
     // TODO : BurnData
 
-    LeaseData: createTransactionDataClass('lease', [
+    LeaseData: createTransactionDataClass(constants.LEASE_TX_NAME, [
         constants.LEASE_TX,
         new Base58('publicKey'),
         new Recipient('recipient'),
@@ -219,7 +219,7 @@ export default {
         }
     }),
 
-    CancelLeasingData: createTransactionDataClass('cancelLeasing', [
+    CancelLeasingData: createTransactionDataClass(constants.CANCEL_LEASING_TX_NAME, [
         constants.CANCEL_LEASING_TX,
         new Base58('publicKey'),
         new Long('fee'),
@@ -227,7 +227,7 @@ export default {
         new Base58('transactionId')
     ]),
 
-    CreateAliasData: createTransactionDataClass('createAlias', [
+    CreateAliasData: createTransactionDataClass(constants.CREATE_ALIAS_TX_NAME, [
         constants.CREATE_ALIAS_TX,
         new Base58('publicKey'),
         new Alias('alias'),

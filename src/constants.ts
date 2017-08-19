@@ -9,13 +9,21 @@ export const INITIAL_NONCE = 0;
 export const ADDRESS_VERSION = 1;
 export const ALIAS_VERSION = 2;
 
-export const TRANSFER_TX = 4;
 export const ISSUE_TX = 3;
+export const TRANSFER_TX = 4;
 export const REISSUE_TX = 5;
 export const EXCHANGE_TX = 7;
 export const LEASE_TX = 8;
 export const CANCEL_LEASING_TX = 9;
 export const CREATE_ALIAS_TX = 10;
+
+export const ISSUE_TX_NAME = 'issue';
+export const TRANSFER_TX_NAME = 'transfer';
+export const REISSUE_TX_NAME = 'reissue';
+export const EXCHANGE_TX_NAME = 'exchange';
+export const LEASE_TX_NAME = 'lease';
+export const CANCEL_LEASING_TX_NAME = 'cancelLeasing';
+export const CREATE_ALIAS_TX_NAME = 'createAlias';
 
 export const MINIMUM_AMOUNT = 1;
 export const MINIMUM_FEE = 100000;
