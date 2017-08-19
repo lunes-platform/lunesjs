@@ -1,4 +1,4 @@
-import { ByteProcessor, Alias, Base58, Long, AssetId } from './ByteProcessor';
+import { ByteProcessor, Alias, Base58, Long, AssetId, MandatoryAssetId, Recipient, Attachment } from './ByteProcessor';
 import crypto from '../utils/crypto';
 import { concatUint8Arrays } from '../utils/concat';
 import * as constants from '../constants';
@@ -36,6 +36,8 @@ function createRequestDataType(txType: string, fields: Array<ByteProcessor | num
 
         constructor(hashMap: any = {}) {
 
+            // TODO : add default values for missing fields
+
             // Save all needed values from user data
             this.rawData = Object.keys(storedFields).reduce((store, key) => {
                 store[key] = hashMap[key];
@@ -55,17 +57,15 @@ function createRequestDataType(txType: string, fields: Array<ByteProcessor | num
         }
 
         public prepareForAPI(privateKey): Promise<Object> {
-
-            // Transform data so it could match the API requirements
-            const schemedData = apiSchema ? this.castToAPISchema(this.rawData) : this.rawData;
-
-            // Sign data and extend the resulting object with signature and transaction type
-            return this.getSignature(privateKey).then((signature) => ({
-                transactionType: txType,
-                ...schemedData,
-                signature
-            }));
-
+            // Sign data and extend its object with signature and transaction type
+            return this.getSignature(privateKey).then((signature) => {
+                // Transform data so it could match the API requirements
+                return this.castToAPISchema(this.rawData).then((schemedData) => ({
+                    transactionType: txType,
+                    ...schemedData,
+                    signature
+                }));
+            });
         }
 
         // Sign transaction and return only signature
@@ -85,24 +85,33 @@ function createRequestDataType(txType: string, fields: Array<ByteProcessor | num
 
             const byteProcessor = storedFields[fieldName];
             const userData = this.rawData[fieldName];
-
             return byteProcessor.process(userData);
 
         }
 
-        private castToAPISchema(data): object {
+        private castToAPISchema(data): Promise<object> {
 
-            return Object.keys(apiSchema).reduce((result, key) => {
+            if (!apiSchema) return Promise.resolve({ ...data });
+
+            // Generate an array of promises wielding the schemed data
+            const transforms = Object.keys(apiSchema).map((key) => {
 
                 const rule = apiSchema[key];
 
+                // The only one transformation type for now
                 if (rule.from === 'bytes' && rule.to === 'base58') {
-                    result[key] = base58.encode(this.getExactBytes(key));
+                    return this.getExactBytes(key).then((bytes) => {
+                        return { [key]: base58.encode(bytes) };
+                    });
                 }
 
-                return result;
+            });
 
-            }, { ...data });
+            return Promise.all(transforms).then((schemedParts) => {
+                return schemedParts.reduce((result, part) => {
+                    return { ...result, ...part };
+                }, { ...data });
+            });
 
         }
 
@@ -114,6 +123,23 @@ function createRequestDataType(txType: string, fields: Array<ByteProcessor | num
 
 
 export default {
+
+    TransferData: createRequestDataType('transfer', [
+        constants.TRANSFER_TX,
+        new Base58('publicKey'),
+        new AssetId('assetId'),
+        new AssetId('feeAssetId'),
+        new Long('timestamp'),
+        new Long('amount'),
+        new Long('fee'),
+        new Recipient('recipient'),
+        new Attachment('attachment')
+    ], {
+        attachment: {
+            from: 'bytes',
+            to: 'base58'
+        }
+    }),
 
     CreateAliasData: createRequestDataType('createAlias', [
         constants.CREATE_ALIAS_TX,

@@ -1,3 +1,6 @@
+import { TBuffer } from '../interfaces';
+
+
 const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
 const ALPHABET_MAP = ALPHABET.split('').reduce((map, c, i) => {
     map[c] = i;
@@ -7,7 +10,7 @@ const ALPHABET_MAP = ALPHABET.split('').reduce((map, c, i) => {
 
 export default {
 
-    encode(buffer): string {
+    encode(buffer: TBuffer): string {
 
         if (!buffer.length) return '';
 
