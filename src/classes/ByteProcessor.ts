@@ -17,6 +17,8 @@ function getAliasBytes(alias): number[] {
 }
 
 
+// ABSTRACT PARENT
+
 export abstract class ByteProcessor {
     constructor(public readonly name: string) {}
     public abstract process(value: any): Promise<Uint8Array>;
@@ -43,6 +45,19 @@ export class Long extends ByteProcessor {
     process(value: number) {
         const bytes = convert.longToByteArray(value);
         return Promise.resolve(Uint8Array.from(bytes));
+    }
+}
+
+export class Short extends ByteProcessor {
+    process(value: number) {
+        return Promise.resolve(Uint8Array.from([value]));
+    }
+}
+
+export class StringWithLength extends ByteProcessor {
+    process(value: string) {
+        const bytesWithLength = convert.stringToByteArrayWithSize(value);
+        return Promise.resolve(Uint8Array.from(bytesWithLength));
     }
 }
 

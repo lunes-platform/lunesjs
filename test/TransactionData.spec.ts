@@ -23,6 +23,7 @@ const waves = getWavesAPI(DEFAULT_TESTNET_CONFIG);
 
 const {
     TransferData,
+    IssueData,
     ReissueData,
     CreateAliasData
 } = waves.TransactionData;
@@ -41,6 +42,17 @@ const transferDataJson = {
     fee: 100000,
     attachment: '',
     timestamp: 1478864678621
+};
+
+const issueDataJson = {
+    publicKey: keys.publicKey,
+    name: 'БАБЛОС',
+    description: 'Some english words немного кириллических символов',
+    quantity: 10000000000,
+    precision: 2,
+    reissuable: true,
+    fee: 100000000,
+    timestamp: 1478704158292
 };
 
 const reissueDataJson = {
@@ -121,6 +133,22 @@ describe('TransactionData', function () {
         const api = transferData.prepareForAPI(keys.privateKey).then((preparedData) => {
             checkBasicCases(preparedData, data, 'transfer', expectedSignature);
             expect(preparedData.attachment).to.equal(base58.encode(attachmentBytesWithLength));
+        });
+
+        Promise.all([api]).then(() => done());
+
+    });
+
+    it('should sign Issue transaction', function (done) {
+
+        const data = { ...issueDataJson };
+
+        const issueData = new IssueData(data);
+
+        const expectedSignature = '5ngquur4nqX1cVPK3Zaf9KqY1qNH6i7gF5EhaWeS8mZp1LADTVuPXmNUi12jeXSniGry5a7ThsMtWcC73pSU196o';
+
+        const api = issueData.prepareForAPI(keys.privateKey).then((preparedData) => {
+            checkBasicCases(preparedData, data, 'issue', expectedSignature);
         });
 
         Promise.all([api]).then(() => done());

@@ -1,4 +1,4 @@
-import { ByteProcessor, Alias, Base58, Bool, Long, AssetId, MandatoryAssetId, Recipient, Attachment } from './ByteProcessor';
+import { ByteProcessor, Alias, Base58, Bool, Long, Short, StringWithLength, AssetId, MandatoryAssetId, Recipient, Attachment } from './ByteProcessor';
 import crypto from '../utils/crypto';
 import { concatUint8Arrays } from '../utils/concat';
 import * as constants from '../constants';
@@ -180,6 +180,18 @@ export default {
             to: 'prefixed'
         }
     }),
+
+    IssueData: createTransactionDataClass('issue', [
+        constants.ISSUE_TX,
+        new Base58('publicKey'),
+        new StringWithLength('name'),
+        new StringWithLength('description'),
+        new Long('quantity'),
+        new Short('precision'),
+        new Bool('reissuable'),
+        new Long('fee'),
+        new Long('timestamp')
+    ]),
 
     ReissueData: createTransactionDataClass('reissue', [
         constants.REISSUE_TX,
