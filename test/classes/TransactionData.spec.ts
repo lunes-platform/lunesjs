@@ -1,10 +1,10 @@
-import getWavesAPI from '../src/WavesAPI';
-import { expect } from './_helpers/getChai';
-import { deterministicSignData } from './_helpers/deterministicSignData';
-import crypto from '../src/utils/crypto';
-import { DEFAULT_TESTNET_CONFIG } from '../src/constants';
-import base58 from '../src/libs/base58';
-import config from '../src/config';
+import getWavesAPI from '../../src/WavesAPI';
+import { expect } from '../_helpers/getChai';
+import { deterministicSignData } from '../_helpers/deterministicSignData';
+import crypto from '../../src/utils/crypto';
+import { DEFAULT_TESTNET_CONFIG } from '../../src/constants';
+import base58 from '../../src/libs/base58';
+import config from '../../src/config';
 
 
 function checkBasicCases(preparedData, data, txType, expectedSignature) {

@@ -40,6 +40,6 @@
     "pretest": "npm run compile",
     "test": "npm run test-node",
     "test-browser": "./node_modules/.bin/karma start karma.conf.js --browsers Chrome",
-    "test-node": "./node_modules/.bin/mocha ./test/"
+    "test-node": "./node_modules/.bin/mocha ./test/**/"
   }
 }

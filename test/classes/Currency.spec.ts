@@ -1,6 +1,6 @@
-import getWavesAPI from '../src/WavesAPI';
-import { expect } from './_helpers/getChai';
-import { DEFAULT_TESTNET_CONFIG } from '../src/constants';
+import getWavesAPI from '../../src/WavesAPI';
+import { expect } from '../_helpers/getChai';
+import { DEFAULT_TESTNET_CONFIG } from '../../src/constants';
 
 
 const waves = getWavesAPI(DEFAULT_TESTNET_CONFIG);
