@@ -22,8 +22,8 @@ export interface IAsset {
 }
 
 export interface IAPISchema {
-    readonly from: 'bytes';
-    readonly to: 'base58';
+    readonly from: 'bytes' | 'raw';
+    readonly to: 'base58' | 'prefixed';
 }
 
 export interface IWavesAPI {

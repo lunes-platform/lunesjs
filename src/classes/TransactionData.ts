@@ -3,6 +3,7 @@ import crypto from '../utils/crypto';
 import { concatUint8Arrays } from '../utils/concat';
 import * as constants from '../constants';
 import base58 from '../libs/base58';
+import config from '../config';
 import { IHash, IAPISchema, TTransactionFields } from '../interfaces';
 
 
@@ -87,7 +88,7 @@ function createTransactionDataClass(txType: string, fields: TTransactionFields, 
         public getExactBytes(fieldName): Promise<Uint8Array> {
 
             if (!(fieldName in storedFields)) {
-                throw new Error(`There is no field '${fieldName}' in '${txType} RequestDataType class.`);
+                throw new Error(`There is no field '${fieldName}' in '${txType} RequestDataType class`);
             }
 
             const byteProcessor = storedFields[fieldName];
@@ -101,15 +102,16 @@ function createTransactionDataClass(txType: string, fields: TTransactionFields, 
             if (!apiSchema) return Promise.resolve({ ...data });
 
             // Generate an array of promises wielding the schemed data
-            const transforms = Object.keys(apiSchema).map((key) => {
+            const transforms: Array<Promise<object>> = Object.keys(apiSchema).map((key) => {
 
                 const rule = apiSchema[key];
 
-                // The only one transformation type for now
                 if (rule.from === 'bytes' && rule.to === 'base58') {
-                    return this.getExactBytes(key).then((bytes) => {
-                        return { [key]: base58.encode(bytes) };
-                    });
+                    return this.castFromBytesToBase58(key);
+                }
+
+                if (rule.from === 'raw' && rule.to === 'prefixed') {
+                    return this.castFromRawToPrefixed(key);
                 }
 
             });
@@ -119,6 +121,33 @@ function createTransactionDataClass(txType: string, fields: TTransactionFields, 
                     return { ...result, ...part };
                 }, { ...data });
             });
+
+        }
+
+        private castFromBytesToBase58(key): Promise<object> {
+            return this.getExactBytes(key).then((bytes) => {
+                return { [key]: base58.encode(bytes) };
+            });
+        }
+
+        private castFromRawToPrefixed(key): Promise<object> {
+
+            let type = key;
+            if (type === 'recipient') {
+                type = this.rawData[key].length <= 30 ? 'alias' : 'address';
+            }
+
+            let prefix;
+            if (type === 'address') {
+                prefix = 'address:';
+            } else if (type === 'alias') {
+                const networkCharacter = String.fromCharCode(config.getNetworkByte());
+                prefix = 'alias:' + networkCharacter + ':';
+            } else {
+                throw new Error(`There is no type '${type}' to be prefixed`);
+            }
+
+            return Promise.resolve({ [key]: prefix + this.rawData[key] });
 
         }
 
@@ -145,6 +174,10 @@ export default {
         attachment: {
             from: 'bytes',
             to: 'base58'
+        },
+        recipient: {
+            from: 'raw',
+            to: 'prefixed'
         }
     }),
 
@@ -154,6 +187,11 @@ export default {
         new Alias('alias'),
         new Long('fee'),
         new Long('timestamp')
-    ])
+    ], {
+        alias: {
+            from: 'raw',
+            to: 'prefixed'
+        }
+    })
 
 };

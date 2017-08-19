@@ -4,6 +4,7 @@ import { deterministicSignData } from './_helpers/deterministicSignData';
 import crypto from '../src/utils/crypto';
 import { DEFAULT_TESTNET_CONFIG } from '../src/constants';
 import base58 from '../src/libs/base58';
+import config from '../src/config';
 
 
 function checkBasicCases(preparedData, data, txType, expectedSignature) {
@@ -72,6 +73,7 @@ describe('TransactionData', function () {
 
         const api = transferRequest.prepareForAPI(keys.privateKey).then((preparedData) => {
             checkBasicCases(preparedData, data, 'transfer', expectedSignature);
+            expect(preparedData.recipient).to.equal('address:' + data.recipient);
         });
 
         Promise.all([api]).then(() => done());
@@ -89,6 +91,7 @@ describe('TransactionData', function () {
 
         const api = transferRequest.prepareForAPI(keys.privateKey).then((preparedData) => {
             checkBasicCases(preparedData, data, 'transfer', expectedSignature);
+            expect(preparedData.recipient).to.equal('alias:' + String.fromCharCode(config.getNetworkByte()) + ':' + data.recipient);
         });
 
         Promise.all([api]).then(() => done());
@@ -133,6 +136,9 @@ describe('TransactionData', function () {
         const bytesByName = createAliasRequest.getExactBytes('publicKey').then((bytes) => {
             expect(bytes).to.deep.equal(base58.decode(data.publicKey));
         });
+
+        // Should throw when bytes of a non-existing field are requested
+        expect(() => createAliasRequest.getExactBytes('test')).to.throw();
 
         Promise.all([api, signature, bytesByName]).then(() => done());
 
