@@ -1,6 +1,11 @@
+import { ByteProcessor } from './classes/ByteProcessor';
+
+
 export type TPrecisions = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
 export type TBuffer = Uint8Array | number[];
+
+export type TTransactionFields = Array<ByteProcessor | number>;
 
 
 interface IHash<T> {
@@ -24,7 +29,7 @@ export interface IAPISchema {
 export interface IWavesAPI {
     v1: any;
     Currency: any;
-    RequestData: any;
+    TransactionData: any;
     setConfig(config: any): void;
 }
 

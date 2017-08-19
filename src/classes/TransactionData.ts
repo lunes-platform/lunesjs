@@ -3,10 +3,10 @@ import crypto from '../utils/crypto';
 import { concatUint8Arrays } from '../utils/concat';
 import * as constants from '../constants';
 import base58 from '../libs/base58';
-import { IHash, IAPISchema } from '../interfaces';
+import { IHash, IAPISchema, TTransactionFields } from '../interfaces';
 
 
-function createRequestDataType(txType: string, fields: Array<ByteProcessor | number>, apiSchema?: IHash<IAPISchema>) {
+function createTransactionDataClass(txType: string, fields: TTransactionFields, apiSchema?: IHash<IAPISchema>) {
 
     // Keys of the original data object
     const storedFields: object = Object.create(null);
@@ -56,6 +56,7 @@ function createRequestDataType(txType: string, fields: Array<ByteProcessor | num
 
         }
 
+        // Process the data so it's ready for usage in API
         public prepareForAPI(privateKey): Promise<Object> {
             // Sign data and extend its object with signature and transaction type
             return this.getSignature(privateKey).then((signature) => {
@@ -70,13 +71,19 @@ function createRequestDataType(txType: string, fields: Array<ByteProcessor | num
 
         // Sign transaction and return only signature
         public getSignature(privateKey): Promise<string> {
-            return Promise.all(this.dataHolders).then((dataBytesArray) => {
-                const dataBytes = concatUint8Arrays(...dataBytesArray);
+            return this.getBytes().then((dataBytes) => {
                 return crypto.buildTransactionSignature(dataBytes, privateKey);
             });
         }
 
-        // Get bytes of a field from user data
+        // Get byte representation of the transaction
+        public getBytes(): Promise<Uint8Array> {
+            return Promise.all(this.dataHolders).then((multipleDataBytes) => {
+                return concatUint8Arrays(...multipleDataBytes);
+            });
+        }
+
+        // Get bytes of an exact field from user data
         public getExactBytes(fieldName): Promise<Uint8Array> {
 
             if (!(fieldName in storedFields)) {
@@ -124,7 +131,7 @@ function createRequestDataType(txType: string, fields: Array<ByteProcessor | num
 
 export default {
 
-    TransferData: createRequestDataType('transfer', [
+    TransferData: createTransactionDataClass('transfer', [
         constants.TRANSFER_TX,
         new Base58('publicKey'),
         new AssetId('assetId'),
@@ -141,7 +148,7 @@ export default {
         }
     }),
 
-    CreateAliasData: createRequestDataType('createAlias', [
+    CreateAliasData: createTransactionDataClass('createAlias', [
         constants.CREATE_ALIAS_TX,
         new Base58('publicKey'),
         new Alias('alias'),

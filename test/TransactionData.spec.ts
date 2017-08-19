@@ -23,7 +23,7 @@ const waves = getWavesAPI(DEFAULT_TESTNET_CONFIG);
 const {
     TransferData,
     CreateAliasData
-} = waves.RequestData;
+} = waves.TransactionData;
 
 const keys = {
     publicKey: 'FJuErRxhV9JaFUwcYLabFK5ENvDRfyJbRz8FeVfYpBLn',
@@ -49,7 +49,7 @@ const createAliasData = {
 };
 
 
-describe('RequestData', function () {
+describe('TransactionData', function () {
 
     let tempSignData;
 

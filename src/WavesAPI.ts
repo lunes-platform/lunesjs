@@ -1,6 +1,6 @@
 import { IWavesAPI } from './interfaces';
 import Currency from './classes/Currency';
-import RequestData from './classes/RequestData';
+import TransactionData from './classes/TransactionData';
 import * as constants from './constants';
 import config from './config';
 
@@ -12,7 +12,7 @@ class WavesAPI implements IWavesAPI {
     public readonly v1 = {};
 
     public readonly Currency = Currency;
-    public readonly RequestData = RequestData;
+    public readonly TransactionData = TransactionData;
 
     private static instance;
 
