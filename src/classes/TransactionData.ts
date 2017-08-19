@@ -1,4 +1,4 @@
-import { ByteProcessor, Alias, Base58, Long, AssetId, MandatoryAssetId, Recipient, Attachment } from './ByteProcessor';
+import { ByteProcessor, Alias, Base58, Bool, Long, AssetId, MandatoryAssetId, Recipient, Attachment } from './ByteProcessor';
 import crypto from '../utils/crypto';
 import { concatUint8Arrays } from '../utils/concat';
 import * as constants from '../constants';
@@ -9,7 +9,7 @@ import { IHash, IAPISchema, TTransactionFields } from '../interfaces';
 
 function createTransactionDataClass(txType: string, fields: TTransactionFields, apiSchema?: IHash<IAPISchema>) {
 
-    // Keys of the original data object
+    // Fields of the original data object
     const storedFields: object = Object.create(null);
 
     // Data bytes or functions returning data bytes via promises
@@ -180,6 +180,16 @@ export default {
             to: 'prefixed'
         }
     }),
+
+    ReissueData: createTransactionDataClass('reissue', [
+        constants.REISSUE_TX,
+        new Base58('publicKey'),
+        new MandatoryAssetId('assetId'),
+        new Long('quantity'),
+        new Bool('reissuable'),
+        new Long('fee'),
+        new Long('timestamp')
+    ]),
 
     CreateAliasData: createTransactionDataClass('createAlias', [
         constants.CREATE_ALIAS_TX,

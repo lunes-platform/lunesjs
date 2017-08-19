@@ -1,6 +1,10 @@
 import converters from '../libs/converters';
 
 
+function booleanToBytes(input): number[] {
+    return input ? [1] : [0];
+}
+
 function bytesToByteArrayWithSize(input): number[] {
 
     if (!(input instanceof Array)) {
@@ -40,6 +44,7 @@ function stringToByteArrayWithSize(input): number[] {
 
 export default {
 
+    booleanToBytes,
     bytesToByteArrayWithSize,
     longToByteArray,
     stringToByteArray,

@@ -1,5 +1,5 @@
 import base58 from '../libs/base58';
-import converters from '../utils/convert';
+import convert from '../utils/convert';
 import { concatUint8Arrays } from '../utils/concat';
 import * as constants from '../constants';
 import config from '../config';
@@ -12,7 +12,7 @@ function blockchainifyAssetId(assetId) {
 }
 
 function getAliasBytes(alias): number[] {
-    const aliasBytes = converters.stringToByteArrayWithSize(alias);
+    const aliasBytes = convert.stringToByteArrayWithSize(alias);
     return [constants.ALIAS_VERSION, config.get().networkByte, ...aliasBytes];
 }
 
@@ -32,9 +32,16 @@ export class Base58 extends ByteProcessor {
     }
 }
 
+export class Bool extends ByteProcessor {
+    process(value: boolean) {
+        const bytes = convert.booleanToBytes(value);
+        return Promise.resolve(Uint8Array.from(bytes));
+    }
+}
+
 export class Long extends ByteProcessor {
     process(value: number) {
-        const bytes = converters.longToByteArray(value);
+        const bytes = convert.longToByteArray(value);
         return Promise.resolve(Uint8Array.from(bytes));
     }
 }
@@ -45,7 +52,7 @@ export class Long extends ByteProcessor {
 export class Alias extends ByteProcessor {
     process(value: string) {
         const aliasBytes = getAliasBytes(value);
-        const aliasBytesWithLength = converters.bytesToByteArrayWithSize(aliasBytes);
+        const aliasBytesWithLength = convert.bytesToByteArrayWithSize(aliasBytes);
         return Promise.resolve(Uint8Array.from(aliasBytesWithLength));
     }
 }
@@ -82,10 +89,10 @@ export class Attachment extends ByteProcessor {
     process(value: Uint8Array | string) {
 
         if (typeof value === 'string') {
-            value = Uint8Array.from(converters.stringToByteArray(value));
+            value = Uint8Array.from(convert.stringToByteArray(value));
         }
 
-        const valueWithLength = converters.bytesToByteArrayWithSize(value);
+        const valueWithLength = convert.bytesToByteArrayWithSize(value);
         return Promise.resolve(Uint8Array.from(valueWithLength));
 
     }

@@ -23,6 +23,7 @@ const waves = getWavesAPI(DEFAULT_TESTNET_CONFIG);
 
 const {
     TransferData,
+    ReissueData,
     CreateAliasData
 } = waves.TransactionData;
 
@@ -31,7 +32,7 @@ const keys = {
     privateKey: '9dXhQYWZ5468TRhksJqpGT6nUySENxXi9nsCZH9AefD1'
 };
 
-const transferData = {
+const transferDataJson = {
     publicKey: keys.publicKey,
     recipient: '3N9UuGeWuDt9NfWbC5oEACHyRoeEMApXAeq',
     assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
@@ -42,7 +43,16 @@ const transferData = {
     timestamp: 1478864678621
 };
 
-const createAliasData = {
+const reissueDataJson = {
+    publicKey: keys.publicKey,
+    assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
+    quantity: 100000000,
+    reissuable: false,
+    fee: 100000000,
+    timestamp: 1478868177862
+};
+
+const createAliasDataJson = {
     publicKey: keys.publicKey,
     alias: 'sasha',
     fee: 1000000,
@@ -65,13 +75,13 @@ describe('TransactionData', function () {
 
     it('should sign Transfer transaction', function (done) {
 
-        const data = transferData;
+        const data = transferDataJson;
 
-        const transferRequest = new TransferData(data);
+        const transferData = new TransferData(data);
 
         const expectedSignature = '677UVgKBAVZdweVbn6wKhPLP9UxVSh3x4fBXPgepKoHtsV9nSd8HXBMxCdsYn41g3EE63bcihnUHwhXoSu9GZTLf';
 
-        const api = transferRequest.prepareForAPI(keys.privateKey).then((preparedData) => {
+        const api = transferData.prepareForAPI(keys.privateKey).then((preparedData) => {
             checkBasicCases(preparedData, data, 'transfer', expectedSignature);
             expect(preparedData.recipient).to.equal('address:' + data.recipient);
         });
@@ -83,13 +93,13 @@ describe('TransactionData', function () {
     it('should sign Transfer transaction with alias', function (done) {
 
         const alias = 'sasha';
-        const data = { ...transferData, recipient: alias };
+        const data = { ...transferDataJson, recipient: alias };
 
-        const transferRequest = new TransferData(data);
+        const transferData = new TransferData(data);
 
         const expectedSignature = '2XJAHpRXx12AvdwcDF2HMpTDxffKkmN9qK7r3jZaVExYVjDaciRszymkGXy5QZExz6McYwDf6gicD4XZswJGKAZW';
 
-        const api = transferRequest.prepareForAPI(keys.privateKey).then((preparedData) => {
+        const api = transferData.prepareForAPI(keys.privateKey).then((preparedData) => {
             checkBasicCases(preparedData, data, 'transfer', expectedSignature);
             expect(preparedData.recipient).to.equal('alias:' + String.fromCharCode(config.getNetworkByte()) + ':' + data.recipient);
         });
@@ -102,13 +112,13 @@ describe('TransactionData', function () {
 
         const attachment = '123';
         const attachmentBytesWithLength = [0, 3, 49, 50, 51];
-        const data = { ...transferData, attachment };
+        const data = { ...transferDataJson, attachment };
 
-        const transferRequest = new TransferData(data);
+        const transferData = new TransferData(data);
 
         const expectedSignature = 'TrgV7V7meddPs7aU9ZemrCXNVQ8h35cERTBNfvbtVqURbgRS1fnEmzELMAxvqeYrHF6sYiJJ4oc3v4tEZQbn5qD';
 
-        const api = transferRequest.prepareForAPI(keys.privateKey).then((preparedData) => {
+        const api = transferData.prepareForAPI(keys.privateKey).then((preparedData) => {
             checkBasicCases(preparedData, data, 'transfer', expectedSignature);
             expect(preparedData.attachment).to.equal(base58.encode(attachmentBytesWithLength));
         });
@@ -117,28 +127,44 @@ describe('TransactionData', function () {
 
     });
 
+    it('should sign Reissue transaction', function (done) {
+
+        const data = { ...reissueDataJson };
+
+        const reissueData = new ReissueData(data);
+
+        const expectedSignature = '4G81NzgHDwXdjqANGE2qxZrC5VpDA7ek3Db8v3iqunpkrXgAy7KBJgdHWUw1TEDBNewtjMJTvB9Po55PZ5d6ztCk';
+
+        const api = reissueData.prepareForAPI(keys.privateKey).then((preparedData) => {
+            checkBasicCases(preparedData, data, 'reissue', expectedSignature);
+        });
+
+        Promise.all([api]).then(() => done());
+
+    });
+
     it('should sign Create Alias transaction', function (done) {
 
-        const data = createAliasData;
+        const data = createAliasDataJson;
 
-        const createAliasRequest = new CreateAliasData(data);
+        const createAliasData = new CreateAliasData(data);
 
         const expectedSignature = '2fDkcUaPrQjtL1Tfox1ikqfZWA7LkvWKrGZNaxJx98dmeLoopkwvAFa9nMJLww9PERGuQovfv8g9EPM6HkV5VPaH';
 
-        const api = createAliasRequest.prepareForAPI(keys.privateKey).then((preparedData) => {
+        const api = createAliasData.prepareForAPI(keys.privateKey).then((preparedData) => {
             checkBasicCases(preparedData, data, 'createAlias', expectedSignature);
         });
 
-        const signature = createAliasRequest.getSignature(keys.privateKey).then((signature) => {
+        const signature = createAliasData.getSignature(keys.privateKey).then((signature) => {
             expect(signature).to.equal(expectedSignature);
         });
 
-        const bytesByName = createAliasRequest.getExactBytes('publicKey').then((bytes) => {
+        const bytesByName = createAliasData.getExactBytes('publicKey').then((bytes) => {
             expect(bytes).to.deep.equal(base58.decode(data.publicKey));
         });
 
         // Should throw when bytes of a non-existing field are requested
-        expect(() => createAliasRequest.getExactBytes('test')).to.throw();
+        expect(() => createAliasData.getExactBytes('test')).to.throw();
 
         Promise.all([api, signature, bytesByName]).then(() => done());
 
