@@ -7,7 +7,7 @@ import config from '../config';
 import { IHash, IAPISchema, TTransactionFields } from '../interfaces';
 
 
-function createTransactionDataClass(txType: string, fields: TTransactionFields, apiSchema?: IHash<IAPISchema>) {
+function createTransactionClass(txType: string, fields: TTransactionFields, apiSchema?: IHash<IAPISchema>) {
 
     // Fields of the original data object
     const storedFields: object = Object.create(null);
@@ -27,7 +27,7 @@ function createTransactionDataClass(txType: string, fields: TTransactionFields, 
         }
     });
 
-    class DataTypeClass {
+    class TransactionClass {
 
         // Request data provided by user
         private readonly rawData: object;
@@ -153,14 +153,14 @@ function createTransactionDataClass(txType: string, fields: TTransactionFields, 
 
     }
 
-    return DataTypeClass;
+    return TransactionClass;
 
 }
 
 
 export default {
 
-    TransferData: createTransactionDataClass(constants.TRANSFER_TX_NAME, [
+    TransferTransaction: createTransactionClass(constants.TRANSFER_TX_NAME, [
         constants.TRANSFER_TX,
         new Base58('publicKey'),
         new AssetId('assetId'),
@@ -181,7 +181,7 @@ export default {
         }
     }),
 
-    IssueData: createTransactionDataClass(constants.ISSUE_TX_NAME, [
+    IssueTransaction: createTransactionClass(constants.ISSUE_TX_NAME, [
         constants.ISSUE_TX,
         new Base58('publicKey'),
         new StringWithLength('name'),
@@ -193,7 +193,7 @@ export default {
         new Long('timestamp')
     ]),
 
-    ReissueData: createTransactionDataClass(constants.REISSUE_TX_NAME, [
+    ReissueTransaction: createTransactionClass(constants.REISSUE_TX_NAME, [
         constants.REISSUE_TX,
         new Base58('publicKey'),
         new MandatoryAssetId('assetId'),
@@ -205,7 +205,7 @@ export default {
 
     // TODO : BurnData
 
-    LeaseData: createTransactionDataClass(constants.LEASE_TX_NAME, [
+    LeaseTransaction: createTransactionClass(constants.LEASE_TX_NAME, [
         constants.LEASE_TX,
         new Base58('publicKey'),
         new Recipient('recipient'),
@@ -219,7 +219,7 @@ export default {
         }
     }),
 
-    CancelLeasingData: createTransactionDataClass(constants.CANCEL_LEASING_TX_NAME, [
+    CancelLeasingTransaction: createTransactionClass(constants.CANCEL_LEASING_TX_NAME, [
         constants.CANCEL_LEASING_TX,
         new Base58('publicKey'),
         new Long('fee'),
@@ -227,7 +227,7 @@ export default {
         new Base58('transactionId')
     ]),
 
-    CreateAliasData: createTransactionDataClass(constants.CREATE_ALIAS_TX_NAME, [
+    CreateAliasTransaction: createTransactionClass(constants.CREATE_ALIAS_TX_NAME, [
         constants.CREATE_ALIAS_TX,
         new Base58('publicKey'),
         new Alias('alias'),

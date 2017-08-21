@@ -2,12 +2,6 @@ declare const process: any;
 declare const require: any;
 declare const Buffer: any;
 
-declare global {
-    interface Window {
-        msCrypto?: any;
-    }
-}
-
 
 function nodeRandom(count, options) {
     const crypto = require('crypto');

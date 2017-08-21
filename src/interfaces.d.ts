@@ -29,7 +29,7 @@ export interface IAPISchema {
 export interface IWavesAPI {
     v1: any;
     Currency: any;
-    TransactionData: any;
+    Transactions: any;
     setConfig(config: any): void;
 }
 
@@ -37,4 +37,11 @@ export interface IWavesConfig {
     networkByte: number;
     nodeAddress: string;
     matcherAddress: string;
+}
+
+
+declare global {
+    interface Window {
+        msCrypto?: any;
+    }
 }
