@@ -1,4 +1,4 @@
-import CryptoJS from 'crypto-js';
+import * as CryptoJS from 'crypto-js';
 
 declare const escape: any;
 declare const unescape: any;
@@ -54,7 +54,7 @@ let converters = function () {
 
             return str;
         },
-        stringToByteArray: function (str) {
+        stringToByteArray: function (str): Array<number> {
             str = unescape(encodeURIComponent(str));
 
             let bytes = new Array(str.length);

@@ -1,4 +1,5 @@
 import { ByteProcessor } from './classes/ByteProcessor';
+import Seed from './classes/Seed';
 
 
 export type TPrecisions = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
@@ -26,10 +27,21 @@ export interface IAPISchema {
     readonly to: 'base58' | 'prefixed';
 }
 
+export interface IKeyPair {
+    readonly privateKey: string;
+    readonly publicKey: string;
+}
+
+export interface IKeyPairBytes {
+    readonly privateKey: Uint8Array;
+    readonly publicKey: Uint8Array;
+}
+
 export interface IWavesAPI {
     v1: any;
     Currency: any;
-    Transactions: any;
+    Seed: typeof Seed;
+    Transactions: IHash<any>;
     setConfig(config: any): void;
 }
 

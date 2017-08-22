@@ -32,7 +32,8 @@
   },
   "dependencies": {
     "blakejs": "^1.1.0",
-    "crypto-js": "^3.1.9-1"
+    "crypto-js": "^3.1.9-1",
+    "js-sha3": "^0.6.1"
   },
   "scripts": {
     "compile": "./node_modules/.bin/tsc -p ./ && ./node_modules/.bin/tsc -p ./test/",

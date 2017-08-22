@@ -1,6 +1,6 @@
 import getWavesAPI from '../../src/WavesAPI';
 import { expect } from '../_helpers/getChai';
-import { deterministicSignData } from '../_helpers/deterministicSignData';
+import { deterministicSign } from '../_helpers/deterministicSign';
 import crypto from '../../src/utils/crypto';
 import * as constants from '../../src/constants';
 import base58 from '../../src/libs/base58';
@@ -95,7 +95,7 @@ describe('Transactions', function () {
 
     beforeEach(() => {
         tempSignDataMethod = crypto.buildTransactionSignature;
-        crypto.buildTransactionSignature = deterministicSignData;
+        crypto.buildTransactionSignature = deterministicSign;
     });
 
     afterEach(() => {
