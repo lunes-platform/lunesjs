@@ -26,21 +26,21 @@
     "karma-chrome-launcher": "^2.2.0",
     "karma-commonjs": "^1.0.0",
     "karma-mocha": "^1.3.0",
+    "karma-requirejs": "^1.1.0",
     "karma-typescript": "^3.0.4",
     "mocha": "^3.2.0",
+    "requirejs": "^2.3.5",
     "typescript": "^2.4.2"
   },
   "dependencies": {
-    "blakejs": "^1.1.0",
-    "crypto-js": "^3.1.9-1",
-    "js-sha3": "^0.6.1"
+    "crypto-js": "^3.1.9-1"
   },
   "scripts": {
     "compile": "./node_modules/.bin/tsc -p ./ && ./node_modules/.bin/tsc -p ./test/",
     "prepublishOnly": "exit 1",
     "pretest": "npm run compile",
     "test": "npm run test-node",
-    "test-browser": "./node_modules/.bin/karma start karma.conf.js --browsers Chrome",
+    "test-browser": "./node_modules/.bin/tsc -p ./test/tsconfig.browser.json && ./node_modules/.bin/karma start karma.conf.js --browsers Chrome",
     "test-node": "./node_modules/.bin/mocha ./test/**/"
   }
 }

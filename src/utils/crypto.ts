@@ -1,11 +1,11 @@
-import * as blake from 'blakejs';
 import * as CryptoJS from 'crypto-js';
-import { keccak256 } from 'js-sha3';
 
 import axlsign from '../libs/axlsign';
 import base58 from '../libs/base58';
 import converters from '../libs/converters';
+import * as blake from '../libs/blake2b';
 import secureRandom from '../libs/secure-random';
+import { keccak256 } from '../libs/sha3';
 import * as constants from '../constants';
 import { concatUint8Arrays } from './concat';
 import { IKeyPairBytes } from '../interfaces';
