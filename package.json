@@ -20,6 +20,7 @@
   "devDependencies": {
     "@types/chai": "^4.0.1",
     "@types/mocha": "^2.2.41",
+    "browserify": "^14.4.0",
     "chai": "^3.5.0",
     "karma": "^1.7.0",
     "karma-chai": "^0.1.0",
@@ -30,17 +31,18 @@
     "karma-typescript": "^3.0.4",
     "mocha": "^3.2.0",
     "requirejs": "^2.3.5",
-    "typescript": "^2.4.2"
+    "typescript": "^2.4.2",
+    "uglify-js": "^3.0.28"
   },
   "dependencies": {
     "crypto-js": "^3.1.9-1"
   },
   "scripts": {
-    "compile": "./node_modules/.bin/tsc -p ./ && ./node_modules/.bin/tsc -p ./test/",
+    "build": "npm run compile && mkdir -p dist && node_modules/.bin/browserify src/WavesAPI.js --standalone WavesAPI | uglifyjs > ./dist/waves-api.min.js",
+    "compile": "./node_modules/.bin/tsc -p ./",
     "prepublishOnly": "exit 1",
-    "pretest": "npm run compile",
-    "test": "npm run test-node",
-    "test-browser": "./node_modules/.bin/tsc -p ./test/tsconfig.browser.json && ./node_modules/.bin/karma start karma.conf.js --browsers Chrome",
-    "test-node": "./node_modules/.bin/mocha ./test/**/"
+    "pretest": "./node_modules/.bin/tsc -p ./test/ && npm run compile",
+    "test": "./node_modules/.bin/mocha ./test/**/",
+    "test-browser": "./node_modules/.bin/tsc -p ./test/tsconfig.browser.json && ./node_modules/.bin/karma start karma.conf.js --browsers Chrome"
   }
 }

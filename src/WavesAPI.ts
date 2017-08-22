@@ -45,6 +45,9 @@ class WavesAPI implements IWavesAPI {
 }
 
 
-export default function (config): IWavesAPI {
+export function create(config): IWavesAPI {
     return new WavesAPI(config);
-};
+}
+
+export const MAINNET_CONFIG = constants.DEFAULT_MAINNET_CONFIG;
+export const TESTNET_CONFIG = constants.DEFAULT_TESTNET_CONFIG;

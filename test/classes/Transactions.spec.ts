@@ -1,4 +1,4 @@
-import getWavesAPI from '../../src/WavesAPI';
+import * as WavesAPI from '../../src/WavesAPI';
 import { expect } from '../_helpers/getChai';
 import { deterministicSign } from '../_helpers/deterministicSign';
 import crypto from '../../src/utils/crypto';
@@ -19,7 +19,7 @@ function checkBasicCases(preparedData, data, txType, expectedSignature) {
 }
 
 
-const waves = getWavesAPI(constants.DEFAULT_TESTNET_CONFIG);
+const waves = WavesAPI.create(constants.DEFAULT_TESTNET_CONFIG);
 
 const {
     TransferTransaction,

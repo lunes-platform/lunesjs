@@ -1,9 +1,9 @@
-import getWavesAPI from '../../src/WavesAPI';
+import * as WavesAPI from '../../src/WavesAPI';
 import { expect } from '../_helpers/getChai';
 import * as constants from '../../src/constants';
 
 
-const waves = getWavesAPI(constants.DEFAULT_TESTNET_CONFIG);
+const waves = WavesAPI.create(constants.DEFAULT_TESTNET_CONFIG);
 const Seed = waves.Seed;
 
 

@@ -55,5 +55,6 @@ export interface IWavesConfig {
 declare global {
     interface Window {
         msCrypto?: any;
+        Promise: PromiseConstructor;
     }
 }
