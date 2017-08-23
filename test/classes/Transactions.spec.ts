@@ -19,7 +19,7 @@ function checkBasicCases(preparedData, data, txType, expectedSignature) {
 }
 
 
-const waves = WavesAPI.create(constants.DEFAULT_TESTNET_CONFIG);
+const waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
 
 const {
     TransferTransaction,

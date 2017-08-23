@@ -1,9 +1,8 @@
 import * as WavesAPI from '../../src/WavesAPI';
 import { expect } from '../_helpers/getChai';
-import { DEFAULT_TESTNET_CONFIG } from '../../src/constants';
 
 
-const waves = WavesAPI.create(DEFAULT_TESTNET_CONFIG);
+const waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
 
 describe('Currency', function () {
 
