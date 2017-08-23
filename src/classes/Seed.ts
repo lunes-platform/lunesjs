@@ -1,4 +1,4 @@
-import { IKeyPair, ISeedFields } from '../../interfaces';
+import { IKeyPair } from '../../interfaces';
 import dictionary from '../seedDictionary';
 import crypto from '../utils/crypto';
 import base58 from '../libs/base58';
@@ -21,71 +21,47 @@ function generateNewSeed(length): string {
 
 }
 
+function encryptSeedPhrase(seedPhrase: string, password: string, encryptionRounds: number = 5000) {
+    return crypto.encryptSeed(seedPhrase, password, encryptionRounds);
+}
+
+function decryptSeedPhrase(seedPhrase: string, password: string, encryptionRounds: number = 5000) {
+    return crypto.decryptSeed(seedPhrase, password, encryptionRounds);
+}
+
 
 export interface ISeed {
-    get(password: string): ISeedFields;
-    getPhrase(password: string): string;
-    getKeyPair(password: string): IKeyPair;
-    getAddress(password: string): string;
-    getEncryptedSeed(): string;
+    readonly phrase: string;
+    readonly address: string;
+    readonly keyPair: IKeyPair;
+    encrypt(password: string, encryptionRounds?: number);
 }
 
 
 class Seed implements ISeed {
 
-    private readonly _encryptedSeed;
-    private readonly _encryptionRounds;
+    public readonly phrase: string;
+    public readonly address: string;
+    public readonly keyPair: IKeyPair;
 
-    constructor(phrase: string, password: string, encryptionRounds?: number) {
-        this._encryptedSeed = crypto.encryptSeed(phrase, password, encryptionRounds);
-        this._encryptionRounds = encryptionRounds;
-    }
+    constructor(phrase: string) {
 
-    public get(password: string): ISeedFields {
-        return this._getFields(password);
-    }
+        const keys = crypto.buildKeyPair(phrase);
 
-    public getPhrase(password: string): string {
-        return this._getFields(password, 'phrase').phrase;
-    }
-
-    public getKeyPair(password: string): IKeyPair {
-        return this._getFields(password, 'keyPair').keyPair;
-    }
-
-    public getAddress(password: string): string {
-        return this._getFields(password, 'address').address;
-    }
-
-    public getEncryptedSeed(): string {
-        return this._encryptedSeed;
-    }
-
-    private _getFields(password: string, stopOn: string = 'address') {
-
-        const fields: ISeedFields = Object.create(null);
-
-        fields.phrase = crypto.decryptSeed(this._encryptedSeed, password, this._encryptionRounds);
-
-        // Return object with phrase only
-        if (stopOn === 'phrase') return fields;
-
-        const keys = crypto.buildKeyPair(fields.phrase);
-        fields.keyPair = {
+        this.phrase = phrase;
+        this.address = crypto.buildRawAddress(keys.publicKey);
+        this.keyPair = {
             privateKey: base58.encode(keys.privateKey),
             publicKey: base58.encode(keys.publicKey)
         };
 
-        // Return object with phrase and keyPair
-        if (stopOn === 'keyPair') return fields;
+        Object.freeze(this);
+        Object.freeze(this.keyPair);
 
-        fields.address = crypto.buildRawAddress(keys.publicKey);
+    }
 
-        // Return object with all fields
-        if (stopOn === 'address') return fields;
-
-        throw new Error(`Seed doesn't have ${stopOn} field`);
-
+    encrypt(password: string, encryptionRounds?: number) {
+        return encryptSeedPhrase(this.phrase, password, encryptionRounds);
     }
 
 }
@@ -93,14 +69,18 @@ class Seed implements ISeed {
 
 export default {
 
-    create(password: string, length: number = 15, encryptionRounds?: number): ISeed {
+    create(length: number = 15): ISeed {
         const phrase = generateNewSeed(length);
-        return new Seed(phrase, password, encryptionRounds);
+        return new Seed(phrase);
     },
 
-    fromExistingPhrase(phrase: string, password: string, encryptionRounds?: number): ISeed {
+    fromExistingPhrase(phrase: string): ISeed {
         if (phrase.length < 25) console.warn('Your seed may be too weak');
-        return new Seed(phrase, password, encryptionRounds);
-    }
+        return new Seed(phrase);
+    },
+
+    encryptSeedPhrase,
+
+    decryptSeedPhrase
 
 };
