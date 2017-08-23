@@ -1,6 +1,7 @@
 .idea/
 dist/
 node_modules/
+raw/
 tmp/
 src/**/*.js
 src/**/*.js.map

@@ -1,4 +1,4 @@
-import { IKeyPair, ISeedFields } from '../interfaces';
+import { IKeyPair, ISeedFields } from '../../interfaces';
 import dictionary from '../seedDictionary';
 import crypto from '../utils/crypto';
 import base58 from '../libs/base58';
@@ -22,7 +22,16 @@ function generateNewSeed(length): string {
 }
 
 
-class Seed {
+export interface ISeed {
+    get(password: string): ISeedFields;
+    getPhrase(password: string): string;
+    getKeyPair(password: string): IKeyPair;
+    getAddress(password: string): string;
+    getEncryptedSeed(): string;
+}
+
+
+class Seed implements ISeed {
 
     private readonly _encryptedSeed;
     private readonly _encryptionRounds;
@@ -32,7 +41,7 @@ class Seed {
         this._encryptionRounds = encryptionRounds;
     }
 
-    public get(password: string): object {
+    public get(password: string): ISeedFields {
         return this._getFields(password);
     }
 
@@ -84,12 +93,12 @@ class Seed {
 
 export default {
 
-    create(password: string, length: number = 15, encryptionRounds?: number) {
+    create(password: string, length: number = 15, encryptionRounds?: number): ISeed {
         const phrase = generateNewSeed(length);
         return new Seed(phrase, password, encryptionRounds);
     },
 
-    fromExistingPhrase(phrase: string, password: string, encryptionRounds?: number) {
+    fromExistingPhrase(phrase: string, password: string, encryptionRounds?: number): ISeed {
         if (phrase.length < 25) console.warn('Your seed may be too weak');
         return new Seed(phrase, password, encryptionRounds);
     }

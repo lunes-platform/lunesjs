@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "allowJs": true,
     "alwaysStrict": true,
     "lib": ["es2015.promise", "es5", "dom"],
     "module": "commonjs",

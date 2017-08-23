@@ -1,4 +1,4 @@
-import { IWavesConfig } from './interfaces';
+import { IWavesConfig } from '../interfaces';
 
 
 export const MAINNET_BYTE: number = 'W'.charCodeAt(0);

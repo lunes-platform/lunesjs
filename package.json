@@ -17,6 +17,8 @@
     "type": "git",
     "url": "https://github.com/xenohunter/waves-api.git"
   },
+  "main": "raw/WavesAPI.js",
+  "types": "raw/WavesAPI.d.ts",
   "devDependencies": {
     "@types/chai": "^4.0.1",
     "@types/mocha": "^2.2.41",
@@ -38,11 +40,11 @@
     "crypto-js": "^3.1.9-1"
   },
   "scripts": {
-    "build": "npm run compile && mkdir -p dist && node_modules/.bin/browserify src/WavesAPI.js --standalone WavesAPI | uglifyjs > ./dist/waves-api.min.js",
-    "compile": "./node_modules/.bin/tsc -p ./",
-    "prepublishOnly": "exit 1",
-    "pretest": "./node_modules/.bin/tsc -p ./test/ && npm run compile",
-    "test": "./node_modules/.bin/mocha ./test/**/",
-    "test-browser": "./node_modules/.bin/tsc -p ./test/tsconfig.browser.json && ./node_modules/.bin/karma start karma.conf.js --browsers Chrome"
+    "build": "npm run compile && mkdir -p dist && node_modules/.bin/browserify raw/WavesAPI.js --standalone WavesAPI | uglifyjs > ./dist/waves-api.min.js",
+    "compile": "mkdir -p raw && ./node_modules/.bin/tsc -p ./tsconfig.json --declaration --outDir raw",
+    "compile-inplace": "./node_modules/.bin/tsc -p ./tsconfig.json",
+    "prepublishOnly": "npm run build && npm run test && npm run test-browser",
+    "test": "npm run compile-inplace && ./node_modules/.bin/tsc -p ./test/tsconfig.json && ./node_modules/.bin/mocha ./test/**/",
+    "test-browser": "npm run compile-inplace && ./node_modules/.bin/tsc -p ./test/tsconfig.browser.json && ./node_modules/.bin/karma start karma.conf.js"
   }
 }

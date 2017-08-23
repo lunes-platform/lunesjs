@@ -4,7 +4,19 @@ import { concatUint8Arrays } from '../utils/concat';
 import * as constants from '../constants';
 import base58 from '../libs/base58';
 import config from '../config';
-import { IHash, IAPISchema, TTransactionFields } from '../interfaces';
+import { IHash, IAPISchema, TTransactionFields } from '../../interfaces';
+
+
+export interface ITransactionClass {
+    prepareForAPI(privateKey: string): Promise<object>;
+    getSignature(privateKey: string): Promise<string>;
+    getBytes(): Promise<Uint8Array>;
+    getExactBytes(fieldName: string): Promise<Uint8Array>;
+}
+
+export interface ITransactionClassConstructor {
+    new(hashMap: any): ITransactionClass;
+}
 
 
 function createTransactionClass(txType: string, fields: TTransactionFields, apiSchema?: IHash<IAPISchema>) {
@@ -27,7 +39,7 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
         }
     });
 
-    class TransactionClass {
+    class TransactionClass implements ITransactionClass {
 
         // Request data provided by user
         private readonly _rawData: object;
@@ -58,7 +70,7 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
         }
 
         // Process the data so it's ready for usage in API
-        public prepareForAPI(privateKey): Promise<Object> {
+        public prepareForAPI(privateKey: string): Promise<object> {
             // Sign data and extend its object with signature and transaction type
             return this.getSignature(privateKey).then((signature) => {
                 // Transform data so it could match the API requirements
@@ -71,7 +83,7 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
         }
 
         // Sign transaction and return only signature
-        public getSignature(privateKey): Promise<string> {
+        public getSignature(privateKey: string): Promise<string> {
             return this.getBytes().then((dataBytes) => {
                 return crypto.buildTransactionSignature(dataBytes, privateKey);
             });
@@ -85,7 +97,7 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
         }
 
         // Get bytes of an exact field from user data
-        public getExactBytes(fieldName): Promise<Uint8Array> {
+        public getExactBytes(fieldName: string): Promise<Uint8Array> {
 
             if (!(fieldName in storedFields)) {
                 throw new Error(`There is no field '${fieldName}' in '${txType} RequestDataType class`);
@@ -153,7 +165,7 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
 
     }
 
-    return TransactionClass;
+    return TransactionClass as ITransactionClassConstructor;
 
 }
 

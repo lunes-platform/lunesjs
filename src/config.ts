@@ -1,4 +1,4 @@
-import { IWavesConfig } from './interfaces';
+import { IWavesConfig } from '../interfaces';
 
 
 const config: IWavesConfig = Object.create(null);

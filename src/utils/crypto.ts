@@ -8,7 +8,7 @@ import secureRandom from '../libs/secure-random';
 import { keccak256 } from '../libs/sha3';
 import * as constants from '../constants';
 import { concatUint8Arrays } from './concat';
-import { IKeyPairBytes } from '../interfaces';
+import { IKeyPairBytes } from '../../interfaces';
 import config from '../config';
 
 

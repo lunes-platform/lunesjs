@@ -1,5 +1,5 @@
-import { ByteProcessor } from './classes/ByteProcessor';
-import Seed from './classes/Seed';
+import { ByteProcessor } from './src/classes/ByteProcessor';
+import Seed from './src/classes/Seed';
 
 
 export type TPrecisions = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
@@ -63,4 +63,14 @@ declare global {
         msCrypto?: any;
         Promise: PromiseConstructor;
     }
+}
+
+
+// Replacement for --allowJs
+
+declare module '*.js' {
+    const content: {
+        [key: string]: any;
+    };
+    export = content;
 }
