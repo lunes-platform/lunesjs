@@ -9,6 +9,7 @@ import { keccak256 } from '../libs/sha3';
 import * as constants from '../constants';
 import { concatUint8Arrays } from './concat';
 import { IKeyPairBytes } from '../interfaces';
+import config from '../config';
 
 
 function sha256(input: Array<number> | Uint8Array | string): Uint8Array {
@@ -35,8 +36,8 @@ function keccak(input) {
     return (keccak256 as any).array(input);
 }
 
-function hashChain(input) {
-    return keccak(blake2b(new Uint8Array(input)));
+function hashChain(input: Uint8Array): Array<number> {
+    return keccak(blake2b(input));
 }
 
 function buildSeedHash(seedBytes): Uint8Array {
@@ -75,6 +76,18 @@ export default {
             privateKey: keys.private,
             publicKey: keys.public
         };
+
+    },
+
+    buildRawAddress(publicKey: Uint8Array): string {
+
+        const prefix = Uint8Array.from([constants.ADDRESS_VERSION, config.getNetworkByte()]);
+        const publicKeyHashPart = Uint8Array.from(hashChain(publicKey).slice(0, 20));
+
+        const rawAddress = concatUint8Arrays(prefix, publicKeyHashPart);
+        const addressHash = Uint8Array.from(hashChain(rawAddress).slice(0, 4));
+
+        return base58.encode(concatUint8Arrays(rawAddress, addressHash));
 
     },
 

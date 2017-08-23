@@ -37,6 +37,12 @@ export interface IKeyPairBytes {
     readonly publicKey: Uint8Array;
 }
 
+export interface ISeedFields {
+    phrase: string;
+    keyPair: IKeyPair;
+    address: string;
+}
+
 export interface IWavesAPI {
     v1: any;
     Currency: any;

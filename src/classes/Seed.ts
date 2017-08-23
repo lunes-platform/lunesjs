@@ -1,4 +1,4 @@
-import { IKeyPair } from '../interfaces';
+import { IKeyPair, ISeedFields } from '../interfaces';
 import dictionary from '../seedDictionary';
 import crypto from '../utils/crypto';
 import base58 from '../libs/base58';
@@ -24,35 +24,59 @@ function generateNewSeed(length): string {
 
 class Seed {
 
-    private readonly encryptedSeed;
-    private readonly encryptionRounds;
+    private readonly _encryptedSeed;
+    private readonly _encryptionRounds;
 
     constructor(phrase: string, password: string, encryptionRounds?: number) {
-        this.encryptedSeed = crypto.encryptSeed(phrase, password, encryptionRounds);
-        this.encryptionRounds = encryptionRounds;
+        this._encryptedSeed = crypto.encryptSeed(phrase, password, encryptionRounds);
+        this._encryptionRounds = encryptionRounds;
     }
 
-    // public get(password: string): object {}
+    public get(password: string): object {
+        return this._getFields(password);
+    }
 
     public getPhrase(password: string): string {
-        return crypto.decryptSeed(this.encryptedSeed, password, this.encryptionRounds);
+        return this._getFields(password, 'phrase').phrase;
     }
 
     public getKeyPair(password: string): IKeyPair {
-        const phrase = this.getPhrase(password);
-        const keys = crypto.buildKeyPair(phrase);
-        return {
+        return this._getFields(password, 'keyPair').keyPair;
+    }
+
+    public getAddress(password: string): string {
+        return this._getFields(password, 'address').address;
+    }
+
+    public getEncryptedSeed(): string {
+        return this._encryptedSeed;
+    }
+
+    private _getFields(password: string, stopOn: string = 'address') {
+
+        const fields: ISeedFields = Object.create(null);
+
+        fields.phrase = crypto.decryptSeed(this._encryptedSeed, password, this._encryptionRounds);
+
+        // Return object with phrase only
+        if (stopOn === 'phrase') return fields;
+
+        const keys = crypto.buildKeyPair(fields.phrase);
+        fields.keyPair = {
             privateKey: base58.encode(keys.privateKey),
             publicKey: base58.encode(keys.publicKey)
         };
-    }
 
-    // public getAddress(password: string): string {}
+        // Return object with phrase and keyPair
+        if (stopOn === 'keyPair') return fields;
 
-    // public getBytes(password: string): Uint8Array {}
+        fields.address = crypto.buildRawAddress(keys.publicKey);
 
-    public getEncryptedSeed(): string {
-        return this.encryptedSeed;
+        // Return object with all fields
+        if (stopOn === 'address') return fields;
+
+        throw new Error(`Seed doesn't have ${stopOn} field`);
+
     }
 
 }

@@ -30,25 +30,25 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
     class TransactionClass {
 
         // Request data provided by user
-        private readonly rawData: object;
+        private readonly _rawData: object;
 
         // Array of Uint8Array and promises which return Uint8Array
-        private readonly dataHolders: Array<Uint8Array | Promise<Uint8Array>>;
+        private readonly _dataHolders: Array<Uint8Array | Promise<Uint8Array>>;
 
         constructor(hashMap: any = {}) {
 
             // TODO : add default values for missing fields
 
             // Save all needed values from user data
-            this.rawData = Object.keys(storedFields).reduce((store, key) => {
+            this._rawData = Object.keys(storedFields).reduce((store, key) => {
                 store[key] = hashMap[key];
                 return store;
             }, {});
 
-            this.dataHolders = byteProviders.map((provider) => {
+            this._dataHolders = byteProviders.map((provider) => {
                 if (typeof provider === 'function') {
                     // Execute function so that they return promises containing Uint8Array data
-                    return provider(this.rawData);
+                    return provider(this._rawData);
                 } else {
                     // Or just pass Uint8Array data
                     return provider;
@@ -62,7 +62,7 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
             // Sign data and extend its object with signature and transaction type
             return this.getSignature(privateKey).then((signature) => {
                 // Transform data so it could match the API requirements
-                return this.castToAPISchema(this.rawData).then((schemedData) => ({
+                return this._castToAPISchema(this._rawData).then((schemedData) => ({
                     transactionType: txType,
                     ...schemedData,
                     signature
@@ -79,7 +79,7 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
 
         // Get byte representation of the transaction
         public getBytes(): Promise<Uint8Array> {
-            return Promise.all(this.dataHolders).then((multipleDataBytes) => {
+            return Promise.all(this._dataHolders).then((multipleDataBytes) => {
                 return concatUint8Arrays(...multipleDataBytes);
             });
         }
@@ -92,12 +92,12 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
             }
 
             const byteProcessor = storedFields[fieldName];
-            const userData = this.rawData[fieldName];
+            const userData = this._rawData[fieldName];
             return byteProcessor.process(userData);
 
         }
 
-        private castToAPISchema(data): Promise<object> {
+        private _castToAPISchema(data): Promise<object> {
 
             if (!apiSchema) return Promise.resolve({ ...data });
 
@@ -107,11 +107,11 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
                 const rule = apiSchema[key];
 
                 if (rule.from === 'bytes' && rule.to === 'base58') {
-                    return this.castFromBytesToBase58(key);
+                    return this._castFromBytesToBase58(key);
                 }
 
                 if (rule.from === 'raw' && rule.to === 'prefixed') {
-                    return this.castFromRawToPrefixed(key);
+                    return this._castFromRawToPrefixed(key);
                 }
 
             });
@@ -124,17 +124,17 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
 
         }
 
-        private castFromBytesToBase58(key): Promise<object> {
+        private _castFromBytesToBase58(key): Promise<object> {
             return this.getExactBytes(key).then((bytes) => {
                 return { [key]: base58.encode(bytes) };
             });
         }
 
-        private castFromRawToPrefixed(key): Promise<object> {
+        private _castFromRawToPrefixed(key): Promise<object> {
 
             let type = key;
             if (type === 'recipient') {
-                type = this.rawData[key].length <= 30 ? 'alias' : 'address';
+                type = this._rawData[key].length <= 30 ? 'alias' : 'address';
             }
 
             let prefix;
@@ -147,7 +147,7 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
                 throw new Error(`There is no type '${type}' to be prefixed`);
             }
 
-            return Promise.resolve({ [key]: prefix + this.rawData[key] });
+            return Promise.resolve({ [key]: prefix + this._rawData[key] });
 
         }
 

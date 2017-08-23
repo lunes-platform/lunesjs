@@ -16,7 +16,7 @@ class WavesAPI implements IWavesAPI {
     public readonly Seed = Seed;
     public readonly Transactions = Transactions;
 
-    private static instance;
+    private static _instance;
 
     constructor(initialConfiguration) {
 
@@ -24,10 +24,10 @@ class WavesAPI implements IWavesAPI {
 
             this.setConfig(initialConfiguration);
 
-            if (WavesAPI.instance === null) {
-                WavesAPI.instance = this;
+            if (WavesAPI._instance === null) {
+                WavesAPI._instance = this;
             } else {
-                return WavesAPI.instance;
+                return WavesAPI._instance;
             }
 
         } else {
