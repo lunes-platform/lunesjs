@@ -40,7 +40,7 @@ function hashChain(input: Uint8Array): Array<number> {
     return keccak(blake2b(input));
 }
 
-function buildSeedHash(seedBytes): Uint8Array {
+function buildSeedHash(seedBytes: Uint8Array): Uint8Array {
     const nonce = new Uint8Array(converters.int32ToBytes(constants.INITIAL_NONCE, true));
     const seedBytesWithNonce = concatUint8Arrays(nonce, seedBytes);
     const seedHash = hashChain(seedBytesWithNonce);
@@ -93,7 +93,7 @@ export default {
             throw new Error('Missing or invalid seed phrase');
         }
 
-        const seedBytes = converters.stringToByteArray(seed);
+        const seedBytes = Uint8Array.from(converters.stringToByteArray(seed));
         const seedHash = buildSeedHash(seedBytes);
         const keys = axlsign.generateKeyPair(seedHash);
 
