@@ -5,7 +5,11 @@
   "keywords": [
     "cryptocurrency",
     "waves",
-    "api"
+    "api",
+    "seed",
+    "transactions",
+    "cryptography",
+    "signature"
   ],
   "author": {
     "name": "Phil Filippak",
