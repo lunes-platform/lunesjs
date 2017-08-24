@@ -25,7 +25,7 @@ function nodeRandom(count, options) {
 
 function browserRandom(count, options) {
     const nativeArr = new Uint8Array(count);
-    const crypto = window.crypto || window.msCrypto;
+    const crypto = self.crypto || self.msCrypto;
     crypto.getRandomValues(nativeArr);
 
     switch (options.type) {
@@ -52,7 +52,7 @@ function secureRandom(count, options) {
     if (typeof process !== 'undefined' && typeof process.pid === 'number') {
         return nodeRandom(count, options);
     } else {
-        const crypto = window.crypto || window.msCrypto;
+        const crypto = self.crypto || self.msCrypto;
         if (!crypto) throw new Error('Your browser does not support window.crypto.');
         return browserRandom(count, options);
     }
