@@ -56,17 +56,42 @@ function strengthenPassword(password: string, rounds: number = 5000): string {
 export default {
 
     buildTransactionSignature(dataBytes: Uint8Array, privateKey: string): string {
+
+        if (!dataBytes || !(dataBytes instanceof Uint8Array)) {
+            throw new Error('Missing or invalid data');
+        }
+
+        if (!privateKey || typeof privateKey !== 'string') {
+            throw new Error('Missing or invalid private key');
+        }
+
         const privateKeyBytes = base58.decode(privateKey);
+
+        if (privateKeyBytes.length !== constants.PRIVATE_KEY_LENGTH) {
+            throw new Error('Invalid public key');
+        }
+
         const signature = axlsign.sign(privateKeyBytes, dataBytes, secureRandom.randomUint8Array(64));
         return base58.encode(signature);
+
     },
 
     buildTransactionId(dataBytes: Uint8Array): string {
+
+        if (!dataBytes || !(dataBytes instanceof Uint8Array)) {
+            throw new Error('Missing or invalid data');
+        }
+
         const hash = blake2b(dataBytes);
         return base58.encode(hash);
+
     },
 
-    buildKeyPair(seed): IKeyPairBytes {
+    buildKeyPair(seed: string): IKeyPairBytes {
+
+        if (!seed || typeof seed !== 'string') {
+            throw new Error('Missing or invalid seed phrase');
+        }
 
         const seedBytes = converters.stringToByteArray(seed);
         const seedHash = buildSeedHash(seedBytes);
@@ -81,6 +106,10 @@ export default {
 
     buildRawAddress(publicKey: Uint8Array): string {
 
+        if (!publicKey || publicKey.length !== constants.PUBLIC_KEY_LENGTH || !(publicKey instanceof Uint8Array)) {
+            throw new Error('Missing or invalid public key');
+        }
+
         const prefix = Uint8Array.from([constants.ADDRESS_VERSION, config.getNetworkByte()]);
         const publicKeyHashPart = Uint8Array.from(hashChain(publicKey).slice(0, 20));
 
@@ -92,23 +121,47 @@ export default {
     },
 
     encryptSeed(seed: string, password: string, encryptionRounds?: number): string {
+
+        if (!seed || typeof seed !== 'string') {
+            throw new Error('Seed is required');
+        }
+
+        if (!password || typeof password !== 'string') {
+            throw new Error('Password is required');
+        }
+
         password = strengthenPassword(password, encryptionRounds);
         return CryptoJS.AES.encrypt(seed, password).toString();
+
     },
 
     decryptSeed(encryptedSeed: string, password: string, encryptionRounds?: number): string {
+
+        if (!encryptedSeed || typeof encryptedSeed !== 'string') {
+            throw new Error('Encrypted seed is required');
+        }
+
+        if (!password || typeof password !== 'string') {
+            throw new Error('Password is required');
+        }
+
         password = strengthenPassword(password, encryptionRounds);
         const hexSeed = CryptoJS.AES.decrypt(encryptedSeed, password);
         return converters.hexStringToString(hexSeed.toString());
+
     },
 
-    generateRandomUint32Array(n): Uint32Array {
+    generateRandomUint32Array(length: number): Uint32Array {
 
-        const a = secureRandom.randomUint8Array(n);
-        const b = secureRandom.randomUint8Array(n);
-        const result = new Uint32Array(n);
+        if (!length || length < 0) {
+            throw new Error('Missing or invalid array length');
+        }
 
-        for (let i = 0; i < n; i++) {
+        const a = secureRandom.randomUint8Array(length);
+        const b = secureRandom.randomUint8Array(length);
+        const result = new Uint32Array(length);
+
+        for (let i = 0; i < length; i++) {
             const hash = converters.byteArrayToHexString(sha256(`${a[i]}${b[i]}`));
             const randomValue = parseInt(hash.slice(0, 13), 16);
             result.set([randomValue], i);

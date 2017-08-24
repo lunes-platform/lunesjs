@@ -25,6 +25,9 @@ export const LEASE_TX_NAME = 'lease';
 export const CANCEL_LEASING_TX_NAME = 'cancelLeasing';
 export const CREATE_ALIAS_TX_NAME = 'createAlias';
 
+export const PRIVATE_KEY_LENGTH = 32;
+export const PUBLIC_KEY_LENGTH = 32;
+
 export const MINIMUM_AMOUNT = 1;
 export const MINIMUM_FEE = 100000;
 
