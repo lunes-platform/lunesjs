@@ -1,14 +1,24 @@
-import { ByteProcessor, Alias, Base58, Bool, Long, Short, StringWithLength, AssetId, MandatoryAssetId, Recipient, Attachment } from './ByteProcessor';
-import crypto from '../utils/crypto';
-import { concatUint8Arrays } from '../utils/concat';
-import * as constants from '../constants';
-import base58 from '../libs/base58';
-import config from '../config';
-import { IHash, IAPISchema, TTransactionFields } from '../../interfaces';
+import { IHash } from '../../interfaces';
 
+import { ByteProcessor, Alias, Base58, Bool, Long, Short, StringWithLength, AssetId, MandatoryAssetId, Recipient, Attachment } from './ByteProcessor';
+
+import { concatUint8Arrays } from '../utils/concat';
+import crypto from '../utils/crypto';
+import base58 from '../libs/base58';
+
+import * as constants from '../constants';
+import config from '../config';
+
+
+type TTransactionFields = Array<ByteProcessor | number>;
+
+interface IAPISchema {
+    readonly from: 'bytes' | 'raw';
+    readonly to: 'base58' | 'prefixed';
+}
 
 export interface ITransactionClass {
-    prepareForAPI(privateKey: string): Promise<object>;
+    prepareForAPI(privateKey: string): Promise<any>;
     getSignature(privateKey: string): Promise<string>;
     getBytes(): Promise<Uint8Array>;
     getExactBytes(fieldName: string): Promise<Uint8Array>;
@@ -70,7 +80,7 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
         }
 
         // Process the data so it's ready for usage in API
-        public prepareForAPI(privateKey: string): Promise<object> {
+        public prepareForAPI(privateKey: string): Promise<any> {
             // Sign data and extend its object with signature and transaction type
             return this.getSignature(privateKey).then((signature) => {
                 // Transform data so it could match the API requirements

@@ -1,6 +1,7 @@
 import base58 from '../libs/base58';
 import convert from '../utils/convert';
 import { concatUint8Arrays } from '../utils/concat';
+
 import * as constants from '../constants';
 import config from '../config';
 

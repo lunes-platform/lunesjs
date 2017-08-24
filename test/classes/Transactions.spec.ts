@@ -1,10 +1,11 @@
-import * as WavesAPI from '../../src/WavesAPI';
 import { expect } from '../_helpers/getChai';
 import { deterministicSign } from '../_helpers/deterministicSign';
-import crypto from '../../src/utils/crypto';
-import * as constants from '../../src/constants';
+import * as WavesAPI from '../../src/WavesAPI';
+
 import base58 from '../../src/libs/base58';
+import crypto from '../../src/utils/crypto';
 import config from '../../src/config';
+import * as constants from '../../src/constants';
 
 
 function checkBasicCases(preparedData, data, txType, expectedSignature) {

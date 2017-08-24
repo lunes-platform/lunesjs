@@ -1,4 +1,5 @@
 import { IKeyPair } from '../../interfaces';
+
 import dictionary from '../seedDictionary';
 import crypto from '../utils/crypto';
 import base58 from '../libs/base58';

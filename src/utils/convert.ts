@@ -1,3 +1,5 @@
+import { TBuffer } from '../../interfaces';
+
 import converters from '../libs/converters';
 
 
@@ -13,7 +15,7 @@ export default {
 
     },
 
-    bytesToByteArrayWithSize(input: Array<number> | Uint8Array): number[] {
+    bytesToByteArrayWithSize(input: TBuffer): number[] {
 
         if (!(input instanceof Array || input instanceof Uint8Array)) {
             throw new Error('Byte array or Uint8Array input is expected');

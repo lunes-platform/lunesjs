@@ -1,5 +1,5 @@
-import * as WavesAPI from '../../src/WavesAPI';
 import { expect } from '../_helpers/getChai';
+import * as WavesAPI from '../../src/WavesAPI';
 
 
 const waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);

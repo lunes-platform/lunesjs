@@ -1,12 +1,6 @@
-import { ByteProcessor } from './src/classes/ByteProcessor';
-import Seed from './src/classes/Seed';
-
-
 export type TPrecisions = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
 export type TBuffer = Uint8Array | number[];
-
-export type TTransactionFields = Array<ByteProcessor | number>;
 
 
 interface IHash<T> {
@@ -22,11 +16,6 @@ export interface IAsset {
     readonly verified?: boolean;
 }
 
-export interface IAPISchema {
-    readonly from: 'bytes' | 'raw';
-    readonly to: 'base58' | 'prefixed';
-}
-
 export interface IKeyPair {
     readonly privateKey: string;
     readonly publicKey: string;
@@ -37,14 +26,6 @@ export interface IKeyPairBytes {
     readonly publicKey: Uint8Array;
 }
 
-export interface IWavesAPI {
-    v1: any;
-    Currency: any;
-    Seed: typeof Seed;
-    Transactions: IHash<any>;
-    setConfig(config: any): void;
-}
-
 export interface IWavesConfig {
     networkByte: number;
     nodeAddress: string;
@@ -52,6 +33,7 @@ export interface IWavesConfig {
 }
 
 
+// Missing interfaces
 declare global {
     interface Window {
         msCrypto?: any;
@@ -61,7 +43,6 @@ declare global {
 
 
 // Replacement for --allowJs
-
 declare module '*.js' {
     const content: {
         [key: string]: any;

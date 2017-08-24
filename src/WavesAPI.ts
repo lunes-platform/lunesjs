@@ -1,9 +1,21 @@
-import { IWavesAPI, IWavesConfig } from '../interfaces';
+import { IHash, IWavesConfig } from '../interfaces';
+import { ITransactionClassConstructor } from './classes/Transactions';
+
 import Currency from './classes/Currency';
 import Seed from './classes/Seed';
 import Transactions from './classes/Transactions';
+
 import * as constants from './constants';
 import config from './config';
+
+
+export interface IWavesAPI {
+    v1: any;
+    Currency: any;
+    Seed: typeof Seed;
+    Transactions: IHash<ITransactionClassConstructor>;
+    setConfig(config: IWavesConfig): void;
+}
 
 
 class WavesAPI implements IWavesAPI {
@@ -45,7 +57,7 @@ class WavesAPI implements IWavesAPI {
 }
 
 
-export function create(config): IWavesAPI {
+export function create(config: IWavesConfig): IWavesAPI {
     return new WavesAPI(config);
 }
 
