@@ -5,16 +5,25 @@ import Currency from './classes/Currency';
 import Seed from './classes/Seed';
 import Transactions from './classes/Transactions';
 
+import * as NodeAPI from './api/node/index';
+import { INodeAPIv1 } from './api/node/index';
+
 import * as constants from './constants';
 import config from './config';
 
 
 export interface IWavesAPI {
-    v1: any;
+    API: any;
     Currency: any;
     Seed: typeof Seed;
     Transactions: IHash<ITransactionClassConstructor>;
     setConfig(config: IWavesConfig): void;
+}
+
+export interface IAPIVersions {
+    Node: {
+        v1: INodeAPIv1
+    }
 }
 
 
@@ -22,7 +31,11 @@ class WavesAPI implements IWavesAPI {
 
     public readonly constants = constants;
 
-    public readonly v1 = {};
+    public readonly API: IAPIVersions = {
+        Node: {
+            v1: NodeAPI.v1
+        }
+    };
 
     public readonly Currency = Currency;
     public readonly Seed = Seed;

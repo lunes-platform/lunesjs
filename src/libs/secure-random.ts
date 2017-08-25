@@ -48,7 +48,7 @@ function browserRandom(count, options) {
 
 function secureRandom(count, options) {
     options = options || { type: 'Array' };
-    //we check for process.pid to prevent Browserify from tricking us
+    // Check for process.pid to prevent Browserify from tricking us
     if (typeof process !== 'undefined' && typeof process.pid === 'number') {
         return nodeRandom(count, options);
     } else {
