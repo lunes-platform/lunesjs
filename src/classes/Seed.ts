@@ -61,7 +61,7 @@ class Seed implements ISeed {
 
     }
 
-    encrypt(password: string, encryptionRounds?: number) {
+    public encrypt(password: string, encryptionRounds?: number) {
         return encryptSeedPhrase(this.phrase, password, encryptionRounds);
     }
 

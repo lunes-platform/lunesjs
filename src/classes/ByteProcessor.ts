@@ -14,7 +14,7 @@ function blockchainifyAssetId(assetId) {
 
 function getAliasBytes(alias): number[] {
     const aliasBytes = convert.stringToByteArrayWithSize(alias);
-    return [constants.ALIAS_VERSION, config.get().networkByte, ...aliasBytes];
+    return [constants.ALIAS_VERSION, config.getNetworkByte(), ...aliasBytes];
 }
 
 
@@ -22,41 +22,41 @@ function getAliasBytes(alias): number[] {
 
 export abstract class ByteProcessor {
     constructor(public readonly name: string) {}
-    public abstract process(value: any): Promise<Uint8Array>;
+    public abstract process(value: any): Promise<Uint8Array>
 }
 
 
 // SIMPLE
 
 export class Base58 extends ByteProcessor {
-    process(value: string) {
+    public process(value: string) {
         const bytes = base58.decode(value);
         return Promise.resolve(bytes);
     }
 }
 
 export class Bool extends ByteProcessor {
-    process(value: boolean) {
+    public process(value: boolean) {
         const bytes = convert.booleanToBytes(value);
         return Promise.resolve(Uint8Array.from(bytes));
     }
 }
 
 export class Long extends ByteProcessor {
-    process(value: number) {
+    public process(value: number) {
         const bytes = convert.longToByteArray(value);
         return Promise.resolve(Uint8Array.from(bytes));
     }
 }
 
 export class Short extends ByteProcessor {
-    process(value: number) {
+    public process(value: number) {
         return Promise.resolve(Uint8Array.from([value]));
     }
 }
 
 export class StringWithLength extends ByteProcessor {
-    process(value: string) {
+    public process(value: string) {
         const bytesWithLength = convert.stringToByteArrayWithSize(value);
         return Promise.resolve(Uint8Array.from(bytesWithLength));
     }
@@ -66,7 +66,7 @@ export class StringWithLength extends ByteProcessor {
 // COMPLEX
 
 export class Alias extends ByteProcessor {
-    process(value: string) {
+    public process(value: string) {
         const aliasBytes = getAliasBytes(value);
         const aliasBytesWithLength = convert.bytesToByteArrayWithSize(aliasBytes);
         return Promise.resolve(Uint8Array.from(aliasBytesWithLength));
@@ -74,7 +74,7 @@ export class Alias extends ByteProcessor {
 }
 
 export class AssetId extends ByteProcessor {
-    process(value: string) {
+    public process(value: string) {
         value = blockchainifyAssetId(value);
         // We must pass bytes of `[0]` for Waves asset ID and bytes of `[1] + assetId` for other asset IDs
         const bytes = value ? concatUint8Arrays(Uint8Array.from([1]), base58.decode(value)) : Uint8Array.from([0]);
@@ -83,14 +83,14 @@ export class AssetId extends ByteProcessor {
 }
 
 export class MandatoryAssetId extends ByteProcessor {
-    process(value: string) {
+    public process(value: string) {
         value = blockchainifyAssetId(value);
         return Promise.resolve(base58.decode(value));
     }
 }
 
 export class Recipient extends ByteProcessor {
-    process(value: string) {
+    public process(value: string) {
         if (value.length <= 30) {
             const aliasBytes = getAliasBytes(value);
             return Promise.resolve(Uint8Array.from(aliasBytes));
@@ -102,7 +102,7 @@ export class Recipient extends ByteProcessor {
 }
 
 export class Attachment extends ByteProcessor {
-    process(value: Uint8Array | string) {
+    public process(value: Uint8Array | string) {
 
         if (typeof value === 'string') {
             value = Uint8Array.from(convert.stringToByteArray(value));

@@ -9,11 +9,15 @@ export default {
         return config.networkByte;
     },
 
-    get() {
-        return { ...config };
+    getNodeAddress(): string {
+        return config.nodeAddress;
     },
 
-    set(newConfig) {
+    getMatcherAddress(): string {
+        return config.matcherAddress;
+    },
+
+    set(newConfig: Partial<IWavesConfig>) {
         Object.keys(newConfig).forEach((key) => {
             config[key] = newConfig[key];
         });
