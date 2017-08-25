@@ -26,8 +26,8 @@ function encryptSeedPhrase(seedPhrase: string, password: string, encryptionRound
     return crypto.encryptSeed(seedPhrase, password, encryptionRounds);
 }
 
-function decryptSeedPhrase(seedPhrase: string, password: string, encryptionRounds: number = 5000) {
-    return crypto.decryptSeed(seedPhrase, password, encryptionRounds);
+function decryptSeedPhrase(encryptedSeedPhrase: string, password: string, encryptionRounds: number = 5000) {
+    return crypto.decryptSeed(encryptedSeedPhrase, password, encryptionRounds);
 }
 
 
