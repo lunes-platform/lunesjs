@@ -17,20 +17,27 @@ describe('Seed', function () {
 
     it('should create a Seed object with 15-word random seed', function () {
 
-        const seed = Seed.create();
         const password = '1dna0uaudhJDw390*';
+        const wrongPassword = '123';
+
+        const seed = Seed.create();
 
         expect(seed.phrase.split(' ')).to.have.lengthOf(15);
         expect(seed.phrase.length).to.be.greaterThan(50);
         expect(seed).to.have.all.keys('phrase', 'keyPair', 'address');
 
-        expect(seed.encrypt(password)).to.be.a('string');
+        const encryptedSeed = seed.encrypt(password);
+
+        expect(encryptedSeed).to.be.a('string');
+        expect(Seed.decryptSeedPhrase(encryptedSeed, password)).to.equal(seed.phrase);
+        expect(() => Seed.decryptSeedPhrase(encryptedSeed, wrongPassword)).to.throw();
 
     });
 
     it('should create a Seed object from existing phrase', function () {
 
         const password = 'IJ#G%)HJCoskapa319ja';
+        const wrongPassword = '123';
 
         const seed = Seed.fromExistingPhrase(PHRASE);
 
@@ -38,12 +45,11 @@ describe('Seed', function () {
         expect(seed.keyPair).to.deep.equal(KEY_PAIR);
         expect(seed.address).to.equal(ADDRESS);
 
-        expect(seed.encrypt(password)).to.be.a('string');
-
         const encryptedSeed = seed.encrypt(password);
-        const decryptedSeed = Seed.decryptSeedPhrase(encryptedSeed, password);
 
-        expect(decryptedSeed).to.equal(PHRASE);
+        expect(encryptedSeed).to.be.a('string');
+        expect(Seed.decryptSeedPhrase(encryptedSeed, password)).to.equal(PHRASE);
+        expect(() => Seed.decryptSeedPhrase(encryptedSeed, wrongPassword)).to.throw();
 
     });
 
@@ -55,6 +61,11 @@ describe('Seed', function () {
         const decryptedSeed = Seed.decryptSeedPhrase(encryptedSeed, password);
 
         expect(decryptedSeed).to.equal(PHRASE);
+
+        expect(() => Seed.decryptSeedPhrase(encryptedSeed, 'abcqouwh')).to.throw();
+        expect(() => Seed.decryptSeedPhrase(encryptedSeed, '00000000')).to.throw();
+        expect(() => Seed.decryptSeedPhrase(encryptedSeed, 'nb4191cc31')).to.throw();
+        expect(() => Seed.decryptSeedPhrase(encryptedSeed, 'hr6$w81jf&')).to.throw();
 
     });
 

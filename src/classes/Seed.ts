@@ -23,11 +23,37 @@ function generateNewSeed(length): string {
 }
 
 function encryptSeedPhrase(seedPhrase: string, password: string, encryptionRounds: number = 5000) {
+
+    if (password && password.length < 8) {
+        console.warn('Your password may be too weak');
+    }
+
+    if (encryptionRounds < 1000) {
+        console.warn('Encryption rounds may be too few');
+    }
+
     return crypto.encryptSeed(seedPhrase, password, encryptionRounds);
+
 }
 
 function decryptSeedPhrase(encryptedSeedPhrase: string, password: string, encryptionRounds: number = 5000) {
-    return crypto.decryptSeed(encryptedSeedPhrase, password, encryptionRounds);
+
+    const wrongPasswordMessage = 'The password is wrong';
+
+    let phrase;
+
+    try {
+        phrase = crypto.decryptSeed(encryptedSeedPhrase, password, encryptionRounds);
+    } catch (e) {
+        throw new Error(wrongPasswordMessage);
+    }
+
+    if (phrase === '') {
+        throw new Error(wrongPasswordMessage);
+    }
+
+    return phrase;
+
 }
 
 
@@ -71,13 +97,24 @@ class Seed implements ISeed {
 export default {
 
     create(length: number = 15): ISeed {
+
+        if (length < 12) {
+            console.warn(`A seed of length ${length} may be too weak`);
+        }
+
         const phrase = generateNewSeed(length);
         return new Seed(phrase);
+
     },
 
     fromExistingPhrase(phrase: string): ISeed {
-        if (phrase.length < 25) console.warn('Your seed may be too weak');
+
+        if (phrase.length < 25) {
+            console.warn('Your seed may be too weak');
+        }
+
         return new Seed(phrase);
+
     },
 
     encryptSeedPhrase,

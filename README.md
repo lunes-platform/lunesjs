@@ -57,6 +57,8 @@ const restoredPhrase = Waves.Seed.decryptSeedPhrase(encrypted, password);
 console.log(restoredPhrase); // 'hole law front bottom then mobile fabric under horse drink other member work twenty boss'
 ```
 
+Being called with a wrong password `Waves.Seed.decryptSeedPhrase()` throws an exception.
+
 You also can create a `Seed` object from an existing seed:
 
 ```
