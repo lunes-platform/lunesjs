@@ -8,6 +8,8 @@ describe('utils/request', function () {
         expect(normalizePath('/transactions/unconfirmed')).to.equal('/transactions/unconfirmed');
         expect(normalizePath('/transactions///unconfirmed/')).to.equal('/transactions/unconfirmed');
         expect(normalizePath('//transactions/unconfirmed')).to.equal('/transactions/unconfirmed');
+        expect(normalizePath('\/\/transactions/unconfirmed')).to.equal('/transactions/unconfirmed');
+        expect(normalizePath('\/\/transactions\/unconfirmed\/\///\/')).to.equal('/transactions/unconfirmed');
         expect(normalizePath('transactions/unconfirmed/')).to.equal('/transactions/unconfirmed');
     });
 
