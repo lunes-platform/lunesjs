@@ -45,7 +45,7 @@
     "node-fetch": "^1.7.2"
   },
   "scripts": {
-    "build": "npm run compile && mkdir -p dist && node_modules/.bin/browserify raw/WavesAPI.js --standalone WavesAPI | uglifyjs > ./dist/waves-api.min.js",
+    "build": "npm run compile && mkdir -p dist && node_modules/.bin/browserify raw/WavesAPI.js --standalone WavesAPI | node_modules/.bin/uglifyjs > ./dist/waves-api.min.js",
     "compile": "mkdir -p raw && ./node_modules/.bin/tsc -p ./tsconfig.json --declaration --outDir raw",
     "compile-inplace": "./node_modules/.bin/tsc -p ./tsconfig.json",
     "prepublishOnly": "npm run build && npm run test && npm run test-browser",
