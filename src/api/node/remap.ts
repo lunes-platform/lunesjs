@@ -10,7 +10,7 @@ export function handleAssetId(original) {
 }
 
 export function handleRecipient(original) {
-    if (original.slice(0, 8) === 'address:' || original.slice(0, 6) === 'alias:') {
+    if (original.slice(0, 8) === 'address:') {
         return original.slice(8);
     } else {
         return original;
@@ -26,8 +26,13 @@ export function createRemapper(rules) {
             const rule = rules[key];
 
             if (typeof rule === 'function') {
+                // Process with a function
                 result[key] = rule(data[key]);
+            } else if (typeof rule === 'string') {
+                // Rename a field
+                result[rule] = data[key];
             } else if (rule !== null) {
+                // Leave as is
                 result[key] = data[key];
             }
 
