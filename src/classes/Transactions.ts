@@ -147,9 +147,17 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
         }
 
         private _castFromBytesToBase58(key): Promise<object> {
+
             return this.getExactBytes(key).then((bytes) => {
+
+                if (key === 'attachment') {
+                    bytes = Uint8Array.from(Array.prototype.slice.call(bytes, 2));
+                }
+
                 return { [key]: base58.encode(bytes) };
+
             });
+
         }
 
         private _castFromRawToPrefixed(key): Promise<object> {
@@ -184,7 +192,7 @@ export default {
 
     TransferTransaction: createTransactionClass(constants.TRANSFER_TX_NAME, [
         constants.TRANSFER_TX,
-        new Base58('publicKey'),
+        new Base58('senderPublicKey'),
         new AssetId('assetId'),
         new AssetId('feeAssetId'),
         new Long('timestamp'),
@@ -205,7 +213,7 @@ export default {
 
     IssueTransaction: createTransactionClass(constants.ISSUE_TX_NAME, [
         constants.ISSUE_TX,
-        new Base58('publicKey'),
+        new Base58('senderPublicKey'),
         new StringWithLength('name'),
         new StringWithLength('description'),
         new Long('quantity'),
@@ -217,7 +225,7 @@ export default {
 
     ReissueTransaction: createTransactionClass(constants.REISSUE_TX_NAME, [
         constants.REISSUE_TX,
-        new Base58('publicKey'),
+        new Base58('senderPublicKey'),
         new MandatoryAssetId('assetId'),
         new Long('quantity'),
         new Bool('reissuable'),
@@ -229,7 +237,7 @@ export default {
 
     LeaseTransaction: createTransactionClass(constants.LEASE_TX_NAME, [
         constants.LEASE_TX,
-        new Base58('publicKey'),
+        new Base58('senderPublicKey'),
         new Recipient('recipient'),
         new Long('amount'),
         new Long('fee'),
@@ -243,7 +251,7 @@ export default {
 
     CancelLeasingTransaction: createTransactionClass(constants.CANCEL_LEASING_TX_NAME, [
         constants.CANCEL_LEASING_TX,
-        new Base58('publicKey'),
+        new Base58('senderPublicKey'),
         new Long('fee'),
         new Long('timestamp'),
         new Base58('transactionId')
@@ -251,7 +259,7 @@ export default {
 
     CreateAliasTransaction: createTransactionClass(constants.CREATE_ALIAS_TX_NAME, [
         constants.CREATE_ALIAS_TX,
-        new Base58('publicKey'),
+        new Base58('senderPublicKey'),
         new Alias('alias'),
         new Long('fee'),
         new Long('timestamp')

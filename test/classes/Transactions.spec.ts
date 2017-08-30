@@ -37,7 +37,7 @@ const keys = {
 };
 
 const transferDataJson = {
-    publicKey: keys.publicKey,
+    senderPublicKey: keys.publicKey,
     recipient: '3N9UuGeWuDt9NfWbC5oEACHyRoeEMApXAeq',
     assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
     amount: 1000,
@@ -48,7 +48,7 @@ const transferDataJson = {
 };
 
 const issueDataJson = {
-    publicKey: keys.publicKey,
+    senderPublicKey: keys.publicKey,
     name: 'БАБЛОС',
     description: 'Some english words немного кириллических символов',
     quantity: 10000000000,
@@ -59,7 +59,7 @@ const issueDataJson = {
 };
 
 const reissueDataJson = {
-    publicKey: keys.publicKey,
+    senderPublicKey: keys.publicKey,
     assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
     quantity: 100000000,
     reissuable: false,
@@ -68,14 +68,14 @@ const reissueDataJson = {
 };
 
 const createAliasDataJson = {
-    publicKey: keys.publicKey,
+    senderPublicKey: keys.publicKey,
     alias: 'sasha',
     fee: 1000000,
     timestamp: 1491556329420
 };
 
 const leaseDataJson = {
-    publicKey: keys.publicKey,
+    senderPublicKey: keys.publicKey,
     recipient: '3MsiHfvFVUULdn8bpVoDQ7JLKKjtPXUrCLT',
     amount: 200000000,
     fee: 1000000,
@@ -83,7 +83,7 @@ const leaseDataJson = {
 };
 
 const cancelLeasingDataJson = {
-    publicKey: keys.publicKey,
+    senderPublicKey: keys.publicKey,
     transactionId: '4X85MhqxukwaPqJC4sSSeN3ptSYHbEca7KgiYtUa2ECX',
     fee: 10000000,
     timestamp: 1491491734819
@@ -157,7 +157,7 @@ describe('Transactions', function () {
     it('should sign Transfer transaction with attachment', function (done) {
 
         const attachment = '123';
-        const attachmentBytesWithLength = [0, 3, 49, 50, 51];
+        const attachmentBytes = [49, 50, 51];
         const data = { ...transferDataJson, attachment };
 
         const transferTransaction = new TransferTransaction(data);
@@ -166,7 +166,7 @@ describe('Transactions', function () {
 
         const api = transferTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
             checkBasicCases(preparedData, data, constants.TRANSFER_TX_NAME, expectedSignature);
-            expect(preparedData.attachment).to.equal(base58.encode(attachmentBytesWithLength));
+            expect(preparedData.attachment).to.equal(base58.encode(attachmentBytes));
         });
 
         Promise.all([api]).then(() => done());
@@ -205,8 +205,8 @@ describe('Transactions', function () {
             expect(signature).to.equal(expectedSignature);
         });
 
-        const bytesByName = createAliasTransaction.getExactBytes('publicKey').then((bytes) => {
-            expect(bytes).to.deep.equal(base58.decode(data.publicKey));
+        const bytesByName = createAliasTransaction.getExactBytes('senderPublicKey').then((bytes) => {
+            expect(bytes).to.deep.equal(base58.decode(data.senderPublicKey));
         });
 
         // Should throw when bytes of a non-existing field are requested
