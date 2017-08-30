@@ -190,6 +190,18 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
 
 export default {
 
+    IssueTransaction: createTransactionClass(constants.ISSUE_TX_NAME, [
+        constants.ISSUE_TX,
+        new Base58('senderPublicKey'),
+        new StringWithLength('name'),
+        new StringWithLength('description'),
+        new Long('quantity'),
+        new Short('precision'),
+        new Bool('reissuable'),
+        new Long('fee'),
+        new Long('timestamp')
+    ]),
+
     TransferTransaction: createTransactionClass(constants.TRANSFER_TX_NAME, [
         constants.TRANSFER_TX,
         new Base58('senderPublicKey'),
@@ -210,18 +222,6 @@ export default {
             to: 'prefixed'
         }
     }),
-
-    IssueTransaction: createTransactionClass(constants.ISSUE_TX_NAME, [
-        constants.ISSUE_TX,
-        new Base58('senderPublicKey'),
-        new StringWithLength('name'),
-        new StringWithLength('description'),
-        new Long('quantity'),
-        new Short('precision'),
-        new Bool('reissuable'),
-        new Long('fee'),
-        new Long('timestamp')
-    ]),
 
     ReissueTransaction: createTransactionClass(constants.REISSUE_TX_NAME, [
         constants.REISSUE_TX,

@@ -36,17 +36,6 @@ const keys = {
     privateKey: '9dXhQYWZ5468TRhksJqpGT6nUySENxXi9nsCZH9AefD1'
 };
 
-const transferDataJson = {
-    senderPublicKey: keys.publicKey,
-    recipient: '3N9UuGeWuDt9NfWbC5oEACHyRoeEMApXAeq',
-    assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
-    amount: 1000,
-    feeAssetId: 'WAVES',
-    fee: 100000,
-    attachment: '',
-    timestamp: 1478864678621
-};
-
 const issueDataJson = {
     senderPublicKey: keys.publicKey,
     name: 'БАБЛОС',
@@ -56,6 +45,17 @@ const issueDataJson = {
     reissuable: true,
     fee: 100000000,
     timestamp: 1478704158292
+};
+
+const transferDataJson = {
+    senderPublicKey: keys.publicKey,
+    recipient: '3N9UuGeWuDt9NfWbC5oEACHyRoeEMApXAeq',
+    assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
+    amount: 1000,
+    feeAssetId: 'WAVES',
+    fee: 100000,
+    attachment: '',
+    timestamp: 1478864678621
 };
 
 const reissueDataJson = {
