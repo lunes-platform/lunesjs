@@ -19,7 +19,7 @@ export function handleRecipient(original) {
 
 export function createRemapper(rules) {
 
-    return function (data: IHash<any>) {
+    return function (data: IHash<any>): IHash<any> {
 
         return Object.keys(data).reduce((result, key) => {
 

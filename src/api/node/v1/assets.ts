@@ -1,11 +1,12 @@
-import { IHash, IKeyPair } from '../../../../interfaces';
+import { TTransactionRequest } from '../../../utils/request';
 
 import Transactions from '../../../classes/Transactions';
-import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, POST_TEMPLATE } from '../../../utils/request';
+import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTransactionRequest } from '../../../utils/request';
 import { createRemapper, handleAssetId, handleRecipient } from '../remap';
 
 
 const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
+
 
 const remapIssueTransaction = createRemapper({
     transactionType: null,
@@ -26,58 +27,16 @@ const remapReissueTransaction = createRemapper({
 
 export default {
 
-    issue(data: IHash<any>, keyPair: IKeyPair) {
+    issue: wrapTransactionRequest(Transactions.IssueTransaction, remapIssueTransaction, (postParams) => {
+        return fetch('/assets/broadcast/issue', postParams);
+    }) as TTransactionRequest,
 
-        const issue = new Transactions.IssueTransaction({
-            ...data,
-            senderPublicKey: keyPair.publicKey
-        });
+    transfer: wrapTransactionRequest(Transactions.TransferTransaction, remapTransferTransaction, (postParams) => {
+        return fetch('/assets/broadcast/transfer', postParams);
+    }) as TTransactionRequest,
 
-        return issue.prepareForAPI(keyPair.privateKey)
-            .then(remapIssueTransaction)
-            .then((transaction) => {
-                return fetch('/assets/broadcast/issue', {
-                    ...POST_TEMPLATE,
-                    body: JSON.stringify(transaction)
-                });
-            });
-
-    },
-
-    transfer(data: IHash<any>, keyPair: IKeyPair) {
-
-        const transfer = new Transactions.TransferTransaction({
-            ...data,
-            senderPublicKey: keyPair.publicKey
-        });
-
-        return transfer.prepareForAPI(keyPair.privateKey)
-            .then(remapTransferTransaction)
-            .then((transaction) => {
-                return fetch('/assets/broadcast/transfer', {
-                    ...POST_TEMPLATE,
-                    body: JSON.stringify(transaction)
-                });
-            });
-
-    },
-
-    reissue(data: IHash<any>, keyPair: IKeyPair) {
-
-        const reissue = new Transactions.ReissueTransaction({
-            ...data,
-            senderPublicKey: keyPair.publicKey
-        });
-
-        return reissue.prepareForAPI(keyPair.privateKey)
-            .then(remapReissueTransaction)
-            .then((transaction) => {
-                return fetch('/assets/broadcast/reissue', {
-                    ...POST_TEMPLATE,
-                    body: JSON.stringify(transaction)
-                });
-            });
-
-    }
+    reissue: wrapTransactionRequest(Transactions.ReissueTransaction, remapReissueTransaction, (postParams) => {
+        return fetch('/assets/broadcast/reissue', postParams);
+    }) as TTransactionRequest
 
 };

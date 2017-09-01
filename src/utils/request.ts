@@ -1,14 +1,18 @@
-import { IHash } from '../../interfaces';
+import { IHash, IKeyPair } from '../../interfaces';
+import { ITransactionClassConstructor } from '../classes/Transactions';
 
 import fetch from '../libs/fetch';
 import config from '../config';
+
+
+export type TTransactionRequest = (data: IHash<any>, keyPair: IKeyPair) => Promise<any>;
 
 
 export const enum PRODUCTS { NODE, MATCHER }
 export const enum VERSIONS { V1 }
 
 
-export const POST_TEMPLATE = {
+const POST_TEMPLATE = {
     method: 'POST',
     headers: {
         'Accept': 'application/json',
@@ -35,7 +39,7 @@ export function processJSON(jsonReadableStream) {
     return jsonReadableStream.json();
 }
 
-export function createFetchWrapper(product: PRODUCTS, version: VERSIONS, pipe?: Function) {
+export function createFetchWrapper(product: PRODUCTS, version: VERSIONS, pipe?: Function): Function {
 
     const resolveHost = hostResolvers[key(product, version)];
 
@@ -49,6 +53,30 @@ export function createFetchWrapper(product: PRODUCTS, version: VERSIONS, pipe?: 
         } else {
             return request;
         }
+
+    };
+
+}
+
+export function wrapTransactionRequest(TransactionConstructor: ITransactionClassConstructor,
+                                       remapFunction: (data: IHash<any>) => IHash<any>,
+                                       callback: (postParams: IHash<any>) => Promise<any>) {
+
+    return function (data: IHash<any>, keyPair: IKeyPair): Promise<any> {
+
+        const transaction = new TransactionConstructor({
+            ...data,
+            senderPublicKey: keyPair.publicKey
+        });
+
+        return transaction.prepareForAPI(keyPair.privateKey)
+            .then(remapFunction)
+            .then((tx) => {
+                return callback({
+                    ...POST_TEMPLATE,
+                    body: JSON.stringify(tx)
+                });
+            });
 
     };
 
