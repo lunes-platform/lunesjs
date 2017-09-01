@@ -7,7 +7,6 @@ import { createRemapper, handleAssetId, handleRecipient } from '../remap';
 
 const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
 
-
 const remapIssueTransaction = createRemapper({
     transactionType: null,
     precision: 'decimals'

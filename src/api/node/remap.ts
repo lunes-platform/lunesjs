@@ -1,6 +1,14 @@
 import { IHash } from '../../../interfaces';
 
 
+export function handleAlias(original) {
+    if (original.slice(0, 6) === 'alias:') {
+        return original.slice(8); // Mind the network byte characters
+    } else {
+        return original;
+    }
+}
+
 export function handleAssetId(original) {
     if (original === 'WAVES') {
         return '';

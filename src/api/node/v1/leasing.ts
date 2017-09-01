@@ -7,7 +7,6 @@ import { createRemapper } from '../remap';
 
 const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
 
-
 const remapLeaseTransaction = createRemapper({
     transactionType: null
 });
