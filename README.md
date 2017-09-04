@@ -1,6 +1,6 @@
 # Waves API [![npm version](https://badge.fury.io/js/waves-api.svg)](https://www.npmjs.com/package/waves-api) [![downloads/month](https://img.shields.io/npm/dm/waves-api.svg)](https://www.npmjs.com/package/waves-api)
 
-Waves core features and API library for both Node.js and browser.
+Waves Platform core features and Waves API library for both Node.js and browser.
 
 The latest and most actual version of this documentation [is hosted on GitHub](https://github.com/xenohunter/waves-api/blob/master/README.md).
 
@@ -316,6 +316,15 @@ Waves.API.Node.v1.blocks.height().then((currentHeight) => console.log(currentHei
 Waves.API.Node.v1.blocks.first().then((firstBlock) => console.log(firstBlock));
 
 Waves.API.Node.v1.blocks.last().then((lastBlock) => console.log(lastBlock));
+```
+
+### Tools
+
+#### Get address from public key
+
+```
+const address = Waves.tools.getAddressFromPublicKey('GL6Cbk3JnD9XiBRK5ntCavSrGGD5JT9pXSRkukcEcaSW');
+console.log(address); // '3N1JKsPcQ5x49utR79Maey4tbjssfrn2RYp'
 ```
 
 ## Tests

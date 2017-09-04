@@ -10,15 +10,8 @@ import { INodeAPIv1 } from './api/node/index';
 
 import * as constants from './constants';
 import config from './config';
+import tools from './tools';
 
-
-export interface IWavesAPI {
-    API: any;
-    Currency: any;
-    Seed: typeof Seed;
-    Transactions: IHash<ITransactionClassConstructor>;
-    setConfig(config: IWavesConfig): void;
-}
 
 export interface IAPIVersions {
     Node: {
@@ -26,20 +19,31 @@ export interface IAPIVersions {
     }
 }
 
+export interface IWavesAPI {
+    Currency: any;
+    Seed: typeof Seed;
+    Transactions: IHash<ITransactionClassConstructor>;
+    constants: IHash<any>;
+    tools: IHash<any>;
+    API: IAPIVersions;
+    setConfig(config: IWavesConfig): void;
+}
+
 
 class WavesAPI implements IWavesAPI {
-
-    public readonly constants = constants;
-
-    public readonly API: IAPIVersions = {
-        Node: {
-            v1: NodeAPI.v1
-        }
-    };
 
     public readonly Currency = Currency;
     public readonly Seed = Seed;
     public readonly Transactions = Transactions;
+
+    public readonly constants = constants;
+    public readonly tools = tools;
+
+    public readonly API = {
+        Node: {
+            v1: NodeAPI.v1
+        }
+    };
 
     private static _instance;
 

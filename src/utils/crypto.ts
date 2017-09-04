@@ -106,14 +106,14 @@ export default {
 
     },
 
-    buildRawAddress(publicKey: Uint8Array): string {
+    buildRawAddress(publicKeyBytes: Uint8Array): string {
 
-        if (!publicKey || publicKey.length !== constants.PUBLIC_KEY_LENGTH || !(publicKey instanceof Uint8Array)) {
+        if (!publicKeyBytes || publicKeyBytes.length !== constants.PUBLIC_KEY_LENGTH || !(publicKeyBytes instanceof Uint8Array)) {
             throw new Error('Missing or invalid public key');
         }
 
         const prefix = Uint8Array.from([constants.ADDRESS_VERSION, config.getNetworkByte()]);
-        const publicKeyHashPart = Uint8Array.from(hashChain(publicKey).slice(0, 20));
+        const publicKeyHashPart = Uint8Array.from(hashChain(publicKeyBytes).slice(0, 20));
 
         const rawAddress = concatUint8Arrays(prefix, publicKeyHashPart);
         const addressHash = Uint8Array.from(hashChain(rawAddress).slice(0, 4));
