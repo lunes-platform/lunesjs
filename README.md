@@ -327,6 +327,57 @@ const address = Waves.tools.getAddressFromPublicKey('GL6Cbk3JnD9XiBRK5ntCavSrGGD
 console.log(address); // '3N1JKsPcQ5x49utR79Maey4tbjssfrn2RYp'
 ```
 
+## Common pitfalls
+
+### Precision and coins-to-tokens transformation
+
+In Waves blockchain different tokens have different precision, i.e. number of decimal digits. For example, it would be 10.00 USD and 10.00000000 BTC. That distinction allows to create tokens for various purposes but also makes things harder to understand sometimes.
+
+Two words have emerged: _token_ and _coin_. Token is used to refer to the whole part of the amount. Coin describes the smallest value which is possible for a given token. For USD _token_ would be one dollar, and _coin_ would be one cent. If you are familiar with Bitcoin you could have encountered the word _Satoshi_ which refers to one hundred millionth of a single Bitcoin.
+
+In the blockchain every token is stored with its explicitly specified precision and amount of coins. Every transaction is signed and stored in the blockchain in its coin representation. So if you send 2 USD tokens to someone, you really send 200 USD token coins instead.
+
+The same goes for the fees, and issue transactions, and leasing amounts, and so on.
+
+Waves precision equals 8. Therefore there are `100000000 * 10^8` of Waves coins (Wavelets) in Waves blockchain.
+
+### Reissuability and the additive nature of it
+
+The amount in reissue transactions refer not to the final amount of asset after reissuing but to the amount which will be added to the current token amount.
+
+### Waves ID in the library and in the blockchain
+
+One of the trickiest things about Waves blockchain is that Waves ID equals empty string. In the first version on Node API it also equals to empty string. That is an unobvious and potentially dangerous behavior. Therefore in this library Waves ID strictly equals string `WAVES`. Please mind that fact.
+
+### Fee asset choice for transfer transactions
+
+There is only one type of transactions (currently) in which we can use arbitrary tokens as fees. The only limitation is that the Node to which you connect must support the token you use as fees. Please note that transactions with the Waves fee will be prior over transactions with fees in other tokens.
+
+### Impossibility of transactions with the absolutely same data
+
+Transaction IDs are built from all the data in a transaction except the signature. That process is deterministic. So there cannot be two transactions with the absolutely same data.
+
+### Delays in the leasing process
+
+For the security reasons all leased Waves take effect only after 1000 blocks. Don't worry when your generating balance isn't updated right away.
+
+### Mess with balances in the first version of API
+
+It happened so that Waves balance and token balances are served through different API methods in the first version of Waves API. That's not very useful and we designed the new version otherwise.
+
+### Different types of Waves balance
+
+There is the most understandable type of Waves balance. It is the regular balance. It is served through `Waves.API.Node.v1.addresses.balance()`. There are also several types of Waves balance related to leasing and the delays in its processing.
+
+1. *Regular* — that's how much Waves you have, including those you leased;
+2. *Available* — the same as _regular_ only without Waves you leased;
+3. *Effective* — _available_ plus those Waves which is leased to you;
+4. *Generating* — the minimal _effective_ for last 1000 blocks.
+
+Available balance you can lease and spend.
+
+Generating balance gives you mining power.
+
 ## Tests
 
 ```
