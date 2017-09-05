@@ -1,6 +1,6 @@
 {
   "name": "waves-api",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Waves client-side API library",
   "keywords": [
     "cryptocurrency",
@@ -21,7 +21,7 @@
     "type": "git",
     "url": "https://github.com/xenohunter/waves-api.git"
   },
-  "main": "raw/WavesAPI.js",
+  "main": "dist/waves-api.min.js",
   "types": "raw/WavesAPI.d.ts",
   "devDependencies": {
     "@types/chai": "^4.0.1",
