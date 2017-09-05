@@ -160,6 +160,25 @@ Waves.API.Node.v1.assets.reissue(reissueData, seed.keyPair).then((responseData) 
 });
 ```
 
+##### Burn transaction
+
+```
+const burnData = {
+
+    // Asset ID and its quantity to be burned
+    assetId: '5xN8XPkKi7RoYUAT5hNKC26FKCcX6Rj6epASpgFEYZss',
+    quantity: 20000000000,
+
+    fee: 100000,
+    timestamp: Date.now()
+
+};
+
+Waves.API.Node.v1.assets.burn(burnData, seed.keyPair).then((responseData) => {
+    console.log(responseData);
+});
+```
+
 ##### Lease transaction
 
 ```

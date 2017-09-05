@@ -21,15 +21,7 @@ function checkBasicCases(preparedData, data, txType, expectedSignature) {
 
 
 const Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
-
-const {
-    TransferTransaction,
-    IssueTransaction,
-    ReissueTransaction,
-    CreateAliasTransaction,
-    LeaseTransaction,
-    CancelLeasingTransaction
-} = Waves.Transactions;
+const Transactions = Waves.Transactions;
 
 const keys = {
     publicKey: 'FJuErRxhV9JaFUwcYLabFK5ENvDRfyJbRz8FeVfYpBLn',
@@ -65,6 +57,14 @@ const reissueDataJson = {
     reissuable: false,
     fee: 100000000,
     timestamp: 1478868177862
+};
+
+const burnDataJson = {
+    senderPublicKey: keys.publicKey,
+    assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
+    quantity: 200000000,
+    fee: 100000,
+    timestamp: 1478864678621
 };
 
 const createAliasDataJson = {
@@ -107,7 +107,7 @@ describe('Transactions', function () {
 
         const data = { ...issueDataJson };
 
-        const issueTransaction = new IssueTransaction(data);
+        const issueTransaction = new Transactions.IssueTransaction(data);
 
         const expectedSignature = '5ngquur4nqX1cVPK3Zaf9KqY1qNH6i7gF5EhaWeS8mZp1LADTVuPXmNUi12jeXSniGry5a7ThsMtWcC73pSU196o';
 
@@ -123,7 +123,7 @@ describe('Transactions', function () {
 
         const data = { ...transferDataJson };
 
-        const transferTransaction = new TransferTransaction(data);
+        const transferTransaction = new Transactions.TransferTransaction(data);
 
         const expectedSignature = '677UVgKBAVZdweVbn6wKhPLP9UxVSh3x4fBXPgepKoHtsV9nSd8HXBMxCdsYn41g3EE63bcihnUHwhXoSu9GZTLf';
 
@@ -141,7 +141,7 @@ describe('Transactions', function () {
         const alias = 'sasha';
         const data = { ...transferDataJson, recipient: alias };
 
-        const transferTransaction = new TransferTransaction(data);
+        const transferTransaction = new Transactions.TransferTransaction(data);
 
         const expectedSignature = '2XJAHpRXx12AvdwcDF2HMpTDxffKkmN9qK7r3jZaVExYVjDaciRszymkGXy5QZExz6McYwDf6gicD4XZswJGKAZW';
 
@@ -160,7 +160,7 @@ describe('Transactions', function () {
         const attachmentBytes = [49, 50, 51];
         const data = { ...transferDataJson, attachment };
 
-        const transferTransaction = new TransferTransaction(data);
+        const transferTransaction = new Transactions.TransferTransaction(data);
 
         const expectedSignature = 'TrgV7V7meddPs7aU9ZemrCXNVQ8h35cERTBNfvbtVqURbgRS1fnEmzELMAxvqeYrHF6sYiJJ4oc3v4tEZQbn5qD';
 
@@ -177,7 +177,7 @@ describe('Transactions', function () {
 
         const data = { ...reissueDataJson };
 
-        const reissueTransaction = new ReissueTransaction(data);
+        const reissueTransaction = new Transactions.ReissueTransaction(data);
 
         const expectedSignature = '4G81NzgHDwXdjqANGE2qxZrC5VpDA7ek3Db8v3iqunpkrXgAy7KBJgdHWUw1TEDBNewtjMJTvB9Po55PZ5d6ztCk';
 
@@ -189,11 +189,27 @@ describe('Transactions', function () {
 
     });
 
+    it('should sign Burn transaction', function (done) {
+
+        const data = { ...burnDataJson };
+
+        const burnTransaction = new Transactions.BurnTransaction(data);
+
+        const expectedSignature = 'PZZPkM8zhN96fk3nsrozehYNztB9HkD48GY6zZ6DPnLkQYHYXtZ4qER3qLjxSrALeinkqrDariNzUCUbbvBrtRC';
+
+        const api = burnTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
+            checkBasicCases(preparedData, data, constants.BURN_TX_NAME, expectedSignature);
+        });
+
+        Promise.all([api]).then(() => done());
+
+    });
+
     it('should sign Create Alias transaction', function (done) {
 
         const data = { ...createAliasDataJson };
 
-        const createAliasTransaction = new CreateAliasTransaction(data);
+        const createAliasTransaction = new Transactions.CreateAliasTransaction(data);
 
         const expectedSignature = '2fDkcUaPrQjtL1Tfox1ikqfZWA7LkvWKrGZNaxJx98dmeLoopkwvAFa9nMJLww9PERGuQovfv8g9EPM6HkV5VPaH';
 
@@ -220,7 +236,7 @@ describe('Transactions', function () {
 
         const data = { ...leaseDataJson };
 
-        const leaseTransaction = new LeaseTransaction(data);
+        const leaseTransaction = new Transactions.LeaseTransaction(data);
 
         const expectedSignature = '4KV99VcLG51uej8tcdJBwcc3Kj2tCAxwT7JNwycxNQzAGURxcyo2XhmMTWiD1gVqs4GhkAYHGrjsBR2CJcdU5X6Z';
 
@@ -238,7 +254,7 @@ describe('Transactions', function () {
         const alias = 'test alias';
         const data = { ...leaseDataJson, recipient: alias };
 
-        const leaseTransaction = new LeaseTransaction(data);
+        const leaseTransaction = new Transactions.LeaseTransaction(data);
 
         const expectedSignature = 'HuKk26pPjxusLhch6ehwbFeBc8iiMuKd2pzwhwTf5rEFqSyyUiU3ChpVw3w86daRPMPkVUNkf6b9SmTetFgGxXy';
 
@@ -255,7 +271,7 @@ describe('Transactions', function () {
 
         const data = { ...cancelLeasingDataJson };
 
-        const cancelLeasingTransaction = new CancelLeasingTransaction(data);
+        const cancelLeasingTransaction = new Transactions.CancelLeasingTransaction(data);
 
         const expectedSignature = '2AcYC2TtpHRVhqN4V9cZADDz7bA2f4PVqoisBULYUn39t73jkE5fEpRZFEKgJiBU8NSPqcww9Qt7aY7VeSqpDVcW';
 

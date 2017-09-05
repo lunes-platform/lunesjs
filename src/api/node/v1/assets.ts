@@ -23,6 +23,10 @@ const remapReissueTransaction = createRemapper({
     transactionType: null
 });
 
+const remapBurnTransaction = createRemapper({
+    transactionType: null
+});
+
 
 export default {
 
@@ -36,6 +40,10 @@ export default {
 
     reissue: wrapTransactionRequest(Transactions.ReissueTransaction, remapReissueTransaction, (postParams) => {
         return fetch('/assets/broadcast/reissue', postParams);
+    }) as TTransactionRequest,
+
+    burn: wrapTransactionRequest(Transactions.BurnTransaction, remapBurnTransaction, (postParams) => {
+        return fetch('/assets/broadcast/burn', postParams);
     }) as TTransactionRequest
 
 };

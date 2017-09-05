@@ -233,7 +233,14 @@ export default {
         new Long('timestamp')
     ]),
 
-    // TODO : BurnData
+    BurnTransaction: createTransactionClass(constants.BURN_TX_NAME, [
+        constants.BURN_TX,
+        new Base58('senderPublicKey'),
+        new MandatoryAssetId('assetId'),
+        new Long('quantity'),
+        new Long('fee'),
+        new Long('timestamp')
+    ]),
 
     LeaseTransaction: createTransactionClass(constants.LEASE_TX_NAME, [
         constants.LEASE_TX,
