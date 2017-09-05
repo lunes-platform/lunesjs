@@ -2,8 +2,10 @@ import { expect } from '../_helpers/getChai';
 import * as WavesAPI from '../../src/WavesAPI';
 
 
-const waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
-const Seed = waves.Seed;
+const configuration = WavesAPI.TESTNET_CONFIG;
+
+const Waves = WavesAPI.create(configuration);
+const Seed = Waves.Seed;
 
 const PHRASE = 'Hello, my dear friend. I am your new Seed.';
 const ADDRESS = '3N1JKsPcQ5x49utR79Maey4tbjssfrn2RYp';
@@ -66,6 +68,21 @@ describe('Seed', function () {
         expect(() => Seed.decryptSeedPhrase(encryptedSeed, '00000000')).to.throw();
         expect(() => Seed.decryptSeedPhrase(encryptedSeed, 'nb4191cc31')).to.throw();
         expect(() => Seed.decryptSeedPhrase(encryptedSeed, 'hr6$w81jf&')).to.throw();
+
+    });
+
+    it('should throw errors when seed phrase is shorter than minimum seed length in config', function () {
+
+        const password = '1234567890';
+
+        Waves.setConfig({ minimumSeedLength: 1000 });
+
+        expect(() => Seed.create(15)).to.throw();
+        expect(() => Seed.fromExistingPhrase('hello world')).to.throw();
+        expect(() => Seed.encryptSeedPhrase('hello world', password)).to.throw();
+        expect(() => Seed.decryptSeedPhrase('U2FsdGVkX1+cJm/xTNQ8IkTpr3HzJZ0eoOxnhRe+1sk=', password)).to.throw();
+
+        Waves.setConfig(configuration);
 
     });
 

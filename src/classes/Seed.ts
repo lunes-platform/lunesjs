@@ -1,8 +1,10 @@
 import { IKeyPair } from '../../interfaces';
 
-import dictionary from '../seedDictionary';
-import crypto from '../utils/crypto';
 import base58 from '../libs/base58';
+import crypto from '../utils/crypto';
+
+import config from '../config';
+import dictionary from '../seedDictionary';
 
 
 function generateNewSeed(length): string {
@@ -32,6 +34,10 @@ function encryptSeedPhrase(seedPhrase: string, password: string, encryptionRound
         console.warn('Encryption rounds may be too few');
     }
 
+    if (seedPhrase.length < config.getMinimumSeedLength()) {
+        throw new Error('The seed phrase you are trying to encrypt is too short');
+    }
+
     return crypto.encryptSeed(seedPhrase, password, encryptionRounds);
 
 }
@@ -48,7 +54,7 @@ function decryptSeedPhrase(encryptedSeedPhrase: string, password: string, encryp
         throw new Error(wrongPasswordMessage);
     }
 
-    if (phrase === '') {
+    if (phrase === '' || phrase.length < config.getMinimumSeedLength()) {
         throw new Error(wrongPasswordMessage);
     }
 
@@ -96,21 +102,24 @@ class Seed implements ISeed {
 
 export default {
 
-    create(length: number = 15): ISeed {
+    create(words: number = 15): ISeed {
 
-        if (length < 12) {
-            console.warn(`A seed of length ${length} may be too weak`);
+        const phrase = generateNewSeed(words);
+        const minimumSeedLength = config.getMinimumSeedLength();
+
+        if (phrase.length < minimumSeedLength) {
+            // If you see that error you should increase the number of words in the generated seed
+            throw new Error(`The resulted seed length is less than the minimum length (${minimumSeedLength})`);
         }
 
-        const phrase = generateNewSeed(length);
         return new Seed(phrase);
 
     },
 
     fromExistingPhrase(phrase: string): ISeed {
 
-        if (phrase.length < 25) {
-            console.warn('Your seed may be too weak');
+        if (phrase.length < config.getMinimumSeedLength()) {
+            throw new Error('Your seed length is less than allowed in config');
         }
 
         return new Seed(phrase);

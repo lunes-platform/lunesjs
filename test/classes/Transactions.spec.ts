@@ -20,7 +20,7 @@ function checkBasicCases(preparedData, data, txType, expectedSignature) {
 }
 
 
-const waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
+const Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
 
 const {
     TransferTransaction,
@@ -29,7 +29,7 @@ const {
     CreateAliasTransaction,
     LeaseTransaction,
     CancelLeasingTransaction
-} = waves.Transactions;
+} = Waves.Transactions;
 
 const keys = {
     publicKey: 'FJuErRxhV9JaFUwcYLabFK5ENvDRfyJbRz8FeVfYpBLn',

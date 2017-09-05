@@ -2,11 +2,11 @@ import { expect } from '../_helpers/getChai';
 import * as WavesAPI from '../../src/WavesAPI';
 
 
-const waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
+const Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
 
 describe('Currency', function () {
 
-    const Currency = waves.Currency;
+    const Currency = Waves.Currency;
 
     const defaultProps0 = {
         id: '',

@@ -17,6 +17,10 @@ export default {
         return config.matcherAddress;
     },
 
+    getMinimumSeedLength(): number {
+        return config.minimumSeedLength;
+    },
+
     set(newConfig: Partial<IWavesConfig>) {
         Object.keys(newConfig).forEach((key) => {
             config[key] = newConfig[key];

@@ -33,14 +33,18 @@ export const MINIMUM_FEE = 100000;
 
 export const TRANSFER_ATTACHMENT_BYTE_LIMIT = 140;
 
+export const DEFAULT_MIN_SEED_LENGTH = 25;
+
 export const DEFAULT_MAINNET_CONFIG: IWavesConfig = {
     networkByte: MAINNET_BYTE,
     nodeAddress: 'https://nodes.wavesnodes.com',
-    matcherAddress: 'https://nodes.wavesnodes.com/matcher'
+    matcherAddress: 'https://nodes.wavesnodes.com/matcher',
+    minimumSeedLength: DEFAULT_MIN_SEED_LENGTH
 };
 
 export const DEFAULT_TESTNET_CONFIG: IWavesConfig = {
     networkByte: TESTNET_BYTE,
     nodeAddress: 'https://testnet1.wavesnodes.com',
-    matcherAddress: 'https://testnet1.wavesnodes.com/matcher'
+    matcherAddress: 'https://testnet1.wavesnodes.com/matcher',
+    minimumSeedLength: DEFAULT_MIN_SEED_LENGTH
 };

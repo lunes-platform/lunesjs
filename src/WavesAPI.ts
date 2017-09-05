@@ -26,7 +26,7 @@ export interface IWavesAPI {
     constants: IHash<any>;
     tools: IHash<any>;
     API: IAPIVersions;
-    setConfig(config: IWavesConfig): void;
+    setConfig(config: Partial<IWavesConfig>): void;
 }
 
 

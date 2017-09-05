@@ -30,6 +30,7 @@ export interface IWavesConfig {
     networkByte: number;
     nodeAddress: string;
     matcherAddress: string;
+    minimumSeedLength: number;
 }
 
 
