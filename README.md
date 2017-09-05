@@ -318,6 +318,28 @@ Waves.API.Node.v1.blocks.first().then((firstBlock) => console.log(firstBlock));
 Waves.API.Node.v1.blocks.last().then((lastBlock) => console.log(lastBlock));
 ```
 
+### Configuration
+
+The configuration is changeable even during the runtime. The structure of the config is following:
+
+```
+const newConfig = {
+
+    // The byte allowing to distinguish networks (mainnet, testnet, devnet, etc)
+    networkByte: Waves.constants.MAINNET_BYTE,
+
+    // Node and Matcher addresses, no comments here
+    nodeAddress: 'https://nodes.wavesnodes.com',
+    matcherAddress: 'https://nodes.wavesnodes.com/matcher',
+
+    // If a seed phrase length falls below that value an error will be thrown
+    minimumSeedLength: 50
+
+};
+```
+
+All fields are optional, only filled ones will be replaced.
+
 ### Tools
 
 #### Get address from public key
