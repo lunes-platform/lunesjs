@@ -45,8 +45,8 @@
     "node-fetch": "^1.7.2"
   },
   "scripts": {
-    "_build-partial": "node_modules/.bin/browserify raw/src/WavesAPI.js --ignore-missing --standalone WavesAPI -u ts-utils -u ts-api-validator > ./dist/waves-api.partial.js",
-    "_build-full": "node_modules/.bin/browserify raw/src/WavesAPI.js --ignore-missing --standalone WavesAPI > ./dist/waves-api.js",
+    "_build-partial": "node_modules/.bin/browserify raw/WavesAPI.js --im -s WavesAPI -u ts-utils -u ts-api-validator > ./dist/waves-api.partial.js",
+    "_build-full": "node_modules/.bin/browserify raw/WavesAPI.js --im -s WavesAPI > ./dist/waves-api.js",
     "build": "npm run compile && mkdir -p dist && npm run _build-partial && npm run _build-full && npm run uglifyjs",
     "compile": "mkdir -p raw && ./node_modules/.bin/tsc -p ./tsconfig.json --declaration --outDir raw",
     "uglifyjs": "node_modules/.bin/uglifyjs ./dist/waves-api.js -o ./dist/waves-api.min.js && node_modules/.bin/uglifyjs ./dist/waves-api.partial.js -o ./dist/waves-api.partial.min.js",
