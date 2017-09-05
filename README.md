@@ -167,9 +167,9 @@ const leaseData = {
 
     recipient: '5xN8XPkKi7RoYUAT5hNKC26FKCcX6Rj6epASpgFEYZss',
 
-    // Both amount and fee are the given numbers divided by 10^8 (8 is Waves precision)
-    amount: 100000000,
-    fee: 100000,
+    // Both amount and fee may be presented as divided by 10^8 (8 is Waves precision)
+    amount: 1000000000, // 10 Waves
+    fee: 100000, // 0.001 Waves
 
     timestamp: Date.now()
 
