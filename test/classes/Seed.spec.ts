@@ -1,21 +1,30 @@
 import { expect } from '../_helpers/getChai';
-import * as WavesAPI from '../../src/WavesAPI';
+import * as WavesAPI from '../../dist/waves-api.min';
 
 
-const configuration = WavesAPI.TESTNET_CONFIG;
+let Waves;
+let Seed;
 
-const Waves = WavesAPI.create(configuration);
-const Seed = Waves.Seed;
-
-const PHRASE = 'Hello, my dear friend. I am your new Seed.';
-const ADDRESS = '3N1JKsPcQ5x49utR79Maey4tbjssfrn2RYp';
-const KEY_PAIR = {
-    privateKey: 'ZDbjemnfbm7yxkM5ggq45hkRj7NKoPghMtrYTfxkVaV',
-    publicKey: 'GL6Cbk3JnD9XiBRK5ntCavSrGGD5JT9pXSRkukcEcaSW'
-};
+let PHRASE;
+let ADDRESS;
+let KEY_PAIR;
 
 
 describe('Seed', function () {
+
+    beforeEach(() => {
+
+        Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
+        Seed = Waves.Seed;
+
+        PHRASE = 'Hello, my dear friend. I am your new Seed.';
+        ADDRESS = '3N1JKsPcQ5x49utR79Maey4tbjssfrn2RYp';
+        KEY_PAIR = {
+            privateKey: 'ZDbjemnfbm7yxkM5ggq45hkRj7NKoPghMtrYTfxkVaV',
+            publicKey: 'GL6Cbk3JnD9XiBRK5ntCavSrGGD5JT9pXSRkukcEcaSW'
+        };
+
+    });
 
     it('should create a Seed object with 15-word random seed', function () {
 
@@ -75,14 +84,14 @@ describe('Seed', function () {
 
         const password = '1234567890';
 
-        Waves.setConfig({ minimumSeedLength: 1000 });
+        Waves.config.set({ minimumSeedLength: 1000 });
 
         expect(() => Seed.create(15)).to.throw();
         expect(() => Seed.fromExistingPhrase('hello world')).to.throw();
         expect(() => Seed.encryptSeedPhrase('hello world', password)).to.throw();
         expect(() => Seed.decryptSeedPhrase('U2FsdGVkX1+cJm/xTNQ8IkTpr3HzJZ0eoOxnhRe+1sk=', password)).to.throw();
 
-        Waves.setConfig(configuration);
+        Waves.config.set(WavesAPI.TESTNET_CONFIG);
 
     });
 

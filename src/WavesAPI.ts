@@ -5,6 +5,9 @@ import Currency from './classes/Currency';
 import Seed from './classes/Seed';
 import Transactions from './classes/Transactions';
 
+import crypto from './utils/crypto';
+import * as request from './utils/request';
+
 import * as NodeAPI from './api/node/index';
 import { INodeAPIv1 } from './api/node/index';
 
@@ -24,9 +27,10 @@ export interface IWavesAPI {
     Seed: typeof Seed;
     Transactions: IHash<ITransactionClassConstructor>;
     constants: IHash<any>;
+    crypto: IHash<any>;
+    request: IHash<any>;
     tools: IHash<any>;
     API: IAPIVersions;
-    setConfig(config: Partial<IWavesConfig>): void;
 }
 
 
@@ -36,7 +40,10 @@ class WavesAPI implements IWavesAPI {
     public readonly Seed = Seed;
     public readonly Transactions = Transactions;
 
+    public readonly config = config;
     public readonly constants = constants;
+    public readonly crypto = crypto;
+    public readonly request = request;
     public readonly tools = tools;
 
     public readonly API = {
@@ -51,7 +58,7 @@ class WavesAPI implements IWavesAPI {
 
         if (this instanceof WavesAPI) {
 
-            this.setConfig(initialConfiguration);
+            this.config.set(initialConfiguration);
 
             if (WavesAPI._instance === null) {
                 WavesAPI._instance = this;
@@ -65,10 +72,6 @@ class WavesAPI implements IWavesAPI {
 
         }
 
-    }
-
-    public setConfig(newConfiguration) {
-        config.set(newConfiguration);
     }
 
 }

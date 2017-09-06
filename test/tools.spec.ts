@@ -1,11 +1,15 @@
 import { expect } from './_helpers/getChai';
-import * as WavesAPI from '../src/WavesAPI';
+import * as WavesAPI from '../dist/waves-api.min';
 
 
-const Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
+let Waves;
 
 
 describe('tools', function () {
+
+    beforeEach(() => {
+        Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
+    });
 
     it('should build the right address from the given public key', function () {
 

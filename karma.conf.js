@@ -12,7 +12,7 @@ module.exports = function (config) {
 
         files: [
             { pattern: 'karma.test.js', included: true },
-            { pattern: 'tmp/**/*.js', included: false }
+            { pattern: 'tmp-browser/**/*.js', included: false }
         ],
 
         // list of files to exclude

@@ -1,8 +1,5 @@
 .idea/
 node_modules/
-tmp/
+tmp-browser/
+tmp-node/
 package-lock.json
-src/**/*.js
-src/**/*.js.map
-test/**/*.js
-test/**/*.js.map

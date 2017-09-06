@@ -4,7 +4,7 @@
     "alwaysStrict": true,
     "baseUrl": "",
     "module": "amd",
-    "outDir": "../tmp",
+    "outDir": "../tmp-browser",
     "paths": {
       "crypto-js": ["../node_modules/crypto-js/index.js"]
     },

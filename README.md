@@ -359,6 +359,12 @@ const newConfig = {
 
 All fields are optional, only filled ones will be replaced.
 
+You can change the config like that:
+
+```
+Waves.config.set(newConfig);
+```
+
 ### Tools
 
 #### Get address from public key

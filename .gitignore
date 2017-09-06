@@ -2,8 +2,5 @@
 dist/
 node_modules/
 raw/
-tmp/
-src/**/*.js
-src/**/*.js.map
-test/**/*.js
-test/**/*.js.map
+tmp-browser/
+tmp-node/

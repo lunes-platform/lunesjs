@@ -1,11 +1,7 @@
 import { expect } from '../_helpers/getChai';
 import { deterministicSign } from '../_helpers/deterministicSign';
-import * as WavesAPI from '../../src/WavesAPI';
-
 import base58 from '../../src/libs/base58';
-import crypto from '../../src/utils/crypto';
-import config from '../../src/config';
-import * as constants from '../../src/constants';
+import * as WavesAPI from '../../dist/waves-api.min';
 
 
 function checkBasicCases(preparedData, data, txType, expectedSignature) {
@@ -20,87 +16,102 @@ function checkBasicCases(preparedData, data, txType, expectedSignature) {
 }
 
 
-const Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
-const Transactions = Waves.Transactions;
+let Waves;
+let Transactions;
 
-const keys = {
-    publicKey: 'FJuErRxhV9JaFUwcYLabFK5ENvDRfyJbRz8FeVfYpBLn',
-    privateKey: '9dXhQYWZ5468TRhksJqpGT6nUySENxXi9nsCZH9AefD1'
-};
+let keys;
 
-const issueDataJson = {
-    senderPublicKey: keys.publicKey,
-    name: 'БАБЛОС',
-    description: 'Some english words немного кириллических символов',
-    quantity: 10000000000,
-    precision: 2,
-    reissuable: true,
-    fee: 100000000,
-    timestamp: 1478704158292
-};
+let issueDataJson;
+let transferDataJson;
+let reissueDataJson;
+let burnDataJson;
+let createAliasDataJson;
+let leaseDataJson;
+let cancelLeasingDataJson;
 
-const transferDataJson = {
-    senderPublicKey: keys.publicKey,
-    recipient: '3N9UuGeWuDt9NfWbC5oEACHyRoeEMApXAeq',
-    assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
-    amount: 1000,
-    feeAssetId: 'WAVES',
-    fee: 100000,
-    attachment: '',
-    timestamp: 1478864678621
-};
-
-const reissueDataJson = {
-    senderPublicKey: keys.publicKey,
-    assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
-    quantity: 100000000,
-    reissuable: false,
-    fee: 100000000,
-    timestamp: 1478868177862
-};
-
-const burnDataJson = {
-    senderPublicKey: keys.publicKey,
-    assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
-    quantity: 200000000,
-    fee: 100000,
-    timestamp: 1478864678621
-};
-
-const createAliasDataJson = {
-    senderPublicKey: keys.publicKey,
-    alias: 'sasha',
-    fee: 1000000,
-    timestamp: 1491556329420
-};
-
-const leaseDataJson = {
-    senderPublicKey: keys.publicKey,
-    recipient: '3MsiHfvFVUULdn8bpVoDQ7JLKKjtPXUrCLT',
-    amount: 200000000,
-    fee: 1000000,
-    timestamp: 1491491715188
-};
-
-const cancelLeasingDataJson = {
-    senderPublicKey: keys.publicKey,
-    transactionId: '4X85MhqxukwaPqJC4sSSeN3ptSYHbEca7KgiYtUa2ECX',
-    fee: 10000000,
-    timestamp: 1491491734819
-};
+let tempSignDataMethod;
 
 
 describe('Transactions', function () {
 
-    let tempSignDataMethod;
-
     beforeEach(() => {
-        tempSignDataMethod = crypto.buildTransactionSignature;
-        crypto.buildTransactionSignature = deterministicSign;
+
+        Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
+        Transactions = Waves.Transactions;
+
+        keys = {
+            publicKey: 'FJuErRxhV9JaFUwcYLabFK5ENvDRfyJbRz8FeVfYpBLn',
+            privateKey: '9dXhQYWZ5468TRhksJqpGT6nUySENxXi9nsCZH9AefD1'
+        };
+
+        issueDataJson = {
+            senderPublicKey: keys.publicKey,
+            name: 'БАБЛОС',
+            description: 'Some english words немного кириллических символов',
+            quantity: 10000000000,
+            precision: 2,
+            reissuable: true,
+            fee: 100000000,
+            timestamp: 1478704158292
+        };
+
+        transferDataJson = {
+            senderPublicKey: keys.publicKey,
+            recipient: '3N9UuGeWuDt9NfWbC5oEACHyRoeEMApXAeq',
+            assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
+            amount: 1000,
+            feeAssetId: 'WAVES',
+            fee: 100000,
+            attachment: '',
+            timestamp: 1478864678621
+        };
+
+        reissueDataJson = {
+            senderPublicKey: keys.publicKey,
+            assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
+            quantity: 100000000,
+            reissuable: false,
+            fee: 100000000,
+            timestamp: 1478868177862
+        };
+
+        burnDataJson = {
+            senderPublicKey: keys.publicKey,
+            assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
+            quantity: 200000000,
+            fee: 100000,
+            timestamp: 1478864678621
+        };
+
+        createAliasDataJson = {
+            senderPublicKey: keys.publicKey,
+            alias: 'sasha',
+            fee: 1000000,
+            timestamp: 1491556329420
+        };
+
+        leaseDataJson = {
+            senderPublicKey: keys.publicKey,
+            recipient: '3MsiHfvFVUULdn8bpVoDQ7JLKKjtPXUrCLT',
+            amount: 200000000,
+            fee: 1000000,
+            timestamp: 1491491715188
+        };
+
+        cancelLeasingDataJson = {
+            senderPublicKey: keys.publicKey,
+            transactionId: '4X85MhqxukwaPqJC4sSSeN3ptSYHbEca7KgiYtUa2ECX',
+            fee: 10000000,
+            timestamp: 1491491734819
+        };
+
+        tempSignDataMethod = Waves.crypto.buildTransactionSignature;
+        Waves.crypto.buildTransactionSignature = deterministicSign;
+
     });
 
     afterEach(() => {
-        crypto.buildTransactionSignature = tempSignDataMethod;
+        Waves.crypto.buildTransactionSignature = tempSignDataMethod;
     });
 
     it('should sign Issue transaction', function (done) {
@@ -112,7 +123,7 @@ describe('Transactions', function () {
         const expectedSignature = '5ngquur4nqX1cVPK3Zaf9KqY1qNH6i7gF5EhaWeS8mZp1LADTVuPXmNUi12jeXSniGry5a7ThsMtWcC73pSU196o';
 
         const api = issueTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, constants.ISSUE_TX_NAME, expectedSignature);
+            checkBasicCases(preparedData, data, Waves.constants.ISSUE_TX_NAME, expectedSignature);
         });
 
         Promise.all([api]).then(() => done());
@@ -128,7 +139,7 @@ describe('Transactions', function () {
         const expectedSignature = '677UVgKBAVZdweVbn6wKhPLP9UxVSh3x4fBXPgepKoHtsV9nSd8HXBMxCdsYn41g3EE63bcihnUHwhXoSu9GZTLf';
 
         const api = transferTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, constants.TRANSFER_TX_NAME, expectedSignature);
+            checkBasicCases(preparedData, data, Waves.constants.TRANSFER_TX_NAME, expectedSignature);
             expect(preparedData.recipient).to.equal('address:' + data.recipient);
         });
 
@@ -146,8 +157,8 @@ describe('Transactions', function () {
         const expectedSignature = '2XJAHpRXx12AvdwcDF2HMpTDxffKkmN9qK7r3jZaVExYVjDaciRszymkGXy5QZExz6McYwDf6gicD4XZswJGKAZW';
 
         const api = transferTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, constants.TRANSFER_TX_NAME, expectedSignature);
-            expect(preparedData.recipient).to.equal('alias:' + String.fromCharCode(config.getNetworkByte()) + ':' + data.recipient);
+            checkBasicCases(preparedData, data, Waves.constants.TRANSFER_TX_NAME, expectedSignature);
+            expect(preparedData.recipient).to.equal('alias:' + String.fromCharCode(Waves.config.getNetworkByte()) + ':' + data.recipient);
         });
 
         Promise.all([api]).then(() => done());
@@ -165,7 +176,7 @@ describe('Transactions', function () {
         const expectedSignature = 'TrgV7V7meddPs7aU9ZemrCXNVQ8h35cERTBNfvbtVqURbgRS1fnEmzELMAxvqeYrHF6sYiJJ4oc3v4tEZQbn5qD';
 
         const api = transferTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, constants.TRANSFER_TX_NAME, expectedSignature);
+            checkBasicCases(preparedData, data, Waves.constants.TRANSFER_TX_NAME, expectedSignature);
             expect(preparedData.attachment).to.equal(base58.encode(attachmentBytes));
         });
 
@@ -182,7 +193,7 @@ describe('Transactions', function () {
         const expectedSignature = '4G81NzgHDwXdjqANGE2qxZrC5VpDA7ek3Db8v3iqunpkrXgAy7KBJgdHWUw1TEDBNewtjMJTvB9Po55PZ5d6ztCk';
 
         const api = reissueTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, constants.REISSUE_TX_NAME, expectedSignature);
+            checkBasicCases(preparedData, data, Waves.constants.REISSUE_TX_NAME, expectedSignature);
         });
 
         Promise.all([api]).then(() => done());
@@ -198,7 +209,7 @@ describe('Transactions', function () {
         const expectedSignature = 'PZZPkM8zhN96fk3nsrozehYNztB9HkD48GY6zZ6DPnLkQYHYXtZ4qER3qLjxSrALeinkqrDariNzUCUbbvBrtRC';
 
         const api = burnTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, constants.BURN_TX_NAME, expectedSignature);
+            checkBasicCases(preparedData, data, Waves.constants.BURN_TX_NAME, expectedSignature);
         });
 
         Promise.all([api]).then(() => done());
@@ -214,7 +225,7 @@ describe('Transactions', function () {
         const expectedSignature = '2fDkcUaPrQjtL1Tfox1ikqfZWA7LkvWKrGZNaxJx98dmeLoopkwvAFa9nMJLww9PERGuQovfv8g9EPM6HkV5VPaH';
 
         const api = createAliasTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, constants.CREATE_ALIAS_TX_NAME, expectedSignature);
+            checkBasicCases(preparedData, data, Waves.constants.CREATE_ALIAS_TX_NAME, expectedSignature);
         });
 
         const signature = createAliasTransaction.getSignature(keys.privateKey).then((signature) => {
@@ -241,7 +252,7 @@ describe('Transactions', function () {
         const expectedSignature = '4KV99VcLG51uej8tcdJBwcc3Kj2tCAxwT7JNwycxNQzAGURxcyo2XhmMTWiD1gVqs4GhkAYHGrjsBR2CJcdU5X6Z';
 
         const api = leaseTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, constants.LEASE_TX_NAME, expectedSignature);
+            checkBasicCases(preparedData, data, Waves.constants.LEASE_TX_NAME, expectedSignature);
             expect(preparedData.recipient).to.equal('address:' + data.recipient);
         });
 
@@ -259,8 +270,8 @@ describe('Transactions', function () {
         const expectedSignature = 'HuKk26pPjxusLhch6ehwbFeBc8iiMuKd2pzwhwTf5rEFqSyyUiU3ChpVw3w86daRPMPkVUNkf6b9SmTetFgGxXy';
 
         const api = leaseTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, constants.LEASE_TX_NAME, expectedSignature);
-            expect(preparedData.recipient).to.equal('alias:' + String.fromCharCode(config.getNetworkByte()) + ':' + data.recipient);
+            checkBasicCases(preparedData, data, Waves.constants.LEASE_TX_NAME, expectedSignature);
+            expect(preparedData.recipient).to.equal('alias:' + String.fromCharCode(Waves.config.getNetworkByte()) + ':' + data.recipient);
         });
 
         Promise.all([api]).then(() => done());
@@ -276,7 +287,7 @@ describe('Transactions', function () {
         const expectedSignature = '2AcYC2TtpHRVhqN4V9cZADDz7bA2f4PVqoisBULYUn39t73jkE5fEpRZFEKgJiBU8NSPqcww9Qt7aY7VeSqpDVcW';
 
         const api = cancelLeasingTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
-            checkBasicCases(preparedData, data, constants.CANCEL_LEASING_TX_NAME, expectedSignature);
+            checkBasicCases(preparedData, data, Waves.constants.CANCEL_LEASING_TX_NAME, expectedSignature);
         });
 
         Promise.all([api]).then(() => done());

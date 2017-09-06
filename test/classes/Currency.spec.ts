@@ -1,33 +1,41 @@
 import { expect } from '../_helpers/getChai';
-import * as WavesAPI from '../../src/WavesAPI';
+import * as WavesAPI from '../../dist/waves-api.min';
 
 
-const Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
+let Waves;
+let Currency;
+let defaultProps0;
+let defaultProps1;
+let defaultProps2;
+
 
 describe('Currency', function () {
 
-    const Currency = Waves.Currency;
+    beforeEach(() => {
 
-    const defaultProps0 = {
-        id: '',
-        name: 'Waves',
-        precision: 8
-    };
+        Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
 
-    const defaultProps1 = {
-        id: 'test1',
-        name: 'Test No. 1',
-        precision: 0
-    };
+        defaultProps0 = {
+            id: '',
+            name: 'Waves',
+            precision: 8
+        };
 
-    const defaultProps2 = {
-        id: 'test2',
-        name: 'Test No. 2',
-        precision: 4
-    };
+        defaultProps1 = {
+            id: 'test1',
+            name: 'Test No. 1',
+            precision: 0
+        };
 
-    beforeEach(function () {
+        defaultProps2 = {
+            id: 'test2',
+            name: 'Test No. 2',
+            precision: 4
+        };
+
+        Currency = Waves.Currency;
         Currency.clearCache();
+
     });
 
     it('should be an instance of Currency', function () {
