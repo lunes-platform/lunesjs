@@ -1,5 +1,7 @@
-declare const process: any;
-declare const require: any;
+declare let exports: any;
+declare let module: any;
+declare let require: any;
+
 declare const Buffer: any;
 
 
@@ -45,15 +47,11 @@ function browserRandom(count, options) {
     }
 }
 
-
 function secureRandom(count, options) {
     options = options || { type: 'Array' };
-    // Check for process.pid to prevent Browserify from tricking us
-    if (typeof process !== 'undefined' && typeof process.pid === 'number') {
+    if (typeof exports === 'object' && typeof module !== 'undefined') {
         return nodeRandom(count, options);
     } else {
-        const crypto = self.crypto || self.msCrypto;
-        if (!crypto) throw new Error('Your browser does not support window.crypto.');
         return browserRandom(count, options);
     }
 }

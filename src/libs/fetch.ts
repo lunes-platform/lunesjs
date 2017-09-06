@@ -3,23 +3,24 @@ declare let module: any;
 declare let require: any;
 declare let global: any;
 
-let fetchSubstitute;
-(function () {
+
+const fetchSubstitute = (function () {
     if (typeof exports === 'object' && typeof module !== 'undefined') {
-        module.exports = require('node-fetch');
+        return require('node-fetch');
     } else {
-        var g;
+        let g;
         if (typeof window !== 'undefined') {
-            g = window
+            g = window;
         } else if (typeof global !== 'undefined') {
-            g = global
+            g = global;
         } else if (typeof self !== 'undefined') {
-            g = self
+            g = self;
         } else {
-            g = this
+            g = this;
         }
-        fetchSubstitute = g.fetch.bind(g);
+        return g.fetch.bind(g);
     }
 })();
+
 
 export default fetchSubstitute;
