@@ -267,6 +267,34 @@ Waves.API.Node.v1.addresses.balanceDetails('3PMgh8ra7v9USWUJxUCxKQKr6PM3MgqNVR8'
 });
 ```
 
+##### Token balances
+
+You can get the list of all balances on an address:
+
+```
+Waves.API.Node.v1.assets.balances(address).then((balancesList) => {
+   console.log(balancesList);
+});
+```
+
+You also can get the balance of a given token:
+
+```
+Waves.API.Node.v1.assets.balance(address, assetId).then((balance) => {
+   console.log(balance);
+});
+```
+
+##### Token distribution
+
+A very useful method allowing you to get a map with balances of all addresses in possession of a token:
+
+```
+Waves.API.Node.v1.assets.distribution(assetId).then((distributionMap) => {
+   console.log(distributionMap);
+});
+```
+
 ##### Transactions
 
 Every transaction in the blockchain has its own ID. You can both get one by ID, or get a list of all recent transactions.

@@ -30,6 +30,18 @@ const remapBurnTransaction = createRemapper({
 
 export default {
 
+    balances(address: string) {
+        return fetch(`/assets/balance/${address}`);
+    },
+
+    balance(address: string, assetId: string) {
+        return fetch(`/assets/balance/${address}/${assetId}`);
+    },
+
+    distribution(assetId: string) {
+        return fetch(`/assets/${assetId}/distribution`);
+    },
+
     issue: wrapTransactionRequest(Transactions.IssueTransaction, remapIssueTransaction, (postParams) => {
         return fetch('/assets/broadcast/issue', postParams);
     }) as TTransactionRequest,

@@ -19,6 +19,9 @@ export interface INodeAPIv1 {
         createAlias(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
     },
     assets: {
+        balances(address: string): Promise<any>;
+        balance(address: string, assetId: string): Promise<any>;
+        distribution(assetId: string): Promise<any>;
         issue(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
         transfer(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
         reissue(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
