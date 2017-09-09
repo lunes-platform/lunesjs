@@ -22,6 +22,7 @@ export interface INodeAPIv1 {
         issue(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
         transfer(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
         reissue(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
+        burn(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
     },
     blocks: {
         get(signature: string): Promise<any>;
