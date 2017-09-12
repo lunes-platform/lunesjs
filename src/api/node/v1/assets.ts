@@ -3,6 +3,7 @@ import { TTransactionRequest } from '../../../utils/request';
 import Transactions from '../../../classes/Transactions';
 import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTransactionRequest } from '../../../utils/request';
 import { createRemapper, handleAssetId, handleRecipient } from '../remap';
+import addresses from './addresses';
 
 
 const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
@@ -35,7 +36,11 @@ export default {
     },
 
     balance(address: string, assetId: string) {
-        return fetch(`/assets/balance/${address}/${assetId}`);
+        if (assetId === 'WAVES') {
+            return addresses.balance(address);
+        } else {
+            return fetch(`/assets/balance/${address}/${assetId}`);
+        }
     },
 
     distribution(assetId: string) {
