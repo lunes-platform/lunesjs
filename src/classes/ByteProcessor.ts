@@ -108,6 +108,10 @@ export class Attachment extends ByteProcessor {
             value = Uint8Array.from(convert.stringToByteArray(value));
         }
 
+        if (value.length > constants.TRANSFER_ATTACHMENT_BYTE_LIMIT) {
+            throw new Error('Maximum attachment length is exceeded');
+        }
+
         const valueWithLength = convert.bytesToByteArrayWithSize(value);
         return Promise.resolve(Uint8Array.from(valueWithLength));
 
