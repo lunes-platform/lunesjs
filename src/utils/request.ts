@@ -59,18 +59,21 @@ export function createFetchWrapper(product: PRODUCTS, version: VERSIONS, pipe?: 
 }
 
 export function wrapTransactionRequest(TransactionConstructor: ITransactionClassConstructor,
-                                       remapFunction: (data: IHash<any>) => IHash<any>,
+                                       preRemap: (data: IHash<any>) => IHash<any>,
+                                       postRemap: (data: IHash<any>) => IHash<any>,
                                        callback: (postParams: IHash<any>) => Promise<any>) {
 
     return function (data: IHash<any>, keyPair: IKeyPair): Promise<any> {
 
-        const transaction = new TransactionConstructor({
-            ...data,
+        const validatedData = preRemap({
+            ...data, // The order is required for `senderPublicKey` must be rewritten if exists in `data`
             senderPublicKey: keyPair.publicKey
         });
 
+        const transaction = new TransactionConstructor(validatedData);
+
         return transaction.prepareForAPI(keyPair.privateKey)
-            .then(remapFunction)
+            .then(postRemap)
             .then((tx) => {
                 return callback({
                     ...POST_TEMPLATE,

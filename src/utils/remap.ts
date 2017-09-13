@@ -1,7 +1,31 @@
-import { IHash } from '../../../interfaces';
+import { IHash } from '../../interfaces';
 
 
-export function handleAlias(original) {
+export function normalizeAssetId(original) {
+    if (!original || original === 'WAVES') {
+        return '';
+    } else {
+        return original;
+    }
+}
+
+export function denormalizeAssetId(original) {
+    if (!original) {
+        return 'WAVES';
+    } else {
+        return original;
+    }
+}
+
+export function removeRecipientPrefix(original) {
+    if (original.slice(0, 8) === 'address:') {
+        return original.slice(8);
+    } else {
+        return original;
+    }
+}
+
+export function removeAliasPrefix(original) {
     if (original.slice(0, 6) === 'alias:') {
         return original.slice(8); // Mind the network byte characters
     } else {
@@ -9,20 +33,12 @@ export function handleAlias(original) {
     }
 }
 
-export function handleAssetId(original) {
-    if (original === 'WAVES') {
-        return '';
-    } else {
-        return original;
-    }
+export function getTimestamp(timestamp) {
+    return timestamp || Date.now();
 }
 
-export function handleRecipient(original) {
-    if (original.slice(0, 8) === 'address:') {
-        return original.slice(8);
-    } else {
-        return original;
-    }
+export function precisionCheck(precision) {
+    return (precision >= 0 && precision <= 8);
 }
 
 export function createRemapper(rules) {

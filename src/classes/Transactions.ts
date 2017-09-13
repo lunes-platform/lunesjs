@@ -270,11 +270,6 @@ export default {
         new Alias('alias'),
         new Long('fee'),
         new Long('timestamp')
-    ], {
-        alias: {
-            from: 'raw',
-            to: 'prefixed'
-        }
-    })
+    ])
 
 };

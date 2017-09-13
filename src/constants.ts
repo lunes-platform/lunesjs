@@ -30,8 +30,8 @@ export const CREATE_ALIAS_TX_NAME = 'createAlias';
 export const PRIVATE_KEY_LENGTH = 32;
 export const PUBLIC_KEY_LENGTH = 32;
 
-export const MINIMUM_AMOUNT = 1;
 export const MINIMUM_FEE = 100000;
+export const MINIMUM_ISSUE_FEE = 100000000;
 
 export const TRANSFER_ATTACHMENT_BYTE_LIMIT = 140;
 
