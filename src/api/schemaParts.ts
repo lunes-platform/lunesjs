@@ -1,5 +1,5 @@
 import { getTimestamp, removeRecipientPrefix } from '../utils/remap';
-import { IBooleanPart, INumberPart, IStringPart } from 'ts-api-validator/src/inderface';
+import { IBooleanPart, INumberPart, IStringPart } from 'ts-api-validator/src/interfaces';
 import * as constants from '../constants';
 
 
