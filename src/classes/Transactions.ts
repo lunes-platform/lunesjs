@@ -1,6 +1,6 @@
 import { IHash } from '../../interfaces';
 
-import { ByteProcessor, Alias, Base58, Bool, Long, Short, StringWithLength, AssetId, MandatoryAssetId, Recipient, Attachment } from './ByteProcessor';
+import { ByteProcessor, Alias, Base58, Bool, Long, Short, StringWithLength, AssetId, Attachment, MandatoryAssetId, OrderType, Recipient } from './ByteProcessor';
 
 import { concatUint8Arrays } from '../utils/concat';
 import crypto from '../utils/crypto';
@@ -29,7 +29,7 @@ export interface ITransactionClassConstructor {
 }
 
 
-function createTransactionClass(txType: string, fields: TTransactionFields, apiSchema?: IHash<IAPISchema>) {
+function createTransactionClass(txType: string | null, fields: TTransactionFields, apiSchema?: IHash<IAPISchema>) {
 
     // Fields of the original data object
     const storedFields: object = Object.create(null);
@@ -59,8 +59,6 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
 
         constructor(hashMap: any = {}) {
 
-            // TODO : add default values for missing fields
-
             // Save all needed values from user data
             this._rawData = Object.keys(storedFields).reduce((store, key) => {
                 store[key] = hashMap[key];
@@ -85,7 +83,7 @@ function createTransactionClass(txType: string, fields: TTransactionFields, apiS
             return this.getSignature(privateKey).then((signature) => {
                 // Transform data so it could match the API requirements
                 return this._castToAPISchema(this._rawData).then((schemedData) => ({
-                    transactionType: txType,
+                    ...(txType ? { transactionType: txType } : {}), // For matcher orders and other quasi-transactions
                     ...schemedData,
                     signature
                 }));
@@ -270,6 +268,20 @@ export default {
         new Alias('alias'),
         new Long('fee'),
         new Long('timestamp')
+    ]),
+
+    // That's not exactly a transaction so it has no type
+    Order: createTransactionClass(null, [
+        new Base58('senderPublicKey'),
+        new Base58('matcherPublicKey'),
+        new AssetId('amountAsset'),
+        new AssetId('priceAsset'),
+        new OrderType('orderType'),
+        new Long('price'),
+        new Long('amount'),
+        new Long('timestamp'),
+        new Long('expiration'),
+        new Long('matcherFee')
     ])
 
 };

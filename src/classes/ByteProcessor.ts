@@ -82,25 +82,6 @@ export class AssetId extends ByteProcessor {
     }
 }
 
-export class MandatoryAssetId extends ByteProcessor {
-    public process(value: string) {
-        value = blockchainifyAssetId(value);
-        return Promise.resolve(base58.decode(value));
-    }
-}
-
-export class Recipient extends ByteProcessor {
-    public process(value: string) {
-        if (value.length <= 30) {
-            const aliasBytes = getAliasBytes(value);
-            return Promise.resolve(Uint8Array.from(aliasBytes));
-        } else {
-            const addressBytes = base58.decode(value);
-            return Promise.resolve(Uint8Array.from(addressBytes));
-        }
-    }
-}
-
 export class Attachment extends ByteProcessor {
     public process(value: Uint8Array | string) {
 
@@ -115,5 +96,36 @@ export class Attachment extends ByteProcessor {
         const valueWithLength = convert.bytesToByteArrayWithSize(value);
         return Promise.resolve(Uint8Array.from(valueWithLength));
 
+    }
+}
+
+export class MandatoryAssetId extends ByteProcessor {
+    public process(value: string) {
+        value = blockchainifyAssetId(value);
+        return Promise.resolve(base58.decode(value));
+    }
+}
+
+export class OrderType extends ByteProcessor {
+    public process(value: string) {
+        if (value === 'buy') {
+            return Bool.prototype.process.call(this, false);
+        } else if (value === 'sell') {
+            return Bool.prototype.process.call(this, true);
+        } else {
+            throw new Error('There are no other order types besides "buy" and "sell"');
+        }
+    }
+}
+
+export class Recipient extends ByteProcessor {
+    public process(value: string) {
+        if (value.length <= 30) {
+            const aliasBytes = getAliasBytes(value);
+            return Promise.resolve(Uint8Array.from(aliasBytes));
+        } else {
+            const addressBytes = base58.decode(value);
+            return Promise.resolve(Uint8Array.from(addressBytes));
+        }
     }
 }

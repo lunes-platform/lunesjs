@@ -9,9 +9,9 @@ function checkBasicCases(preparedData, data, txType, expectedSignature) {
     expect(preparedData.transactionType).to.equal(txType);
     expect(preparedData.signature).to.equal(expectedSignature);
 
-    const newKeys = Object.keys(preparedData).sort();
-    const stableKeys = ['transactionType', ...Object.keys(data), 'signature'].sort();
-    expect(newKeys).to.deep.equal(stableKeys);
+    const givenKeys = Object.keys(preparedData).sort();
+    const expectedKeys = ['transactionType', ...Object.keys(data), 'signature'].sort();
+    expect(givenKeys).to.deep.equal(expectedKeys);
 
 }
 
@@ -21,13 +21,14 @@ let Transactions;
 
 let keys;
 
-let issueDataJson;
-let transferDataJson;
-let reissueDataJson;
-let burnDataJson;
-let createAliasDataJson;
-let leaseDataJson;
-let cancelLeasingDataJson;
+let issueData;
+let transferData;
+let reissueData;
+let burnData;
+let createAliasData;
+let leaseData;
+let cancelLeasingData;
+let orderData;
 
 let tempSignDataMethod;
 
@@ -44,7 +45,7 @@ describe('Transactions', function () {
             privateKey: '9dXhQYWZ5468TRhksJqpGT6nUySENxXi9nsCZH9AefD1'
         };
 
-        issueDataJson = {
+        issueData = {
             senderPublicKey: keys.publicKey,
             name: 'БАБЛОС',
             description: 'Some english words немного кириллических символов',
@@ -55,7 +56,7 @@ describe('Transactions', function () {
             timestamp: 1478704158292
         };
 
-        transferDataJson = {
+        transferData = {
             senderPublicKey: keys.publicKey,
             recipient: '3N9UuGeWuDt9NfWbC5oEACHyRoeEMApXAeq',
             assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
@@ -66,7 +67,7 @@ describe('Transactions', function () {
             timestamp: 1478864678621
         };
 
-        reissueDataJson = {
+        reissueData = {
             senderPublicKey: keys.publicKey,
             assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
             quantity: 100000000,
@@ -75,7 +76,7 @@ describe('Transactions', function () {
             timestamp: 1478868177862
         };
 
-        burnDataJson = {
+        burnData = {
             senderPublicKey: keys.publicKey,
             assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
             quantity: 200000000,
@@ -83,14 +84,14 @@ describe('Transactions', function () {
             timestamp: 1478864678621
         };
 
-        createAliasDataJson = {
+        createAliasData = {
             senderPublicKey: keys.publicKey,
             alias: 'sasha',
             fee: 1000000,
             timestamp: 1491556329420
         };
 
-        leaseDataJson = {
+        leaseData = {
             senderPublicKey: keys.publicKey,
             recipient: '3MsiHfvFVUULdn8bpVoDQ7JLKKjtPXUrCLT',
             amount: 200000000,
@@ -98,11 +99,24 @@ describe('Transactions', function () {
             timestamp: 1491491715188
         };
 
-        cancelLeasingDataJson = {
+        cancelLeasingData = {
             senderPublicKey: keys.publicKey,
             transactionId: '4X85MhqxukwaPqJC4sSSeN3ptSYHbEca7KgiYtUa2ECX',
             fee: 10000000,
             timestamp: 1491491734819
+        };
+
+        orderData = {
+            senderPublicKey: keys.publicKey,
+            matcherPublicKey: 'Ei5BT6ZvKmB5VQLSZGo8mNkSXsTwGG4zUWjN7yu7iZo5',
+            amountAsset: 'WAVES',
+            priceAsset: 'AaFXAN1WTM39XjECHW7DsVFixhq9yMGWHdM2ghr83Gmf',
+            orderType: 'sell',
+            amount: 200000000,
+            price: 50000000,
+            timestamp: 1489592282029,
+            expiration: 1492184282029,
+            matcherFee: 1000000
         };
 
         tempSignDataMethod = Waves.crypto.buildTransactionSignature;
@@ -116,7 +130,7 @@ describe('Transactions', function () {
 
     it('should sign Issue transaction', function (done) {
 
-        const data = { ...issueDataJson };
+        const data = { ...issueData };
 
         const issueTransaction = new Transactions.IssueTransaction(data);
 
@@ -132,7 +146,7 @@ describe('Transactions', function () {
 
     it('should sign Transfer transaction', function (done) {
 
-        const data = { ...transferDataJson };
+        const data = { ...transferData };
 
         const transferTransaction = new Transactions.TransferTransaction(data);
 
@@ -150,7 +164,7 @@ describe('Transactions', function () {
     it('should sign Transfer transaction with alias', function (done) {
 
         const alias = 'sasha';
-        const data = { ...transferDataJson, recipient: alias };
+        const data = { ...transferData, recipient: alias };
 
         const transferTransaction = new Transactions.TransferTransaction(data);
 
@@ -169,7 +183,7 @@ describe('Transactions', function () {
 
         const attachment = '123';
         const attachmentBytes = [49, 50, 51];
-        const data = { ...transferDataJson, attachment };
+        const data = { ...transferData, attachment };
 
         const transferTransaction = new Transactions.TransferTransaction(data);
 
@@ -186,7 +200,7 @@ describe('Transactions', function () {
 
     it('should sign Reissue transaction', function (done) {
 
-        const data = { ...reissueDataJson };
+        const data = { ...reissueData };
 
         const reissueTransaction = new Transactions.ReissueTransaction(data);
 
@@ -202,7 +216,7 @@ describe('Transactions', function () {
 
     it('should sign Burn transaction', function (done) {
 
-        const data = { ...burnDataJson };
+        const data = { ...burnData };
 
         const burnTransaction = new Transactions.BurnTransaction(data);
 
@@ -218,7 +232,7 @@ describe('Transactions', function () {
 
     it('should sign Create Alias transaction', function (done) {
 
-        const data = { ...createAliasDataJson };
+        const data = { ...createAliasData };
 
         const createAliasTransaction = new Transactions.CreateAliasTransaction(data);
 
@@ -245,7 +259,7 @@ describe('Transactions', function () {
 
     it('should sign Lease transaction', function (done) {
 
-        const data = { ...leaseDataJson };
+        const data = { ...leaseData };
 
         const leaseTransaction = new Transactions.LeaseTransaction(data);
 
@@ -263,7 +277,7 @@ describe('Transactions', function () {
     it('should sign Lease transaction with alias', function (done) {
 
         const alias = 'test alias';
-        const data = { ...leaseDataJson, recipient: alias };
+        const data = { ...leaseData, recipient: alias };
 
         const leaseTransaction = new Transactions.LeaseTransaction(data);
 
@@ -280,7 +294,7 @@ describe('Transactions', function () {
 
     it('should sign Cancel Leasing transaction', function (done) {
 
-        const data = { ...cancelLeasingDataJson };
+        const data = { ...cancelLeasingData };
 
         const cancelLeasingTransaction = new Transactions.CancelLeasingTransaction(data);
 
@@ -288,6 +302,28 @@ describe('Transactions', function () {
 
         const api = cancelLeasingTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
             checkBasicCases(preparedData, data, Waves.constants.CANCEL_LEASING_TX_NAME, expectedSignature);
+        });
+
+        Promise.all([api]).then(() => done());
+
+    });
+
+    it('should sign Order', function (done) {
+
+        const data = { ...orderData };
+
+        const order = new Transactions.Order(data);
+
+        const expectedSignature = '5pzEHRrtfzH6mY64u8d1LX8rHufEvgnZ5YxGHFW33QUoi4Fv3ScWq7AnrEQMPaZjdR4uzoN9QHWoPTmZDVgpWUbw';
+
+        const api = order.prepareForAPI(keys.privateKey).then((preparedData) => {
+
+            expect(preparedData.signature).to.equal(expectedSignature);
+
+            const givenKeys = Object.keys(preparedData).sort();
+            const expectedKeys = [...Object.keys(data), 'signature'].sort();
+            expect(givenKeys).to.deep.equal(expectedKeys);
+
         });
 
         Promise.all([api]).then(() => done());
