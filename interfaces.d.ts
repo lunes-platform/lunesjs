@@ -1,4 +1,4 @@
-export type TPrecisions = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+export type TPrecision = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
 export type TBuffer = Uint8Array | number[];
 
@@ -10,10 +10,9 @@ interface IHash<T> {
 export interface IAsset {
     readonly id: string;
     readonly name: string;
-    readonly ticker?: string;
+    readonly precision: TPrecision;
     readonly description?: string;
-    readonly precision: TPrecisions;
-    readonly verified?: boolean;
+    readonly ticker?: string;
 }
 
 export interface IKeyPair {

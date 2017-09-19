@@ -1,8 +1,9 @@
 import { IHash } from '../../interfaces';
+import * as constants from '../constants';
 
 
 export function normalizeAssetId(original) {
-    if (!original || original === 'WAVES') {
+    if (!original || original === constants.WAVES) {
         return '';
     } else {
         return original;
@@ -11,7 +12,7 @@ export function normalizeAssetId(original) {
 
 export function denormalizeAssetId(original) {
     if (!original) {
-        return 'WAVES';
+        return constants.WAVES;
     } else {
         return original;
     }

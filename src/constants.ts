@@ -1,6 +1,8 @@
 import { IWavesConfig } from '../interfaces';
 
 
+export const WAVES = 'WAVES';
+
 export const MAINNET_BYTE: number = 'W'.charCodeAt(0);
 export const TESTNET_BYTE: number = 'T'.charCodeAt(0);
 

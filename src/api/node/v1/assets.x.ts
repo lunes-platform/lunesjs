@@ -1,5 +1,6 @@
 import { Schema } from 'ts-api-validator';
 import { precisionCheck } from '../../../utils/remap';
+import * as constants from '../../../constants';
 import schemaParts from '../../schemaParts';
 
 
@@ -46,7 +47,7 @@ export const transferSchema = new Schema({
         feeAssetId: {
             type: 'string',
             required: false,
-            defaultValue: 'WAVES'
+            defaultValue: constants.WAVES
         },
         fee: schemaParts.fee,
         attachment: {

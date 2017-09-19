@@ -5,6 +5,7 @@ import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTransactionReq
 import { issueSchema, transferSchema, reissueSchema, burnSchema } from './assets.x';
 import addresses from './addresses';
 import { createRemapper, normalizeAssetId } from '../../../utils/remap';
+import * as constants from '../../../constants';
 
 
 const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
@@ -41,7 +42,7 @@ export default {
     },
 
     balance(address: string, assetId: string) {
-        if (assetId === 'WAVES') {
+        if (assetId === constants.WAVES) {
             return addresses.balance(address);
         } else {
             return fetch(`/assets/balance/${address}/${assetId}`);

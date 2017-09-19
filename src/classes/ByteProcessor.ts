@@ -9,7 +9,7 @@ import config from '../config';
 // NOTE : Waves asset ID in blockchain transactions equals to an empty string
 function blockchainifyAssetId(assetId) {
     if (!assetId) throw new Error('Asset ID should not be empty');
-    return assetId === 'WAVES' ? '' : assetId;
+    return assetId === constants.WAVES ? '' : assetId;
 }
 
 function getAliasBytes(alias): number[] {
