@@ -83,6 +83,8 @@ describe('Currency', () => {
         const mainnetFinalLength = Currency.getKnownCurrencies().length;
         expect(mainnetFinalLength).to.equal(mainnetInitialLength + 2);
 
+        Waves.config.set(WavesAPI.TESTNET_CONFIG);
+
     });
 
     it('should fail to be created without ID', () => {
