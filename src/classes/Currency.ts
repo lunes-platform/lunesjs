@@ -68,7 +68,7 @@ function putCurrency(storage, currencyProps) {
 
 export default {
 
-    create: function (props) {
+    create(props) {
         const storage = resolveStorage();
         if (storage[props.id]) {
             return storage[props.id];
@@ -78,19 +78,24 @@ export default {
         }
     },
 
-    getKnownCurrencies: function () {
+    get(id) {
+        const storage = resolveStorage();
+        return storage[id] || null;
+    },
+
+    getKnownCurrencies() {
         const storage = resolveStorage();
         return Object.keys(storage).map(function (key) {
             return storage[key];
         });
     },
 
-    isCurrency: function (object) {
-        return object instanceof Currency;
+    clearCache() {
+        storages = Object.create(null);
     },
 
-    clearCache: function () {
-        storages = Object.create(null);
+    isCurrency(object) {
+        return object instanceof Currency;
     }
 
 };

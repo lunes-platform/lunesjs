@@ -2,7 +2,6 @@ import { expect } from '../_helpers/getChai';
 import { deterministicSign } from '../_helpers/deterministicSign';
 import base58 from '../../src/libs/base58';
 import * as WavesAPI from '../../dist/waves-api.min';
-import * as constants from '../../src/constants';
 
 
 function checkBasicCases(preparedData, data, txType, expectedSignature) {
@@ -62,7 +61,7 @@ describe('Transactions', () => {
             recipient: '3N9UuGeWuDt9NfWbC5oEACHyRoeEMApXAeq',
             assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
             amount: 1000,
-            feeAssetId: constants.WAVES,
+            feeAssetId: Waves.constants.WAVES,
             fee: 100000,
             attachment: '',
             timestamp: 1478864678621
@@ -110,7 +109,7 @@ describe('Transactions', () => {
         orderData = {
             senderPublicKey: keys.publicKey,
             matcherPublicKey: 'Ei5BT6ZvKmB5VQLSZGo8mNkSXsTwGG4zUWjN7yu7iZo5',
-            amountAsset: constants.WAVES,
+            amountAsset: Waves.constants.WAVES,
             priceAsset: 'AaFXAN1WTM39XjECHW7DsVFixhq9yMGWHdM2ghr83Gmf',
             orderType: 'sell',
             amount: 200000000,

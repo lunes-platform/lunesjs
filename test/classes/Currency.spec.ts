@@ -87,6 +87,24 @@ describe('Currency', () => {
 
     });
 
+    it('should return a stored asset by its ID', () => {
+
+        const waves = Currency.get(Waves.constants.WAVES);
+        expect(waves.id).to.equal(Waves.constants.WAVES);
+
+        Currency.create(defaultProps1);
+        const asset = Currency.get(defaultProps1.id);
+        expect(asset.id).to.equal(defaultProps1.id);
+        expect(asset.name).to.equal(defaultProps1.name);
+        expect(asset.precision).to.equal(defaultProps1.precision);
+
+    });
+
+    it('should return `null` for a non-stored asset', () => {
+        const fake = Currency.get('no-such-id');
+        expect(fake).to.be.a('null');
+    });
+
     it('should fail to be created without ID', () => {
         expect(() => {
             Currency.create({
