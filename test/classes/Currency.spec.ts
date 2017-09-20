@@ -68,6 +68,23 @@ describe('Currency', () => {
         expect(list).to.have.lengthOf(1); // Only default Waves asset remains
     });
 
+    it('should switch between storages in different networks', () => {
+
+        Waves.config.set(WavesAPI.TESTNET_CONFIG);
+        const testnetInitialLength = Currency.getKnownCurrencies().length;
+        Currency.create(defaultProps1);
+        const testnetFinalLength = Currency.getKnownCurrencies().length;
+        expect(testnetFinalLength).to.equal(testnetInitialLength + 1);
+
+        Waves.config.set(WavesAPI.MAINNET_CONFIG);
+        const mainnetInitialLength = Currency.getKnownCurrencies().length;
+        Currency.create(defaultProps1);
+        Currency.create(defaultProps2);
+        const mainnetFinalLength = Currency.getKnownCurrencies().length;
+        expect(mainnetFinalLength).to.equal(mainnetInitialLength + 2);
+
+    });
+
     it('should fail to be created without ID', () => {
         expect(() => {
             Currency.create({
