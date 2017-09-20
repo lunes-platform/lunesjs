@@ -11,7 +11,7 @@ describe('tools', function () {
         Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
     });
 
-    it('should build the right address from the given public key', function () {
+    it('should build the right address from the given public key', () => {
 
         const publicKey = 'GL6Cbk3JnD9XiBRK5ntCavSrGGD5JT9pXSRkukcEcaSW';
         const address = '3N1JKsPcQ5x49utR79Maey4tbjssfrn2RYp';

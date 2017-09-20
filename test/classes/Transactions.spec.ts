@@ -34,7 +34,7 @@ let orderData;
 let tempSignDataMethod;
 
 
-describe('Transactions', function () {
+describe('Transactions', () => {
 
     beforeEach(() => {
 
@@ -129,7 +129,7 @@ describe('Transactions', function () {
         Waves.crypto.buildTransactionSignature = tempSignDataMethod;
     });
 
-    it('should sign Issue transaction', function (done) {
+    it('should sign Issue transaction', (done) => {
 
         const data = { ...issueData };
 
@@ -145,7 +145,7 @@ describe('Transactions', function () {
 
     });
 
-    it('should sign Transfer transaction', function (done) {
+    it('should sign Transfer transaction', (done) => {
 
         const data = { ...transferData };
 
@@ -162,7 +162,7 @@ describe('Transactions', function () {
 
     });
 
-    it('should sign Transfer transaction with alias', function (done) {
+    it('should sign Transfer transaction with alias', (done) => {
 
         const alias = 'sasha';
         const data = { ...transferData, recipient: alias };
@@ -180,7 +180,7 @@ describe('Transactions', function () {
 
     });
 
-    it('should sign Transfer transaction with attachment', function (done) {
+    it('should sign Transfer transaction with attachment', (done) => {
 
         const attachment = '123';
         const attachmentBytes = [49, 50, 51];
@@ -199,7 +199,7 @@ describe('Transactions', function () {
 
     });
 
-    it('should sign Reissue transaction', function (done) {
+    it('should sign Reissue transaction', (done) => {
 
         const data = { ...reissueData };
 
@@ -215,7 +215,7 @@ describe('Transactions', function () {
 
     });
 
-    it('should sign Burn transaction', function (done) {
+    it('should sign Burn transaction', (done) => {
 
         const data = { ...burnData };
 
@@ -231,7 +231,7 @@ describe('Transactions', function () {
 
     });
 
-    it('should sign Create Alias transaction', function (done) {
+    it('should sign Create Alias transaction', (done) => {
 
         const data = { ...createAliasData };
 
@@ -258,7 +258,7 @@ describe('Transactions', function () {
 
     });
 
-    it('should sign Lease transaction', function (done) {
+    it('should sign Lease transaction', (done) => {
 
         const data = { ...leaseData };
 
@@ -275,7 +275,7 @@ describe('Transactions', function () {
 
     });
 
-    it('should sign Lease transaction with alias', function (done) {
+    it('should sign Lease transaction with alias', (done) => {
 
         const alias = 'test alias';
         const data = { ...leaseData, recipient: alias };
@@ -293,7 +293,7 @@ describe('Transactions', function () {
 
     });
 
-    it('should sign Cancel Leasing transaction', function (done) {
+    it('should sign Cancel Leasing transaction', (done) => {
 
         const data = { ...cancelLeasingData };
 
@@ -309,7 +309,7 @@ describe('Transactions', function () {
 
     });
 
-    it('should sign Order', function (done) {
+    it('should sign Order', (done) => {
 
         const data = { ...orderData };
 

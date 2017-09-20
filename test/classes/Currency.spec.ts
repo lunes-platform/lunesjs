@@ -8,7 +8,7 @@ let defaultProps1;
 let defaultProps2;
 
 
-describe('Currency', function () {
+describe('Currency', () => {
 
     beforeEach(() => {
 
@@ -31,20 +31,20 @@ describe('Currency', function () {
 
     });
 
-    it('should be an instance of Currency', function () {
+    it('should be an instance of Currency', () => {
         const asset = Currency.create(defaultProps1);
         expect(Currency.isCurrency(asset)).to.be.true;
     });
 
-    it('should be immutable', function () {
+    it('should be immutable', () => {
         const asset = Currency.create(defaultProps1);
-        expect(function () {
+        expect(() => {
             asset.id = 'something';
         }).to.throw();
         expect(asset.id).to.equal(defaultProps1.id);
     });
 
-    it('should create only one instance for one ID', function () {
+    it('should create only one instance for one ID', () => {
         const initialLength = Currency.getKnownCurrencies().length;
         Currency.create(defaultProps1);
         Currency.create(defaultProps1);
@@ -52,7 +52,7 @@ describe('Currency', function () {
         expect(finalLength).to.equal(initialLength + 1);
     });
 
-    it('should create different instances for different IDs', function () {
+    it('should create different instances for different IDs', () => {
         const initialLength = Currency.getKnownCurrencies().length;
         Currency.create(defaultProps1);
         Currency.create(defaultProps2);
@@ -60,7 +60,7 @@ describe('Currency', function () {
         expect(finalLength).to.equal(initialLength + 2);
     });
 
-    it('should reset cache', function () {
+    it('should reset cache', () => {
         Currency.create(defaultProps1);
         Currency.create(defaultProps2);
         Currency.clearCache();
@@ -68,8 +68,8 @@ describe('Currency', function () {
         expect(list).to.have.lengthOf(1); // Only default Waves asset remains
     });
 
-    it('should fail to be created without ID', function () {
-        expect(function () {
+    it('should fail to be created without ID', () => {
+        expect(() => {
             Currency.create({
                 name: 'No Identity',
                 precision: 4
@@ -77,8 +77,8 @@ describe('Currency', function () {
         }).to.throw();
     });
 
-    it('should fail to be created with an empty ID', function () {
-        expect(function () {
+    it('should fail to be created with an empty ID', () => {
+        expect(() => {
             Currency.create({
                 id: '',
                 name: 'Empty Identity',
@@ -87,8 +87,8 @@ describe('Currency', function () {
         }).to.throw();
     });
 
-    it('should fail to be created without a name', function () {
-        expect(function () {
+    it('should fail to be created without a name', () => {
+        expect(() => {
             Currency.create({
                 id: '',
                 precision: 8
@@ -96,8 +96,8 @@ describe('Currency', function () {
         }).to.throw();
     });
 
-    it('should fail to be created with an empty string as a name', function () {
-        expect(function () {
+    it('should fail to be created with an empty string as a name', () => {
+        expect(() => {
             Currency.create({
                 id: '',
                 name: '',
@@ -106,8 +106,8 @@ describe('Currency', function () {
         }).to.throw();
     });
 
-    it('should fail to be created without precision', function () {
-        expect(function () {
+    it('should fail to be created without precision', () => {
+        expect(() => {
             Currency.create({
                 id: '',
                 name: 'test'
@@ -115,8 +115,8 @@ describe('Currency', function () {
         }).to.throw();
     });
 
-    it('should fail to be created with a precision which is not a number', function () {
-        expect(function () {
+    it('should fail to be created with a precision which is not a number', () => {
+        expect(() => {
             Currency.create({
                 id: '',
                 name: 'test',
@@ -125,8 +125,8 @@ describe('Currency', function () {
         }).to.throw();
     });
 
-    it('should fail to be created with a negative precision', function () {
-        expect(function () {
+    it('should fail to be created with a negative precision', () => {
+        expect(() => {
             Currency.create({
                 id: '',
                 name: 'test',
@@ -135,8 +135,8 @@ describe('Currency', function () {
         }).to.throw();
     });
 
-    it('should fail to be created with a too big precision', function () {
-        expect(function () {
+    it('should fail to be created with a too big precision', () => {
+        expect(() => {
             Currency.create({
                 id: '',
                 name: 'test',

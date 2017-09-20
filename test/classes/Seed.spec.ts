@@ -10,7 +10,7 @@ let ADDRESS;
 let KEY_PAIR;
 
 
-describe('Seed', function () {
+describe('Seed', () => {
 
     beforeEach(() => {
 
@@ -26,7 +26,7 @@ describe('Seed', function () {
 
     });
 
-    it('should create a Seed object with 15-word random seed', function () {
+    it('should create a Seed object with 15-word random seed', () => {
 
         const password = '1dna0uaudhJDw390*';
         const wrongPassword = '123';
@@ -45,7 +45,7 @@ describe('Seed', function () {
 
     });
 
-    it('should create a Seed object from existing phrase', function () {
+    it('should create a Seed object from existing phrase', () => {
 
         const password = 'IJ#G%)HJCoskapa319ja';
         const wrongPassword = '123';
@@ -64,7 +64,7 @@ describe('Seed', function () {
 
     });
 
-    it('should encrypt and decrypt seed phrase properly', function () {
+    it('should encrypt and decrypt seed phrase properly', () => {
 
         const password = '370192423hduh198y97ty1as^#T';
 
@@ -80,7 +80,7 @@ describe('Seed', function () {
 
     });
 
-    it('should throw errors when seed phrase is shorter than minimum seed length in config', function () {
+    it('should throw errors when seed phrase is shorter than minimum seed length in config', () => {
 
         const password = '1234567890';
 
