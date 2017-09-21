@@ -39,6 +39,20 @@ describe('Money', () => {
         expect(Money.isMoney(money)).to.be.true;
     });
 
+    it('should create Money with Currency as the `asset` argument', () => {
+        const moneyOne = Money.fromCoins('1000', assetOne);
+        const moneyTwo = Money.fromTokens('1000', assetOne);
+        expect(Money.isMoney(moneyOne)).to.be.true;
+        expect(Money.isMoney(moneyTwo)).to.be.true;
+    });
+
+    it('should create Money with asset ID as the `asset` argument', () => {
+        const moneyOne = Money.fromCoins('1000', assetOne.id);
+        const moneyTwo = Money.fromTokens('1000', assetOne.id);
+        expect(Money.isMoney(moneyOne)).to.be.true;
+        expect(Money.isMoney(moneyTwo)).to.be.true;
+    });
+
     it('should convert tokens to coins and vice versa', () => {
         expect(Money.fromCoins('100000000', assetOne).toTokens()).to.equal('1.00000000');
         expect(Money.fromTokens('1', assetOne).toCoins()).to.equal('100000000');

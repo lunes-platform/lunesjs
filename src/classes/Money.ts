@@ -14,6 +14,14 @@ function getDivider(precision) {
     return new BigNumber(10).pow(precision);
 }
 
+function getAsset(asset: IAsset | string): IAsset {
+    if (typeof asset === 'string') {
+        return Currency.get(asset);
+    } else {
+        return asset;
+    }
+}
+
 
 export interface IMoney {
     toCoins(): string;
@@ -54,11 +62,13 @@ export default {
 
     fromCoins(coins, asset) {
         checkAmount(coins);
+        asset = getAsset(asset);
         return new Money(coins, asset) as IMoney;
     },
 
     fromTokens(tokens, asset) {
         checkAmount(tokens);
+        asset = getAsset(asset);
         const divider = getDivider(asset.precision);
         const coins = new BigNumber(tokens).mul(divider).toFixed(0);
         return new Money(coins, asset) as IMoney;
