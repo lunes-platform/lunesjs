@@ -7,8 +7,7 @@ import * as constants from '../constants';
 const WAVES_PROPS: IAsset = {
     id: constants.WAVES,
     name: 'Waves',
-    precision: 8,
-    ticker: 'WAVES'
+    precision: 8
 };
 
 
@@ -17,9 +16,6 @@ class Currency {
     public readonly id;
     public readonly name;
     public readonly precision;
-
-    public readonly description;
-    public readonly ticker;
 
     constructor(props: IAsset) {
 
@@ -38,9 +34,6 @@ class Currency {
         this.id = props.id;
         this.name = props.name;
         this.precision = props.precision;
-
-        this.description = props.description || '';
-        this.ticker = props.ticker || this.name;
 
     }
 
