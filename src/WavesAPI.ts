@@ -10,7 +10,7 @@ import crypto from './utils/crypto';
 import * as request from './utils/request';
 
 import * as NodeAPI from './api/node/index';
-import { INodeAPIv1 } from './api/node/index';
+import { INodeAPIv1, INodeAPIv2 } from './api/node/index';
 
 import * as constants from './constants';
 import config from './config';
@@ -19,7 +19,8 @@ import tools from './tools';
 
 export interface IAPIVersions {
     Node: {
-        v1: INodeAPIv1
+        v1: INodeAPIv1,
+        v2: INodeAPIv2
     }
 }
 
@@ -51,7 +52,8 @@ class WavesAPI implements IWavesAPI {
 
     public readonly API = {
         Node: {
-            v1: NodeAPI.v1
+            v1: NodeAPI.v1,
+            v2: NodeAPI.v2
         }
     };
 

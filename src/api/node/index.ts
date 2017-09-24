@@ -1,4 +1,4 @@
-import { IHash, IKeyPair } from '../../../interfaces';
+import { IHash, IKeyPair, TTransactionType } from '../../../interfaces';
 
 import v1Addresses from './v1/addresses';
 import v1Aliases from './v1/aliases';
@@ -6,6 +6,8 @@ import v1Assets from './v1/assets';
 import v1Blocks from './v1/blocks';
 import v1Leasing from './v1/leasing';
 import v1Transactions from './v1/transactions';
+
+import v2Addresses from './v2/addresses';
 
 
 export interface INodeAPIv1 {
@@ -47,7 +49,6 @@ export interface INodeAPIv1 {
     }
 }
 
-
 export const v1: INodeAPIv1 = {
     addresses: v1Addresses,
     aliases: v1Aliases,
@@ -55,4 +56,31 @@ export const v1: INodeAPIv1 = {
     blocks: v1Blocks,
     leasing: v1Leasing,
     transactions: v1Transactions
+};
+
+
+export interface INodeAPIv2 {
+    addresses: {
+        get(address: string): Promise<any>;
+        // balances(address: string, options: {
+        //     assets?: Array<string>,
+        //     limit?: number,
+        //     offset?: number
+        // }): Promise<any>;
+        // transactions(address: string, options: {
+        //     type?: TTransactionType,
+        //     sender?: string,
+        //     recipient?: string,
+        //     limit?: number,
+        //     offset?: number
+        // }): Promise<any>;
+        // unconfirmedTransactions(address: string, options: {
+        //     limit?: number,
+        //     offset?: number
+        // }): Promise<any>;
+    }
+}
+
+export const v2: INodeAPIv2 = {
+    addresses: v2Addresses
 };

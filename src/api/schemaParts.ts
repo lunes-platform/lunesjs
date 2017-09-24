@@ -1,48 +1,74 @@
+import { IPartialOptions } from 'ts-api-validator/src/interfaces';
+import { IMoney } from '../classes/Money';
+
 import { getTimestamp, removeRecipientPrefix } from '../utils/remap';
-import { IBooleanPart, INumberPart, IStringPart } from 'ts-api-validator/src/interfaces';
+import { BasePart, BooleanPart, NumberPart, StringPart } from 'ts-api-validator';
 import * as constants from '../constants';
+import Money from '../classes/Money';
+
+
+export interface IMoneyPartOptions extends IPartialOptions<IMoney> {
+    assetId: string;
+}
+
+export class MoneyPart extends BasePart<IPartialOptions<IMoney>> {
+
+    protected options: IMoneyPartOptions;
+
+    protected getValue(data: any) {
+        if (data && Money.isMoney(data)) {
+            return data;
+        } else if (typeof data === 'string' && this.options.assetId) {
+            // TODO : replace with `fromTokens` in the new API
+            return Money.fromCoins(data, this.options.assetId);
+        } else {
+            return null;
+        }
+    }
+
+}
 
 
 export default {
 
     publicKey: {
-        type: 'string',
+        type: StringPart,
         required: true
-    } as IStringPart,
+    },
 
     assetId: {
-        type: 'string',
+        type: StringPart,
         required: true
-    } as IStringPart,
+    },
 
     fee: {
-        type: 'number',
+        type: NumberPart,
         required: false,
         defaultValue: constants.MINIMUM_FEE
-    } as INumberPart,
+    },
 
     issueFee: {
-        type: 'number',
+        type: NumberPart,
         required: false,
         defaultValue: constants.MINIMUM_ISSUE_FEE
-    } as INumberPart,
+    },
 
     recipient: {
-        type: 'string',
+        type: StringPart,
         required: true,
         parseValue: removeRecipientPrefix
-    } as IStringPart,
+    },
 
     reissuable: {
-        type: 'boolean',
+        type: BooleanPart,
         required: false,
         defaultValue: false
-    } as IBooleanPart,
+    },
 
     timestamp: {
-        type: 'number',
+        type: NumberPart,
         required: true,
         parseValue: getTimestamp
-    } as INumberPart
+    }
 
 }

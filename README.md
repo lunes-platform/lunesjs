@@ -447,7 +447,8 @@ There is the most understandable type of Waves balance. It is the regular balanc
 1. *Regular* — that's how much Waves you have, including those you leased;
 2. *Available* — the same as _regular_ only without Waves you leased;
 3. *Effective* — _available_ plus those Waves which is leased to you;
-4. *Generating* — the minimal _effective_ for last 1000 blocks.
+4. *Generating* — the minimal _effective_ for last 1000 blocks;
+5. *Leased* — the amount you leased to other addresses.
 
 Available balance you can lease and spend.
 

@@ -1,29 +1,29 @@
-import { Schema } from 'ts-api-validator';
+import { Schema, NumberPart, ObjectPart, StringPart } from 'ts-api-validator';
 import { precisionCheck } from '../../../utils/remap';
 import * as constants from '../../../constants';
 import schemaParts from '../../schemaParts';
 
 
 export const issueSchema = new Schema({
-    type: 'object',
+    type: ObjectPart,
     required: true,
     content: {
         senderPublicKey: schemaParts.publicKey,
         name: {
-            type: 'string',
+            type: StringPart,
             required: true
         },
         description: {
-            type: 'string',
+            type: StringPart,
             required: false,
             defaultValue: ''
         },
         quantity: {
-            type: 'number',
+            type: NumberPart,
             required: true
         },
         precision: {
-            type: 'number',
+            type: NumberPart,
             required: true,
             isValid: precisionCheck
         },
@@ -34,24 +34,24 @@ export const issueSchema = new Schema({
 });
 
 export const transferSchema = new Schema({
-    type: 'object',
+    type: ObjectPart,
     required: true,
     content: {
         senderPublicKey: schemaParts.publicKey,
         recipient: schemaParts.recipient,
         assetId: schemaParts.assetId,
         amount: {
-            type: 'number',
+            type: NumberPart,
             required: true
         },
         feeAssetId: {
-            type: 'string',
+            type: StringPart,
             required: false,
             defaultValue: constants.WAVES
         },
         fee: schemaParts.fee,
         attachment: {
-            type: 'string',
+            type: StringPart,
             required: false,
             defaultValue: ''
         },
@@ -60,13 +60,13 @@ export const transferSchema = new Schema({
 });
 
 export const reissueSchema = new Schema({
-    type: 'object',
+    type: ObjectPart,
     required: true,
     content: {
         senderPublicKey: schemaParts.publicKey,
         assetId: schemaParts.assetId,
         quantity: {
-            type: 'number',
+            type: NumberPart,
             required: true
         },
         reissuable: schemaParts.reissuable,
@@ -76,13 +76,13 @@ export const reissueSchema = new Schema({
 });
 
 export const burnSchema = new Schema({
-    type: 'object',
+    type: ObjectPart,
     required: true,
     content: {
         senderPublicKey: schemaParts.publicKey,
         assetId: schemaParts.assetId,
         quantity: {
-            type: 'number',
+            type: NumberPart,
             required: true
         },
         fee: schemaParts.fee,

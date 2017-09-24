@@ -1,15 +1,15 @@
-import { Schema } from 'ts-api-validator';
+import { Schema, NumberPart, ObjectPart, StringPart } from 'ts-api-validator';
 import schemaParts from '../../schemaParts';
 
 
 export const leaseSchema = new Schema({
-    type: 'object',
+    type: ObjectPart,
     required: true,
     content: {
         senderPublicKey: schemaParts.publicKey,
         recipient: schemaParts.recipient,
         amount: {
-            type: 'number',
+            type: NumberPart,
             required: true
         },
         fee: schemaParts.fee,
@@ -18,12 +18,12 @@ export const leaseSchema = new Schema({
 });
 
 export const cancelLeasingSchema = new Schema({
-    type: 'object',
+    type: ObjectPart,
     required: true,
     content: {
         senderPublicKey: schemaParts.publicKey,
         transactionId: {
-            type: 'string',
+            type: StringPart,
             required: true
         },
         fee: schemaParts.fee,
