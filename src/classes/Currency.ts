@@ -1,23 +1,27 @@
-import { IAsset } from '../../interfaces';
+import { IAssetObject } from '../../interfaces';
 
 import config from '../config';
 import * as constants from '../constants';
 
 
-const WAVES_PROPS: IAsset = {
+const WAVES_PROPS: IAssetObject = {
     id: constants.WAVES,
     name: 'Waves',
     precision: 8
 };
 
 
-class Currency {
+export interface IAsset extends IAssetObject {
+    toString(): string;
+}
+
+class Currency implements IAsset {
 
     public readonly id;
     public readonly name;
     public readonly precision;
 
-    constructor(props: IAsset) {
+    constructor(props: IAssetObject) {
 
         if (!props.id) {
             throw new Error('An attempt to create Currency without ID');
@@ -35,6 +39,10 @@ class Currency {
         this.name = props.name;
         this.precision = props.precision;
 
+    }
+
+    public toString() {
+        return this.id;
     }
 
 }

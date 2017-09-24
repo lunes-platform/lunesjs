@@ -9,12 +9,10 @@ interface IHash<T> {
     [key: string]: T;
 }
 
-export interface IAsset {
+export interface IAssetObject {
     readonly id: string;
     readonly name: string;
     readonly precision: TPrecision;
-    readonly description?: string;
-    readonly ticker?: string;
 }
 
 export interface IKeyPair {

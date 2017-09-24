@@ -1,4 +1,4 @@
-import { IAsset } from '../../interfaces';
+import { IAssetObject } from '../../interfaces';
 
 import BigNumber from 'bignumber.js';
 import Currency from './Currency';
@@ -14,7 +14,7 @@ function getDivider(precision) {
     return new BigNumber(10).pow(precision);
 }
 
-function getAsset(asset: IAsset | string): IAsset {
+function getAsset(asset: IAssetObject | string): IAssetObject {
     if (typeof asset === 'string') {
         return Currency.get(asset);
     } else {
@@ -26,24 +26,26 @@ function getAsset(asset: IAsset | string): IAsset {
 export interface IMoney {
     toCoins(): string;
     toTokens(): string;
+    toJSON(): object;
+    toString(): string;
 }
 
 
 class Money implements IMoney {
 
+    private asset: IAssetObject;
     private coins: BigNumber;
     private divider: BigNumber;
-    private precision: number;
 
-    constructor(coins, asset: IAsset) {
+    constructor(coins, asset: IAssetObject) {
 
         if (!Currency.isCurrency(asset)) {
             throw new Error('Please use Currency for the `asset` argument');
         }
 
+        this.asset = asset;
         this.coins = new BigNumber(coins);
         this.divider = getDivider(asset.precision);
-        this.precision = asset.precision;
 
     }
 
@@ -52,7 +54,18 @@ class Money implements IMoney {
     }
 
     public toTokens() {
-        return this.coins.div(this.divider).toFixed(this.precision);
+        return this.coins.div(this.divider).toFixed(this.asset.precision);
+    }
+
+    public toJSON() {
+        return {
+            asset: this.asset,
+            tokens: this.toTokens()
+        };
+    }
+
+    public toString() {
+        return `${this.toTokens()} ${this.asset.id}`;
     }
 
 }

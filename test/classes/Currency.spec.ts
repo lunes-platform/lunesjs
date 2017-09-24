@@ -182,4 +182,14 @@ describe('Currency', () => {
         }).to.throw();
     });
 
+    it('should convert to JSON', () => {
+        const a = Currency.create(defaultProps1);
+        expect(JSON.stringify(a)).to.equal('{"id":"test1","name":"Test No. 1","precision":0}');
+    });
+
+    it('should convert to a string', () => {
+        const a = Currency.create(defaultProps1);
+        expect(a.toString()).to.equal(defaultProps1.id);
+    });
+
 });
