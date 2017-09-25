@@ -1,3 +1,4 @@
+import { IAsset } from './Asset';
 import { IAssetObject } from '../../interfaces';
 
 import BigNumber from 'bignumber.js';
@@ -5,7 +6,7 @@ import Asset from './Asset';
 
 
 function checkAmount(amount) {
-    if (!(typeof amount === 'string' || (amount as any) instanceof BigNumber)) {
+    if (!(typeof amount === 'string' || amount instanceof BigNumber)) {
         throw new Error('Please use strings to create instances of Money');
     }
 }
@@ -14,11 +15,11 @@ function getDivider(precision) {
     return new BigNumber(10).pow(precision);
 }
 
-function getAsset(asset: IAssetObject | string): IAssetObject {
+function getAsset(asset: IAssetObject | string): IAsset {
     if (typeof asset === 'string') {
         return Asset.get(asset);
     } else {
-        return asset;
+        return Asset.create(asset);
     }
 }
 
@@ -33,11 +34,11 @@ export interface IMoney {
 
 class Money implements IMoney {
 
-    private asset: IAssetObject;
+    private asset: IAsset;
     private coins: BigNumber;
     private divider: BigNumber;
 
-    constructor(coins, asset: IAssetObject) {
+    constructor(coins, asset: IAsset) {
 
         if (!Asset.isAsset(asset)) {
             throw new Error('Please use Asset for the `asset` argument');

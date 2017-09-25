@@ -1,5 +1,5 @@
-import { Schema, ArrayPart, ObjectPart, StringPart } from 'ts-api-validator';
-import { MoneyPart } from '../../schemaParts';
+import { Schema, ArrayPart, NumberPart, ObjectPart, StringPart } from 'ts-api-validator';
+import { MoneyPart } from '../../schema.MoneyPart';
 import * as constants from '../../../constants';
 
 
@@ -52,5 +52,43 @@ export const aliasesByAddressSchema = new Schema({
     required: true,
     content: {
         type: StringPart
+    }
+});
+
+export const assetBalancesSchema = new Schema({
+    type: ArrayPart,
+    required: true,
+    path: 'balances',
+    content: {
+        type: ObjectPart,
+        content: {
+            id: {
+                type: StringPart,
+                required: true,
+                path: 'assetId'
+            },
+            name: {
+                type: StringPart,
+                required: true,
+                path: 'issueTransaction.name'
+            },
+            precision: {
+                type: NumberPart,
+                required: true,
+                path: 'issueTransaction.decimals'
+            },
+            amount: {
+                type: MoneyPart,
+                required: true,
+                path: 'balance',
+                asset: {
+                    idPath: 'assetId',
+                    namePath: 'issueTransaction.name',
+                    precisionPath: 'issueTransaction.decimals',
+                    descriptionPath: 'issueTransaction.description'
+                },
+                parseValue: temporaryStringConversion
+            }
+        }
     }
 });

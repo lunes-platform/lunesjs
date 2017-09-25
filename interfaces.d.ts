@@ -5,7 +5,7 @@ export type TBuffer = Uint8Array | number[];
 export type TTransactionType = 'issue' | 'transfer' | 'reissue' | 'burn' | 'exchange' | 'lease' | 'cancelLeasing' | 'createAlias';
 
 
-interface IHash<T> {
+export interface IHash<T> {
     [key: string]: T;
 }
 
@@ -13,6 +13,7 @@ export interface IAssetObject {
     readonly id: string;
     readonly name: string;
     readonly precision: TPrecision;
+    description?: string;
 }
 
 export interface IKeyPair {
@@ -30,6 +31,18 @@ export interface IWavesConfig {
     nodeAddress: string;
     matcherAddress: string;
     minimumSeedLength: number;
+}
+
+
+// API interfaces
+
+export interface IAPIOptions {
+    limit?: number;
+    offset?: number;
+}
+
+export interface IAPIBalanceOptions extends IAPIOptions {
+    assets?: string[];
 }
 
 

@@ -1,7 +1,12 @@
-import { IWavesConfig } from '../interfaces';
+import { IAssetObject, IWavesConfig } from '../interfaces';
 
 
 export const WAVES = 'WAVES';
+export const WAVES_PROPS: IAssetObject = {
+    id: WAVES,
+    name: 'Waves',
+    precision: 8
+};
 
 export const MAINNET_BYTE: number = 'W'.charCodeAt(0);
 export const TESTNET_BYTE: number = 'T'.charCodeAt(0);

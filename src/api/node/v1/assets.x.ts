@@ -1,14 +1,14 @@
 import { Schema, NumberPart, ObjectPart, StringPart } from 'ts-api-validator';
 import { precisionCheck } from '../../../utils/remap';
 import * as constants from '../../../constants';
-import schemaParts from '../../schemaParts';
+import schemaFields from '../../schemaFields';
 
 
 export const issueSchema = new Schema({
     type: ObjectPart,
     required: true,
     content: {
-        senderPublicKey: schemaParts.publicKey,
+        senderPublicKey: schemaFields.publicKey,
         name: {
             type: StringPart,
             required: true
@@ -27,9 +27,9 @@ export const issueSchema = new Schema({
             required: true,
             isValid: precisionCheck
         },
-        reissuable: schemaParts.reissuable,
-        fee: schemaParts.issueFee,
-        timestamp: schemaParts.timestamp
+        reissuable: schemaFields.reissuable,
+        fee: schemaFields.issueFee,
+        timestamp: schemaFields.timestamp
     }
 });
 
@@ -37,9 +37,9 @@ export const transferSchema = new Schema({
     type: ObjectPart,
     required: true,
     content: {
-        senderPublicKey: schemaParts.publicKey,
-        recipient: schemaParts.recipient,
-        assetId: schemaParts.assetId,
+        senderPublicKey: schemaFields.publicKey,
+        recipient: schemaFields.recipient,
+        assetId: schemaFields.assetId,
         amount: {
             type: NumberPart,
             required: true
@@ -49,13 +49,13 @@ export const transferSchema = new Schema({
             required: false,
             defaultValue: constants.WAVES
         },
-        fee: schemaParts.fee,
+        fee: schemaFields.fee,
         attachment: {
             type: StringPart,
             required: false,
             defaultValue: ''
         },
-        timestamp: schemaParts.timestamp
+        timestamp: schemaFields.timestamp
     }
 });
 
@@ -63,15 +63,15 @@ export const reissueSchema = new Schema({
     type: ObjectPart,
     required: true,
     content: {
-        senderPublicKey: schemaParts.publicKey,
-        assetId: schemaParts.assetId,
+        senderPublicKey: schemaFields.publicKey,
+        assetId: schemaFields.assetId,
         quantity: {
             type: NumberPart,
             required: true
         },
-        reissuable: schemaParts.reissuable,
-        fee: schemaParts.fee,
-        timestamp: schemaParts.timestamp
+        reissuable: schemaFields.reissuable,
+        fee: schemaFields.fee,
+        timestamp: schemaFields.timestamp
     }
 });
 
@@ -79,13 +79,13 @@ export const burnSchema = new Schema({
     type: ObjectPart,
     required: true,
     content: {
-        senderPublicKey: schemaParts.publicKey,
-        assetId: schemaParts.assetId,
+        senderPublicKey: schemaFields.publicKey,
+        assetId: schemaFields.assetId,
         quantity: {
             type: NumberPart,
             required: true
         },
-        fee: schemaParts.fee,
-        timestamp: schemaParts.timestamp
+        fee: schemaFields.fee,
+        timestamp: schemaFields.timestamp
     }
 });

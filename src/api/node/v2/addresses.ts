@@ -1,8 +1,13 @@
-import { detailedWavesBalanceSchema, aliasesByAddressSchema } from './addresses.x';
+import { IAPIBalanceOptions } from '../../../../interfaces';
+
+import { detailedWavesBalanceSchema, aliasesByAddressSchema, assetBalancesSchema } from './addresses.x';
+import { WAVES, WAVES_PROPS } from '../../../constants';
+import Money from '../../../classes/Money';
 
 /** TEMPORARY MOCKS */
 import v1Addresses from '../v1/addresses';
 import v1Aliases from '../v1/aliases';
+import v1Assets from '../v1/assets';
 
 
 export default {
@@ -22,6 +27,34 @@ export default {
                 wavesBalance: results[0],
                 aliases: results[1]
             };
+        });
+
+    },
+
+    balances(address, options: IAPIBalanceOptions) {
+
+        const wavesBalance = v1Addresses.balance(address).then((data) => {
+            return [{
+                ...WAVES_PROPS,
+                amount: Money.fromCoins(String(data.balance), WAVES)
+            }];
+        });
+
+        const assetBalances = v1Assets.balances(address).then((data) => {
+            return assetBalancesSchema.parse(data);
+        });
+
+        return Promise.all([wavesBalance, assetBalances]).then((results) => {
+            const balances = [...results[0], ...results[1]];
+            return balances.sort((a, b) => a.id > b.id ? -1 : 1);
+        }).then((array) => {
+
+            if (options.assets) {
+                array = array.filter((item) => options.assets.indexOf(item.id) !== -1);
+            }
+
+            return array;
+
         });
 
     }

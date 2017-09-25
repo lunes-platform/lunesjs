@@ -1,18 +1,12 @@
 import { IAssetObject } from '../../interfaces';
 
+import { WAVES_PROPS } from '../constants';
 import config from '../config';
-import * as constants from '../constants';
-
-
-const WAVES_PROPS: IAssetObject = {
-    id: constants.WAVES,
-    name: 'Waves',
-    precision: 8
-};
 
 
 export interface IAsset extends IAssetObject {
-    toString(): string;
+    rating: number;
+    ticker: string;
 }
 
 class Asset implements IAsset {
@@ -20,6 +14,10 @@ class Asset implements IAsset {
     public readonly id;
     public readonly name;
     public readonly precision;
+    public description;
+
+    public rating;
+    public ticker;
 
     constructor(props: IAssetObject) {
 
@@ -38,6 +36,10 @@ class Asset implements IAsset {
         this.id = props.id;
         this.name = props.name;
         this.precision = props.precision;
+        this.description = props.description || '';
+
+        this.rating = 0;
+        this.ticker = '';
 
     }
 
@@ -63,7 +65,7 @@ function resolveStorage() {
 
 function putAsset(storage, assetProps) {
     const asset = new Asset(assetProps);
-    storage[asset.id] = Object.freeze(asset);
+    storage[asset.id] = asset;
 }
 
 

@@ -36,14 +36,6 @@ describe('Asset', () => {
         expect(Asset.isAsset(asset)).to.be.true;
     });
 
-    it('should be immutable', () => {
-        const asset = Asset.create(defaultProps1);
-        expect(() => {
-            asset.id = 'something';
-        }).to.throw();
-        expect(asset.id).to.equal(defaultProps1.id);
-    });
-
     it('should create only one instance for one ID', () => {
         const initialLength = Asset.getKnownAssets().length;
         Asset.create(defaultProps1);
@@ -184,7 +176,7 @@ describe('Asset', () => {
 
     it('should convert to JSON', () => {
         const a = Asset.create(defaultProps1);
-        expect(JSON.stringify(a)).to.equal('{"id":"test1","name":"Test No. 1","precision":0}');
+        expect(JSON.stringify(a)).to.equal('{"id":"test1","name":"Test No. 1","precision":0,"description":"","rating":0,"ticker":""}');
     });
 
     it('should convert to a string', () => {

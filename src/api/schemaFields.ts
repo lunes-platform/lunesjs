@@ -1,32 +1,6 @@
-import { IPartialOptions } from 'ts-api-validator/src/interfaces';
-import { IMoney } from '../classes/Money';
-
+import { BooleanPart, NumberPart, StringPart } from 'ts-api-validator';
 import { getTimestamp, removeRecipientPrefix } from '../utils/remap';
-import { BasePart, BooleanPart, NumberPart, StringPart } from 'ts-api-validator';
 import * as constants from '../constants';
-import Money from '../classes/Money';
-
-
-export interface IMoneyPartOptions extends IPartialOptions<IMoney> {
-    assetId: string;
-}
-
-export class MoneyPart extends BasePart<IPartialOptions<IMoney>> {
-
-    protected options: IMoneyPartOptions;
-
-    protected getValue(data: any) {
-        if (data && Money.isMoney(data)) {
-            return data;
-        } else if (typeof data === 'string' && this.options.assetId) {
-            // TODO : replace with `fromTokens` in the new API
-            return Money.fromCoins(data, this.options.assetId);
-        } else {
-            return null;
-        }
-    }
-
-}
 
 
 export default {

@@ -67,7 +67,7 @@ describe('Money', () => {
 
     it('should convert to JSON', () => {
         const m = Money.fromTokens('1000', assetOne);
-        expect(JSON.stringify(m)).to.equal('{"asset":{"id":"0001","name":"First asset","precision":8},"tokens":"1000.00000000"}');
+        expect(JSON.stringify(m)).to.equal('{"asset":{"id":"0001","name":"First asset","precision":8,"description":"","rating":0,"ticker":""},"tokens":"1000.00000000"}');
     });
 
     it('should convert to a string', () => {
