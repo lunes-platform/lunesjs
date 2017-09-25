@@ -8,11 +8,14 @@ import Money from '../../../classes/Money';
 import v1Addresses from '../v1/addresses';
 import v1Aliases from '../v1/aliases';
 import v1Assets from '../v1/assets';
+import _warn from './_warn';
 
 
 export default {
 
     get(address) {
+
+        _warn();
 
         const balanceDetails = v1Addresses.balanceDetails(address).then((data) => {
             return detailedWavesBalanceSchema.parse(data);
@@ -32,6 +35,8 @@ export default {
     },
 
     balances(address, options: IAPIBalanceOptions = {}) {
+
+        _warn();
 
         const wavesBalance = v1Addresses.balance(address).then((data) => {
             return [{
