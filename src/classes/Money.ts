@@ -1,7 +1,7 @@
 import { IAssetObject } from '../../interfaces';
 
 import BigNumber from 'bignumber.js';
-import Currency from './Currency';
+import Asset from './Asset';
 
 
 function checkAmount(amount) {
@@ -16,7 +16,7 @@ function getDivider(precision) {
 
 function getAsset(asset: IAssetObject | string): IAssetObject {
     if (typeof asset === 'string') {
-        return Currency.get(asset);
+        return Asset.get(asset);
     } else {
         return asset;
     }
@@ -39,8 +39,8 @@ class Money implements IMoney {
 
     constructor(coins, asset: IAssetObject) {
 
-        if (!Currency.isCurrency(asset)) {
-            throw new Error('Please use Currency for the `asset` argument');
+        if (!Asset.isAsset(asset)) {
+            throw new Error('Please use Asset for the `asset` argument');
         }
 
         this.asset = asset;

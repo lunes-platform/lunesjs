@@ -15,7 +15,7 @@ export interface IAsset extends IAssetObject {
     toString(): string;
 }
 
-class Currency implements IAsset {
+class Asset implements IAsset {
 
     public readonly id;
     public readonly name;
@@ -24,15 +24,15 @@ class Currency implements IAsset {
     constructor(props: IAssetObject) {
 
         if (!props.id) {
-            throw new Error('An attempt to create Currency without ID');
+            throw new Error('An attempt to create Asset without ID');
         }
 
         if (!props.name) {
-            throw new Error('An attempt to create Currency without a name');
+            throw new Error('An attempt to create Asset without a name');
         }
 
         if (typeof props.precision !== 'number' || props.precision < 0 || props.precision > 8) {
-            throw new Error(`An attempt to create Currency with wrong precision (${props.precision})`);
+            throw new Error(`An attempt to create Asset with wrong precision (${props.precision})`);
         }
 
         this.id = props.id;
@@ -56,14 +56,14 @@ function resolveStorage() {
         return storages[network];
     } else {
         storages[network] = Object.create(null);
-        putCurrency(storages[network], WAVES_PROPS);
+        putAsset(storages[network], WAVES_PROPS);
         return storages[network];
     }
 }
 
-function putCurrency(storage, currencyProps) {
-    const currency = new Currency(currencyProps);
-    storage[currency.id] = Object.freeze(currency);
+function putAsset(storage, assetProps) {
+    const asset = new Asset(assetProps);
+    storage[asset.id] = Object.freeze(asset);
 }
 
 
@@ -74,7 +74,7 @@ export default {
         if (storage[props.id]) {
             return storage[props.id];
         } else {
-            putCurrency(storage, props);
+            putAsset(storage, props);
             return storage[props.id];
         }
     },
@@ -84,7 +84,7 @@ export default {
         return storage[id] || null;
     },
 
-    getKnownCurrencies() {
+    getKnownAssets() {
         const storage = resolveStorage();
         return Object.keys(storage).map(function (key) {
             return storage[key];
@@ -95,8 +95,8 @@ export default {
         storages = Object.create(null);
     },
 
-    isCurrency(object) {
-        return object instanceof Currency;
+    isAsset(object) {
+        return object instanceof Asset;
     }
 
 };

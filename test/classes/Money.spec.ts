@@ -15,13 +15,13 @@ describe('Money', () => {
         Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
         Money = Waves.Money;
 
-        assetOne = Waves.Currency.create({
+        assetOne = Waves.Asset.create({
             id: '0001',
             name: 'First asset',
             precision: 8
         });
 
-        assetTwo = Waves.Currency.create({
+        assetTwo = Waves.Asset.create({
             id: '0002',
             name: 'Second asset',
             precision: 4
@@ -39,7 +39,7 @@ describe('Money', () => {
         expect(Money.isMoney(money)).to.be.true;
     });
 
-    it('should create Money with Currency as the `asset` argument', () => {
+    it('should create Money with Asset as the `asset` argument', () => {
         const moneyOne = Money.fromCoins('1000', assetOne);
         const moneyTwo = Money.fromTokens('1000', assetOne);
         expect(Money.isMoney(moneyOne)).to.be.true;

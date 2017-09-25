@@ -3,12 +3,12 @@ import * as WavesAPI from '../../dist/waves-api.min';
 
 
 let Waves;
-let Currency;
+let Asset;
 let defaultProps1;
 let defaultProps2;
 
 
-describe('Currency', () => {
+describe('Asset', () => {
 
     beforeEach(() => {
 
@@ -26,18 +26,18 @@ describe('Currency', () => {
             precision: 4
         };
 
-        Currency = Waves.Currency;
-        Currency.clearCache();
+        Asset = Waves.Asset;
+        Asset.clearCache();
 
     });
 
-    it('should be an instance of Currency', () => {
-        const asset = Currency.create(defaultProps1);
-        expect(Currency.isCurrency(asset)).to.be.true;
+    it('should be an instance of Asset', () => {
+        const asset = Asset.create(defaultProps1);
+        expect(Asset.isAsset(asset)).to.be.true;
     });
 
     it('should be immutable', () => {
-        const asset = Currency.create(defaultProps1);
+        const asset = Asset.create(defaultProps1);
         expect(() => {
             asset.id = 'something';
         }).to.throw();
@@ -45,42 +45,42 @@ describe('Currency', () => {
     });
 
     it('should create only one instance for one ID', () => {
-        const initialLength = Currency.getKnownCurrencies().length;
-        Currency.create(defaultProps1);
-        Currency.create(defaultProps1);
-        const finalLength = Currency.getKnownCurrencies().length;
+        const initialLength = Asset.getKnownAssets().length;
+        Asset.create(defaultProps1);
+        Asset.create(defaultProps1);
+        const finalLength = Asset.getKnownAssets().length;
         expect(finalLength).to.equal(initialLength + 1);
     });
 
     it('should create different instances for different IDs', () => {
-        const initialLength = Currency.getKnownCurrencies().length;
-        Currency.create(defaultProps1);
-        Currency.create(defaultProps2);
-        const finalLength = Currency.getKnownCurrencies().length;
+        const initialLength = Asset.getKnownAssets().length;
+        Asset.create(defaultProps1);
+        Asset.create(defaultProps2);
+        const finalLength = Asset.getKnownAssets().length;
         expect(finalLength).to.equal(initialLength + 2);
     });
 
     it('should reset cache', () => {
-        Currency.create(defaultProps1);
-        Currency.create(defaultProps2);
-        Currency.clearCache();
-        const list = Currency.getKnownCurrencies();
+        Asset.create(defaultProps1);
+        Asset.create(defaultProps2);
+        Asset.clearCache();
+        const list = Asset.getKnownAssets();
         expect(list).to.have.lengthOf(1); // Only default Waves asset remains
     });
 
     it('should switch between storages in different networks', () => {
 
         Waves.config.set(WavesAPI.TESTNET_CONFIG);
-        const testnetInitialLength = Currency.getKnownCurrencies().length;
-        Currency.create(defaultProps1);
-        const testnetFinalLength = Currency.getKnownCurrencies().length;
+        const testnetInitialLength = Asset.getKnownAssets().length;
+        Asset.create(defaultProps1);
+        const testnetFinalLength = Asset.getKnownAssets().length;
         expect(testnetFinalLength).to.equal(testnetInitialLength + 1);
 
         Waves.config.set(WavesAPI.MAINNET_CONFIG);
-        const mainnetInitialLength = Currency.getKnownCurrencies().length;
-        Currency.create(defaultProps1);
-        Currency.create(defaultProps2);
-        const mainnetFinalLength = Currency.getKnownCurrencies().length;
+        const mainnetInitialLength = Asset.getKnownAssets().length;
+        Asset.create(defaultProps1);
+        Asset.create(defaultProps2);
+        const mainnetFinalLength = Asset.getKnownAssets().length;
         expect(mainnetFinalLength).to.equal(mainnetInitialLength + 2);
 
         Waves.config.set(WavesAPI.TESTNET_CONFIG);
@@ -89,11 +89,11 @@ describe('Currency', () => {
 
     it('should return a stored asset by its ID', () => {
 
-        const waves = Currency.get(Waves.constants.WAVES);
+        const waves = Asset.get(Waves.constants.WAVES);
         expect(waves.id).to.equal(Waves.constants.WAVES);
 
-        Currency.create(defaultProps1);
-        const asset = Currency.get(defaultProps1.id);
+        Asset.create(defaultProps1);
+        const asset = Asset.get(defaultProps1.id);
         expect(asset.id).to.equal(defaultProps1.id);
         expect(asset.name).to.equal(defaultProps1.name);
         expect(asset.precision).to.equal(defaultProps1.precision);
@@ -101,13 +101,13 @@ describe('Currency', () => {
     });
 
     it('should return `null` for a non-stored asset', () => {
-        const fake = Currency.get('no-such-id');
+        const fake = Asset.get('no-such-id');
         expect(fake).to.be.a('null');
     });
 
     it('should fail to be created without ID', () => {
         expect(() => {
-            Currency.create({
+            Asset.create({
                 name: 'No Identity',
                 precision: 4
             });
@@ -116,7 +116,7 @@ describe('Currency', () => {
 
     it('should fail to be created with an empty ID', () => {
         expect(() => {
-            Currency.create({
+            Asset.create({
                 id: '',
                 name: 'Empty Identity',
                 precision: 4
@@ -126,7 +126,7 @@ describe('Currency', () => {
 
     it('should fail to be created without a name', () => {
         expect(() => {
-            Currency.create({
+            Asset.create({
                 id: '',
                 precision: 8
             });
@@ -135,7 +135,7 @@ describe('Currency', () => {
 
     it('should fail to be created with an empty string as a name', () => {
         expect(() => {
-            Currency.create({
+            Asset.create({
                 id: '',
                 name: '',
                 precision: 8
@@ -145,7 +145,7 @@ describe('Currency', () => {
 
     it('should fail to be created without precision', () => {
         expect(() => {
-            Currency.create({
+            Asset.create({
                 id: '',
                 name: 'test'
             });
@@ -154,7 +154,7 @@ describe('Currency', () => {
 
     it('should fail to be created with a precision which is not a number', () => {
         expect(() => {
-            Currency.create({
+            Asset.create({
                 id: '',
                 name: 'test',
                 precision: '0'
@@ -164,7 +164,7 @@ describe('Currency', () => {
 
     it('should fail to be created with a negative precision', () => {
         expect(() => {
-            Currency.create({
+            Asset.create({
                 id: '',
                 name: 'test',
                 precision: -1
@@ -174,7 +174,7 @@ describe('Currency', () => {
 
     it('should fail to be created with a too big precision', () => {
         expect(() => {
-            Currency.create({
+            Asset.create({
                 id: '',
                 name: 'test',
                 precision: 9
@@ -183,12 +183,12 @@ describe('Currency', () => {
     });
 
     it('should convert to JSON', () => {
-        const a = Currency.create(defaultProps1);
+        const a = Asset.create(defaultProps1);
         expect(JSON.stringify(a)).to.equal('{"id":"test1","name":"Test No. 1","precision":0}');
     });
 
     it('should convert to a string', () => {
-        const a = Currency.create(defaultProps1);
+        const a = Asset.create(defaultProps1);
         expect(a.toString()).to.equal(defaultProps1.id);
     });
 

@@ -1,7 +1,7 @@
 import { IHash, IWavesConfig } from '../interfaces';
 import { ITransactionClassConstructor } from './classes/Transactions';
 
-import Currency from './classes/Currency';
+import Asset from './classes/Asset';
 import Money from './classes/Money';
 import Seed from './classes/Seed';
 import Transactions from './classes/Transactions';
@@ -25,7 +25,7 @@ export interface IAPIVersions {
 }
 
 export interface IWavesAPI {
-    Currency: any;
+    Asset: any;
     Money: any;
     Seed: typeof Seed;
     Transactions: IHash<ITransactionClassConstructor>;
@@ -39,7 +39,7 @@ export interface IWavesAPI {
 
 class WavesAPI implements IWavesAPI {
 
-    public readonly Currency = Currency;
+    public readonly Asset = Asset;
     public readonly Money = Money;
     public readonly Seed = Seed;
     public readonly Transactions = Transactions;
