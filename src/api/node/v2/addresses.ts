@@ -31,7 +31,7 @@ export default {
 
     },
 
-    balances(address, options: IAPIBalanceOptions) {
+    balances(address, options: IAPIBalanceOptions = {}) {
 
         const wavesBalance = v1Addresses.balance(address).then((data) => {
             return [{
