@@ -44,16 +44,23 @@ export const TRANSFER_ATTACHMENT_BYTE_LIMIT = 140;
 
 export const DEFAULT_MIN_SEED_LENGTH = 25;
 
+export const REQUEST_DEFAULTS = {
+    offset: 0,
+    limit: 100
+};
+
 export const DEFAULT_MAINNET_CONFIG: IWavesConfig = {
     networkByte: MAINNET_BYTE,
     nodeAddress: 'https://nodes.wavesnodes.com',
     matcherAddress: 'https://nodes.wavesnodes.com/matcher',
-    minimumSeedLength: DEFAULT_MIN_SEED_LENGTH
+    minimumSeedLength: DEFAULT_MIN_SEED_LENGTH,
+    requestDefaults: REQUEST_DEFAULTS
 };
 
 export const DEFAULT_TESTNET_CONFIG: IWavesConfig = {
     networkByte: TESTNET_BYTE,
     nodeAddress: 'https://testnet1.wavesnodes.com',
     matcherAddress: 'https://testnet1.wavesnodes.com/matcher',
-    minimumSeedLength: DEFAULT_MIN_SEED_LENGTH
+    minimumSeedLength: DEFAULT_MIN_SEED_LENGTH,
+    requestDefaults: REQUEST_DEFAULTS
 };

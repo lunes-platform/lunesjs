@@ -67,12 +67,12 @@ export interface INodeAPIv2 {
         //     type?: TTransactionType,
         //     sender?: string,
         //     recipient?: string,
-        //     limit?: number,
         //     offset?: number
+        //     limit?: number,
         // }): Promise<any>;
         // unconfirmedTransactions(address: string, options: {
-        //     limit?: number,
         //     offset?: number
+        //     limit?: number,
         // }): Promise<any>;
     }
 }

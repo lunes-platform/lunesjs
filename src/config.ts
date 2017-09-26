@@ -1,4 +1,4 @@
-import { IWavesConfig } from '../interfaces';
+import { IRequestDefaults, IWavesConfig } from '../interfaces';
 
 
 const config: IWavesConfig = Object.create(null);
@@ -19,6 +19,10 @@ export default {
 
     getMinimumSeedLength(): number {
         return config.minimumSeedLength;
+    },
+
+    getRequestDefaults(): IRequestDefaults {
+        return { ...config.requestDefaults };
     },
 
     set(newConfig: Partial<IWavesConfig>) {

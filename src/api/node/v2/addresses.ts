@@ -8,6 +8,8 @@ import Money from '../../../classes/Money';
 import v1Addresses from '../v1/addresses';
 import v1Aliases from '../v1/aliases';
 import v1Assets from '../v1/assets';
+import _filters from './_filters';
+import _frame from './_frame';
 import _warn from './_warn';
 
 
@@ -46,21 +48,21 @@ export default {
         });
 
         const assetBalances = v1Assets.balances(address).then((data) => {
-            return assetBalancesSchema.parse(data);
-        });
-
-        return Promise.all([wavesBalance, assetBalances]).then((results) => {
-            const balances = [...results[0], ...results[1]];
+            const balances = assetBalancesSchema.parse(data);
             return balances.sort((a, b) => a.id > b.id ? -1 : 1);
-        }).then((array) => {
-
-            if (options.assets) {
-                array = array.filter((item) => options.assets.indexOf(item.id) !== -1);
-            }
-
-            return array;
-
         });
+
+        return Promise.all([wavesBalance, assetBalances])
+            .then((results) => [...results[0], ...results[1]])
+            .then((array) => {
+
+                if (options.assets) {
+                    array = array.filter(_filters.assets(options.assets));
+                }
+
+                return _frame(array, options.offset, options.limit);
+
+            });
 
     }
 
