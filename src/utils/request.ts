@@ -35,8 +35,14 @@ export function normalizePath(path): string {
     return `/${path}`.replace(/\/+/g, '/').replace(/\/$/, '');
 }
 
-export function processJSON(jsonReadableStream) {
-    return jsonReadableStream.json();
+export function processJSON(res) {
+    if (res.ok) {
+        return res.json();
+    } else {
+        return res.json().then((e) => Promise.reject(e), () => {
+            return res.text().then((e) => Promise.reject(e));
+        });
+    }
 }
 
 export function createFetchWrapper(product: PRODUCTS, version: VERSIONS, pipe?: Function): Function {
