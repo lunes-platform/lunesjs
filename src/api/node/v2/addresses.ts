@@ -41,15 +41,18 @@ export default {
         _warn();
 
         const wavesBalance = v1Addresses.balance(address).then((data) => {
-            return [{
-                ...WAVES_PROPS,
-                amount: Money.fromCoins(String(data.balance), WAVES)
-            }];
+            return Money.fromCoins(String(data.balance), WAVES).then((money) => {
+                return [{
+                    ...WAVES_PROPS,
+                    amount: money
+                }];
+            });
         });
 
         const assetBalances = v1Assets.balances(address).then((data) => {
-            const balances = assetBalancesSchema.parse(data);
-            return balances.sort((a, b) => a.id > b.id ? -1 : 1);
+            return assetBalancesSchema.parse(data).then((balances) => {
+                return balances.sort((a, b) => a.id > b.id ? -1 : 1);
+            });
         });
 
         return Promise.all([wavesBalance, assetBalances])

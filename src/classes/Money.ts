@@ -15,11 +15,11 @@ function getDivider(precision) {
     return new BigNumber(10).pow(precision);
 }
 
-function getAsset(asset: IAssetObject | string): IAsset {
+function getAsset(asset: IAssetObject | string): Promise<IAsset> {
     if (typeof asset === 'string') {
         return Asset.get(asset);
     } else {
-        return Asset.create(asset);
+        return Promise.resolve(Asset.create(asset));
     }
 }
 
@@ -60,7 +60,7 @@ class Money implements IMoney {
 
     public toJSON() {
         return {
-            asset: this.asset,
+            assetId: this.asset.id,
             tokens: this.toTokens()
         };
     }
@@ -74,18 +74,20 @@ class Money implements IMoney {
 
 export default {
 
-    fromCoins(coins, asset) {
+    fromCoins(coins, asset): Promise<IMoney> {
         checkAmount(coins);
-        asset = getAsset(asset);
-        return new Money(coins, asset) as IMoney;
+        return getAsset(asset).then((a) => {
+            return new Money(coins, a) as IMoney;
+        });
     },
 
-    fromTokens(tokens, asset) {
+    fromTokens(tokens, asset): Promise<IMoney> {
         checkAmount(tokens);
-        asset = getAsset(asset);
-        const divider = getDivider(asset.precision);
-        const coins = new BigNumber(tokens).mul(divider).toFixed(0);
-        return new Money(coins, asset) as IMoney;
+        return getAsset(asset).then((a) => {
+            const divider = getDivider(a.precision);
+            const coins = new BigNumber(tokens).mul(divider).toFixed(0);
+            return new Money(coins, a) as IMoney;
+        });
     },
 
     isMoney(object) {

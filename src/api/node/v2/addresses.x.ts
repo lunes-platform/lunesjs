@@ -81,12 +81,7 @@ export const assetBalancesSchema = new Schema({
                 type: MoneyPart,
                 required: true,
                 path: 'balance',
-                asset: {
-                    idPath: 'assetId',
-                    namePath: 'issueTransaction.name',
-                    precisionPath: 'issueTransaction.decimals',
-                    descriptionPath: 'issueTransaction.description'
-                },
+                assetIdPath: 'assetId',
                 parseValue: temporaryStringConversion
             }
         }

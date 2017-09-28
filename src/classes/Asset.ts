@@ -1,7 +1,10 @@
-import { IAssetObject } from '../../interfaces';
+import { IAssetObject, IHash } from '../../interfaces';
 
 import { WAVES_PROPS } from '../constants';
 import config from '../config';
+
+/** TEMPORARY MOCKS */
+import v1Transactions from '../api/node/v1/transactions';
 
 
 export interface IAsset extends IAssetObject {
@@ -50,7 +53,7 @@ class Asset implements IAsset {
 }
 
 
-let storages = Object.create(null);
+let storages: IHash<IHash<IAsset>> = Object.create(null);
 
 function resolveStorage() {
     const network = config.getNetworkByte();
@@ -66,12 +69,13 @@ function resolveStorage() {
 function putAsset(storage, assetProps) {
     const asset = new Asset(assetProps);
     storage[asset.id] = asset;
+    return asset;
 }
 
 
 export default {
 
-    create(props) {
+    create(props): IAsset {
         const storage = resolveStorage();
         if (storage[props.id]) {
             return storage[props.id];
@@ -81,9 +85,20 @@ export default {
         }
     },
 
-    get(id) {
+    get(id): Promise<IAsset> {
         const storage = resolveStorage();
-        return storage[id] || null;
+        if (storage[id]) {
+            return Promise.resolve(storage[id]);
+        } else {
+            return v1Transactions.get(id).then((assetTransaction) => {
+                return putAsset(storage, {
+                    id: id,
+                    name: assetTransaction.name,
+                    precision: assetTransaction.decimals,
+                    description: assetTransaction.description
+                });
+            }, () => null);
+        }
     },
 
     getKnownAssets() {

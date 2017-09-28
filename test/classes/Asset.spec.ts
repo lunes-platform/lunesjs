@@ -79,22 +79,27 @@ describe('Asset', () => {
 
     });
 
-    it('should return a stored asset by its ID', () => {
+    it('should return a stored asset by its ID', (done) => {
 
-        const waves = Asset.get(Waves.constants.WAVES);
-        expect(waves.id).to.equal(Waves.constants.WAVES);
+        const w = Asset.get(Waves.constants.WAVES).then((waves) => {
+            expect(waves.id).to.equal(Waves.constants.WAVES);
+        });
 
         Asset.create(defaultProps1);
-        const asset = Asset.get(defaultProps1.id);
-        expect(asset.id).to.equal(defaultProps1.id);
-        expect(asset.name).to.equal(defaultProps1.name);
-        expect(asset.precision).to.equal(defaultProps1.precision);
+        const a = Asset.get(defaultProps1.id).then((asset) => {
+            expect(asset.id).to.equal(defaultProps1.id);
+            expect(asset.name).to.equal(defaultProps1.name);
+            expect(asset.precision).to.equal(defaultProps1.precision);
+        });
+
+        Promise.all([w, a]).then(() => done());
 
     });
 
-    it('should return `null` for a non-stored asset', () => {
-        const fake = Asset.get('no-such-id');
-        expect(fake).to.be.a('null');
+    it('should return `null` for a non-stored asset', (done) => {
+        Asset.get('no-such-id').then((noAsset) => {
+            expect(noAsset).to.be.a('null');
+        }).then(() => done());
     });
 
     it('should fail to be created without ID', () => {
