@@ -1,4 +1,6 @@
 import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON } from '../../../utils/request';
+import config from '../../../config';
+
 
 const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
 
@@ -9,7 +11,7 @@ export default {
         return fetch(`/transactions/info/${id}`);
     },
 
-    getList(address: string, limit: number = 50) {
+    getList(address: string, limit: number = config.getRequestDefaults().limit) {
         return fetch(`/transactions/address/${address}/limit/${limit}`);
     },
 

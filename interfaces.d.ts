@@ -42,13 +42,19 @@ export interface IWavesConfig {
 
 // API interfaces
 
-export interface IAPIOptions {
+export interface IAPIListOptions {
     offset?: number;
     limit?: number;
 }
 
-export interface IAPIBalanceOptions extends IAPIOptions {
+export interface IAPIBalanceOptions extends IAPIListOptions {
     assets?: string[];
+}
+
+export interface IAPITransactionsOptions extends IAPIListOptions {
+    type?: TTransactionType;
+    sender?: string;
+    recipient?: string;
 }
 
 

@@ -1,4 +1,4 @@
-import { IAPIBalanceOptions, IHash, IKeyPair, TTransactionType } from '../../../interfaces';
+import { IAPIBalanceOptions, IAPITransactionsOptions, IHash, IKeyPair } from '../../../interfaces';
 
 import v1Addresses from './v1/addresses';
 import v1Aliases from './v1/aliases';
@@ -63,17 +63,7 @@ export interface INodeAPIv2 {
     addresses: {
         get(address: string): Promise<any>;
         balances(address: string, options: IAPIBalanceOptions): Promise<any>;
-        // transactions(address: string, options: {
-        //     type?: TTransactionType,
-        //     sender?: string,
-        //     recipient?: string,
-        //     offset?: number
-        //     limit?: number,
-        // }): Promise<any>;
-        // unconfirmedTransactions(address: string, options: {
-        //     offset?: number
-        //     limit?: number,
-        // }): Promise<any>;
+        transactions(address: string, options: IAPITransactionsOptions): Promise<any>;
     }
 }
 

@@ -3,17 +3,12 @@ import { IMoney } from '../classes/Money';
 
 import { BasePart } from 'ts-api-validator';
 import { get } from 'ts-utils';
-import Asset from '../classes/Asset';
+import { denormalizeAssetId } from '../utils/remap';
+
 import Money from '../classes/Money';
 
 
 export interface IMoneyPartOptions extends IPartialOptions<IMoney> {
-    asset?: {
-        idPath: string;
-        namePath: string;
-        precisionPath: string;
-        descriptionPath: string;
-    };
     assetId?: string;
     assetIdPath?: string;
 }
@@ -39,27 +34,20 @@ export class MoneyPart extends BasePart<IPartialOptions<IMoney>> {
 
         } else if (typeof value === 'string') {
 
-            if (this.options.asset) {
+            if (this.options.assetId || this.options.assetId === '') {
 
-                const a = this.options.asset;
-                return Money.fromCoins(value, Asset.create({
-                    id: get(this._data, a.idPath),
-                    name: get(this._data, a.namePath),
-                    precision: get(this._data, a.precisionPath),
-                    description: get(this._data, a.descriptionPath)
-                }));
-
-            } else if (this.options.assetId) {
-
-                return Money.fromCoins(value, this.options.assetId);
+                return Money.fromCoins(value, denormalizeAssetId(this.options.assetId));
 
             } else if (this.options.assetIdPath) {
 
                 const id = get(this._data, this.options.assetIdPath);
-                return Money.fromCoins(value, id);
+                return Money.fromCoins(value, denormalizeAssetId(id));
+
+            } else {
+
+                return null;
 
             }
-
 
         } else {
 
