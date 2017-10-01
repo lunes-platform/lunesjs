@@ -10,25 +10,25 @@ import * as constants from '../../../constants';
 
 const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
 
-const preIssue = (data) => issueSchema.parse(data);
+const preIssueAsync = (data) => issueSchema.parse(data);
 const postIssue = createRemapper({
     transactionType: null,
     precision: 'decimals'
 });
 
-const preTransfer = (data) => transferSchema.parse(data);
+const preTransferAsync = (data) => transferSchema.parse(data);
 const postTransfer = createRemapper({
     transactionType: null,
     assetId: normalizeAssetId,
     feeAssetId: normalizeAssetId
 });
 
-const preReissue = (data) => reissueSchema.parse(data);
+const preReissueAsync = (data) => reissueSchema.parse(data);
 const postReissue = createRemapper({
     transactionType: null
 });
 
-const preBurn = (data) => burnSchema.parse(data);
+const preBurnAsync = (data) => burnSchema.parse(data);
 const postBurn = createRemapper(({
     transactionType: null
 }));
@@ -53,19 +53,19 @@ export default {
         return fetch(`/assets/${assetId}/distribution`);
     },
 
-    issue: wrapTransactionRequest(Transactions.IssueTransaction, preIssue, postIssue, (postParams) => {
+    issue: wrapTransactionRequest(Transactions.IssueTransaction, preIssueAsync, postIssue, (postParams) => {
         return fetch('/assets/broadcast/issue', postParams);
     }) as TTransactionRequest,
 
-    transfer: wrapTransactionRequest(Transactions.TransferTransaction, preTransfer, postTransfer, (postParams) => {
+    transfer: wrapTransactionRequest(Transactions.TransferTransaction, preTransferAsync, postTransfer, (postParams) => {
         return fetch('/assets/broadcast/transfer', postParams);
     }) as TTransactionRequest,
 
-    reissue: wrapTransactionRequest(Transactions.ReissueTransaction, preReissue, postReissue, (postParams) => {
+    reissue: wrapTransactionRequest(Transactions.ReissueTransaction, preReissueAsync, postReissue, (postParams) => {
         return fetch('/assets/broadcast/reissue', postParams);
     }) as TTransactionRequest,
 
-    burn: wrapTransactionRequest(Transactions.BurnTransaction, preBurn, postBurn, (postParams) => {
+    burn: wrapTransactionRequest(Transactions.BurnTransaction, preBurnAsync, postBurn, (postParams) => {
         return fetch('/assets/broadcast/burn', postParams);
     }) as TTransactionRequest
 

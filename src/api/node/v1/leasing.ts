@@ -8,12 +8,12 @@ import { cancelLeasingSchema, leaseSchema } from './leasing.x';
 
 const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
 
-const preLease = (data) => leaseSchema.parse(data);
+const preLeaseAsync = (data) => leaseSchema.parse(data);
 const postLease = createRemapper({
     transactionType: null
 });
 
-const preCancelLeasing = (data) => cancelLeasingSchema.parse(data);
+const preCancelLeasingAsync = (data) => cancelLeasingSchema.parse(data);
 const postCancelLeasing = createRemapper({
     transactionType: null,
     transactionId: 'txId'
@@ -22,11 +22,11 @@ const postCancelLeasing = createRemapper({
 
 export default {
 
-    lease: wrapTransactionRequest(Transactions.LeaseTransaction, preLease, postLease, (postParams) => {
+    lease: wrapTransactionRequest(Transactions.LeaseTransaction, preLeaseAsync, postLease, (postParams) => {
         return fetch('/leasing/broadcast/lease', postParams);
     }) as TTransactionRequest,
 
-    cancelLeasing: wrapTransactionRequest(Transactions.CancelLeasingTransaction, preCancelLeasing, postCancelLeasing, (postParams) => {
+    cancelLeasing: wrapTransactionRequest(Transactions.CancelLeasingTransaction, preCancelLeasingAsync, postCancelLeasing, (postParams) => {
         return fetch('/leasing/broadcast/cancel', postParams);
     }) as TTransactionRequest
 

@@ -8,7 +8,7 @@ import { createRemapper } from '../../../utils/remap';
 
 const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
 
-const preCreateAlias = (data) => createAliasSchema.parse(data);
+const preCreateAliasAsync = (data) => createAliasSchema.parse(data);
 const postCreateAlias = createRemapper({
     transactionType: null
 });
@@ -24,7 +24,7 @@ export default {
         return fetch(`/alias/by-address/${address}`);
     },
 
-    createAlias: wrapTransactionRequest(Transactions.CreateAliasTransaction, preCreateAlias, postCreateAlias, (postParams) => {
+    createAlias: wrapTransactionRequest(Transactions.CreateAliasTransaction, preCreateAliasAsync, postCreateAlias, (postParams) => {
         return fetch('/alias/broadcast/create', postParams);
     }) as TTransactionRequest
 
