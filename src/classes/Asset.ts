@@ -85,7 +85,7 @@ export default {
         }
     },
 
-    get(id): Promise<IAsset> {
+    get(id: string): Promise<IAsset> {
         const storage = resolveStorage();
         if (storage[id]) {
             return Promise.resolve(storage[id]);

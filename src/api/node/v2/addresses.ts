@@ -10,6 +10,7 @@ import v1Aliases from '../v1/aliases';
 import v1Assets from '../v1/assets';
 import v1Transactions from '../v1/transactions';
 
+import _combiners from './_combiners';
 import _filters from './_filters';
 import _frame from './_frame';
 import _warn from './_warn';
@@ -60,13 +61,11 @@ export default {
         return Promise.all([wavesBalance, assetBalances])
             .then((results) => [...results[0], ...results[1]])
             .then((array) => {
-
                 if (options.assets) {
-                    array = array.filter(_filters.assets(options.assets));
+                    return _combiners.balanceListByAssets(array, options.assets);
+                } else {
+                    return _frame(array, options.offset, options.limit);
                 }
-
-                return _frame(array, options.offset, options.limit);
-
             });
 
     },

@@ -15,10 +15,6 @@ const transactionTypes = {
 
 export default {
 
-    assets(assets) {
-        return (item) => assets.indexOf(item.id) !== -1;
-    },
-
     transactionType(typeName) {
         return (item) => item.type && item.type === transactionTypes[typeName];
     },
