@@ -43,10 +43,12 @@ export default {
         _warn();
 
         const wavesBalance = v1Addresses.balance(address).then((data) => {
-            return [{
-                ...constants.WAVES_PROPS,
-                amount: Money.fromCoins(String(data.balance), constants.WAVES)
-            }];
+            return Money.fromCoins(String(data.balance), constants.WAVES).then((amount) => {
+                return [{
+                    ...constants.WAVES_PROPS,
+                    amount: amount
+                }];
+            });
         });
 
         const assetBalances = v1Assets.balances(address).then((data) => {
