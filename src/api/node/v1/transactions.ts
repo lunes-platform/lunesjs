@@ -11,7 +11,7 @@ export default {
         return fetch(`/transactions/info/${id}`);
     },
 
-    getList(address: string, limit: number = config.getRequestDefaults().limit) {
+    getList(address: string, limit: number = config.getRequestParams().limit) {
         return fetch(`/transactions/address/${address}/limit/${limit}`);
     },
 

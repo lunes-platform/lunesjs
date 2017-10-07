@@ -63,6 +63,7 @@ class WavesAPI implements IWavesAPI {
 
         if (this instanceof WavesAPI) {
 
+            this.config.clear();
             this.config.set(initialConfiguration);
 
             if (WavesAPI._instance === null) {

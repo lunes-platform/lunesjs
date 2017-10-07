@@ -26,17 +26,16 @@ export interface IKeyPairBytes {
     readonly publicKey: Uint8Array;
 }
 
-export interface IRequestDefaults {
-    offset: number;
-    limit: number;
+export interface IWavesBasicConfig {
+    minimumSeedLength: number;
+    requestOffset: number;
+    requestLimit: number;
 }
 
-export interface IWavesConfig {
+export interface IWavesConfig extends IWavesBasicConfig {
     networkByte: number;
     nodeAddress: string;
     matcherAddress: string;
-    minimumSeedLength: number;
-    requestDefaults: IRequestDefaults;
 }
 
 
