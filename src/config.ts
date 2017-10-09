@@ -1,6 +1,7 @@
 import { IHash, IWavesConfig } from '../interfaces';
 
 import { DEFAULT_BASIC_CONFIG } from './constants';
+import { normalizeHost } from './utils/request';
 
 
 const config: IWavesConfig = Object.create(null);
@@ -45,7 +46,20 @@ export default {
 
         newConfig = { ...DEFAULT_BASIC_CONFIG, ...newConfig };
         Object.keys(newConfig).forEach((key) => {
-            config[key] = newConfig[key];
+
+            switch (key) {
+
+                case 'nodeAddress':
+                case 'matcherAddress':
+                    config[key] = normalizeHost(newConfig[key]);
+                    break;
+
+                default:
+                    config[key] = newConfig[key];
+                    break;
+
+            }
+
         });
 
         checkRequiredFields(config);

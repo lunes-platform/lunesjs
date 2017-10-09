@@ -31,6 +31,10 @@ const hostResolvers: IHash<() => string> = {
 };
 
 
+export function normalizeHost(host): string {
+    return host.replace(/\/+$/, '');
+}
+
 export function normalizePath(path): string {
     return `/${path}`.replace(/\/+/g, '/').replace(/\/$/, '');
 }
