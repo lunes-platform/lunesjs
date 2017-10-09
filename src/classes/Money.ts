@@ -1,21 +1,23 @@
 import { IAsset } from './Asset';
 import { IAssetObject } from '../../interfaces';
 
-import BigNumber from 'bignumber.js';
+import BigNumber from '../libs/bignumber';
 import Asset from './Asset';
 
 
-function checkAmount(amount) {
+// TODO : stop exporting the following functions when OrderPrice is removed
+
+export function checkAmount(amount) {
     if (!(typeof amount === 'string' || amount instanceof BigNumber)) {
         throw new Error('Please use strings to create instances of Money');
     }
 }
 
-function getDivider(precision) {
+export function getDivider(precision) {
     return new BigNumber(10).pow(precision);
 }
 
-function getAsset(asset: IAssetObject | string): Promise<IAsset> {
+export function getAsset(asset: IAssetObject | string): Promise<IAsset> {
     if (typeof asset === 'string') {
         return Asset.get(asset);
     } else {
@@ -30,7 +32,6 @@ export interface IMoney {
     toJSON(): object;
     toString(): string;
 }
-
 
 class Money implements IMoney {
 
@@ -85,7 +86,8 @@ export default {
         checkAmount(tokens);
         return getAsset(asset).then((a) => {
             const divider = getDivider(a.precision);
-            const coins = new BigNumber(tokens).mul(divider).toFixed(0);
+            tokens = new BigNumber(tokens).toFixed(a.precision);
+            const coins = new BigNumber(tokens).mul(divider);
             return new Money(coins, a) as IMoney;
         });
     },

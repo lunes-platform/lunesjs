@@ -12,6 +12,12 @@ export interface IAsset extends IAssetObject {
     ticker: string;
 }
 
+export interface IMatcherAssetPair {
+    amountAsset: IAsset;
+    priceAsset: IAsset;
+}
+
+
 class Asset implements IAsset {
 
     public readonly id;

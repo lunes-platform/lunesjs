@@ -3,6 +3,7 @@ import { ITransactionClassConstructor } from './classes/Transactions';
 
 import Asset from './classes/Asset';
 import Money from './classes/Money';
+import OrderPrice from './classes/OrderPrice';
 import Seed from './classes/Seed';
 import Transactions from './classes/Transactions';
 
@@ -27,6 +28,7 @@ export interface IAPIVersions {
 export interface IWavesAPI {
     Asset: any;
     Money: any;
+    OrderPrice: any;
     Seed: typeof Seed;
     Transactions: IHash<ITransactionClassConstructor>;
     constants: IHash<any>;
@@ -41,6 +43,7 @@ class WavesAPI implements IWavesAPI {
 
     public readonly Asset = Asset;
     public readonly Money = Money;
+    public readonly OrderPrice = OrderPrice;
     public readonly Seed = Seed;
     public readonly Transactions = Transactions;
 
