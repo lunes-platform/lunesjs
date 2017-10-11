@@ -63,6 +63,9 @@ declare global {
         msCrypto?: any;
         Promise: PromiseConstructor;
     }
+    interface ErrorConstructor {
+        captureStackTrace(thisArg: any, func: any): void;
+    }
 }
 
 

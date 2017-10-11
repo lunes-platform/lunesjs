@@ -1,6 +1,8 @@
 import { IHash, IKeyPair } from '../../interfaces';
 import { ITransactionClassConstructor } from '../classes/Transactions';
 
+import WavesRequestError from '../errors/WavesRequestError';
+
 import fetch from '../libs/fetch';
 import config from '../config';
 
@@ -49,6 +51,12 @@ export function processJSON(res) {
     }
 }
 
+
+function handleError(url, data) {
+    throw new WavesRequestError(url, data)
+}
+
+
 export function createFetchWrapper(product: PRODUCTS, version: VERSIONS, pipe?: Function): Function {
 
     const resolveHost = hostResolvers[key(product, version)];
@@ -59,9 +67,9 @@ export function createFetchWrapper(product: PRODUCTS, version: VERSIONS, pipe?: 
         const request = fetch(url, options);
 
         if (pipe) {
-            return request.then(pipe);
+            return request.then(pipe).catch((data) => handleError(url, data));
         } else {
-            return request;
+            return request.catch((data) => handleError(url, data));
         }
 
     };
