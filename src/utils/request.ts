@@ -45,9 +45,7 @@ export function processJSON(res) {
     if (res.ok) {
         return res.json();
     } else {
-        return res.json().then((e) => Promise.reject(e), () => {
-            return res.text().then((e) => Promise.reject(e));
-        });
+        return res.json().then(Promise.reject.bind(Promise));
     }
 }
 
