@@ -42,16 +42,18 @@ export class Bool extends ByteProcessor {
     }
 }
 
+export class Byte extends ByteProcessor {
+    public process(value: number) {
+        if (typeof value !== 'number') throw new Error('You should pass a number to Byte constructor');
+        if (value < 0 || value > 255) throw new Error('Byte value must fit between 0 and 255');
+        return Promise.resolve(Uint8Array.from([value]));
+    }
+}
+
 export class Long extends ByteProcessor {
     public process(value: number) {
         const bytes = convert.longToByteArray(value);
         return Promise.resolve(Uint8Array.from(bytes));
-    }
-}
-
-export class Short extends ByteProcessor {
-    public process(value: number) {
-        return Promise.resolve(Uint8Array.from([value]));
     }
 }
 

@@ -29,6 +29,8 @@ describe('Asset', () => {
         Asset = Waves.Asset;
         Asset.clearCache();
 
+        // TODO : mock fetch to respond to 'no-such-id' request
+
     });
 
     describe('creating instances', () => {

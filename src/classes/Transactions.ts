@@ -1,6 +1,6 @@
 import { IHash } from '../../interfaces';
 
-import { ByteProcessor, Alias, Base58, Bool, Long, Short, StringWithLength, AssetId, Attachment, MandatoryAssetId, OrderType, Recipient } from './ByteProcessor';
+import { ByteProcessor, Alias, Base58, Bool, Byte, Long, StringWithLength, AssetId, Attachment, MandatoryAssetId, OrderType, Recipient } from './ByteProcessor';
 
 import { concatUint8Arrays } from '../utils/concat';
 import crypto from '../utils/crypto';
@@ -194,7 +194,7 @@ export default {
         new StringWithLength('name'),
         new StringWithLength('description'),
         new Long('quantity'),
-        new Short('precision'),
+        new Byte('precision'),
         new Bool('reissuable'),
         new Long('fee'),
         new Long('timestamp')
