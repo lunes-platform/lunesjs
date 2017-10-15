@@ -61,6 +61,7 @@ export interface IAPITransactionsOptions extends IAPIListOptions {
 declare global {
     interface Window {
         msCrypto?: any;
+        Response?: any;
         Promise: PromiseConstructor;
     }
     interface ErrorConstructor {

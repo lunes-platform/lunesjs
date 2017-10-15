@@ -1,14 +1,26 @@
-import { IAsset, IMatcherAssetPair } from './Asset';
+import { IAsset } from './Asset';
+import { IAssetPair } from './AssetPair';
 
 import BigNumber from '../libs/bignumber';
-import Asset from './Asset';
-import { checkAmount, getDivider, getAsset } from './Money';
+import AssetPair from './AssetPair';
+import { checkAmount, getDivider } from './Money';
 
 
 const MATCHER_SCALE = new BigNumber(10).pow(8);
 
 function getMatcherDivider(precision) {
     return getDivider(precision).mul(MATCHER_SCALE);
+}
+
+function getPair(pair, secondAsset): Promise<IAssetPair> {
+    if (AssetPair.isAssetPair(pair)) {
+        return Promise.resolve(pair);
+    } else if (pair && secondAsset) {
+        // Here, both `pair` and `secondAsset` are assets
+        return AssetPair.get(pair, secondAsset);
+    } else {
+        throw new Error('Invalid data passed instead AssetPair');
+    }
 }
 
 
@@ -26,16 +38,16 @@ class OrderPrice implements IOrderPrice {
     private matcherCoins: BigNumber;
     private divider: BigNumber;
 
-    constructor(coins, pair: IMatcherAssetPair) {
+    constructor(coins, pair: IAssetPair) {
 
-        if (!Asset.isAsset(pair.amountAsset) || !Asset.isAsset(pair.priceAsset)) {
-            throw new Error('Please use Asset inside the `pair` argument');
+        if (!AssetPair.isAssetPair(pair)) {
+            throw new Error('Please use AssetPair for the `pair` argument');
         }
 
         this.amountAsset = pair.amountAsset;
         this.priceAsset = pair.priceAsset;
         this.matcherCoins = new BigNumber(coins);
-        this.divider = getMatcherDivider(this.priceAsset.precision - this.amountAsset.precision);
+        this.divider = getMatcherDivider(pair.precisionDifference);
 
     }
 
@@ -62,36 +74,30 @@ class OrderPrice implements IOrderPrice {
 }
 
 
-function fromTokens(tokens, pair): Promise<IOrderPrice> {
-    checkAmount(tokens);
-    return Promise.all([
-        getAsset(pair.amountAsset),
-        getAsset(pair.priceAsset)
-    ]).then((results) => {
-        const [ amount, price ] = results;
-        const divider = getMatcherDivider(price.precision - amount.precision);
-        tokens = new BigNumber(tokens).toFixed(price.precision);
-        const coins = new BigNumber(tokens).mul(divider);
-        return new OrderPrice(coins, { amountAsset: amount, priceAsset: price });
-    });
-}
-
-function fromMatcherCoins(coins, pair): Promise<IOrderPrice> {
-    checkAmount(coins);
-    return Promise.all([
-        getAsset(pair.amountAsset),
-        getAsset(pair.priceAsset)
-    ]).then((results) => {
-        const [ amount, price ] = results;
-        return new OrderPrice(coins, { amountAsset: amount, priceAsset: price });
-    });
-}
-
-
 export default {
 
-    fromTokens,
-    fromMatcherCoins,
+    fromTokens(tokens, pair: IAssetPair | IAsset | string, secondAsset?: IAsset | string): Promise<IOrderPrice> {
+
+        checkAmount(tokens);
+
+        return getPair(pair, secondAsset).then((p) => {
+            tokens = new BigNumber(tokens).toFixed(p.priceAsset.precision);
+            const divider = getMatcherDivider(p.precisionDifference);
+            const coins = new BigNumber(tokens).mul(divider);
+            return new OrderPrice(coins, p);
+        });
+
+    },
+
+    fromMatcherCoins(coins, pair: IAssetPair | IAsset | string, secondAsset?: IAsset | string): Promise<IOrderPrice> {
+
+        checkAmount(coins);
+
+        return getPair(pair, secondAsset).then((p) => {
+            return new OrderPrice(coins, p);
+        });
+
+    },
 
     isOrderPrice(object) {
         return object instanceof OrderPrice;

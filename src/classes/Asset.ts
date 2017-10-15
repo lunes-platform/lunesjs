@@ -4,19 +4,13 @@ import { WAVES_PROPS } from '../constants';
 import config from '../config';
 
 /** TEMPORARY MOCKS */
-import v1Transactions from '../api/node/v1/transactions';
+import { v1 as NodeAPIv1 } from '../api/node/index';
 
 
 export interface IAsset extends IAssetObject {
     rating: number;
     ticker: string;
 }
-
-export interface IMatcherAssetPair {
-    amountAsset: IAsset;
-    priceAsset: IAsset;
-}
-
 
 class Asset implements IAsset {
 
@@ -81,6 +75,8 @@ function putAsset(storage, assetProps) {
 
 export default {
 
+    // TODO : leave only `get` method and make it polymorphous
+
     create(props): IAsset {
         const storage = resolveStorage();
         if (storage[props.id]) {
@@ -92,11 +88,17 @@ export default {
     },
 
     get(id: string): Promise<IAsset> {
+
+        if (!id) {
+            throw new Error('Please provide an ID for an asset');
+        }
+
         const storage = resolveStorage();
+
         if (storage[id]) {
             return Promise.resolve(storage[id]);
         } else {
-            return v1Transactions.get(id).then((assetTransaction) => {
+            return NodeAPIv1.transactions.get(id).then((assetTransaction) => {
                 return putAsset(storage, {
                     id: id,
                     name: assetTransaction.name,
@@ -105,6 +107,7 @@ export default {
                 });
             }, () => null);
         }
+
     },
 
     getKnownAssets() {
