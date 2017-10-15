@@ -8,6 +8,8 @@ import OrderPrice from './classes/OrderPrice';
 import Seed from './classes/Seed';
 import Transactions from './classes/Transactions';
 
+import * as byteProcessors from './classes/ByteProcessor';
+
 import crypto from './utils/crypto';
 import * as request from './utils/request';
 
@@ -39,6 +41,7 @@ export interface IWavesAPI {
     OrderPrice: any;
     Seed: typeof Seed;
     Transactions: IHash<ITransactionClassConstructor>;
+    byteProcessors: IHash<any>;
     constants: IHash<any>;
     crypto: IHash<any>;
     request: IHash<any>;
@@ -55,6 +58,8 @@ class WavesAPI implements IWavesAPI {
     public readonly OrderPrice = OrderPrice;
     public readonly Seed = Seed;
     public readonly Transactions = Transactions;
+
+    public readonly byteProcessors = byteProcessors;
 
     public readonly config = config;
     public readonly constants = constants;
