@@ -14,6 +14,9 @@ import * as request from './utils/request';
 import * as NodeAPI from './api/node/index';
 import { INodeAPIv1, INodeAPIv2 } from './api/node/index';
 
+import * as MatcherAPI from './api/matcher/index';
+import { IMatcherAPIv1 } from './api/matcher/index';
+
 import * as constants from './constants';
 import config from './config';
 import tools from './tools';
@@ -23,6 +26,9 @@ export interface IAPIVersions {
     Node: {
         v1: INodeAPIv1,
         v2: INodeAPIv2
+    },
+    Matcher: {
+        v1: IMatcherAPIv1
     }
 }
 
@@ -60,6 +66,9 @@ class WavesAPI implements IWavesAPI {
         Node: {
             v1: NodeAPI.v1,
             v2: NodeAPI.v2
+        },
+        Matcher: {
+            v1: MatcherAPI.v1
         }
     };
 

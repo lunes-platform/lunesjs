@@ -119,6 +119,7 @@ const getTxCommonFields = (typeName, wavesFeeOnly) => ({
         assetIdPath: 'feeAsset',
         parseValue: temporaryStringConversion
     },
+    // TODO : add blockHeight for the separate TXs scheme
     timestamp: {
         type: DatePart,
         required: true
