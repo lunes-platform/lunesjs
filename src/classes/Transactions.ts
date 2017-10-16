@@ -31,6 +31,10 @@ export interface ITransactionClassConstructor {
 
 function createTransactionClass(txType: string | null, fields: TTransactionFields, apiSchema?: IHash<IAPISchema>) {
 
+    if (!fields || !fields.length) {
+        throw new Error('It is not possible to create TransactionClass without fields');
+    }
+
     // Fields of the original data object
     const storedFields: object = Object.create(null);
 
@@ -43,9 +47,11 @@ function createTransactionClass(txType: string | null, fields: TTransactionField
             storedFields[field.name] = field;
             // All user data must be represented as bytes
             byteProviders.push((data) => field.process(data[field.name]));
-        } else {
+        } else if (typeof field === 'number') {
             // All static data must be converted to bytes as well
             byteProviders.push(Uint8Array.from([field]));
+        } else {
+            throw new Error('Invalid field is passed to the createTransactionClass function');
         }
     });
 
@@ -282,6 +288,10 @@ export default {
         new Long('timestamp'),
         new Long('expiration'),
         new Long('matcherFee')
-    ])
+    ]),
+
+    createSignableData(fields: TTransactionFields) {
+        return createTransactionClass(null, fields);
+    }
 
 };

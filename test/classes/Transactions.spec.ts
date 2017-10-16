@@ -18,6 +18,7 @@ function checkBasicCases(preparedData, data, txType, expectedSignature) {
 
 let Waves;
 let Transactions;
+let byteProcessors;
 
 let keys;
 
@@ -39,84 +40,11 @@ describe('Transactions', () => {
 
         Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
         Transactions = Waves.Transactions;
+        byteProcessors = Waves.byteProcessors;
 
         keys = {
             publicKey: 'FJuErRxhV9JaFUwcYLabFK5ENvDRfyJbRz8FeVfYpBLn',
             privateKey: '9dXhQYWZ5468TRhksJqpGT6nUySENxXi9nsCZH9AefD1'
-        };
-
-        issueData = {
-            senderPublicKey: keys.publicKey,
-            name: 'БАБЛОС',
-            description: 'Some english words немного кириллических символов',
-            quantity: 10000000000,
-            precision: 2,
-            reissuable: true,
-            fee: 100000000,
-            timestamp: 1478704158292
-        };
-
-        transferData = {
-            senderPublicKey: keys.publicKey,
-            recipient: '3N9UuGeWuDt9NfWbC5oEACHyRoeEMApXAeq',
-            assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
-            amount: 1000,
-            feeAssetId: Waves.constants.WAVES,
-            fee: 100000,
-            attachment: '',
-            timestamp: 1478864678621
-        };
-
-        reissueData = {
-            senderPublicKey: keys.publicKey,
-            assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
-            quantity: 100000000,
-            reissuable: false,
-            fee: 100000000,
-            timestamp: 1478868177862
-        };
-
-        burnData = {
-            senderPublicKey: keys.publicKey,
-            assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
-            quantity: 200000000,
-            fee: 100000,
-            timestamp: 1478864678621
-        };
-
-        createAliasData = {
-            senderPublicKey: keys.publicKey,
-            alias: 'sasha',
-            fee: 1000000,
-            timestamp: 1491556329420
-        };
-
-        leaseData = {
-            senderPublicKey: keys.publicKey,
-            recipient: '3MsiHfvFVUULdn8bpVoDQ7JLKKjtPXUrCLT',
-            amount: 200000000,
-            fee: 1000000,
-            timestamp: 1491491715188
-        };
-
-        cancelLeasingData = {
-            senderPublicKey: keys.publicKey,
-            transactionId: '4X85MhqxukwaPqJC4sSSeN3ptSYHbEca7KgiYtUa2ECX',
-            fee: 10000000,
-            timestamp: 1491491734819
-        };
-
-        orderData = {
-            senderPublicKey: keys.publicKey,
-            matcherPublicKey: 'Ei5BT6ZvKmB5VQLSZGo8mNkSXsTwGG4zUWjN7yu7iZo5',
-            amountAsset: Waves.constants.WAVES,
-            priceAsset: 'AaFXAN1WTM39XjECHW7DsVFixhq9yMGWHdM2ghr83Gmf',
-            orderType: 'sell',
-            amount: 200000000,
-            price: 50000000,
-            timestamp: 1489592282029,
-            expiration: 1492184282029,
-            matcherFee: 1000000
         };
 
         tempSignDataMethod = Waves.crypto.buildTransactionSignature;
@@ -128,7 +56,85 @@ describe('Transactions', () => {
         Waves.crypto.buildTransactionSignature = tempSignDataMethod;
     });
 
-    describe('core functionality', () => {
+    describe('signing transactions', () => {
+
+        beforeEach(() => {
+
+            issueData = {
+                senderPublicKey: keys.publicKey,
+                name: 'БАБЛОС',
+                description: 'Some english words немного кириллических символов',
+                quantity: 10000000000,
+                precision: 2,
+                reissuable: true,
+                fee: 100000000,
+                timestamp: 1478704158292
+            };
+
+            transferData = {
+                senderPublicKey: keys.publicKey,
+                recipient: '3N9UuGeWuDt9NfWbC5oEACHyRoeEMApXAeq',
+                assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
+                amount: 1000,
+                feeAssetId: Waves.constants.WAVES,
+                fee: 100000,
+                attachment: '',
+                timestamp: 1478864678621
+            };
+
+            reissueData = {
+                senderPublicKey: keys.publicKey,
+                assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
+                quantity: 100000000,
+                reissuable: false,
+                fee: 100000000,
+                timestamp: 1478868177862
+            };
+
+            burnData = {
+                senderPublicKey: keys.publicKey,
+                assetId: '246d8u9gBJqUXK1VhQBxPMLL4iiFLdc4iopFyAkqU5HN',
+                quantity: 200000000,
+                fee: 100000,
+                timestamp: 1478864678621
+            };
+
+            createAliasData = {
+                senderPublicKey: keys.publicKey,
+                alias: 'sasha',
+                fee: 1000000,
+                timestamp: 1491556329420
+            };
+
+            leaseData = {
+                senderPublicKey: keys.publicKey,
+                recipient: '3MsiHfvFVUULdn8bpVoDQ7JLKKjtPXUrCLT',
+                amount: 200000000,
+                fee: 1000000,
+                timestamp: 1491491715188
+            };
+
+            cancelLeasingData = {
+                senderPublicKey: keys.publicKey,
+                transactionId: '4X85MhqxukwaPqJC4sSSeN3ptSYHbEca7KgiYtUa2ECX',
+                fee: 10000000,
+                timestamp: 1491491734819
+            };
+
+            orderData = {
+                senderPublicKey: keys.publicKey,
+                matcherPublicKey: 'Ei5BT6ZvKmB5VQLSZGo8mNkSXsTwGG4zUWjN7yu7iZo5',
+                amountAsset: Waves.constants.WAVES,
+                priceAsset: 'AaFXAN1WTM39XjECHW7DsVFixhq9yMGWHdM2ghr83Gmf',
+                orderType: 'sell',
+                amount: 200000000,
+                price: 50000000,
+                timestamp: 1489592282029,
+                expiration: 1492184282029,
+                matcherFee: 1000000
+            };
+
+        });
 
         it('should sign Issue transaction', (done) => {
 
@@ -330,6 +336,50 @@ describe('Transactions', () => {
 
             Promise.all([api]).then(() => done());
 
+        });
+
+    });
+
+    describe('creating signable data', () => {
+
+        it('should create a TransactionClass and sign data with it', (done) => {
+
+            const timestamp = 1508163111028;
+            const expectedSignature = '4oLrxkm2qKYgcCHcnmntGwWrDZg56GjAoN7rYaYJ4dYnRnN1z5vsd2CZrdGULqwGNAZtXhVMvREcdWJAuz3hiaVd';
+
+            const SignableData = Transactions.createSignableData([
+                new byteProcessors.Bool('flag'),
+                new byteProcessors.Long('timestamp')
+            ]);
+
+            const signableData = new SignableData({
+                flag: true,
+                timestamp
+            });
+
+            const signature = signableData.getSignature(keys.privateKey).then((signature) => {
+                expect(signature).to.equal(expectedSignature);
+            });
+
+            const forAPI = signableData.prepareForAPI(keys.privateKey).then((signedData) => {
+                expect(signedData.flag).to.equal(true);
+                expect(signedData.timestamp).to.equal(timestamp);
+                expect(signedData.signature).to.equal(expectedSignature);
+            });
+
+            Promise.all([signature, forAPI]).then(() => done());
+
+        });
+
+        it('should throw when no fields are provided', () => {
+            expect(() => Transactions.createSignableData()).to.throw();
+            expect(() => Transactions.createSignableData([])).to.throw();
+        });
+
+        it('should throw when invalid fields are provided', () => {
+            expect(() => Transactions.createSignableData(['hello'])).to.throw();
+            expect(() => Transactions.createSignableData([null])).to.throw();
+            expect(() => Transactions.createSignableData([true])).to.throw();
         });
 
     });

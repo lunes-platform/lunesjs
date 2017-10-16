@@ -40,8 +40,8 @@ export interface IWavesAPI {
     Money: any;
     OrderPrice: any;
     Seed: typeof Seed;
-    Transactions: IHash<ITransactionClassConstructor>;
-    byteProcessors: IHash<any>;
+    Transactions: IHash<ITransactionClassConstructor | Function>;
+    byteProcessors: typeof byteProcessors;
     constants: IHash<any>;
     crypto: IHash<any>;
     request: IHash<any>;
