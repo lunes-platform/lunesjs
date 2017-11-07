@@ -116,13 +116,13 @@ describe('Money', () => {
 
         it('should convert to JSON', (done) => {
             Money.fromTokens('1000', fakeWAVES).then((m) => {
-                expect(JSON.stringify(m)).to.equal('{"assetId":"WAVES","tokens":"1000.00000000"}');
+                expect(JSON.stringify(m)).to.equal(`{"assetId":"${fakeWAVES.id}","tokens":"1000.00000000"}`);
             }).then(() => done());
         });
 
         it('should convert to a string', (done) => {
             Money.fromTokens('1000', fakeWAVES).then((m) => {
-                expect(m.toString()).to.equal('1000.00000000 WAVES');
+                expect(m.toString()).to.equal(`1000.00000000 ${fakeWAVES.name}`);
             }).then(() => done());
         });
 

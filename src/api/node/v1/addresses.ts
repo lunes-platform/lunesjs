@@ -1,7 +1,16 @@
 import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON } from '../../../utils/request';
+import { IMoney } from '../../../classes/Money';
 
 
 const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
+
+export interface IBalanceDetails {
+    regular: IMoney;
+    available: IMoney;
+    effective: IMoney;
+    generating: IMoney;
+    leased: IMoney;
+}
 
 
 export default {
@@ -14,7 +23,7 @@ export default {
         }
     },
 
-    balanceDetails(address: string) {
+    balanceDetails(address: string): Promise<IBalanceDetails> {
         return fetch(`/addresses/balance/details/${address}`);
     }
 

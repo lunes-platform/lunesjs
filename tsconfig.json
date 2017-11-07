@@ -13,6 +13,9 @@
     "paths": {
       "ts-api-validator": [
         "node_modules/ts-api-validator/index"
+      ],
+      "ts-utils": [
+        "node_modules/ts-utils/index"
       ]
     }
   },
