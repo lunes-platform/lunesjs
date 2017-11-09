@@ -35,11 +35,12 @@ describe('utils/storage', () => {
 
     it('should store data while working on different networks', (done) => {
         const storage = Waves.storage.getStorage();
+        Waves.config.set({ networkByte: 'A' });
         waterfall([
             () => storage.set('a', 1),
             () => storage.get('a'),
             (a) => expect(a).to.equal(1),
-            () => Waves.config.set({ networkByte: 'A' }),
+            () => Waves.config.set({ networkByte: 'B' }),
             () => storage.get('a'),
             (a) => expect(a).to.be.a('null')
         ]).then(() => done());
@@ -47,6 +48,7 @@ describe('utils/storage', () => {
 
     it('should store data only once for every network', (done) => {
         const storage = Waves.storage.getStorage();
+        Waves.config.set({ networkByte: 'A' });
         waterfall([
             () => storage.set('a', 1),
             () => storage.set('a', 1),
@@ -54,7 +56,7 @@ describe('utils/storage', () => {
                 expect(data['a']).to.equal(1);
                 expect(Object.keys(data)).to.deep.equal(['a']);
             }),
-            () => Waves.config.set({ networkByte: 'A' }),
+            () => Waves.config.set({ networkByte: 'B' }),
             () => storage.get('a'),
             (a) => expect(a).to.be.a('null'),
             () => storage.set('a', 2),
