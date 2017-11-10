@@ -22,7 +22,6 @@ export default {
             } else {
                 return Asset.get(asset).then((a) => {
                     return Money.fromCoins('0', a).then((amount) => {
-                        console.log(amount);
                         return {
                             id: a.id,
                             name: a.name,
