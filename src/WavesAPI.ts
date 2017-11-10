@@ -12,6 +12,7 @@ import * as byteProcessors from './classes/ByteProcessor';
 
 import crypto from './utils/crypto';
 import * as request from './utils/request';
+import * as storage from './utils/storage';
 
 import * as NodeAPI from './api/node/index';
 import { INodeAPIv1, INodeAPIv2 } from './api/node/index';
@@ -45,6 +46,7 @@ export interface IWavesAPI {
     constants: IHash<any>;
     crypto: IHash<any>;
     request: IHash<any>;
+    storage: IHash<any>;
     tools: IHash<any>;
     API: IAPIVersions;
 }
@@ -65,6 +67,7 @@ class WavesAPI implements IWavesAPI {
     public readonly constants = constants;
     public readonly crypto = crypto;
     public readonly request = request;
+    public readonly storage = storage;
     public readonly tools = tools;
 
     public readonly API = {
