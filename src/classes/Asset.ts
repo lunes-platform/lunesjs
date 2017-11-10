@@ -1,10 +1,22 @@
 import { IAssetObject, IHash } from '../../interfaces';
 
 import { WAVES_PROPS } from '../constants';
-import config from '../config';
+import { getStorage } from '../utils/storage';
 
 /** TEMPORARY MOCKS */
 import { v1 as NodeAPIv1 } from '../api/node/index';
+
+
+function getAsset(id): Promise<IAsset> {
+    return NodeAPIv1.transactions.get(id).then((assetTransaction) => {
+        return storage.set(id, new Asset({
+            id: id,
+            name: assetTransaction.name,
+            precision: assetTransaction.decimals,
+            description: assetTransaction.description
+        }));
+    });
+}
 
 
 export interface IAsset extends IAssetObject {
@@ -17,7 +29,7 @@ class Asset implements IAsset {
     public readonly id;
     public readonly name;
     public readonly precision;
-    public description;
+    public readonly description;
 
     public rating;
     public ticker;
@@ -53,72 +65,38 @@ class Asset implements IAsset {
 }
 
 
-let storages: IHash<IHash<IAsset>> = Object.create(null);
-
-function resolveStorage() {
-    const network = config.getNetworkByte();
-    if (storages[network]) {
-        return storages[network];
-    } else {
-        storages[network] = Object.create(null);
-        putAsset(storages[network], WAVES_PROPS);
-        return storages[network];
-    }
-}
-
-function putAsset(storage, assetProps) {
-    const asset = new Asset(assetProps);
-    storage[asset.id] = asset;
-    return asset;
-}
+const storage = getStorage((set) => {
+    const wavesAsset = new Asset(WAVES_PROPS);
+    set(wavesAsset.id, wavesAsset);
+});
 
 
 export default {
 
-    // TODO : leave only `get` method and make it polymorphous
-
-    create(props): IAsset {
-        const storage = resolveStorage();
-        if (storage[props.id]) {
-            return storage[props.id];
+    get(input: IAssetObject | string) {
+        if (typeof input === 'string') {
+            const id = input;
+            return storage.get(id).then((asset) => {
+                return asset || getAsset(id);
+            });
         } else {
-            putAsset(storage, props);
-            return storage[props.id];
+            const props = input;
+            return storage.get(props.id).then((asset) => {
+                return asset || storage.set(props.id, new Asset(props));
+            });
         }
-    },
-
-    get(id: string): Promise<IAsset> {
-
-        if (!id) {
-            throw new Error('Please provide an ID for an asset');
-        }
-
-        const storage = resolveStorage();
-
-        if (storage[id]) {
-            return Promise.resolve(storage[id]);
-        } else {
-            return NodeAPIv1.transactions.get(id).then((assetTransaction) => {
-                return putAsset(storage, {
-                    id: id,
-                    name: assetTransaction.name,
-                    precision: assetTransaction.decimals,
-                    description: assetTransaction.description
-                });
-            }, () => null);
-        }
-
     },
 
     getKnownAssets() {
-        const storage = resolveStorage();
-        return Object.keys(storage).map(function (key) {
-            return storage[key];
-        });
+        return storage.getAll();
+    },
+
+    getKnownAssetsList() {
+        return storage.getList();
     },
 
     clearCache() {
-        storages = Object.create(null);
+        return storage.clear();
     },
 
     isAsset(object) {

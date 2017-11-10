@@ -15,29 +15,35 @@ let fakeBTC;
 
 describe('AssetPair', () => {
 
-    beforeEach(() => {
+    beforeEach((done) => {
 
         Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
         AssetPair = Waves.AssetPair;
 
-        fakeWAVES = Waves.Asset.create({
-            id: 'WAVES',
-            name: 'Waves',
-            precision: 8
-        });
+        Promise.all([
+            Waves.Asset.get({
+                id: 'WAVES',
+                name: 'Waves',
+                precision: 8
+            }),
+            Waves.Asset.get({
+                id: 'BTC',
+                name: 'Bitcoin',
+                precision: 8
+            })
+        ]).then((assets) => {
 
-        fakeBTC = Waves.Asset.create({
-            id: 'BTC',
-            name: 'Bitcoin',
-            precision: 8
-        });
+            fakeWAVES = assets[0];
+            fakeBTC = assets[1];
 
-        mockableFetch.replyWith(JSON.stringify({
-            pair: {
-                amountAsset: fakeWAVES.id,
-                priceAsset: fakeBTC.id
-            }
-        }));
+            mockableFetch.replyWith(JSON.stringify({
+                pair: {
+                    amountAsset: fakeWAVES.id,
+                    priceAsset: fakeBTC.id
+                }
+            }));
+
+        }).then(() => done());
 
     });
 

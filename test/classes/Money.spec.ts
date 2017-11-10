@@ -11,28 +11,32 @@ let fakeZERO;
 
 describe('Money', () => {
 
-    beforeEach(() => {
+    beforeEach((done) => {
 
         Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
         Money = Waves.Money;
 
-        fakeWAVES = Waves.Asset.create({
-            id: 'WAVES',
-            name: 'Waves',
-            precision: 8
-        });
-
-        fakeFOUR = Waves.Asset.create({
-            id: 'FOUR',
-            name: 'Four Precision Token',
-            precision: 4
-        });
-
-        fakeZERO = Waves.Asset.create({
-            id: 'ZERO',
-            name: 'Zero Precision Token',
-            precision: 0
-        });
+        Promise.all([
+            Waves.Asset.get({
+                id: 'WAVES',
+                name: 'Waves',
+                precision: 8
+            }),
+            Waves.Asset.get({
+                id: 'FOUR',
+                name: 'Four Precision Token',
+                precision: 4
+            }),
+            Waves.Asset.get({
+                id: 'ZERO',
+                name: 'Zero Precision Token',
+                precision: 0
+            })
+        ]).then((assets) => {
+            fakeWAVES = assets[0];
+            fakeFOUR = assets[1];
+            fakeZERO = assets[2];
+        }).then(() => done());
 
     });
 

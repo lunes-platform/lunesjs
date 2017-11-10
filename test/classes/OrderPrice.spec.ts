@@ -19,40 +19,10 @@ let fakeZERO;
 
 describe('OrderPrice', () => {
 
-    beforeEach(() => {
+    beforeEach((done) => {
 
         Waves = WavesAPI.create(WavesAPI.TESTNET_CONFIG);
         OrderPrice = Waves.OrderPrice;
-
-        fakeWAVES = Waves.Asset.create({
-            id: 'WAVES',
-            name: 'Waves',
-            precision: 8
-        });
-
-        fakeBTC = Waves.Asset.create({
-            id: 'BTC',
-            name: 'Bitcoin',
-            precision: 8
-        });
-
-        fakeUSD = Waves.Asset.create({
-            id: 'USD',
-            name: 'US Dollar',
-            precision: 2
-        });
-
-        fakeEUR = Waves.Asset.create({
-            id: 'EUR',
-            name: 'Euro',
-            precision: 2
-        });
-
-        fakeZERO = Waves.Asset.create({
-            id: 'ZERO',
-            name: 'Zero Precision Token',
-            precision: 0
-        });
 
         mockableFetch.mockWith((input: string) => {
             const [assetOne, assetTwo] = input.split('/').slice(-2);
@@ -63,6 +33,40 @@ describe('OrderPrice', () => {
                 }
             })));
         });
+
+        Promise.all([
+            Waves.Asset.get({
+                id: 'WAVES',
+                name: 'Waves',
+                precision: 8
+            }),
+            Waves.Asset.get({
+                id: 'BTC',
+                name: 'Bitcoin',
+                precision: 8
+            }),
+            Waves.Asset.get({
+                id: 'USD',
+                name: 'US Dollar',
+                precision: 2
+            }),
+            Waves.Asset.get({
+                id: 'EUR',
+                name: 'Euro',
+                precision: 2
+            }),
+            Waves.Asset.get({
+                id: 'ZERO',
+                name: 'Zero Precision Token',
+                precision: 0
+            })
+        ]).then((assets) => {
+            fakeWAVES = assets[0];
+            fakeBTC = assets[1];
+            fakeUSD = assets[2];
+            fakeEUR = assets[3];
+            fakeZERO = assets[4];
+        }).then(() => done());
 
     });
 
