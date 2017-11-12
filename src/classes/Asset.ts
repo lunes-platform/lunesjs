@@ -38,6 +38,8 @@ function checkAssetProps(props) {
 export interface IAsset extends IAssetObject {
     rating: number;
     ticker: string;
+    toJSON(): IHash<any>;
+    toString(): string;
 }
 
 class Asset implements IAsset {
@@ -60,6 +62,17 @@ class Asset implements IAsset {
         this.rating = 0;
         this.ticker = '';
 
+    }
+
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            precision: this.precision,
+            description: this.description,
+            rating: this.rating,
+            ticker: this.ticker
+        };
     }
 
     public toString() {
