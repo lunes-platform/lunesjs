@@ -18,6 +18,22 @@ function getAsset(id): Promise<IAsset> {
     });
 }
 
+function checkAssetProps(props) {
+
+    if (!props.id) {
+        throw new Error('An attempt to create Asset without ID');
+    }
+
+    if (!props.name) {
+        throw new Error('An attempt to create Asset without a name');
+    }
+
+    if (typeof props.precision !== 'number' || props.precision < 0 || props.precision > 8) {
+        throw new Error(`An attempt to create Asset with wrong precision (${props.precision})`);
+    }
+
+}
+
 
 export interface IAsset extends IAssetObject {
     rating: number;
@@ -35,18 +51,6 @@ class Asset implements IAsset {
     public ticker;
 
     constructor(props: IAssetObject) {
-
-        if (!props.id) {
-            throw new Error('An attempt to create Asset without ID');
-        }
-
-        if (!props.name) {
-            throw new Error('An attempt to create Asset without a name');
-        }
-
-        if (typeof props.precision !== 'number' || props.precision < 0 || props.precision > 8) {
-            throw new Error(`An attempt to create Asset with wrong precision (${props.precision})`);
-        }
 
         this.id = props.id;
         this.name = props.name;
@@ -81,6 +85,7 @@ export default {
             });
         } else {
             const props = input;
+            checkAssetProps(props);
             return storage.get(props.id).then((asset) => {
                 return asset || storage.set(props.id, new Asset(props));
             });

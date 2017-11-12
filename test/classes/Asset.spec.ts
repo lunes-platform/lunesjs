@@ -214,65 +214,81 @@ describe('Asset', () => {
 
     describe('planned failures', () => {
 
-        it('should fail to be created without ID', (done) => {
-            Asset.get({
-                name: 'No Identity',
-                precision: 4
-            }).catch(() => done());
+        it('should fail to be created without ID', () => {
+            expect(() => {
+                Asset.create({
+                    name: 'No Identity',
+                    precision: 4
+                });
+            }).to.throw();
         });
 
-        it('should fail to be created with an empty ID', (done) => {
-            Asset.get({
-                id: '',
-                name: 'Empty Identity',
-                precision: 4
-            }).catch(() => done());
+        it('should fail to be created with an empty ID', () => {
+            expect(() => {
+                Asset.create({
+                    id: '',
+                    name: 'Empty Identity',
+                    precision: 4
+                });
+            }).to.throw();
         });
 
-        it('should fail to be created without a name', (done) => {
-            Asset.get({
-                id: '',
-                precision: 8
-            }).catch(() => done());
+        it('should fail to be created without a name', () => {
+            expect(() => {
+                Asset.create({
+                    id: '',
+                    precision: 8
+                });
+            }).to.throw();
         });
 
-        it('should fail to be created with an empty string as a name', (done) => {
-            Asset.get({
-                id: '',
-                name: '',
-                precision: 8
-            }).catch(() => done());
+        it('should fail to be created with an empty string as a name', () => {
+            expect(() => {
+                Asset.create({
+                    id: '',
+                    name: '',
+                    precision: 8
+                });
+            }).to.throw();
         });
 
-        it('should fail to be created without precision', (done) => {
-            Asset.get({
-                id: '',
-                name: 'test'
-            }).catch(() => done());
+        it('should fail to be created without precision', () => {
+            expect(() => {
+                Asset.create({
+                    id: '',
+                    name: 'test'
+                });
+            }).to.throw();
         });
 
-        it('should fail to be created with a precision which is not a number', (done) => {
-            Asset.get({
-                id: '',
-                name: 'test',
-                precision: '0'
-            }).catch(() => done());
-        });
-
-        it('should fail to be created with a negative precision', (done) => {
-                Asset.get({
+        it('should fail to be created with a precision which is not a number', () => {
+            expect(() => {
+                Asset.create({
                     id: '',
                     name: 'test',
-                precision: -1
-                }).catch(() => done());
+                    precision: '0'
+                });
+            }).to.throw();
         });
 
-        it('should fail to be created with a too big precision', (done) => {
-            Asset.get({
-                id: '',
-                name: 'test',
-                precision: 9
-            }).catch(() => done());
+        it('should fail to be created with a negative precision', () => {
+            expect(() => {
+                Asset.create({
+                    id: '',
+                    name: 'test',
+                    precision: -1
+                });
+            }).to.throw();
+        });
+
+        it('should fail to be created with a too big precision', () => {
+            expect(() => {
+                Asset.create({
+                    id: '',
+                    name: 'test',
+                    precision: 9
+                });
+            }).to.throw();
         });
 
     });
