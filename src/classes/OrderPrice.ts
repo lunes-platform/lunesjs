@@ -1,3 +1,4 @@
+import { IHash } from '../../interfaces';
 import { IAsset } from './Asset';
 import { IAssetPair } from './AssetPair';
 
@@ -25,46 +26,56 @@ function getPair(pair, secondAsset): Promise<IAssetPair> {
 
 
 export interface IOrderPrice {
-    toTokens(): string;
+    getMatcherCoins(): BigNumber;
+    getTokens(): BigNumber;
     toMatcherCoins(): string;
-    toJSON(): object;
+    toTokens(): string;
+    toJSON(): IHash<any>;
     toString(): string;
 }
 
 class OrderPrice implements IOrderPrice {
 
-    private amountAsset: IAsset;
-    private priceAsset: IAsset;
-    private matcherCoins: BigNumber;
-    private divider: BigNumber;
+    public readonly pair: IAssetPair;
+    private _matcherCoins: BigNumber;
+    private _tokens: BigNumber;
 
     constructor(coins, pair: IAssetPair) {
 
-        this.amountAsset = pair.amountAsset;
-        this.priceAsset = pair.priceAsset;
-        this.matcherCoins = new BigNumber(coins);
-        this.divider = getMatcherDivider(pair.precisionDifference);
+        const divider = getMatcherDivider(pair.precisionDifference);
+
+        this.pair = pair;
+        this._matcherCoins = new BigNumber(coins);
+        this._tokens = this._matcherCoins.div(divider);
 
     }
 
-    toTokens() {
-        return this.matcherCoins.div(this.divider).toFixed(this.priceAsset.precision);
+    public getMatcherCoins() {
+        return this._matcherCoins.add(0);
     }
 
-    toMatcherCoins() {
-        return this.matcherCoins.toFixed(0);
+    public getTokens() {
+        return this._tokens.add(0);
     }
 
-    toJSON() {
+    public toMatcherCoins() {
+        return this._matcherCoins.toFixed(0);
+    }
+
+    public toTokens() {
+        return this._tokens.toFixed(this.pair.priceAsset.precision);
+    }
+
+    public toJSON() {
         return {
-            amountAsset: this.amountAsset.id,
-            priceAsset: this.priceAsset.id,
-            priceCoins: this.toTokens()
+            amountAssetId: this.pair.amountAsset.id,
+            priceAssetId: this.pair.priceAsset.id,
+            priceTokens: this.toTokens()
         };
     }
 
-    toString() {
-        return `${this.toTokens()} ${this.amountAsset.id}/${this.priceAsset.id}`;
+    public toString() {
+        return `${this.toTokens()} ${this.pair.amountAsset.id}/${this.pair.priceAsset.id}`;
     }
 
 }
@@ -73,26 +84,20 @@ class OrderPrice implements IOrderPrice {
 export default {
 
     fromTokens(tokens, pair: IAssetPair | IAsset | string, secondAsset?: IAsset | string): Promise<IOrderPrice> {
-
         checkAmount(tokens);
-
         return getPair(pair, secondAsset).then((p) => {
             tokens = new BigNumber(tokens).toFixed(p.priceAsset.precision);
             const divider = getMatcherDivider(p.precisionDifference);
             const coins = new BigNumber(tokens).mul(divider);
             return new OrderPrice(coins, p);
         });
-
     },
 
     fromMatcherCoins(coins, pair: IAssetPair | IAsset | string, secondAsset?: IAsset | string): Promise<IOrderPrice> {
-
         checkAmount(coins);
-
         return getPair(pair, secondAsset).then((p) => {
             return new OrderPrice(coins, p);
         });
-
     },
 
     isOrderPrice(object) {

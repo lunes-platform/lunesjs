@@ -1,3 +1,4 @@
+import { IHash } from '../../interfaces';
 import { IAsset } from './Asset';
 
 import { v1 as MatcherAPIv1 } from '../api/matcher/index';
@@ -32,7 +33,7 @@ export interface IAssetPair {
     amountAsset: IAsset;
     priceAsset: IAsset;
     precisionDifference: number;
-    toJSON(): object;
+    toJSON(): IHash<any>;
     toString(): string;
 }
 
@@ -50,14 +51,14 @@ class AssetPair implements IAssetPair {
 
     }
 
-    toJSON() {
+    public toJSON() {
         return {
             amountAsset: this.amountAsset.id,
             priceAsset: this.priceAsset.id
         };
     }
 
-    toString() {
+    public toString() {
         return `${this.amountAsset}/${this.priceAsset}`;
     }
 

@@ -254,4 +254,43 @@ describe('OrderPrice', () => {
 
     });
 
+    describe('conversions', () => {
+
+        it('should return a proper BigNumber instance (from coins)', (done) => {
+            OrderPrice.fromMatcherCoins('147000000', fakeWAVES, fakeBTC).then((orderPrice) => {
+                const matcherCoins = orderPrice.getMatcherCoins();
+                expect(matcherCoins.isBigNumber).to.be.true;
+                expect(matcherCoins.toFixed(0)).to.equal('147000000');
+                const tokens = orderPrice.getTokens();
+                expect(tokens.isBigNumber).to.be.true;
+                expect(tokens.toFixed(8)).to.equal('1.47000000');
+            }).then(() => done());
+        });
+
+        it('should return a proper BigNumber instance (from tokens)', (done) => {
+            OrderPrice.fromTokens('1.47000000', fakeWAVES, fakeBTC).then((orderPrice) => {
+                const matcherCoins = orderPrice.getMatcherCoins();
+                expect(matcherCoins.isBigNumber).to.be.true;
+                expect(matcherCoins.toFixed(0)).to.equal('147000000');
+                const tokens = orderPrice.getTokens();
+                expect(tokens.isBigNumber).to.be.true;
+                expect(tokens.toFixed(8)).to.equal('1.47000000');
+            }).then(() => done());
+        });
+
+        it('should convert to JSON', (done) => {
+            OrderPrice.fromTokens('1.47000000', fakeWAVES, fakeBTC).then((orderPrice) => {
+                const s = '{"amountAssetId":"WAVES","priceAssetId":"BTC","priceTokens":"1.47000000"}';
+                expect(JSON.stringify(orderPrice)).to.equal(s);
+            }).then(() => done());
+        });
+
+        it('should convert to string', (done) => {
+            OrderPrice.fromTokens('1.47000000', fakeWAVES, fakeBTC).then((orderPrice) => {
+                expect(orderPrice.toString()).to.equal('1.47000000 WAVES/BTC');
+            }).then(() => done());
+        });
+
+    });
+
 });

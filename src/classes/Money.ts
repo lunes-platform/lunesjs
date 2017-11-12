@@ -1,3 +1,4 @@
+import { IHash } from '../../interfaces';
 import { IAsset } from './Asset';
 
 import BigNumber from '../libs/bignumber';
@@ -18,33 +19,44 @@ export function getDivider(precision) {
 
 
 export interface IMoney {
+    getCoins(): BigNumber;
+    getTokens(): BigNumber;
     toCoins(): string;
     toTokens(): string;
-    toJSON(): object;
+    toJSON(): IHash<any>;
     toString(): string;
 }
 
 class Money implements IMoney {
 
     public readonly asset: IAsset;
-
-    private coins: BigNumber;
-    private divider: BigNumber;
+    private _coins: BigNumber;
+    private _tokens: BigNumber;
 
     constructor(coins, asset: IAsset) {
 
-        this.asset = asset;
-        this.coins = new BigNumber(coins);
-        this.divider = getDivider(asset.precision);
+        const divider = getDivider(asset.precision);
 
+        this.asset = asset;
+        this._coins = new BigNumber(coins);
+        this._tokens = this._coins.div(divider);
+
+    }
+
+    public getCoins() {
+        return this._coins.add(0);
+    }
+
+    public getTokens() {
+        return this._tokens.add(0);
     }
 
     public toCoins() {
-        return this.coins.toFixed(0);
+        return this._coins.toFixed(0);
     }
 
     public toTokens() {
-        return this.coins.div(this.divider).toFixed(this.asset.precision);
+        return this._tokens.toFixed(this.asset.precision);
     }
 
     public toJSON() {

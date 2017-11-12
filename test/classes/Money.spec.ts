@@ -118,15 +118,37 @@ describe('Money', () => {
 
     describe('conversions', () => {
 
+        it('should return a proper BigNumber instance (from tokens)', (done) => {
+            Money.fromTokens('1.123', fakeWAVES).then((money) => {
+                const coins = money.getCoins();
+                expect(coins.isBigNumber).to.be.true;
+                expect(coins.toFixed(0)).to.equal('112300000');
+                const tokens = money.getTokens();
+                expect(tokens.isBigNumber).to.be.true;
+                expect(tokens.toFixed(8)).to.equal('1.12300000');
+            }).then(() => done());
+        });
+
+        it('should return a proper BigNumber instance (from coins)', (done) => {
+            Money.fromCoins('100000000', fakeWAVES).then((money) => {
+                const coins = money.getCoins();
+                expect(coins.isBigNumber).to.be.true;
+                expect(coins.toFixed(0)).to.equal('100000000');
+                const tokens = money.getTokens();
+                expect(tokens.isBigNumber).to.be.true;
+                expect(tokens.toFixed(8)).to.equal('1.00000000');
+            }).then(() => done());
+        });
+
         it('should convert to JSON', (done) => {
-            Money.fromTokens('1000', fakeWAVES).then((m) => {
-                expect(JSON.stringify(m)).to.equal('{"assetId":"WAVES","tokens":"1000.00000000"}');
+            Money.fromTokens('1000', fakeWAVES).then((money) => {
+                expect(JSON.stringify(money)).to.equal('{"assetId":"WAVES","tokens":"1000.00000000"}');
             }).then(() => done());
         });
 
         it('should convert to a string', (done) => {
-            Money.fromTokens('1000', fakeWAVES).then((m) => {
-                expect(m.toString()).to.equal('1000.00000000 WAVES');
+            Money.fromTokens('1000', fakeWAVES).then((money) => {
+                expect(money.toString()).to.equal('1000.00000000 WAVES');
             }).then(() => done());
         });
 

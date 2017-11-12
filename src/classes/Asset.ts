@@ -64,7 +64,7 @@ class Asset implements IAsset {
 
     }
 
-    toJSON() {
+    public toJSON() {
         return {
             id: this.id,
             name: this.name,
