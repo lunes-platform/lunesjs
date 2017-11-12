@@ -66,6 +66,8 @@ describe('OrderPrice', () => {
             fakeUSD = assets[2];
             fakeEUR = assets[3];
             fakeZERO = assets[4];
+        }).then(() => {
+            return Waves.AssetPair.clearCache();
         }).then(() => done());
 
     });

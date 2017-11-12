@@ -40,10 +40,6 @@ class OrderPrice implements IOrderPrice {
 
     constructor(coins, pair: IAssetPair) {
 
-        if (!AssetPair.isAssetPair(pair)) {
-            throw new Error('Please use AssetPair for the `pair` argument');
-        }
-
         this.amountAsset = pair.amountAsset;
         this.priceAsset = pair.priceAsset;
         this.matcherCoins = new BigNumber(coins);
