@@ -3,6 +3,7 @@ import { IAPIBalanceOptions, IAPITransactionsOptions } from '../../../../interfa
 import * as schemas from './addresses.x';
 import * as constants from '../../../constants';
 import Money from '../../../classes/Money';
+import { siftTransaction } from '../../schemaTools';
 
 /** TEMPORARY MOCKS */
 import v1Addresses from '../v1/addresses';
@@ -76,7 +77,7 @@ export default {
 
         return v1Transactions.getList(address, options.limit).then((array) => {
 
-            array = array[0]; // Strange response artifact
+            array = array[0]; // Strange response artifact // TODO : move to the v1 code
 
             if (options.type) {
                 array = array.filter(_filters.transactionType(options.type));
@@ -94,30 +95,7 @@ export default {
 
         }).then((filteredArray) => {
 
-            return Promise.all(filteredArray.map((item) => {
-
-                switch (item.type) {
-                    case constants.ISSUE_TX:
-                        return schemas.issueTransactionSchema.parse(item);
-                    case constants.TRANSFER_TX:
-                        return schemas.transferTransactionSchema.parse(item);
-                    case constants.REISSUE_TX:
-                        return schemas.reissueTransactionSchema.parse(item);
-                    case constants.BURN_TX:
-                        return schemas.burnTransactionSchema.parse(item);
-                    case constants.EXCHANGE_TX:
-                        return schemas.exchangeTransactionSchema.parse(item);
-                    case constants.LEASE_TX:
-                        return schemas.leaseTransactionSchema.parse(item);
-                    case constants.CANCEL_LEASING_TX:
-                        return schemas.cancelLeasingTransactionSchema.parse(item);
-                    case constants.CREATE_ALIAS_TX:
-                        return schemas.createAliasTransactionSchema.parse(item);
-                    default:
-                        throw new Error(`Unknown transaction type encountered: ${item.type}`);
-                }
-
-            }));
+            return Promise.all(filteredArray.map(siftTransaction));
 
         });
 

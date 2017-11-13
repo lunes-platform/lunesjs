@@ -9,6 +9,7 @@ import v1Transactions from './v1/transactions';
 
 import v2Addresses from './v2/addresses';
 import v2Aliases from './v2/aliases';
+import v2Transactions from './v2/transactions';
 
 
 export interface INodeAPIv1 {
@@ -68,10 +69,14 @@ export interface INodeAPIv2 {
     },
     aliases: {
         getAddress(alias: string): Promise<any>;
+    },
+    transactions: {
+        get(id: string): Promise<any>;
     }
 }
 
 export const v2: INodeAPIv2 = {
     addresses: v2Addresses,
-    aliases: v2Aliases
+    aliases: v2Aliases,
+    transactions: v2Transactions
 };
