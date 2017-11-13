@@ -5,6 +5,7 @@ import * as WavesAPI from '../../dist/waves-api.min';
 let Waves;
 let Money;
 let fakeWAVES;
+let fakeEIGHT;
 let fakeFOUR;
 let fakeZERO;
 
@@ -23,6 +24,11 @@ describe('Money', () => {
                 precision: 8
             }),
             Waves.Asset.get({
+                id: 'EIGHT',
+                name: 'Eight Precision Token',
+                precision: 8
+            }),
+            Waves.Asset.get({
                 id: 'FOUR',
                 name: 'Four Precision Token',
                 precision: 4
@@ -34,8 +40,9 @@ describe('Money', () => {
             })
         ]).then((assets) => {
             fakeWAVES = assets[0];
-            fakeFOUR = assets[1];
-            fakeZERO = assets[2];
+            fakeEIGHT = assets[1];
+            fakeFOUR = assets[2];
+            fakeZERO = assets[3];
         }).then(() => done());
 
     });
@@ -116,7 +123,71 @@ describe('Money', () => {
 
     });
 
+    describe('arithmetic operations', () => {
+
+        it('should add Money with the same Asset', (done) => {
+            Promise.all([
+                Money.fromTokens('1.1', fakeWAVES),
+                Money.fromTokens('1.9', fakeWAVES)
+            ]).then((moneys) => {
+                const result = moneys[0].add(moneys[1]);
+                expect(Money.isMoney(result)).to.be.true;
+                expect(result.toTokens()).to.equal('3.00000000');
+            }).then(() => done());
+        });
+
+        it('should sub Money with the same Asset', (done) => {
+            Promise.all([
+                Money.fromTokens('3', fakeWAVES),
+                Money.fromTokens('1.1', fakeWAVES)
+            ]).then((moneys) => {
+                const result = moneys[0].sub(moneys[1]);
+                expect(Money.isMoney(result)).to.be.true;
+                expect(result.toTokens()).to.equal('1.90000000');
+            }).then(() => done());
+        });
+
+        it('should throw when Money instances have different Asset instances', (done) => {
+            Promise.all([
+                Money.fromTokens('1', fakeWAVES),
+                Money.fromTokens('1', fakeFOUR)
+            ]).then(([moneyOne, moneyTwo]) => {
+                expect(() => moneyOne.add(moneyTwo)).to.throw();
+            }).then(() => done());
+        });
+
+    });
+
     describe('conversions', () => {
+
+        it('should convert Money to another instance of Money with another Asset [4, 8]', (done) => {
+            Money.fromTokens('100', fakeFOUR).then((money) => {
+                const changedMoney = Money.convert(money, fakeWAVES, 4);
+                expect(changedMoney.toTokens()).to.equal('400.00000000');
+            }).then(() => done());
+        });
+
+        it('should convert Money to another instance of Money with another Asset [8, 4]', (done) => {
+            Money.fromTokens('100', fakeWAVES).then((money) => {
+                const changedMoney = Money.convert(money, fakeFOUR, 0.25);
+                expect(changedMoney.toTokens()).to.equal('25.0000');
+            }).then(() => done());
+        });
+
+        it('should convert Money to another instance of Money with another Asset [8, 8]', (done) => {
+            Money.fromTokens('100', fakeWAVES).then((money) => {
+                const changedMoney = Money.convert(money, fakeEIGHT, 2);
+                expect(changedMoney.toTokens()).to.equal('200.00000000');
+            }).then(() => done());
+        });
+
+        it('should return the existing Money when it is being converted to Money with the same Asset', (done) => {
+            Money.fromTokens('100', fakeWAVES).then((money) => {
+                const changedMoney = Money.convert(money, fakeWAVES, 2);
+                expect(changedMoney.toTokens()).to.equal('100.00000000');
+                expect(changedMoney).to.equal(money);
+            }).then(() => done());
+        });
 
         it('should return a proper BigNumber instance (from tokens)', (done) => {
             Money.fromTokens('1.123', fakeWAVES).then((money) => {
