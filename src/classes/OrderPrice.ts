@@ -4,28 +4,10 @@ import { IAssetPair } from './AssetPair';
 
 import BigNumber from '../libs/bignumber';
 import AssetPair from './AssetPair';
-import { checkAmount, getDivider } from './Money';
-
-
-const MATCHER_SCALE = new BigNumber(10).pow(8);
-
-function getMatcherDivider(precision) {
-    return getDivider(precision).mul(MATCHER_SCALE);
-}
-
-function getPair(pair, secondAsset): Promise<IAssetPair> {
-    if (AssetPair.isAssetPair(pair)) {
-        return Promise.resolve(pair);
-    } else if (pair && secondAsset) {
-        // Here, both `pair` and `secondAsset` are assets
-        return AssetPair.get(pair, secondAsset);
-    } else {
-        throw new Error('Invalid data passed instead AssetPair');
-    }
-}
 
 
 export interface IOrderPrice {
+    pair: IAssetPair;
     getMatcherCoins(): BigNumber;
     getTokens(): BigNumber;
     toMatcherCoins(): string;
@@ -34,20 +16,20 @@ export interface IOrderPrice {
     toString(): string;
 }
 
-class OrderPrice implements IOrderPrice {
+export default class OrderPrice implements IOrderPrice {
 
     public readonly pair: IAssetPair;
+
     private _matcherCoins: BigNumber;
     private _tokens: BigNumber;
 
-    constructor(coins, pair: IAssetPair) {
+    private static _MATCHER_SCALE = new BigNumber(10).pow(8);
 
-        const divider = getMatcherDivider(pair.precisionDifference);
-
+    private constructor(coins, pair: IAssetPair) {
+        const divider = OrderPrice._getMatcherDivider(pair.precisionDifference);
         this.pair = pair;
         this._matcherCoins = new BigNumber(coins);
         this._tokens = this._matcherCoins.div(divider);
-
     }
 
     public getMatcherCoins() {
@@ -78,30 +60,46 @@ class OrderPrice implements IOrderPrice {
         return `${this.toTokens()} ${this.pair.amountAsset.id}/${this.pair.priceAsset.id}`;
     }
 
-}
-
-
-export default {
-
-    fromTokens(tokens, pair: IAssetPair | IAsset | string, secondAsset?: IAsset | string): Promise<IOrderPrice> {
-        checkAmount(tokens);
-        return getPair(pair, secondAsset).then((p) => {
+    public static fromTokens(tokens, pair: IAssetPair | IAsset | string, secondAsset?: IAsset | string): Promise<IOrderPrice> {
+        OrderPrice._checkAmount(tokens);
+        return OrderPrice._getPair(pair, secondAsset).then((p) => {
             tokens = new BigNumber(tokens).toFixed(p.priceAsset.precision);
-            const divider = getMatcherDivider(p.precisionDifference);
+            const divider = OrderPrice._getMatcherDivider(p.precisionDifference);
             const coins = new BigNumber(tokens).mul(divider);
             return new OrderPrice(coins, p);
         });
-    },
+    }
 
-    fromMatcherCoins(coins, pair: IAssetPair | IAsset | string, secondAsset?: IAsset | string): Promise<IOrderPrice> {
-        checkAmount(coins);
-        return getPair(pair, secondAsset).then((p) => {
+    public static fromMatcherCoins(coins, pair: IAssetPair | IAsset | string, secondAsset?: IAsset | string): Promise<IOrderPrice> {
+        OrderPrice._checkAmount(coins);
+        return OrderPrice._getPair(pair, secondAsset).then((p) => {
             return new OrderPrice(coins, p);
         });
-    },
+    }
 
-    isOrderPrice(object) {
+    public static isOrderPrice(object) {
         return object instanceof OrderPrice;
     }
 
-};
+    private static _checkAmount(amount) {
+        if (!(typeof amount === 'string' || amount instanceof BigNumber)) {
+            throw new Error('Please use strings to create instances of OrderPrice');
+        }
+    }
+
+    private static _getPair(pair, secondAsset): Promise<IAssetPair> {
+        if (AssetPair.isAssetPair(pair)) {
+            return Promise.resolve(pair);
+        } else if (pair && secondAsset) {
+            // Here, both `pair` and `secondAsset` are assets
+            return AssetPair.get(pair, secondAsset);
+        } else {
+            throw new Error('Invalid data passed instead AssetPair');
+        }
+    }
+
+    private static _getMatcherDivider(precision) {
+        return new BigNumber(10).pow(precision).mul(OrderPrice._MATCHER_SCALE);
+    }
+
+}

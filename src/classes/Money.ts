@@ -5,19 +5,6 @@ import BigNumber from '../libs/bignumber';
 import Asset from './Asset';
 
 
-// TODO : stop exporting the following functions when OrderPrice is removed
-
-export function checkAmount(amount) {
-    if (!(typeof amount === 'string' || amount instanceof BigNumber)) {
-        throw new Error('Please use strings to create instances of Money');
-    }
-}
-
-export function getDivider(precision) {
-    return new BigNumber(10).pow(precision);
-}
-
-
 export interface IMoney {
     asset: IAsset;
     getCoins(): BigNumber;
@@ -30,20 +17,18 @@ export interface IMoney {
     toString(): string;
 }
 
-class Money implements IMoney {
+export default class Money implements IMoney {
 
     public readonly asset: IAsset;
+
     private _coins: BigNumber;
     private _tokens: BigNumber;
 
-    constructor(coins, asset: IAsset) {
-
-        const divider = getDivider(asset.precision);
-
+    private constructor(coins, asset: IAsset) {
+        const divider = Money._getDivider(asset.precision);
         this.asset = asset;
         this._coins = new BigNumber(coins);
         this._tokens = this._coins.div(divider);
-
     }
 
     public getCoins() {
@@ -93,29 +78,24 @@ class Money implements IMoney {
         }
     }
 
-}
-
-
-export default {
-
-    fromCoins(coins, supposedAsset): Promise<IMoney> {
-        checkAmount(coins);
+    public static fromCoins(coins, supposedAsset): Promise<IMoney> {
+        Money._checkAmount(coins);
         return Asset.get(supposedAsset).then((asset) => {
             return new Money(coins, asset);
         });
-    },
+    }
 
-    fromTokens(tokens, supposedAsset): Promise<IMoney> {
-        checkAmount(tokens);
+    public static fromTokens(tokens, supposedAsset): Promise<IMoney> {
+        Money._checkAmount(tokens);
         return Asset.get(supposedAsset).then((asset) => {
-            const divider = getDivider(asset.precision);
+            const divider = Money._getDivider(asset.precision);
             tokens = new BigNumber(tokens).toFixed(asset.precision);
             const coins = new BigNumber(tokens).mul(divider);
             return new Money(coins, asset);
         });
-    },
+    }
 
-    convert(money: IMoney, asset: IAsset, exchangeRate: BigNumber | string): IMoney {
+    public static convert(money: IMoney, asset: IAsset, exchangeRate: BigNumber | string): IMoney {
         if (money.asset === asset) {
             return money;
         } else {
@@ -125,10 +105,20 @@ export default {
             const result = coins.mul(exchangeRate).div(divider);
             return new Money(result, asset);
         }
-    },
+    }
 
-    isMoney(object) {
+    public static isMoney(object) {
         return object instanceof Money;
     }
 
-};
+    private static _checkAmount(amount) {
+        if (!(typeof amount === 'string' || amount instanceof BigNumber)) {
+            throw new Error('Please use strings to create instances of Money');
+        }
+    }
+
+    private static _getDivider(precision) {
+        return new BigNumber(10).pow(precision);
+    }
+
+}
