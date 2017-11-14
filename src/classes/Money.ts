@@ -13,7 +13,9 @@ export interface IMoney {
     toTokens(): string;
     toFormat(): string;
     add(money: IMoney): IMoney;
+    plus(money: IMoney): IMoney;
     sub(money: IMoney): IMoney;
+    minus(money: IMoney): IMoney;
     convertTo(asset: IAsset, exchangeRate: BigNumber | string): IMoney;
     toJSON(): IHash<any>;
     toString(): string;
@@ -60,11 +62,19 @@ export default class Money implements IMoney {
         return new Money(result, this.asset);
     }
 
+    public plus(money) {
+        return this.add(money);
+    }
+
     public sub(money) {
         this._matchAssets(money);
         const inputCoins = money.getCoins();
         const result = this._coins.sub(inputCoins);
         return new Money(result, this.asset);
+    }
+
+    public minus(money) {
+        return this.sub(money);
     }
 
     public convertTo(asset, exchangeRate) {

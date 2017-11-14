@@ -133,6 +133,9 @@ describe('Money', () => {
                 const result = moneys[0].add(moneys[1]);
                 expect(Money.isMoney(result)).to.be.true;
                 expect(result.toTokens()).to.equal('3.00000000');
+                const result2 = moneys[0].plus(moneys[1]);
+                expect(Money.isMoney(result2)).to.be.true;
+                expect(result2.toTokens()).to.equal('3.00000000');
             }).then(() => done());
         });
 
@@ -144,6 +147,9 @@ describe('Money', () => {
                 const result = moneys[0].sub(moneys[1]);
                 expect(Money.isMoney(result)).to.be.true;
                 expect(result.toTokens()).to.equal('1.90000000');
+                const result2 = moneys[0].minus(moneys[1]);
+                expect(Money.isMoney(result2)).to.be.true;
+                expect(result2.toTokens()).to.equal('1.90000000');
             }).then(() => done());
         });
 
@@ -153,6 +159,9 @@ describe('Money', () => {
                 Money.fromTokens('1', fakeFOUR)
             ]).then(([moneyOne, moneyTwo]) => {
                 expect(() => moneyOne.add(moneyTwo)).to.throw();
+                expect(() => moneyOne.plus(moneyTwo)).to.throw();
+                expect(() => moneyOne.sub(moneyTwo)).to.throw();
+                expect(() => moneyOne.minus(moneyTwo)).to.throw();
             }).then(() => done());
         });
 
