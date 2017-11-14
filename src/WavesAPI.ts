@@ -1,6 +1,8 @@
 import { IHash, IWavesConfig } from '../interfaces';
 import { ITransactionClassConstructor } from './classes/Transactions';
 
+import BigNumberLibrary from './libs/bignumber';
+
 import Asset from './classes/Asset';
 import AssetPair from './classes/AssetPair';
 import Money from './classes/Money';
@@ -105,6 +107,8 @@ class WavesAPI implements IWavesAPI {
 
 }
 
+
+export const BigNumber = BigNumberLibrary;
 
 export function create(config: IWavesConfig): IWavesAPI {
     return new WavesAPI(config);
