@@ -164,6 +164,8 @@ describe('Money', () => {
             Money.fromTokens('100', fakeFOUR).then((money) => {
                 const changedMoney = Money.convert(money, fakeWAVES, 4);
                 expect(changedMoney.toTokens()).to.equal('400.00000000');
+                const changedMoney2 = money.convertTo(fakeWAVES, 4);
+                expect(changedMoney2.toTokens()).to.equal('400.00000000');
             }).then(() => done());
         });
 
@@ -171,6 +173,8 @@ describe('Money', () => {
             Money.fromTokens('100', fakeWAVES).then((money) => {
                 const changedMoney = Money.convert(money, fakeFOUR, 0.25);
                 expect(changedMoney.toTokens()).to.equal('25.0000');
+                const changedMoney2 = money.convertTo(fakeFOUR, 0.25);
+                expect(changedMoney2.toTokens()).to.equal('25.0000');
             }).then(() => done());
         });
 
@@ -178,6 +182,8 @@ describe('Money', () => {
             Money.fromTokens('100', fakeWAVES).then((money) => {
                 const changedMoney = Money.convert(money, fakeEIGHT, 2);
                 expect(changedMoney.toTokens()).to.equal('200.00000000');
+                const changedMoney2 = money.convertTo(fakeEIGHT, 2);
+                expect(changedMoney2.toTokens()).to.equal('200.00000000');
             }).then(() => done());
         });
 
@@ -186,6 +192,9 @@ describe('Money', () => {
                 const changedMoney = Money.convert(money, fakeWAVES, 2);
                 expect(changedMoney.toTokens()).to.equal('100.00000000');
                 expect(changedMoney).to.equal(money);
+                const changedMoney2 = money.convertTo(fakeWAVES, 2);
+                expect(changedMoney2.toTokens()).to.equal('100.00000000');
+                expect(changedMoney2).to.equal(money);
             }).then(() => done());
         });
 

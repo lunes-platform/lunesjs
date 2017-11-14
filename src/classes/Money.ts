@@ -13,6 +13,7 @@ export interface IMoney {
     toTokens(): string;
     add(money: IMoney): IMoney;
     sub(money: IMoney): IMoney;
+    convertTo(asset: IAsset, exchangeRate: BigNumber | string): IMoney;
     toJSON(): IHash<any>;
     toString(): string;
 }
@@ -61,6 +62,10 @@ export default class Money implements IMoney {
         return new Money(result, this.asset);
     }
 
+    public convertTo(asset, exchangeRate) {
+        return Money.convert(this, asset, exchangeRate);
+    }
+
     public toJSON() {
         return {
             assetId: this.asset.id,
@@ -107,17 +112,17 @@ export default class Money implements IMoney {
         }
     }
 
-    public static isMoney(object) {
+    public static isMoney(object: any): boolean {
         return object instanceof Money;
     }
 
-    private static _checkAmount(amount) {
+    private static _checkAmount(amount: any): void {
         if (!(typeof amount === 'string' || amount instanceof BigNumber)) {
             throw new Error('Please use strings to create instances of Money');
         }
     }
 
-    private static _getDivider(precision) {
+    private static _getDivider(precision: number): BigNumber {
         return new BigNumber(10).pow(precision);
     }
 
