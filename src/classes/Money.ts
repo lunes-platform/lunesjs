@@ -11,6 +11,7 @@ export interface IMoney {
     getTokens(): BigNumber;
     toCoins(): string;
     toTokens(): string;
+    toFormat(): string;
     add(money: IMoney): IMoney;
     sub(money: IMoney): IMoney;
     convertTo(asset: IAsset, exchangeRate: BigNumber | string): IMoney;
@@ -46,6 +47,10 @@ export default class Money implements IMoney {
 
     public toTokens() {
         return this._tokens.toFixed(this.asset.precision);
+    }
+
+    public toFormat() {
+        return this._tokens.toFormat(this.asset.precision);
     }
 
     public add(money) {
