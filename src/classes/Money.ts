@@ -67,7 +67,7 @@ class Money implements IMoney {
     }
 
     public toString() {
-        return `${this.toTokens()} ${this.asset.name}`;
+        return `${this.toTokens()} ${this.asset.id}`;
     }
 
 }
