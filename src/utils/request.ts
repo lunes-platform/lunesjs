@@ -8,6 +8,9 @@ import config from '../config';
 
 
 export type TTransactionRequest = (data: IHash<any>, keyPair: IKeyPair) => Promise<any>;
+export interface IFetchWrapper<T> {
+    (path: string, options?: IHash<any>): Promise<T>;
+}
 
 
 export const enum PRODUCTS { NODE, MATCHER }
@@ -51,11 +54,11 @@ export function processJSON(res) {
 
 
 function handleError(url, data) {
-    throw new WavesRequestError(url, data)
+    throw new WavesRequestError(url, data);
 }
 
 
-export function createFetchWrapper(product: PRODUCTS, version: VERSIONS, pipe?: Function): Function {
+export function createFetchWrapper(product: PRODUCTS, version: VERSIONS, pipe?: Function): IFetchWrapper<any> {
 
     const resolveHost = hostResolvers[key(product, version)];
 
