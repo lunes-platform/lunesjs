@@ -122,7 +122,7 @@ describe('Money', () => {
 
         it('should convert to a string', (done) => {
             Money.fromTokens('1000', fakeWAVES).then((m) => {
-                expect(m.toString()).to.equal(`1000.00000000 ${fakeWAVES.name}`);
+                expect(m.toString()).to.equal(`1000.00000000 ${fakeWAVES.id}`);
             }).then(() => done());
         });
 
