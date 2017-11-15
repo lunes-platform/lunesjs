@@ -93,7 +93,7 @@ export default class Money implements IMoney {
     }
 
     private _matchAssets(money) {
-        if (this.asset !== money.asset) {
+        if (this.asset.id !== money.asset.id) {
             throw new Error('You cannot apply arithmetic operations to Money created with different assets');
         }
     }
