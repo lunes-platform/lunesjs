@@ -183,7 +183,7 @@ let converters = function () {
             }
             return byteArray;
         },
-        byteArrayToString: function (bytes, opt_startIndex, length) {
+        byteArrayToString: function (bytes, opt_startIndex?, length?) {
             if (length == 0) {
                 return '';
             }

@@ -1,4 +1,5 @@
 import { Schema, BooleanPart, DatePart, NumberPart, ObjectPart, StringPart } from 'ts-api-validator';
+import { Base58Part } from './schema.Base58Part';
 import { MoneyPart } from './schema.MoneyPart';
 import * as constants from '../constants';
 
@@ -124,8 +125,14 @@ const getTxWavesFee = (path?) => ({
 });
 
 const getTxAttachment = () => ({
-    type: StringPart,
+    type: Base58Part,
     defaultValue: ''
+});
+
+const getTxRawAttachment = (path) => ({
+    type: StringPart,
+    defaultValue: '',
+    path: path
 });
 
 const getTxLeaseTransactionId = (path) => ({
@@ -198,6 +205,7 @@ export const transferTransactionSchema = new Schema({
         recipient: getTxRecipient(),
         recipientAddress: getTxRecipientAddress(),
         attachment: getTxAttachment(),
+        rawAttachment: getTxRawAttachment('attachment'),
         assetId: getTxAssetId(),
         amount: getTxAmount('assetId'),
         feeAssetId: getTxAssetId('feeAsset')

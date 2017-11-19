@@ -51,6 +51,7 @@ export const transferSchema = new Schema({
         },
         fee: schemaFields.fee,
         attachment: {
+            // TODO : make it possible to pass a byte array
             type: StringPart,
             required: false,
             defaultValue: ''
