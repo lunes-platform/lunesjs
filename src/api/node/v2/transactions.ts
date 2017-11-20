@@ -7,6 +7,8 @@ export default {
 
     get(id: string) {
         return v1Transactions.get(id)
+            // TODO : add this UTX-fallback behavior to wavesplatform/swagger-api-design
+            .catch(() => v1Transactions.utxGet(id))
             .then(siftTransaction)
             .then((transaction) => {
                 if (transaction.transactionType === CANCEL_LEASING_TX_NAME) {
