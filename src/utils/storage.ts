@@ -13,52 +13,73 @@ export interface IStorage {
 
 class Storage implements IStorage {
 
-    private _init: Function;
     private _storages: IHash<IHash<any>>;
+    private _runInit: IHash<boolean>;
+    private _when: Promise<any>;
+    private _init: Function;
 
     public get currentStorage() {
         return this._resolveStorage();
     }
 
     constructor(init?) {
-        this._init = init;
         this._storages = Object.create(null);
+        this._runInit = Object.create(null);
+        this._when = Promise.resolve();
+        this._init = init;
     }
 
     public get(key) {
-        return Promise.resolve(this.currentStorage[key] || null);
+        return this._next(() => this.currentStorage[key] || null);
     }
 
     public getAll() {
-        return Promise.resolve({ ...this.currentStorage });
+        return this._next(() => ({ ...this.currentStorage }));
     }
 
     public getList() {
         return this.getAll().then((storage) => {
-            const list = Object.keys(storage).map((key) => storage[key]);
-            return Promise.resolve(list);
+            return Object.keys(storage).map((key) => storage[key]);
         });
     }
 
     public set(key, value) {
-        this.currentStorage[key] = value;
-        return Promise.resolve(value);
+        return this._next(() => {
+            this.currentStorage[key] = value;
+            return value;
+        });
     }
 
     public clear() {
-        this._storages = Object.create(null);
-        return Promise.resolve(null);
+        return this._next(() => {
+            this._storages = Object.create(null);
+            this._runInit = Object.create(null);
+            this._when = Promise.resolve();
+        });
+    }
+
+    private _next(callback?: () => any) {
+
+        const network = config.getNetworkByte();
+        if (this._init && !this._runInit[network]) {
+            this._runInit[network] = true;
+            this._when = this._when.then(() => {
+                return this._init((key, value) => {
+                    this.currentStorage[key] = value;
+                });
+            });
+        }
+
+        this._when = this._when.then(callback || (() => null));
+        return this._when;
+
     }
 
     private _resolveStorage() {
 
         const network = config.getNetworkByte();
-
         if (!this._storages[network]) {
             this._storages[network] = Object.create(null);
-            this._init && this._init((key, value) => {
-                this._storages[network][key] = value;
-            });
         }
 
         return this._storages[network];

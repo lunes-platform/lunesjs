@@ -14,10 +14,17 @@ const MOCK_BTC_RESPONSE = {
     description: 'Mock Bitcoin Token'
 };
 
+const ASSET_HEIR_PARAMS = {
+    a: 1,
+    b: 2
+};
+
 let Waves;
 let Asset;
 let defaultProps1;
 let defaultProps2;
+
+let AssetHeir;
 
 
 describe('Asset', () => {
@@ -89,6 +96,70 @@ describe('Asset', () => {
                 });
             }).then(() => done());
         });
+
+    });
+
+    describe('creating instances with a factory', () => {
+
+        beforeEach(() => {
+
+            // TODO : solve the issue with interfaces
+            AssetHeir = class extends (Asset as { new(props): any }) {
+
+                constructor(props, extendedProps) {
+                    super(props);
+                    this.a = extendedProps.a;
+                    this.b = extendedProps.b;
+                }
+
+                additionalMethod() {
+                    return this.a + this.b;
+                }
+
+            };
+
+            Waves.config.set({
+                assetFactory: (props) => {
+                    const assetHeir = new AssetHeir(props, ASSET_HEIR_PARAMS);
+                    return Promise.resolve(assetHeir);
+                }
+            });
+
+        });
+
+        afterEach(() => {
+            Waves.config.set({
+                assetFactory: null
+            });
+        });
+
+        it('should return an instance of AssetHeir', (done) => {
+
+            Asset.get(MOCK_BTC_ID).then((asset) => {
+                expect(asset).to.be.an.instanceof(AssetHeir);
+                expect(asset).to.be.an.instanceof(Asset);
+                expect(asset.a).to.equal(ASSET_HEIR_PARAMS.a);
+                expect(asset.b).to.equal(ASSET_HEIR_PARAMS.b);
+                const n = asset.additionalMethod();
+                expect(n).to.equal(ASSET_HEIR_PARAMS.a + ASSET_HEIR_PARAMS.b);
+            }).then(() => done());
+
+        });
+
+        // TODO : it causes to fail the next call of parental `beforeEach()`
+        // TODO : the commented test itself is executed properly
+        // it('should fail if the factory does not return an Asset heir', (done) => {
+        //
+        //     Waves.config.set({
+        //         assetFactory() {
+        //             const someClass = class {};
+        //             return Promise.resolve(someClass);
+        //         }
+        //     });
+        //
+        //     Asset.get(MOCK_BTC_ID).catch(() => done());
+        //
+        // });
 
     });
 
@@ -198,7 +269,7 @@ describe('Asset', () => {
     describe('conversions', () => {
 
         it('should convert to JSON', (done) => {
-            const s = '{"id":"test1","name":"Test No. 1","precision":0,"description":"","rating":0,"ticker":""}';
+            const s = '{"id":"test1","name":"Test No. 1","precision":0,"description":""}';
             Asset.get(defaultProps1).then((a) => {
                 expect(JSON.stringify(a)).to.equal(s);
             }).then(() => done());

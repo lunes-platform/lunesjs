@@ -13,7 +13,7 @@ export interface IAssetObject {
     readonly id: string;
     readonly name: string;
     readonly precision: TPrecision;
-    description?: string;
+    readonly description?: string;
 }
 
 export interface IKeyPair {
@@ -30,6 +30,7 @@ export interface IWavesBasicConfig {
     minimumSeedLength: number;
     requestOffset: number;
     requestLimit: number;
+    assetFactory?: Function;
 }
 
 export interface IWavesConfig extends IWavesBasicConfig {

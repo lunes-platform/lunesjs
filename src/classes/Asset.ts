@@ -1,21 +1,20 @@
 import { IAssetObject, IHash } from '../../interfaces';
 
-import { WAVES_PROPS } from '../constants';
 import { getStorage } from '../utils/storage';
+import { WAVES_PROPS } from '../constants';
+import config from '../config';
 
 /** TEMPORARY MOCKS */
 import { v1 as NodeAPIv1 } from '../api/node/index';
 
 
-function getAsset(id): Promise<IAsset> {
-    return NodeAPIv1.transactions.get(id).then((assetTransaction) => {
-        return storage.set(id, new Asset({
-            id: id,
-            name: assetTransaction.name,
-            precision: assetTransaction.decimals,
-            description: assetTransaction.description
-        }));
-    });
+function getAssetProps(id): Promise<IAssetObject> {
+    return NodeAPIv1.transactions.get(id).then((assetTransaction) => ({
+        id: id,
+        name: assetTransaction.name,
+        precision: assetTransaction.decimals,
+        description: assetTransaction.description
+    }));
 }
 
 function checkAssetProps(props) {
@@ -36,32 +35,28 @@ function checkAssetProps(props) {
 
 
 export interface IAsset extends IAssetObject {
-    rating: number;
-    ticker: string;
     toJSON(): IHash<any>;
     toString(): string;
 }
 
-class Asset implements IAsset {
+export default class Asset implements IAsset {
 
     public readonly id;
     public readonly name;
     public readonly precision;
     public readonly description;
 
-    public rating;
-    public ticker;
+    private static _storage = getStorage((set) => {
+        return Asset._factory(WAVES_PROPS).then((wavesAsset) => {
+            set(wavesAsset.id, wavesAsset);
+        });
+    });
 
-    constructor(props: IAssetObject) {
-
+    protected constructor(props: IAssetObject) {
         this.id = props.id;
         this.name = props.name;
         this.precision = props.precision;
         this.description = props.description || '';
-
-        this.rating = 0;
-        this.ticker = '';
-
     }
 
     public toJSON() {
@@ -69,9 +64,7 @@ class Asset implements IAsset {
             id: this.id,
             name: this.name,
             precision: this.precision,
-            description: this.description,
-            rating: this.rating,
-            ticker: this.ticker
+            description: this.description
         };
     }
 
@@ -79,46 +72,72 @@ class Asset implements IAsset {
         return this.id;
     }
 
-}
+    public static get(input: IAsset | IAssetObject | string) {
 
+        if (Asset.isAsset(input)) {
 
-const storage = getStorage((set) => {
-    const wavesAsset = new Asset(WAVES_PROPS);
-    set(wavesAsset.id, wavesAsset);
-});
+            return Promise.resolve(input);
 
+        } else if (typeof input === 'string') {
 
-export default {
-
-    get(input: IAssetObject | string) {
-        if (typeof input === 'string') {
             const id = input;
-            return storage.get(id).then((asset) => {
-                return asset || getAsset(id);
+            return Asset._storage.get(id).then((asset) => {
+                return asset || getAssetProps(id).then((props) => {
+                    return Asset._factory(props);
+                }).then((newAsset) => {
+                    return Asset._storage.set(newAsset.id, newAsset);
+                });
             });
+
         } else {
+
             const props = input;
-            checkAssetProps(props);
-            return storage.get(props.id).then((asset) => {
-                return asset || storage.set(props.id, new Asset(props));
+            return Asset._storage.get(props.id).then((asset) => {
+                return asset || Asset._factory(props).then((newAsset) => {
+                    return Asset._storage.set(newAsset.id, newAsset);
+                });
             });
+
         }
-    },
 
-    getKnownAssets() {
-        return storage.getAll();
-    },
+    }
 
-    getKnownAssetsList() {
-        return storage.getList();
-    },
+    public static getKnownAssets() {
+        return Asset._storage.getAll();
+    }
 
-    clearCache() {
-        return storage.clear();
-    },
+    public static getKnownAssetsList() {
+        return Asset._storage.getList();
+    }
 
-    isAsset(object) {
+    public static clearCache() {
+        return Asset._storage.clear();
+    }
+
+    public static isAsset(object) {
         return object instanceof Asset;
     }
 
-};
+    private static _factory(props) {
+
+        checkAssetProps(props);
+
+        const factory = config.getAssetFactory() || Asset._defaultFactory;
+        return factory(props).then((asset) => {
+
+            if (!Asset.isAsset(asset)) {
+                throw new Error(`Factory provided an object which is not a heir of Asset`);
+            }
+
+            return asset;
+
+        });
+
+    }
+
+    private static _defaultFactory(props) {
+        const asset = new Asset(props);
+        return Promise.resolve(asset);
+    }
+
+}

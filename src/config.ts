@@ -38,6 +38,10 @@ export default {
         };
     },
 
+    getAssetFactory() {
+        return config.assetFactory;
+    },
+
     get() {
         return { ...config };
     },
