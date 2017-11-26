@@ -10,34 +10,47 @@ export const detailedWavesBalanceSchema = new Schema({
     required: true,
     content: {
         regular: {
+            // The amount one have
             type: MoneyPart,
             assetId: constants.WAVES,
             parseValue: stringConversion
         },
         available: {
+            // Available to spend
             type: MoneyPart,
             assetId: constants.WAVES,
             parseValue: stringConversion
         },
         effective: {
+            // Potential leasing balance
             type: MoneyPart,
             assetId: constants.WAVES,
             parseValue: stringConversion
         },
         generating: {
+            // Actual leasing balance
             type: MoneyPart,
             assetId: constants.WAVES,
             parseValue: stringConversion
         },
-        leased: {
+        leasedOut: {
+            // Leased to another account
             type: MoneyPart,
             assetId: constants.WAVES,
             // TODO : remove in the new API
             path: null,
             parseValue: (o) => {
-                const regular = o.regular;
-                const available = o.available;
-                return stringConversion(regular - available);
+                return stringConversion(o.regular - o.available);
+            }
+        },
+        leasedIn: {
+            // Incoming leasing
+            type: MoneyPart,
+            assetId: constants.WAVES,
+            // TODO : remove in the new API
+            path: null,
+            parseValue: (o) => {
+                return stringConversion(o.effective - o.available);
             }
         }
     }
