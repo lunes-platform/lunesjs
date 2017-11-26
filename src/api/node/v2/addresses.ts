@@ -21,8 +21,8 @@ function getBalances(address, options) {
 
     // TODO : avoid unnecessary requests if the asset option is provided and Waves or any assets are not in it
 
-    const wavesBalance = v1Addresses.balance(address).then((data) => {
-        return Money.fromCoins(String(data.balance), constants.WAVES).then((amount) => {
+    const wavesBalance = v1Addresses.balanceDetails(address).then((data) => {
+        return Money.fromCoins(String(data.available), constants.WAVES).then((amount) => {
             return [{
                 ...constants.WAVES_PROPS,
                 amount: amount
