@@ -12,7 +12,8 @@ export default {
     },
 
     getList(address: string, limit: number = config.getRequestParams().limit) {
-        return fetch(`/transactions/address/${address}/limit/${limit}`);
+        // In the end of the line a strange response artifact is handled
+        return fetch(`/transactions/address/${address}/limit/${limit}`).then((array) => array[0]);
     },
 
     utxSize() {

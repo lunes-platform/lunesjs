@@ -2,7 +2,7 @@ import * as constants from '../constants';
 import * as txSchemas from './schema.transactions';
 
 
-export function siftTransaction(transaction) {
+export function siftTransaction(transaction): Promise<any> {
     switch (transaction.type) {
         case constants.ISSUE_TX:
             return txSchemas.issueTransactionSchema.parse(transaction);

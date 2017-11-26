@@ -92,11 +92,11 @@ export default {
 
     transactions(address, options: IAPITransactionsOptions = {}) {
 
-        _warn('This method is currently able to return only 1000 last transactions.');
+        _warn('This method is currently able to return only 1000 last transactions');
+
+        // TODO : this method ignores `options.offset` parameter at the moment
 
         return v1Transactions.getList(address, options.limit).then((array) => {
-
-            array = array[0]; // Strange response artifact // TODO : move to the v1 code
 
             if (options.type) {
                 array = array.filter(_filters.transactionType(options.type));
@@ -110,9 +110,21 @@ export default {
                 array = array.filter(_filters.transactionRecipient(options.recipient));
             }
 
-            return array;
+            return Promise.all(array.map(siftTransaction));
 
-        }).then((filteredArray) => {
+        });
+
+    },
+
+    utxTransactions(address) {
+
+        _warn('This method may be switched off on the side of the Node');
+
+        return v1Transactions.utxGetList().then((array) => {
+
+            const filteredArray = array.filter((item) => {
+                return item.sender === address || item.recipient === address;
+            });
 
             return Promise.all(filteredArray.map(siftTransaction));
 
