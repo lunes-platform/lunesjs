@@ -2,6 +2,7 @@ import * as constants from '../constants';
 import * as txSchemas from './schema.transactions';
 
 
+// Get v2 transaction from v1 transaction object
 export function siftTransaction(transaction): Promise<any> {
     switch (transaction.type) {
         case constants.ISSUE_TX:
