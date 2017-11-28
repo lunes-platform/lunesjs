@@ -3,20 +3,28 @@ import { TTransactionRequest } from '../../../utils/request';
 
 import Transactions from '../../../classes/Transactions';
 import { Base58, Long } from '../../../classes/ByteProcessor';
+
 import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTransactionRequest } from '../../../utils/request';
-import { normalizeAssetId } from '../../../utils/remap';
-import { orderSchema } from './orderbooks.x';
+import { createRemapper, normalizeAssetId } from '../../../utils/remap';
+import { POST_TEMPLATE } from '../../../utils/request';
+import { createOrderSchema } from './orderbooks.x';
+
+
+const GetOrdersAuthData = Transactions.createSignableData([
+    new Base58('senderPublicKey'),
+    new Long('timestamp')
+]);
+
+const CancelOrderAuthData = Transactions.createSignableData([
+    new Base58('senderPublicKey'),
+    new Base58('orderId')
+]);
 
 
 const fetch = createFetchWrapper(PRODUCTS.MATCHER, VERSIONS.V1, processJSON);
 
-const AuthData = Transactions.createSignableData([
-    new Base58('publicKey'),
-    new Long('timestamp')
-]);
-
-const preOrderAsync = (data) => orderSchema.parse(data);
-const postOrder = (data) => {
+const preCreateOrderAsync = (data) => createOrderSchema.parse(data);
+const postCreateOrder = (data) => {
 
     data.assetPair = {
         amountAsset: normalizeAssetId(data.amountAsset),
@@ -27,6 +35,33 @@ const postOrder = (data) => {
     delete data.priceAsset;
 
     return data;
+
+};
+
+const postCancelOrder = createRemapper({
+    senderPublicKey: 'sender'
+});
+
+
+const generateCancelLikeRequest = (type: string) => {
+
+    return (amountAssetId: string, priceAssetId: string, orderId: string, keyPair: IKeyPair) => {
+
+        const authData = new CancelOrderAuthData({
+            senderPublicKey: keyPair.publicKey,
+            orderId: orderId
+        });
+
+        return authData.prepareForAPI(keyPair.privateKey)
+            .then(postCancelOrder)
+            .then((tx) => {
+                return fetch(`/orderbook/${amountAssetId}/${priceAssetId}/${type}`, {
+                    ...POST_TEMPLATE,
+                    body: JSON.stringify(tx)
+                });
+            });
+
+    };
 
 };
 
@@ -43,9 +78,9 @@ export default {
 
     getOrders(assetOne: string, assetTwo: string, keyPair: IKeyPair) {
 
-        const authData = new AuthData({
-            timestamp: Date.now(),
-            publicKey: keyPair.publicKey
+        const authData = new GetOrdersAuthData({
+            senderPublicKey: keyPair.publicKey,
+            timestamp: Date.now()
         });
 
         return authData.prepareForAPI(keyPair.privateKey).then((preparedData) => {
@@ -61,9 +96,9 @@ export default {
 
     getAllOrders(keyPair: IKeyPair) {
 
-        const authData = new AuthData({
-            timestamp: Date.now(),
-            publicKey: keyPair.publicKey
+        const authData = new GetOrdersAuthData({
+            senderPublicKey: keyPair.publicKey,
+            timestamp: Date.now()
         });
 
         return authData.prepareForAPI(keyPair.privateKey).then((preparedData) => {
@@ -77,8 +112,12 @@ export default {
 
     },
 
-    createOrder: wrapTransactionRequest(Transactions.Order, preOrderAsync, postOrder, (postParams) => {
+    createOrder: wrapTransactionRequest(Transactions.Order, preCreateOrderAsync, postCreateOrder, (postParams) => {
         return fetch('/orderbook', postParams);
-    }) as TTransactionRequest
+    }) as TTransactionRequest,
+
+    cancelOrder: generateCancelLikeRequest('cancel'),
+
+    deleteOrder: generateCancelLikeRequest('delete')
 
 };

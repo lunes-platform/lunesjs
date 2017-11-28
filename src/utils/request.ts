@@ -17,7 +17,7 @@ export const enum PRODUCTS { NODE, MATCHER }
 export const enum VERSIONS { V1 }
 
 
-const POST_TEMPLATE = {
+export const POST_TEMPLATE = {
     method: 'POST',
     headers: {
         'Accept': 'application/json',

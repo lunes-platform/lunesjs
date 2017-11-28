@@ -11,8 +11,8 @@ export interface IMatcherAPIv1 {
     getOrders(assetOne: string, assetTwo: string, keyPair: IKeyPair): Promise<any>;
     getAllOrders(keyPair: IKeyPair): Promise<any>;
     createOrder(data: IHash<any>, keyPair: IKeyPair): IHash<any>;
-    // cancelOrder(data: IHash<any>, keyPair: IKeyPair): IHash<any>;
-    // deleteOrder(data: IHash<any>, keyPair: IKeyPair): IHash<any>;
+    cancelOrder(amountAssetId: string, priceAssetId: string, orderId: string, keyPair: IKeyPair): IHash<any>;
+    deleteOrder(amountAssetId: string, priceAssetId: string, orderId: string, keyPair: IKeyPair): IHash<any>;
 }
 
 export const v1: IMatcherAPIv1 = {
@@ -21,5 +21,7 @@ export const v1: IMatcherAPIv1 = {
     getOrderbook: v1Orderbooks.getOrderbook,
     getOrders: v1Orderbooks.getOrders,
     getAllOrders: v1Orderbooks.getAllOrders,
-    createOrder: v1Orderbooks.createOrder
+    createOrder: v1Orderbooks.createOrder,
+    cancelOrder: v1Orderbooks.cancelOrder,
+    deleteOrder: v1Orderbooks.deleteOrder
 };

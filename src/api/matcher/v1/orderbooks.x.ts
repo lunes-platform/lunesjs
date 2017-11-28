@@ -3,7 +3,7 @@ import schemaFields from '../../schemaFields';
 import { DEFAULT_ORDER_EXPIRATION_DAYS } from '../../../constants';
 
 
-export const orderSchema = new Schema({
+export const createOrderSchema = new Schema({
     type: ObjectPart,
     required: true,
     content: {
