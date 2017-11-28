@@ -1,8 +1,11 @@
 import { IKeyPair } from '../../../../interfaces';
+import { TTransactionRequest } from '../../../utils/request';
 
-import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON } from '../../../utils/request';
-import { Base58, Long } from '../../../classes/ByteProcessor';
 import Transactions from '../../../classes/Transactions';
+import { Base58, Long } from '../../../classes/ByteProcessor';
+import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTransactionRequest } from '../../../utils/request';
+import { normalizeAssetId } from '../../../utils/remap';
+import { orderSchema } from './orderbooks.x';
 
 
 const fetch = createFetchWrapper(PRODUCTS.MATCHER, VERSIONS.V1, processJSON);
@@ -11,6 +14,21 @@ const AuthData = Transactions.createSignableData([
     new Base58('publicKey'),
     new Long('timestamp')
 ]);
+
+const preOrderAsync = (data) => orderSchema.parse(data);
+const postOrder = (data) => {
+
+    data.assetPair = {
+        amountAsset: normalizeAssetId(data.amountAsset),
+        priceAsset: normalizeAssetId(data.priceAsset)
+    };
+
+    delete data.amountAsset;
+    delete data.priceAsset;
+
+    return data;
+
+};
 
 
 export default {
@@ -57,6 +75,10 @@ export default {
             });
         });
 
-    }
+    },
+
+    createOrder: wrapTransactionRequest(Transactions.Order, preOrderAsync, postOrder, (postParams) => {
+        return fetch('/orderbook', postParams);
+    }) as TTransactionRequest
 
 };

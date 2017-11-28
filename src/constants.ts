@@ -39,10 +39,13 @@ export const PUBLIC_KEY_LENGTH = 32;
 
 export const MINIMUM_FEE = 100000;
 export const MINIMUM_ISSUE_FEE = 100000000;
+export const MINIMUM_MATCHER_FEE = 300000;
 
 export const TRANSFER_ATTACHMENT_BYTE_LIMIT = 140;
 
 export const DEFAULT_MIN_SEED_LENGTH = 25;
+
+export const DEFAULT_ORDER_EXPIRATION_DAYS = 20;
 
 export const DEFAULT_BASIC_CONFIG: IWavesBasicConfig = {
     minimumSeedLength: DEFAULT_MIN_SEED_LENGTH,

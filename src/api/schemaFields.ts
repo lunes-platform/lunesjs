@@ -27,6 +27,12 @@ export default {
         defaultValue: constants.MINIMUM_ISSUE_FEE
     },
 
+    matcherFee: {
+        type: NumberPart,
+        required: false,
+        defaultValue: constants.MINIMUM_MATCHER_FEE
+    },
+
     recipient: {
         type: StringPart,
         required: true,
