@@ -39,6 +39,24 @@ export default {
             });
         });
 
+    },
+
+    getAllOrders(keyPair: IKeyPair) {
+
+        const authData = new AuthData({
+            timestamp: Date.now(),
+            publicKey: keyPair.publicKey
+        });
+
+        return authData.prepareForAPI(keyPair.privateKey).then((preparedData) => {
+            return fetch(`/orderbook/${keyPair.publicKey}`, {
+                headers: {
+                    Timestamp: preparedData.timestamp,
+                    Signature: preparedData.signature
+                }
+            });
+        });
+
     }
 
 };
