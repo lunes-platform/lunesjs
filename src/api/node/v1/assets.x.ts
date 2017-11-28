@@ -71,7 +71,7 @@ export const reissueSchema = new Schema({
             required: true
         },
         reissuable: schemaFields.reissuable,
-        fee: schemaFields.fee,
+        fee: schemaFields.issueFee,
         timestamp: schemaFields.timestamp
     }
 });

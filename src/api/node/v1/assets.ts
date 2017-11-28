@@ -34,7 +34,6 @@ const postBurn = createRemapper(({
 }));
 
 
-
 export default {
 
     balances(address: string) {
