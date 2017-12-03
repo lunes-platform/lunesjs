@@ -167,6 +167,53 @@ describe('Money', () => {
 
     });
 
+    describe('arithmetic comparisons', () => {
+
+        it('should properly compare instances of money', (done) => {
+            Promise.all([
+                Money.fromTokens('4.9999', fakeWAVES),
+                Money.fromTokens('5.0000', fakeWAVES),
+                Money.fromTokens('5.0000', fakeWAVES),
+                Money.fromTokens('5.0001', fakeWAVES)
+            ]).then(([money1, money2, money3, money4]) => {
+
+                expect(money2.eq(money3)).to.be.true;
+                expect(money2.eq(money4)).to.be.false;
+
+                expect(money1.lt(money2)).to.be.true;
+                expect(money2.lt(money3)).to.be.false;
+                expect(money4.lt(money3)).to.be.false;
+
+                expect(money1.lte(money2)).to.be.true;
+                expect(money2.lte(money3)).to.be.true;
+                expect(money4.lte(money3)).to.be.false;
+
+                expect(money4.gt(money3)).to.be.true;
+                expect(money3.gt(money2)).to.be.false;
+                expect(money3.gt(money4)).to.be.false;
+
+                expect(money4.gte(money3)).to.be.true;
+                expect(money3.gte(money2)).to.be.true;
+                expect(money3.gte(money4)).to.be.false;
+
+            }).then(() => done());
+        });
+
+        it('should throw when Money instances have different Asset instances', (done) => {
+            Promise.all([
+                Money.fromTokens('1', fakeWAVES),
+                Money.fromTokens('1', fakeFOUR)
+            ]).then(([moneyOne, moneyTwo]) => {
+                expect(() => moneyOne.eq(moneyTwo)).to.throw();
+                expect(() => moneyOne.lt(moneyTwo)).to.throw();
+                expect(() => moneyOne.lte(moneyTwo)).to.throw();
+                expect(() => moneyOne.gt(moneyTwo)).to.throw();
+                expect(() => moneyOne.gte(moneyTwo)).to.throw();
+            }).then(() => done());
+        });
+
+    });
+
     describe('conversions', () => {
 
         it('should convert Money to another instance of Money with another Asset [4, 8]', (done) => {
