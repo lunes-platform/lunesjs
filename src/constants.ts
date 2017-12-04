@@ -66,3 +66,20 @@ export const DEFAULT_TESTNET_CONFIG: IWavesConfig = {
     nodeAddress: 'https://testnet1.wavesnodes.com',
     matcherAddress: 'https://testnet1.wavesnodes.com/matcher'
 };
+
+export const WAVES_V1_ISSUE_TX = {
+    assetId: WAVES,
+    decimals: 8,
+    description: '',
+    fee: 0,
+    height: 0,
+    id: WAVES,
+    name: 'Waves',
+    quantity: 100000000 * Math.pow(10, 8),
+    reissuable: false,
+    sender: WAVES,
+    senderPublicKey: '',
+    signature: '',
+    timestamp: 1460419200000,
+    type: ISSUE_TX
+};

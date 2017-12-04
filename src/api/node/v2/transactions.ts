@@ -1,6 +1,6 @@
 import v1Transactions from '../v1/transactions';
 import { siftTransaction } from '../../schemaTools';
-import { CANCEL_LEASING_TX_NAME } from '../../../constants';
+import { CANCEL_LEASING_TX_NAME, WAVES, WAVES_V1_ISSUE_TX } from '../../../constants';
 
 
 function extendTransaction(transaction) {
@@ -20,9 +20,13 @@ function extendTransaction(transaction) {
 export default {
 
     get(id: string) {
-        return v1Transactions.get(id)
-            .then(siftTransaction)
-            .then(extendTransaction);
+        if (id === WAVES) {
+            return siftTransaction(WAVES_V1_ISSUE_TX);
+        } else {
+            return v1Transactions.get(id)
+                .then(siftTransaction)
+                .then(extendTransaction);
+        }
     },
 
     utxGet(id: string) {
