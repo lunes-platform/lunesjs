@@ -5,7 +5,8 @@ export const WAVES = 'WAVES';
 export const WAVES_PROPS: IAssetObject = {
     id: WAVES,
     name: 'Waves',
-    precision: 8
+    precision: 8,
+    description: ''
 };
 
 export const MAINNET_BYTE: number = 'W'.charCodeAt(0);

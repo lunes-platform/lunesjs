@@ -13,7 +13,7 @@ function getAssetProps(id): Promise<IAssetObject> {
         id: id,
         name: assetTransaction.name,
         precision: assetTransaction.decimals,
-        description: assetTransaction.description
+        description: assetTransaction.description || ''
     }));
 }
 

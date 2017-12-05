@@ -13,7 +13,7 @@ export interface IAssetObject {
     readonly id: string;
     readonly name: string;
     readonly precision: TPrecision;
-    readonly description?: string;
+    readonly description: string;
 }
 
 export interface IKeyPair {
