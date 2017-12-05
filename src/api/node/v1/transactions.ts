@@ -1,5 +1,6 @@
 import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON } from '../../../utils/request';
 import config from '../../../config';
+import { WAVES, WAVES_V1_ISSUE_TX } from '../../../constants';
 
 
 const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
@@ -8,7 +9,11 @@ const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
 export default {
 
     get(id: string) {
-        return fetch(`/transactions/info/${id}`);
+        if (id === WAVES) {
+            return Promise.resolve(WAVES_V1_ISSUE_TX);
+        } else {
+            return fetch(`/transactions/info/${id}`);
+        }
     },
 
     getList(address: string, limit: number = config.getRequestParams().limit) {
