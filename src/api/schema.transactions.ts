@@ -192,7 +192,7 @@ export const issueTransactionSchema = new Schema({
         name: getTxAssetName(),
         description: getTxAssetDescription(),
         precision: getTxAssetPrecision(),
-        amount: getTxAssetTotalAmount('quantity', 'assetId'),
+        quantity: getTxAssetTotalAmount('quantity', 'assetId'),
         reissuable: getTxAssetReissuable()
     }
 });
@@ -218,7 +218,7 @@ export const reissueTransactionSchema = new Schema({
     content: {
         ...getTxCommonFields(constants.REISSUE_TX_NAME, true),
         assetId: getTxAssetId(),
-        amount: getTxAssetTotalAmount('quantity', 'assetId'),
+        quantity: getTxAssetTotalAmount('quantity', 'assetId'),
         reissuable: getTxAssetReissuable()
     }
 });
@@ -229,7 +229,7 @@ export const burnTransactionSchema = new Schema({
     content: {
         ...getTxCommonFields(constants.BURN_TX_NAME, true),
         assetId: getTxAssetId(),
-        amount: getTxAssetTotalAmount('amount', 'assetId')
+        quantity: getTxAssetTotalAmount('amount', 'assetId')
     }
 });
 
