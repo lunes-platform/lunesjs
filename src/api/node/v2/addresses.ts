@@ -28,7 +28,7 @@ function getBalances(address, options) {
     const assetBalances = v1Assets.balances(address).then((data) => {
         return schemas.assetBalancesSchema.parse(data).then((balances) => {
             // TODO : decide whether it is needed or not
-            return balances.sort((a, b) => a.asset.id > b.asset.id ? 1 : -1);
+            return balances.sort((a, b) => a.asset.name > b.asset.name ? 1 : -1);
         });
     });
 
