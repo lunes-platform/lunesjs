@@ -69,30 +69,10 @@ export const assetBalancesSchema = new Schema({
     required: true,
     path: 'balances',
     content: {
-        type: ObjectPart,
-        content: {
-            id: {
-                type: StringPart,
-                required: true,
-                path: 'assetId'
-            },
-            name: {
-                type: StringPart,
-                required: true,
-                path: 'issueTransaction.name'
-            },
-            precision: {
-                type: NumberPart,
-                required: true,
-                path: 'issueTransaction.decimals'
-            },
-            amount: {
-                type: MoneyPart,
-                required: true,
-                path: 'balance',
-                assetIdPath: 'assetId',
-                parseValue: stringConversion
-            }
-        }
+        type: MoneyPart,
+        required: true,
+        path: 'balance',
+        assetIdPath: 'assetId',
+        parseValue: stringConversion
     }
 });

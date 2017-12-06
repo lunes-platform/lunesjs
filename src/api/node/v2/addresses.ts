@@ -22,23 +22,19 @@ function getBalances(address, options) {
     // TODO : avoid unnecessary requests if the asset option is provided and Waves or any assets are not in it
 
     const wavesBalance = v1Addresses.balanceDetails(address).then((data) => {
-        return Money.fromCoins(String(data.available), constants.WAVES).then((amount) => {
-            return [{
-                ...constants.WAVES_PROPS,
-                amount: amount
-            }];
-        });
+        return Money.fromCoins(String(data.available), constants.WAVES).then((amount) => [amount]);
     });
 
     const assetBalances = v1Assets.balances(address).then((data) => {
         return schemas.assetBalancesSchema.parse(data).then((balances) => {
-            return balances.sort((a, b) => a.id > b.id ? -1 : 1);
+            // TODO : decide whether it is needed or not
+            return balances.sort((a, b) => a.asset.id > b.asset.id ? -1 : 1);
         });
     });
 
     return Promise.all([wavesBalance, assetBalances])
-        .then((results) => [...results[0], ...results[1]])
-        .then((array) => {
+        .then(([waves, assets]) => {
+            const array = [...waves, ...assets];
             if (options.assets) {
                 return _combiners.balanceListByAssets(array, options.assets);
             } else {
