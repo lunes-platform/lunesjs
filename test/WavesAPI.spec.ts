@@ -44,4 +44,19 @@ describe('WavesAPI', () => {
         expect(Object.keys(config)).to.have.members(Object.keys(allConfigValues));
     });
 
+    it('should only insert fallback basic values when stored config does not have them', () => {
+
+        const logLevel = 'none';
+
+        const Waves = WavesAPI.create({ ...requiredConfigValues, logLevel });
+        Waves.config.set({ assetFactory: () => {} });
+        const config = Waves.config.get();
+        expect(config.logLevel).to.equal(logLevel);
+
+        const Waves2 = WavesAPI.create(requiredConfigValues);
+        const config2 = Waves2.config.get();
+        expect(config2.logLevel).to.equal(Waves.constants.DEFAULT_BASIC_CONFIG.logLevel);
+
+    });
+
 });

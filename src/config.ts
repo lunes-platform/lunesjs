@@ -52,7 +52,11 @@ export default {
 
     set(newConfig: Partial<IWavesConfig>) {
 
-        newConfig = { ...DEFAULT_BASIC_CONFIG, ...newConfig };
+        // Extend incoming objects only when `config` is empty
+        if (Object.keys(config).length === 0) {
+            newConfig = { ...DEFAULT_BASIC_CONFIG, ...newConfig };
+        }
+
         Object.keys(newConfig).forEach((key) => {
 
             switch (key) {
