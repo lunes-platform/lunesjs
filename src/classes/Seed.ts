@@ -2,6 +2,7 @@ import { IKeyPair } from '../../interfaces';
 
 import base58 from '../libs/base58';
 import crypto from '../utils/crypto';
+import logger from '../utils/logger';
 
 import config from '../config';
 import dictionary from '../seedDictionary';
@@ -27,11 +28,11 @@ function generateNewSeed(length): string {
 function encryptSeedPhrase(seedPhrase: string, password: string, encryptionRounds: number = 5000) {
 
     if (password && password.length < 8) {
-        console.warn('Your password may be too weak');
+        logger.warn('Your password may be too weak');
     }
 
     if (encryptionRounds < 1000) {
-        console.warn('Encryption rounds may be too few');
+        logger.warn('Encryption rounds may be too few');
     }
 
     if (seedPhrase.length < config.getMinimumSeedLength()) {

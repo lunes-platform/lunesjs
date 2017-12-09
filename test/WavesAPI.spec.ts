@@ -13,7 +13,8 @@ describe('WavesAPI', () => {
         requiredConfigValues = {
             networkByte: 1,
             nodeAddress: '1',
-            matcherAddress: '1'
+            matcherAddress: '1',
+            logLevel: 'warning'
         };
 
         allConfigValues = {

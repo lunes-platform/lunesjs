@@ -51,7 +51,8 @@ export const DEFAULT_ORDER_EXPIRATION_DAYS = 20;
 export const DEFAULT_BASIC_CONFIG: IWavesBasicConfig = {
     minimumSeedLength: DEFAULT_MIN_SEED_LENGTH,
     requestOffset: 0,
-    requestLimit: 100
+    requestLimit: 100,
+    logLevel: 'warning'
 };
 
 export const DEFAULT_MAINNET_CONFIG: IWavesConfig = {

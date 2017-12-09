@@ -1,4 +1,7 @@
+import logger from '../../../utils/logger';
+
+
 export default function (message?) {
-    console.warn('API v2 is experimental, please mind that');
-    message && console.warn(message);
+    logger.warn('API v2 is experimental, please mind that');
+    message && logger.warn(message);
 }

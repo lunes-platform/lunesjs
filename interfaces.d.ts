@@ -4,6 +4,8 @@ export type TBuffer = Uint8Array | number[];
 
 export type TTransactionType = 'issue' | 'transfer' | 'reissue' | 'burn' | 'exchange' | 'lease' | 'cancelLeasing' | 'createAlias';
 
+export type TLogLevel = 'none' | 'error' | 'warning' | 'info';
+
 
 export interface IHash<T> {
     [key: string]: T;
@@ -30,13 +32,14 @@ export interface IWavesBasicConfig {
     minimumSeedLength: number;
     requestOffset: number;
     requestLimit: number;
-    assetFactory?: Function;
+    logLevel: TLogLevel;
 }
 
 export interface IWavesConfig extends IWavesBasicConfig {
     networkByte: number;
     nodeAddress: string;
     matcherAddress: string;
+    assetFactory?: Function;
 }
 
 

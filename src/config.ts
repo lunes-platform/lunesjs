@@ -42,6 +42,10 @@ export default {
         return config.assetFactory;
     },
 
+    getLogLevel() {
+        return config.logLevel;
+    },
+
     get() {
         return { ...config };
     },
