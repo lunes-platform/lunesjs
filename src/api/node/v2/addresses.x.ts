@@ -1,6 +1,7 @@
-import { Schema, ArrayPart, NumberPart, ObjectPart, StringPart } from 'ts-api-validator';
+import { Schema, ArrayPart, ObjectPart, StringPart } from 'ts-api-validator';
 import { MoneyPart } from '../../schema.MoneyPart';
 import * as constants from '../../../constants';
+import { removeAliasPrefix } from '../../../utils/remap';
 
 import { stringConversion } from '../../schemaTemporaryTools';
 
@@ -60,7 +61,8 @@ export const aliasesByAddressSchema = new Schema({
     type: ArrayPart,
     required: true,
     content: {
-        type: StringPart
+        type: StringPart,
+        parseValue: removeAliasPrefix
     }
 });
 

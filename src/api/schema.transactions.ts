@@ -2,6 +2,7 @@ import { Schema, BooleanPart, DatePart, NumberPart, ObjectPart, StringPart } fro
 import { Base58Part } from './schema.Base58Part';
 import { MoneyPart } from './schema.MoneyPart';
 import * as constants from '../constants';
+import { removeAliasPrefix } from '../utils/remap';
 
 import { stub, stringConversion } from './schemaTemporaryTools';
 
@@ -50,7 +51,8 @@ const getTxCommonFields = (typeName, wavesFeeOnly) => ({
 
 const getTxRecipient = () => ({
     type: StringPart,
-    required: true
+    required: true,
+    parseValue: removeAliasPrefix
 });
 
 const getTxRecipientAddress = () => ({
@@ -143,7 +145,8 @@ const getTxLeaseTransactionId = (path) => ({
 
 const getTxAlias = () => ({
     type: StringPart,
-    required: true
+    required: true,
+    parseValue: removeAliasPrefix
 });
 
 

@@ -68,6 +68,7 @@ export interface INodeAPIv2 {
         balances(address: string, options: IAPIBalanceOptions): Promise<any>;
         transactions(address: string, options: IAPITransactionsOptions): Promise<any>;
         utxTransactions(address: string): Promise<any>;
+        aliasList(address: string): Promise<any>;
     },
     aliases: {
         getAddress(alias: string): Promise<any>;

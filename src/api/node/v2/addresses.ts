@@ -59,16 +59,16 @@ export default {
             return schemas.aliasesByAddressSchema.parse(data);
         });
 
-        return Promise.all([balanceDetails, aliasesByAddress]).then((results) => {
-            return {
-                wavesBalance: results[0],
-                aliases: results[1]
-            };
+        return Promise.all([
+            balanceDetails,
+            aliasesByAddress
+        ]).then(([wavesBalance, aliases]) => {
+            return { wavesBalance, aliases };
         });
 
     },
 
-    balance(address, asset: string) {
+    balance(address, asset) {
 
         _warn();
 
@@ -126,6 +126,12 @@ export default {
 
         });
 
+    },
+
+    aliasList(address) {
+        return v1Aliases.byAddress(address).then((data) => {
+            return schemas.aliasesByAddressSchema.parse(data);
+        });
     }
 
 };
