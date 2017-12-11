@@ -64,6 +64,7 @@ export const v1: INodeAPIv1 = {
 export interface INodeAPIv2 {
     addresses: {
         get(address: string): Promise<any>;
+        balance(address: string, asset: string): Promise<any>;
         balances(address: string, options: IAPIBalanceOptions): Promise<any>;
         transactions(address: string, options: IAPITransactionsOptions): Promise<any>;
         utxTransactions(address: string): Promise<any>;
