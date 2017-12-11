@@ -177,10 +177,10 @@ const getTxOrder = (path) => ({
             type: StringPart,
             required: true
         },
-        amountAsset: getTxAssetId('assetPair.amountAsset'),
-        amount: getTxAmount('assetPair.amountAsset'),
-        priceAsset: getTxAssetId('assetPair.priceAsset'),
-        price: getTxAmount('assetPair.priceAsset'),
+        amountAsset: getTxAssetId(`${path}.assetPair.amountAsset`),
+        amount: getTxAmount(`${path}.assetPair.amountAsset`),
+        priceAsset: getTxAssetId(`${path}.assetPair.priceAsset`),
+        price: getTxAmount(`${path}.assetPair.priceAsset`),
         matcherFee: getTxWavesFee()
     }
 });
