@@ -1,6 +1,7 @@
 import { Schema, BooleanPart, DatePart, NumberPart, ObjectPart, StringPart } from 'ts-api-validator';
 import { Base58Part } from './schema.Base58Part';
 import { MoneyPart } from './schema.MoneyPart';
+import { OrderPricePart } from './schema.OrderPricePart';
 import * as constants from '../constants';
 import { removeAliasPrefix } from '../utils/remap';
 
@@ -111,10 +112,11 @@ const getTxWavesAmount = () => ({
     parseValue: stringConversion
 });
 
-const getTxPrice = (assetIdPath) => ({
-    type: MoneyPart, // TODO : PricePart
+const getTxPrice = (amountAssetIdPath, priceAssetIdPath) => ({
+    type: OrderPricePart,
     required: true,
-    assetIdPath: assetIdPath,
+    amountAssetIdPath: amountAssetIdPath,
+    priceAssetIdPath: priceAssetIdPath,
     parseValue: stringConversion
 });
 
@@ -180,7 +182,7 @@ const getTxOrder = (path) => ({
         amountAsset: getTxAssetId(`${path}.assetPair.amountAsset`),
         amount: getTxAmount(`${path}.assetPair.amountAsset`),
         priceAsset: getTxAssetId(`${path}.assetPair.priceAsset`),
-        price: getTxAmount(`${path}.assetPair.priceAsset`),
+        price: getTxPrice(`${path}.assetPair.amountAsset`, `${path}.assetPair.priceAsset`),
         matcherFee: getTxWavesFee()
     }
 });
@@ -244,7 +246,7 @@ export const exchangeTransactionSchema = new Schema({
         amountAsset: getTxAssetId('order1.assetPair.amountAsset'),
         amount: getTxAmount('order1.assetPair.amountAsset'),
         priceAsset: getTxAssetId('order1.assetPair.priceAsset'),
-        price: getTxPrice('order1.assetPair.priceAsset'),
+        price: getTxPrice('order1.assetPair.amountAsset', 'order1.assetPair.priceAsset'),
         buyOrder: getTxOrder('order1'),
         buyMatcherFee: getTxWavesFee(),
         sellOrder: getTxOrder('order2'),
