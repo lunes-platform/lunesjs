@@ -10,6 +10,8 @@ let fakeFOUR;
 let fakeZERO;
 
 
+// TODO : add test for `.toFormat()` method
+
 describe('Money', () => {
 
     beforeEach((done) => {

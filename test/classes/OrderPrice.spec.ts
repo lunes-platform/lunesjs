@@ -17,6 +17,8 @@ let fakeEUR;
 let fakeZERO;
 
 
+// TODO : add test for `.toFormat()` method
+
 describe('OrderPrice', () => {
 
     beforeEach((done) => {

@@ -12,6 +12,7 @@ export interface IOrderPrice {
     getTokens(): BigNumber;
     toMatcherCoins(): string;
     toTokens(): string;
+    toFormat(): string;
     toJSON(): IHash<any>;
     toString(): string;
 }
@@ -46,6 +47,10 @@ export default class OrderPrice implements IOrderPrice {
 
     public toTokens() {
         return this._tokens.toFixed(this.pair.priceAsset.precision);
+    }
+
+    public toFormat() {
+        return this._tokens.toFormat(this.pair.priceAsset.precision);
     }
 
     public toJSON() {
