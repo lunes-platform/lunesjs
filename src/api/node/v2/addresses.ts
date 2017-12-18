@@ -92,6 +92,11 @@ export default {
 
         // TODO : this method ignores `options.offset` parameter at the moment
 
+        if (options.limit === 0) {
+            // TODO : this is a temporary measure to not make useless identical requests
+            options.limit = 2000;
+        }
+
         return v1Transactions.getList(address, options.limit).then((array) => {
 
             if (options.type) {
