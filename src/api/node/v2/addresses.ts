@@ -13,11 +13,10 @@ import v1Transactions from '../v1/transactions';
 
 import _combiners from './_combiners';
 import _filters from './_filters';
-import _frame from './_frame';
 import _warn from './_warn';
 
 
-function getBalances(address, options) {
+function getBalances(address, options): Promise<Money[]> {
 
     // TODO : avoid unnecessary requests if the asset option is provided and Waves or any assets are not in it
 
@@ -38,7 +37,7 @@ function getBalances(address, options) {
             if (options.assets) {
                 return _combiners.balanceListByAssets(array, options.assets);
             } else {
-                return _frame(array, options.offset, options.limit);
+                return array as any; // TODO
             }
         });
 
