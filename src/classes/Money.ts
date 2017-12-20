@@ -21,6 +21,8 @@ export interface IMoney {
     lte(money: IMoney): boolean;
     gt(money: IMoney): boolean;
     gte(money: IMoney): boolean;
+    cloneWithCoins(coins: BigNumber | string): IMoney;
+    cloneWithTokens(tokens: BigNumber | string): IMoney;
     convertTo(asset: IAsset, exchangeRate: BigNumber | string): IMoney;
     toJSON(): IHash<any>;
     toString(): string;
@@ -107,6 +109,17 @@ export default class Money implements IMoney {
         return this._coins.gte(money.getCoins());
     }
 
+    public cloneWithCoins(coins) {
+        Money._checkAmount(coins);
+        return new Money(coins, this.asset);
+    }
+
+    public cloneWithTokens(tokens) {
+        Money._checkAmount(tokens);
+        const coins = Money._tokensToCoins(tokens, this.asset.precision);
+        return new Money(coins, this.asset);
+    }
+
     public convertTo(asset, exchangeRate) {
         return Money.convert(this, asset, exchangeRate);
     }
@@ -138,9 +151,7 @@ export default class Money implements IMoney {
     public static fromTokens(tokens, supposedAsset): Promise<IMoney> {
         Money._checkAmount(tokens);
         return Asset.get(supposedAsset).then((asset) => {
-            const divider = Money._getDivider(asset.precision);
-            tokens = new BigNumber(tokens).toFixed(asset.precision);
-            const coins = new BigNumber(tokens).mul(divider);
+            const coins = Money._tokensToCoins(tokens, asset.precision);
             return new Money(coins, asset);
         });
     }
@@ -165,6 +176,12 @@ export default class Money implements IMoney {
         if (!(typeof amount === 'string' || amount instanceof BigNumber)) {
             throw new Error('Please use strings to create instances of Money');
         }
+    }
+
+    private static _tokensToCoins(tokens, precision) {
+        const divider = Money._getDivider(precision);
+        tokens = new BigNumber(tokens).toFixed(precision);
+        return new BigNumber(tokens).mul(divider);
     }
 
     private static _getDivider(precision: number): BigNumber {

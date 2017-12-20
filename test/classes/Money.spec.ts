@@ -218,6 +218,22 @@ describe('Money', () => {
 
     describe('conversions', () => {
 
+        it('should clone Money with the same asset but different amount (from coins)', (done) => {
+            Money.fromTokens('100', fakeWAVES).then((money) => {
+                const emptyClone = money.cloneWithCoins('0');
+                expect(emptyClone.toCoins()).to.equal('0');
+                expect(emptyClone.toTokens()).to.equal('0.00000000');
+            }).then(() => done());
+        });
+
+        it('should clone Money with the same asset but different amount (from tokens)', (done) => {
+            Money.fromTokens('100', fakeFOUR).then((money) => {
+                const emptyClone = money.cloneWithTokens('10');
+                expect(emptyClone.toCoins()).to.equal('100000');
+                expect(emptyClone.toTokens()).to.equal('10.0000');
+            }).then(() => done());
+        });
+
         it('should convert Money to another instance of Money with another Asset [4, 8]', (done) => {
             Money.fromTokens('100', fakeFOUR).then((money) => {
                 const changedMoney = Money.convert(money, fakeWAVES, 4);
