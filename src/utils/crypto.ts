@@ -106,6 +106,32 @@ export default {
 
     },
 
+    isValidAddress(address: string) {
+
+        if (!address || typeof address !== 'string') {
+            throw new Error('Missing or invalid address');
+        }
+
+        const addressBytes = base58.decode(address);
+
+        if (addressBytes[0] !== 1 || addressBytes[1] !== config.getNetworkByte()) {
+            return false;
+        }
+
+        const key = addressBytes.slice(0, 22);
+        const check = addressBytes.slice(22, 26);
+        const keyHash = hashChain(key).slice(0, 4);
+
+        for (let i = 0; i < 4; i++) {
+            if (check[i] !== keyHash[i]) {
+                return false;
+            }
+        }
+
+        return true;
+
+    },
+
     buildRawAddress(publicKeyBytes: Uint8Array): string {
 
         if (!publicKeyBytes || publicKeyBytes.length !== constants.PUBLIC_KEY_LENGTH || !(publicKeyBytes instanceof Uint8Array)) {
