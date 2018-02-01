@@ -271,7 +271,7 @@ export const cancelLeasingTransactionSchema = new Schema({
     content: {
         ...getTxCommonFields(constants.CANCEL_LEASING_TX_NAME, true),
         leaseTransactionId: getTxLeaseTransactionId('leaseId')
-        // TODO : leaseTransactionAmount
+        // TODO : leaseTransactionAmount and leaseTransactionAddress
     }
 });
 
