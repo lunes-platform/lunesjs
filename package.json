@@ -22,7 +22,7 @@
     "url": "https://github.com/xenohunter/waves-api.git"
   },
   "main": "dist/waves-api.min.js",
-  "types": "raw/WavesAPI.d.ts",
+  "types": "raw/src/WavesAPI.d.ts",
   "devDependencies": {
     "@types/chai": "^4.0.4",
     "@types/mocha": "^2.2.43",
