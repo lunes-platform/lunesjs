@@ -1,5 +1,6 @@
 import { IHash } from '../../interfaces';
 import * as constants from '../constants';
+import config from '../config';
 
 
 export function normalizeAssetId(original) {
@@ -34,8 +35,10 @@ export function removeAliasPrefix(original) {
     }
 }
 
-export function getTimestamp(timestamp) {
-    return timestamp || Date.now();
+// Adjusts user time to UTC
+// Should be used for creating transactions and requests only
+export function getTimestamp(timestamp?) {
+    return (timestamp || Date.now()) - config.getTimeDiff();
 }
 
 export function precisionCheck(precision) {

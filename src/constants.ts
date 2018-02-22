@@ -52,7 +52,8 @@ export const DEFAULT_BASIC_CONFIG: IWavesBasicConfig = {
     minimumSeedLength: DEFAULT_MIN_SEED_LENGTH,
     requestOffset: 0,
     requestLimit: 100,
-    logLevel: 'warning'
+    logLevel: 'warning',
+    timeDiff: 0
 };
 
 export const DEFAULT_MAINNET_CONFIG: IWavesConfig = {

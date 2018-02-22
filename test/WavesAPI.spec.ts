@@ -14,7 +14,8 @@ describe('WavesAPI', () => {
             networkByte: 1,
             nodeAddress: '1',
             matcherAddress: '1',
-            logLevel: 'warning'
+            logLevel: 'warning',
+            timeDiff: 0 // TODO : add some cases in the future API tests
         };
 
         allConfigValues = {

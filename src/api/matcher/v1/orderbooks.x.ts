@@ -1,6 +1,7 @@
 import { Schema, NumberPart, ObjectPart, StringPart } from 'ts-api-validator';
-import schemaFields from '../../schemaFields';
+import { getTimestamp } from '../../../utils/remap';
 import { DEFAULT_ORDER_EXPIRATION_DAYS } from '../../../constants';
+import schemaFields from '../../schemaFields';
 
 
 export const createOrderSchema = new Schema({
@@ -32,9 +33,9 @@ export const createOrderSchema = new Schema({
             required: true,
             parseValue: (expiration) => {
                 if (expiration) {
-                    return expiration;
+                    return getTimestamp(expiration);
                 } else {
-                    const date = new Date();
+                    const date = new Date(getTimestamp());
                     return date.setDate(date.getDate() + DEFAULT_ORDER_EXPIRATION_DAYS);
                 }
             }

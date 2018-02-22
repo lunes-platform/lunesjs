@@ -33,6 +33,7 @@ export interface IWavesBasicConfig {
     requestOffset: number;
     requestLimit: number;
     logLevel: TLogLevel;
+    timeDiff: number;
 }
 
 export interface IWavesConfig extends IWavesBasicConfig {

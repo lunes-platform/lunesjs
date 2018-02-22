@@ -5,7 +5,7 @@ import Transactions from '../../../classes/Transactions';
 import { Base58, Long } from '../../../classes/ByteProcessor';
 
 import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTransactionRequest } from '../../../utils/request';
-import { createRemapper, normalizeAssetId } from '../../../utils/remap';
+import { createRemapper, getTimestamp, normalizeAssetId } from '../../../utils/remap';
 import { POST_TEMPLATE } from '../../../utils/request';
 import { createOrderSchema } from './orderbooks.x';
 
@@ -80,7 +80,7 @@ export default {
 
         const authData = new GetOrdersAuthData({
             senderPublicKey: keyPair.publicKey,
-            timestamp: Date.now()
+            timestamp: getTimestamp()
         });
 
         return authData.prepareForAPI(keyPair.privateKey).then((preparedData) => {
@@ -98,7 +98,7 @@ export default {
 
         const authData = new GetOrdersAuthData({
             senderPublicKey: keyPair.publicKey,
-            timestamp: Date.now()
+            timestamp: getTimestamp()
         });
 
         return authData.prepareForAPI(keyPair.privateKey).then((preparedData) => {
