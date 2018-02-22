@@ -1,30 +1,19 @@
-import { Schema, NumberPart, ObjectPart, StringPart } from 'ts-api-validator';
-import { removeAliasPrefix, getTimestamp } from '../../../utils/remap';
-import * as constants from '../../../constants';
+import { Schema, ObjectPart, StringPart } from 'ts-api-validator';
+import { removeAliasPrefix } from '../../../utils/remap';
+import schemaFields from '../../schemaFields';
 
 
 export const createAliasSchema = new Schema({
     type: ObjectPart,
     required: true,
     content: {
-        senderPublicKey: {
-            type: StringPart,
-            required: true
-        },
+        senderPublicKey: schemaFields.publicKey,
         alias: {
             type: StringPart,
             required: true,
             parseValue: removeAliasPrefix
         },
-        fee: {
-            type: NumberPart,
-            required: false,
-            defaultValue: constants.MINIMUM_FEE
-        },
-        timestamp: {
-            type: NumberPart,
-            required: true,
-            parseValue: getTimestamp
-        }
+        fee: schemaFields.fee,
+        timestamp: schemaFields.timestamp
     }
 });
