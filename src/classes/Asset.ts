@@ -82,6 +82,7 @@ export default class Asset implements IAsset {
 
             const id = input;
             return Asset._storage.get(id).then((asset) => {
+                // TODO : move this request to the default factory method
                 return asset || getAssetProps(id).then((props) => {
                     return Asset._factory(props);
                 }).then((newAsset) => {
