@@ -22,6 +22,9 @@ export function siftTransaction(transaction): Promise<any> {
         case constants.CREATE_ALIAS_TX:
             return txSchemas.createAliasTransactionSchema.parse(transaction);
         default:
-            throw new Error(`Unknown transaction type encountered: ${transaction.type}`);
+            return Promise.resolve({
+                type: 'unknown',
+                originalTx: transaction
+            });
     }
 }
