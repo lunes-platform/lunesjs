@@ -25,6 +25,7 @@ export const EXCHANGE_TX = 7;
 export const LEASE_TX = 8;
 export const CANCEL_LEASING_TX = 9;
 export const CREATE_ALIAS_TX = 10;
+export const MASS_TRANSFER_TX = 11;
 
 export const ISSUE_TX_NAME = 'issue';
 export const TRANSFER_TX_NAME = 'transfer';
@@ -34,6 +35,7 @@ export const EXCHANGE_TX_NAME = 'exchange';
 export const LEASE_TX_NAME = 'lease';
 export const CANCEL_LEASING_TX_NAME = 'cancelLeasing';
 export const CREATE_ALIAS_TX_NAME = 'createAlias';
+export const MASS_TRANSFER_TX_NAME = 'massTransfer';
 
 export const PRIVATE_KEY_LENGTH = 32;
 export const PUBLIC_KEY_LENGTH = 32;

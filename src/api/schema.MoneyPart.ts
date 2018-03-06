@@ -11,9 +11,8 @@ import Money from '../classes/Money';
 export interface IMoneyPartOptions extends IPartialOptions<IMoney> {
     assetId?: string;
     assetIdPath?: string;
+    nthParent?: number;
 }
-
-// TODO : replace `fromCoins` with `fromTokens` in the new API
 
 export class MoneyPart extends BasePart<IPartialOptions<IMoney>> {
 
@@ -21,12 +20,12 @@ export class MoneyPart extends BasePart<IPartialOptions<IMoney>> {
 
     private _data: any;
 
-    public process(data: any) {
+    public process(data: any, roots: Array<any>) {
         this._data = data;
-        return super.process(data);
+        return super.process(data, roots);
     }
 
-    protected getValue(value: any) {
+    protected getValue(value: any, roots: Array<any>) {
 
         if (value && Money.isMoney(value)) {
 
@@ -40,7 +39,10 @@ export class MoneyPart extends BasePart<IPartialOptions<IMoney>> {
 
             } else if (this.options.assetIdPath) {
 
-                const id = get(this._data, this.options.assetIdPath);
+                const nthParent = this.options.nthParent;
+                const root = nthParent ? roots[roots.length - nthParent] : this._data;
+
+                const id = get(root, this.options.assetIdPath);
                 return Money.fromCoins(value, denormalizeAssetId(id));
 
             } else {

@@ -1,4 +1,4 @@
-import { Schema, BooleanPart, DatePart, NumberPart, ObjectPart, StringPart } from 'ts-api-validator';
+import { Schema, ArrayPart, BooleanPart, DatePart, NumberPart, ObjectPart, StringPart } from 'ts-api-validator';
 import { Base58Part } from './schema.Base58Part';
 import { MoneyPart } from './schema.MoneyPart';
 import { OrderPricePart } from './schema.OrderPricePart';
@@ -45,8 +45,14 @@ const getTxCommonFields = (typeName, wavesFeeOnly) => ({
         required: true
     },
     signature: {
-        type: StringPart,
-        required: true
+        type: StringPart
+    },
+    proofs: {
+        type: ArrayPart,
+        content: {
+            type: StringPart,
+            required: true
+        }
     }
 });
 
@@ -98,10 +104,11 @@ const getTxAssetReissuable = () => ({
     required: true
 });
 
-const getTxAmount = (assetIdPath) => ({
+const getTxAmount = (assetIdPath, nthParent?) => ({
     type: MoneyPart,
     required: true,
     assetIdPath: assetIdPath,
+    nthParent: nthParent || null,
     parseValue: stringConversion
 });
 
@@ -149,6 +156,19 @@ const getTxAlias = () => ({
     type: StringPart,
     required: true,
     parseValue: removeAliasPrefix
+});
+
+const getTxTransfers = () => ({
+    type: ArrayPart,
+    required: true,
+    content: {
+        type: ObjectPart,
+        required: true,
+        content: {
+            recipient: getTxRecipient(),
+            amount: getTxAmount('assetId', 1)
+        }
+    }
 });
 
 
@@ -281,5 +301,17 @@ export const createAliasTransactionSchema = new Schema({
     content: {
         ...getTxCommonFields(constants.CREATE_ALIAS_TX_NAME, true),
         alias: getTxAlias()
+    }
+});
+
+export const massTransferTransactionSchema = new Schema({
+    type: ObjectPart,
+    required: true,
+    content: {
+        ...getTxCommonFields(constants.MASS_TRANSFER_TX_NAME, true),
+        assetId: getTxAssetId(),
+        attachment: getTxAttachment(),
+        rawAttachment: getTxRawAttachment('attachment'),
+        transfers: getTxTransfers()
     }
 });

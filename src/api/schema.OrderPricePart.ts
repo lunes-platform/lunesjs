@@ -23,9 +23,9 @@ export class OrderPricePart extends BasePart<IPartialOptions<IOrderPrice>> {
 
     private _data: any;
 
-    public process(data: any) {
+    public process(data: any, roots: Array<any>) {
         this._data = data;
-        return super.process(data);
+        return super.process(data, roots);
     }
 
     protected getValue(value: any) {
