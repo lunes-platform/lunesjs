@@ -28,6 +28,15 @@ export default {
 
     cancelLeasing: wrapTransactionRequest(Transactions.CancelLeasingTransaction, preCancelLeasingAsync, postCancelLeasing, (postParams) => {
         return fetch('/leasing/broadcast/cancel', postParams);
-    }) as TTransactionRequest
+    }) as TTransactionRequest,
+
+    getAllActiveLeases(address) {
+        return fetch(`/leasing/active/${address}`).then((list) => {
+            return list.map((tx) => {
+                tx.status = 'active';
+                return tx;
+            });
+        });
+    }
 
 };

@@ -9,6 +9,7 @@ import { siftTransaction } from '../../schemaTools';
 import v1Addresses from '../v1/addresses';
 import v1Aliases from '../v1/aliases';
 import v1Assets from '../v1/assets';
+import v1Leasing from '../v1/leasing';
 import v1Transactions from '../v1/transactions';
 
 import _combiners from './_combiners';
@@ -135,6 +136,12 @@ export default {
     aliasList(address) {
         return v1Aliases.byAddress(address).then((data) => {
             return schemas.aliasesByAddressSchema.parse(data);
+        });
+    },
+
+    activeLeaseTransactions(address) {
+        return v1Leasing.getAllActiveLeases(address).then((list) => {
+            return Promise.all(list.map(siftTransaction));
         });
     }
 

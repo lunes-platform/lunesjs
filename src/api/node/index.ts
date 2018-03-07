@@ -41,6 +41,7 @@ export interface INodeAPIv1 {
     leasing: {
         lease(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
         cancelLeasing(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
+        getAllActiveLeases(address: string): Promise<any>;
     },
     transactions: {
         get(id: string): Promise<any>;
@@ -69,6 +70,7 @@ export interface INodeAPIv2 {
         transactions(address: string, options: IAPITransactionsOptions): Promise<any>;
         utxTransactions(address: string): Promise<any>;
         aliasList(address: string): Promise<any>;
+        activeLeaseTransactions(address: string): Promise<any>;
     },
     aliases: {
         getAddress(alias: string): Promise<any>;
