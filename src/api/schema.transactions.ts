@@ -152,6 +152,13 @@ const getTxLeaseTransactionId = (path) => ({
     path: path
 });
 
+const getTxIsActiveLeasing = () => ({
+    type: BooleanPart,
+    required: true,
+    path: 'status',
+    parseValue: (s) => s === 'active'
+});
+
 const getTxAlias = () => ({
     type: StringPart,
     required: true,
@@ -281,7 +288,8 @@ export const leaseTransactionSchema = new Schema({
         ...getTxCommonFields(constants.LEASE_TX_NAME, true),
         recipient: getTxRecipient(),
         recipientAddress: getTxRecipientAddress(),
-        amount: getTxWavesAmount()
+        amount: getTxWavesAmount(),
+        isActive: getTxIsActiveLeasing()
     }
 });
 
