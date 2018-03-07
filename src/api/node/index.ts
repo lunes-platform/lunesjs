@@ -75,6 +75,7 @@ export interface INodeAPIv2 {
     },
     transactions: {
         get(id: string): Promise<any>;
+        utxGet(id: string): Promise<any>;
     }
 }
 
