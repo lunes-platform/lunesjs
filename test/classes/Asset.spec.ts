@@ -134,7 +134,7 @@ describe('Asset', () => {
         });
 
         it('should return an instance of AssetHeir', (done) => {
-            debugger
+
             Asset.get(MOCK_BTC_ID).then((asset) => {
                 expect(asset).to.be.an.instanceof(AssetHeir);
                 expect(asset).to.be.an.instanceof(Asset);
