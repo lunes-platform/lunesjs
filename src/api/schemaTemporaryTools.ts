@@ -9,5 +9,13 @@ export function stub(partType) {
 }
 
 export function stringConversion(n) {
-    return (typeof n === 'number') ? String(n) : null;
+    const type = typeof n;
+    switch (type) {
+        case 'number':
+            return String(n);
+        case 'string':
+            return n;
+        default:
+            return null;
+    }
 }
