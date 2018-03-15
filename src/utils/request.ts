@@ -1,19 +1,23 @@
 import { IHash, IKeyPair } from '../../interfaces';
 import { ITransactionClassConstructor } from '../classes/Transactions';
+import * as create from 'parse-json-bignumber';
 
 import WavesRequestError from '../errors/WavesRequestError';
 
 import fetch from '../libs/fetch';
 import config from '../config';
 
+const SAFE_JSON_PARSE = create();
 
 export type TTransactionRequest = (data: IHash<any>, keyPair: IKeyPair) => Promise<any>;
+
 export interface IFetchWrapper<T> {
     (path: string, options?: IHash<any>): Promise<T>;
 }
 
 
 export const enum PRODUCTS { NODE, MATCHER }
+
 export const enum VERSIONS { V1 }
 
 
@@ -46,7 +50,7 @@ export function normalizePath(path): string {
 
 export function processJSON(res) {
     if (res.ok) {
-        return res.json();
+        return res.text().then(SAFE_JSON_PARSE);
     } else {
         return res.json().then(Promise.reject.bind(Promise));
     }

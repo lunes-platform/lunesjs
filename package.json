@@ -1,6 +1,6 @@
 {
   "name": "waves-api",
-  "version": "0.24.0",
+  "version": "0.24.1",
   "description": "Waves client-side API library",
   "keywords": [
     "cryptocurrency",
@@ -45,11 +45,12 @@
     "bignumber.js": "^4.1.0",
     "crypto-js": "^3.1.9-1",
     "node-fetch": "^1.7.3",
+    "parse-json-bignumber": "0.0.2",
     "ts-api-validator": "^2.1.0",
     "ts-utils": "^5.3.0"
   },
   "scripts": {
-    "_build-partial": "node_modules/.bin/browserify raw/src/WavesAPI.js --im -s WavesAPI -u bignumber.js -u crypto -u node-fetch -u ts-utils -u ts-api-validator > ./dist/waves-api.partial.js",
+    "_build-partial": "node_modules/.bin/browserify raw/src/WavesAPI.js --im -s WavesAPI -u parse-json-bignumber -u bignumber.js -u crypto -u node-fetch -u ts-utils -u ts-api-validator > ./dist/waves-api.partial.js",
     "_build-full": "node_modules/.bin/browserify raw/src/WavesAPI.js --im -s WavesAPI -u crypto -u node-fetch > ./dist/waves-api.js",
     "build": "npm run compile && mkdir -p dist && npm run _build-partial && npm run _build-full && npm run uglifyjs",
     "compile": "mkdir -p raw && ./node_modules/.bin/tsc -p ./tsconfig.json --declaration --outDir raw",
