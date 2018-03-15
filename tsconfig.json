@@ -11,6 +11,9 @@
     "sourceMap": true,
     "target": "es5",
     "paths": {
+      "parse-json-bignumber": [
+        "node_modules/parse-json-bignumber/dist/parse-json-bignumber"
+      ],
       "ts-api-validator": [
         "node_modules/ts-api-validator/index"
       ],
