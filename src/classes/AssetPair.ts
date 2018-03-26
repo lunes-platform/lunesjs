@@ -9,7 +9,7 @@ import Asset from './Asset';
 function getAssetIds(assetOne, assetTwo) {
     assetOne = Asset.isAsset(assetOne) ? assetOne.id : assetOne;
     assetTwo = Asset.isAsset(assetTwo) ? assetTwo.id : assetTwo;
-    return [ assetOne, assetTwo ];
+    return [assetOne, assetTwo];
 }
 
 function getKey(part1, part2) {
@@ -33,7 +33,9 @@ export interface IAssetPair {
     amountAsset: IAsset;
     priceAsset: IAsset;
     precisionDifference: number;
+
     toJSON(): IHash<any>;
+
     toString(): string;
 }
 
@@ -43,7 +45,7 @@ class AssetPair implements IAssetPair {
     public priceAsset;
     public precisionDifference;
 
-    constructor(amountAsset, priceAsset) {
+    constructor(amountAsset: Asset, priceAsset: Asset) {
 
         this.amountAsset = amountAsset;
         this.priceAsset = priceAsset;
@@ -91,6 +93,11 @@ export default {
             }
         });
 
+    },
+
+    define(amountAssetId: string, priceAssetId: string): Promise<IAssetPair> {
+        return Promise.all([Asset.get(amountAssetId), Asset.get(priceAssetId)])
+            .then(([amountAsset, priceAsset]) => new AssetPair(amountAsset, priceAsset));
     },
 
     clearCache() {
