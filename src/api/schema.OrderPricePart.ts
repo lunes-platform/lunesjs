@@ -6,6 +6,7 @@ import { get } from 'ts-utils';
 import { denormalizeAssetId } from '../utils/remap';
 
 import OrderPrice from '../classes/OrderPrice';
+import AssetPair from '../classes/AssetPair';
 
 
 export interface IOrderPricePartOptions extends IPartialOptions<IOrderPrice> {
@@ -53,7 +54,9 @@ export class OrderPricePart extends BasePart<IPartialOptions<IOrderPrice>> {
             if (!amountAssetId || !priceAssetId) {
                 return null;
             } else {
-                return OrderPrice.fromMatcherCoins(value, amountAssetId, priceAssetId);
+                return AssetPair.define(amountAssetId, priceAssetId).then((pair) => {
+                    return OrderPrice.fromMatcherCoins(value, pair);
+                });
             }
 
         } else {
