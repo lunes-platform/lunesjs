@@ -320,6 +320,7 @@ export const massTransferTransactionSchema = new Schema({
         assetId: getTxAssetId(),
         attachment: getTxAttachment(),
         rawAttachment: getTxRawAttachment('attachment'),
+        totalAmount: getTxAmount('assetId'),
         transfers: getTxTransfers()
     }
 });
