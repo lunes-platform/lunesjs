@@ -1,8 +1,8 @@
-# Waves API [![npm version](https://badge.fury.io/js/waves-api.svg)](https://www.npmjs.com/package/waves-api) [![downloads/month](https://img.shields.io/npm/dm/waves-api.svg)](https://www.npmjs.com/package/waves-api)
+# Waves API [![npm version](https://badge.fury.io/js/%40waves%2Fwaves-api.svg)](https://www.npmjs.com/package/@waves/waves-api) [![downloads/month](https://img.shields.io/npm/dm/%40waves%2Fwaves-api.svg)](https://www.npmjs.com/package/@waves/waves-api)
 
 Waves Platform core features and Waves API library for both Node.js and browser.
 
-The latest and most actual version of this documentation [is hosted on GitHub](https://github.com/xenohunter/waves-api/blob/master/README.md).
+The latest and most actual version of this documentation [is hosted on GitHub](https://github.com/wavesplatform/waves-api/blob/master/README.md).
 
 ## Installation
 
@@ -118,7 +118,7 @@ const transferData = {
 
     // ID of a token, or WAVES
     assetId: 'WAVES',
-    
+
     // The real amount is the given number divided by 10^(precision of the token)
     amount: 10000000,
 
@@ -126,9 +126,9 @@ const transferData = {
     feeAssetId: 'WAVES',
     fee: 100000,
 
-    // 140 bytes of data (it's allowed to use Uint8Array here) 
+    // 140 bytes of data (it's allowed to use Uint8Array here)
     attachment: '',
-    
+
     timestamp: Date.now()
 
 };
@@ -476,7 +476,7 @@ Test configuration may be changed in the _./node_modules/waves-api/karma.conf.js
 * [**Phil Filippak**](https://github.com/xenohunter) - *Initial work*
 * [**Daniil Tsigelnitskiy**](https://github.com/tsigel) - *TypeScript expertise*
 
-See also the list of [contributors](https://github.com/xenohunter/waves-api/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/wavesplatform/waves-api/contributors) who participated in this project.
 
 ## License
 

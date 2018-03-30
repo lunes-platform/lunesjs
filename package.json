@@ -19,7 +19,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/xenohunter/waves-api.git"
+    "url": "https://github.com/wavesplatform/waves-api.git"
   },
   "main": "dist/waves-api.min.js",
   "types": "raw/src/WavesAPI.d.ts",
