@@ -61,8 +61,8 @@ export const DEFAULT_BASIC_CONFIG: IWavesBasicConfig = {
 export const DEFAULT_MAINNET_CONFIG: IWavesConfig = {
     ...DEFAULT_BASIC_CONFIG,
     networkByte: MAINNET_BYTE,
-    nodeAddress: 'https://nodes.wavesnodes.com',
-    matcherAddress: 'https://nodes.wavesnodes.com/matcher'
+    nodeAddress: 'https://nodes.wavesplatform.com',
+    matcherAddress: 'https://matcher.wavesplatform.com'
 };
 
 export const DEFAULT_TESTNET_CONFIG: IWavesConfig = {
