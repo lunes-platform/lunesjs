@@ -163,7 +163,7 @@ export default class Money implements IMoney {
             const difference = money.asset.precision - asset.precision;
             const divider = new BigNumber(10).pow(difference);
             const coins = money.getCoins();
-            const result = coins.mul(exchangeRate).div(divider);
+            const result = coins.mul(exchangeRate).div(divider).round(0, BigNumber.ROUND_DOWN);
             return new Money(result, asset);
         }
     }
