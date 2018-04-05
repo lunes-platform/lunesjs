@@ -6,6 +6,7 @@ import v1Assets from './v1/assets';
 import v1Blocks from './v1/blocks';
 import v1Leasing from './v1/leasing';
 import v1Transactions from './v1/transactions';
+import v1Utils from './v1/utils';
 
 import v2Addresses from './v2/addresses';
 import v2Aliases from './v2/aliases';
@@ -49,6 +50,9 @@ export interface INodeAPIv1 {
         utxSize(): Promise<any>;
         utxGet(id: string): Promise<any>;
         utxGetList(): Promise<any>;
+    },
+    utils: {
+        time(): Promise<number>;
     }
 }
 
@@ -58,7 +62,8 @@ export const v1: INodeAPIv1 = {
     assets: v1Assets,
     blocks: v1Blocks,
     leasing: v1Leasing,
-    transactions: v1Transactions
+    transactions: v1Transactions,
+    utils: v1Utils
 };
 
 
