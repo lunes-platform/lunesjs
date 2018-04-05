@@ -10,6 +10,10 @@ export default {
         return crypto.buildRawAddress(publicKeyBytes);
     },
 
+    calculateTimeDiff(nodeTime, userTime) {
+         return nodeTime - userTime;
+    },
+
     base58: {
         encode: base58.encode,
         decode: base58.decode
