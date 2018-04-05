@@ -105,8 +105,12 @@ function createTransactionClass(txType: string | null, fields: TTransactionField
 
         // Get byte representation of the transaction
         public getBytes(): Promise<Uint8Array> {
-            return Promise.all(this._dataHolders).then((multipleDataBytes) => {
-                return concatUint8Arrays(...multipleDataBytes);
+            return Promise.all(this._dataHolders).then((multipleDataBytes: Uint8Array[]) => {
+                if (multipleDataBytes.length === 1) {
+                    return multipleDataBytes[0];
+                } else {
+                    return concatUint8Arrays(...multipleDataBytes);
+                }
             });
         }
 
