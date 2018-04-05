@@ -38,7 +38,7 @@ export function removeAliasPrefix(original) {
 // Adjusts user time to UTC
 // Should be used for creating transactions and requests only
 export function getTimestamp(timestamp?) {
-    return (timestamp || Date.now()) - config.getTimeDiff();
+    return (timestamp || Date.now()) + config.getTimeDiff();
 }
 
 export function precisionCheck(precision) {
