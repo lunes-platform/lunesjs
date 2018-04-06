@@ -8,7 +8,10 @@ import config from '../config';
 import { v1 as NodeAPIv1 } from '../api/node/index';
 
 
-function getAssetProps(id): Promise<IAssetObject> {
+function getAssetProps(id: string): Promise<IAssetObject> {
+    if (id === WAVES_PROPS.id) {
+        return Promise.resolve(WAVES_PROPS);
+    }
     return NodeAPIv1.transactions.get(id).then((assetTransaction) => ({
         id: id,
         name: assetTransaction.name,
@@ -17,25 +20,10 @@ function getAssetProps(id): Promise<IAssetObject> {
     }));
 }
 
-function checkAssetProps(props) {
-
-    if (!props.id) {
-        throw new Error('An attempt to create Asset without ID');
-    }
-
-    if (!props.name) {
-        throw new Error('An attempt to create Asset without a name');
-    }
-
-    if (typeof props.precision !== 'number' || props.precision < 0 || props.precision > 8) {
-        throw new Error(`An attempt to create Asset with wrong precision (${props.precision})`);
-    }
-
-}
-
 
 export interface IAsset extends IAssetObject {
     toJSON(): IHash<any>;
+
     toString(): string;
 }
 
@@ -47,7 +35,7 @@ export default class Asset implements IAsset {
     public readonly description;
 
     private static _storage = getStorage((set) => {
-        return Asset._factory(WAVES_PROPS).then((wavesAsset) => {
+        return Asset._factory(WAVES_PROPS.id).then((wavesAsset) => {
             set(wavesAsset.id, wavesAsset);
         });
     });
@@ -72,35 +60,27 @@ export default class Asset implements IAsset {
         return this.id;
     }
 
-    public static get(input: IAsset | IAssetObject | string) {
+    public static get(input: IAsset | IAssetObject | string): Promise<IAsset> {
 
         if (Asset.isAsset(input)) {
-
-            return Promise.resolve(input);
-
+            return Promise.resolve(input as IAsset);
         } else if (typeof input === 'string') {
 
             const id = input;
-            return Asset._storage.get(id).then((asset) => {
-                // TODO : move this request to the default factory method
-                return asset || getAssetProps(id).then((props) => {
-                    return Asset._factory(props);
-                }).then((newAsset) => {
+            return Asset._storage.get(id).then((asset: IAsset) => {
+                return asset || Asset._factory(id).then((newAsset) => {
                     return Asset._storage.set(newAsset.id, newAsset);
                 });
             });
-
         } else {
 
             const props = input;
-            return Asset._storage.get(props.id).then((asset) => {
+            return Asset._storage.get(props.id).then((asset: IAsset) => {
                 return asset || Asset._factory(props).then((newAsset) => {
                     return Asset._storage.set(newAsset.id, newAsset);
                 });
             });
-
         }
-
     }
 
     public static getKnownAssets() {
@@ -115,30 +95,29 @@ export default class Asset implements IAsset {
         return Asset._storage.clear();
     }
 
-    public static isAsset(object) {
+    public static isAsset(object): boolean {
         return object instanceof Asset;
     }
 
-    private static _factory(props) {
-
-        checkAssetProps(props);
+    private static _factory(assetId: string | IAssetObject): Promise<IAsset> {
 
         const factory = config.getAssetFactory() || Asset._defaultFactory;
-        return factory(props).then((asset) => {
+        return factory(assetId).then((asset: IAsset) => {
 
             if (!Asset.isAsset(asset)) {
                 throw new Error(`Factory provided an object which is not a heir of Asset`);
             }
 
             return asset;
-
         });
 
     }
 
-    private static _defaultFactory(props) {
-        const asset = new Asset(props);
-        return Promise.resolve(asset);
+    private static _defaultFactory(assetId: string | IAssetObject) {
+        if (typeof  assetId === 'object') {
+            return Promise.resolve(new Asset(assetId));
+        }
+        return getAssetProps(assetId).then((props) => new Asset(props));
     }
 
 }
