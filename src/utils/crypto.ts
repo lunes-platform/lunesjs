@@ -70,11 +70,36 @@ export default {
         const privateKeyBytes = base58.decode(privateKey);
 
         if (privateKeyBytes.length !== constants.PRIVATE_KEY_LENGTH) {
-            throw new Error('Invalid public key');
+            throw new Error('Invalid private key');
         }
 
         const signature = axlsign.sign(privateKeyBytes, dataBytes, secureRandom.randomUint8Array(64));
         return base58.encode(signature);
+
+    },
+
+    isValidTransactionSignature(dataBytes: Uint8Array, signature: string, publicKey: string): boolean {
+
+        if (!dataBytes || !(dataBytes instanceof Uint8Array)) {
+            throw new Error('Missing or invalid data');
+        }
+
+        if (!signature || typeof signature !== 'string') {
+            throw new Error('Missing or invalid signature');
+        }
+
+        if (!publicKey || typeof publicKey !== 'string') {
+            throw new Error('Missing or invalid public key');
+        }
+
+        const signatureBytes = base58.decode(signature);
+        const publicKeyBytes = base58.decode(publicKey);
+
+        if (publicKeyBytes.length !== constants.PUBLIC_KEY_LENGTH) {
+            throw new Error('Invalid public key');
+        }
+
+        return axlsign.verify(publicKeyBytes, dataBytes, signatureBytes);
 
     },
 
