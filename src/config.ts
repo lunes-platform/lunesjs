@@ -50,7 +50,7 @@ export default {
         return config.timeDiff;
     },
 
-    get() {
+    get(): IWavesConfig {
         return { ...config };
     },
 

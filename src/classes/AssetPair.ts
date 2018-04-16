@@ -45,7 +45,7 @@ class AssetPair implements IAssetPair {
     public priceAsset;
     public precisionDifference;
 
-    constructor(amountAsset: Asset, priceAsset: Asset) {
+    constructor(amountAsset: IAsset, priceAsset: IAsset) {
 
         this.amountAsset = amountAsset;
         this.priceAsset = priceAsset;
