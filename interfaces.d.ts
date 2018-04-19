@@ -28,6 +28,11 @@ export interface IKeyPairBytes {
     readonly publicKey: Uint8Array;
 }
 
+export interface IMassTransferTransfers {
+    readonly recipient: string;
+    readonly amount: number;
+}
+
 export interface IWavesBasicConfig {
     minimumSeedLength: number;
     requestOffset: number;

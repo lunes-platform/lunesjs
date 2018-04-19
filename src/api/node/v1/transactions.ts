@@ -1,9 +1,20 @@
-import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON } from '../../../utils/request';
-import config from '../../../config';
+import { TTransactionRequest } from '../../../utils/request';
+
+import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTransactionRequest } from '../../../utils/request';
+import { createRemapper, normalizeAssetId } from '../../../utils/remap';
+import { massTransferSchema } from './transactions.x';
 import { WAVES, WAVES_V1_ISSUE_TX } from '../../../constants';
+import Transactions from '../../../classes/Transactions';
+import config from '../../../config';
 
 
 const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
+
+const preMassTransferAsync = (data) => massTransferSchema.parse(data);
+const postMassTransfer = createRemapper({
+    transactionType: null,
+    assetId: normalizeAssetId
+});
 
 
 export default {
@@ -31,6 +42,10 @@ export default {
 
     utxGetList() {
         return fetch('/transactions/unconfirmed');
-    }
+    },
+
+    massTransfer: wrapTransactionRequest(Transactions.MassTransferTransaction, preMassTransferAsync, postMassTransfer, (postParams) => {
+        return fetch('/transactions/broadcast', postParams);
+    }) as TTransactionRequest
 
 };
