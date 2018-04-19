@@ -26,9 +26,9 @@ let issueData;
 let transferData;
 let reissueData;
 let burnData;
-let createAliasData;
 let leaseData;
 let cancelLeasingData;
+let createAliasData;
 let orderData;
 
 let tempSignDataMethod;
@@ -99,13 +99,6 @@ describe('Transactions', () => {
                 timestamp: 1478864678621
             };
 
-            createAliasData = {
-                senderPublicKey: keys.publicKey,
-                alias: 'sasha',
-                fee: 1000000,
-                timestamp: 1491556329420
-            };
-
             leaseData = {
                 senderPublicKey: keys.publicKey,
                 recipient: '3MsiHfvFVUULdn8bpVoDQ7JLKKjtPXUrCLT',
@@ -119,6 +112,13 @@ describe('Transactions', () => {
                 transactionId: '4X85MhqxukwaPqJC4sSSeN3ptSYHbEca7KgiYtUa2ECX',
                 fee: 10000000,
                 timestamp: 1491491734819
+            };
+
+            createAliasData = {
+                senderPublicKey: keys.publicKey,
+                alias: 'sasha',
+                fee: 1000000,
+                timestamp: 1491556329420
             };
 
             orderData = {
@@ -238,33 +238,6 @@ describe('Transactions', () => {
 
         });
 
-        it('should sign Create Alias transaction', (done) => {
-
-            const data = { ...createAliasData };
-
-            const createAliasTransaction = new Transactions.CreateAliasTransaction(data);
-
-            const expectedSignature = '2fDkcUaPrQjtL1Tfox1ikqfZWA7LkvWKrGZNaxJx98dmeLoopkwvAFa9nMJLww9PERGuQovfv8g9EPM6HkV5VPaH';
-
-            const api = createAliasTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
-                checkBasicCases(preparedData, data, Waves.constants.CREATE_ALIAS_TX_NAME, expectedSignature);
-            });
-
-            const signature = createAliasTransaction.getSignature(keys.privateKey).then((signature) => {
-                expect(signature).to.equal(expectedSignature);
-            });
-
-            const bytesByName = createAliasTransaction.getExactBytes('senderPublicKey').then((bytes) => {
-                expect(bytes).to.deep.equal(base58.decode(data.senderPublicKey));
-            });
-
-            // Should throw when bytes of a non-existing field are requested
-            expect(() => createAliasTransaction.getExactBytes('test')).to.throw();
-
-            Promise.all([api, signature, bytesByName]).then(() => done());
-
-        });
-
         it('should sign Lease transaction', (done) => {
 
             const data = { ...leaseData };
@@ -313,6 +286,33 @@ describe('Transactions', () => {
             });
 
             Promise.all([api]).then(() => done());
+
+        });
+
+        it('should sign Create Alias transaction', (done) => {
+
+            const data = { ...createAliasData };
+
+            const createAliasTransaction = new Transactions.CreateAliasTransaction(data);
+
+            const expectedSignature = '2fDkcUaPrQjtL1Tfox1ikqfZWA7LkvWKrGZNaxJx98dmeLoopkwvAFa9nMJLww9PERGuQovfv8g9EPM6HkV5VPaH';
+
+            const api = createAliasTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
+                checkBasicCases(preparedData, data, Waves.constants.CREATE_ALIAS_TX_NAME, expectedSignature);
+            });
+
+            const signature = createAliasTransaction.getSignature(keys.privateKey).then((signature) => {
+                expect(signature).to.equal(expectedSignature);
+            });
+
+            const bytesByName = createAliasTransaction.getExactBytes('senderPublicKey').then((bytes) => {
+                expect(bytes).to.deep.equal(base58.decode(data.senderPublicKey));
+            });
+
+            // Should throw when bytes of a non-existing field are requested
+            expect(() => createAliasTransaction.getExactBytes('test')).to.throw();
+
+            Promise.all([api, signature, bytesByName]).then(() => done());
 
         });
 
