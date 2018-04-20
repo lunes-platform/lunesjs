@@ -32,6 +32,16 @@ export default {
 
     },
 
+    shortToByteArray(input: number): number[] {
+
+        if (typeof input !== 'number') {
+            throw new Error('Numeric input is expected');
+        }
+
+        return converters.int16ToBytes(input, true);
+
+    },
+
     longToByteArray(input: number): number[] {
 
         if (typeof input !== 'number') {

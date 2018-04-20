@@ -27,6 +27,8 @@ export const CANCEL_LEASING_TX = 9;
 export const CREATE_ALIAS_TX = 10;
 export const MASS_TRANSFER_TX = 11;
 
+export const MASS_TRANSFER_TX_VERSION = 1;
+
 export const ISSUE_TX_NAME = 'issue';
 export const TRANSFER_TX_NAME = 'transfer';
 export const REISSUE_TX_NAME = 'reissue';

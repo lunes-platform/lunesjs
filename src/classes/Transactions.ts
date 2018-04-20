@@ -1,20 +1,24 @@
 import { IHash } from '../../interfaces';
 
-import { ByteProcessor, Alias, Base58, Bool, Byte, Long, StringWithLength, AssetId, Attachment, MandatoryAssetId, OrderType, Recipient } from './ByteProcessor';
+import {
+    ByteProcessor, Alias, Base58, Bool, Byte, Long, StringWithLength, AssetId, Attachment, MandatoryAssetId,
+    OrderType, Recipient, Transfers
+} from './ByteProcessor';
 
 import { concatUint8Arrays } from '../utils/concat';
+import { addRecipientPrefix } from '../utils/remap';
 import crypto from '../utils/crypto';
 import base58 from '../libs/base58';
 
 import * as constants from '../constants';
-import config from '../config';
 
 
 type TTransactionFields = Array<ByteProcessor | number>;
 
 interface IAPISchema {
-    readonly from: 'bytes' | 'raw';
-    readonly to: 'base58' | 'prefixed';
+    readonly from: 'bytes' | 'raw' | 'none';
+    readonly to: 'base58' | 'prefixed' | Function;
+    readonly path?: string;
 }
 
 export interface ITransactionClass {
@@ -48,7 +52,7 @@ function createTransactionClass(txType: string | null, fields: TTransactionField
             // All user data must be represented as bytes
             byteProviders.push((data) => field.process(data[field.name]));
         } else if (typeof field === 'number') {
-            // All static data must be converted to bytes as well
+            // All static integers from 0 to 255 are converted to bytes as well
             byteProviders.push(Uint8Array.from([field]));
         } else {
             throw new Error('Invalid field is passed to the createTransactionClass function');
@@ -91,7 +95,7 @@ function createTransactionClass(txType: string | null, fields: TTransactionField
                 return this._castToAPISchema(this._rawData).then((schemedData) => ({
                     ...(txType ? { transactionType: txType } : {}), // For matcher orders and other quasi-transactions
                     ...schemedData,
-                    signature
+                    ...(txType !== constants.MASS_TRANSFER_TX_NAME ? { signature } : { proofs: [signature] }) // TODO
                 }));
             });
         }
@@ -141,7 +145,22 @@ function createTransactionClass(txType: string | null, fields: TTransactionField
                 }
 
                 if (rule.from === 'raw' && rule.to === 'prefixed') {
-                    return this._castFromRawToPrefixed(key);
+                    if (!rule.path) {
+                        return this._castFromRawToPrefixed(key);
+                    } else {
+                        return Promise.resolve({
+                            [key]: this._rawData[key].reduce((result, obj) => {
+                                result.push(Object.assign(obj, { [rule.path]: addRecipientPrefix(obj[rule.path]) }));
+                                return result;
+                            }, [])
+                        });
+                    }
+                }
+
+                if (rule.from === 'none' && typeof rule.to === 'function') {
+                    return Promise.resolve({
+                        [key]: rule.to()
+                    });
                 }
 
             });
@@ -169,24 +188,7 @@ function createTransactionClass(txType: string | null, fields: TTransactionField
         }
 
         private _castFromRawToPrefixed(key): Promise<object> {
-
-            let type = key;
-            if (type === 'recipient') {
-                type = this._rawData[key].length <= 30 ? 'alias' : 'address';
-            }
-
-            let prefix;
-            if (type === 'address') {
-                prefix = 'address:';
-            } else if (type === 'alias') {
-                const networkCharacter = String.fromCharCode(config.getNetworkByte());
-                prefix = 'alias:' + networkCharacter + ':';
-            } else {
-                throw new Error(`There is no type '${type}' to be prefixed`);
-            }
-
-            return Promise.resolve({ [key]: prefix + this._rawData[key] });
-
+            return Promise.resolve({ [key]: addRecipientPrefix(this._rawData[key]) });
         }
 
     }
@@ -279,6 +281,35 @@ export default {
         new Long('fee'),
         new Long('timestamp')
     ]),
+
+    MassTransferTransaction: createTransactionClass(constants.MASS_TRANSFER_TX_NAME, [
+        constants.MASS_TRANSFER_TX,
+        constants.MASS_TRANSFER_TX_VERSION,
+        new Base58('senderPublicKey'),
+        new AssetId('assetId'),
+        new Transfers('transfers'),
+        new Long('timestamp'),
+        new Long('fee'),
+        new Attachment('attachment')
+    ], {
+        attachment: {
+            from: 'bytes',
+            to: 'base58'
+        },
+        transfers: {
+            from: 'raw',
+            to: 'prefixed',
+            path: 'recipient'
+        },
+        type: {
+            from: 'none',
+            to: () => constants.MASS_TRANSFER_TX
+        },
+        version: {
+            from: 'none',
+            to: () => constants.MASS_TRANSFER_TX_VERSION
+        }
+    }),
 
     // That's not exactly a transaction so it has no type
     Order: createTransactionClass(null, [

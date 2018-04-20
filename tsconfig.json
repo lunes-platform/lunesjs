@@ -3,8 +3,7 @@
     "alwaysStrict": true,
     "baseUrl": "",
     "lib": [
-      "es2015.promise",
-      "es5",
+      "es6",
       "dom"
     ],
     "module": "commonjs",

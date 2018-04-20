@@ -4,14 +4,29 @@ import base58 from '../../src/libs/base58';
 import * as WavesAPI from '../../dist/waves-api.min';
 
 
-function checkBasicCases(preparedData, data, txType, expectedSignature) {
+function checkBasicCases(preparedData, data, txType, expectedSignature, additionalKeys?: string[]) {
+
+    const isSimpleSignature = (typeof expectedSignature === 'string');
 
     expect(preparedData.transactionType).to.equal(txType);
-    expect(preparedData.signature).to.equal(expectedSignature);
 
-    const givenKeys = Object.keys(preparedData).sort();
-    const expectedKeys = ['transactionType', ...Object.keys(data), 'signature'].sort();
-    expect(givenKeys).to.deep.equal(expectedKeys);
+    if (isSimpleSignature) {
+        expect(preparedData.signature).to.equal(expectedSignature);
+    } else {
+        expect(preparedData.proofs).to.deep.equal(expectedSignature);
+    }
+
+    const givenKeys = Object.keys(preparedData);
+    const expectedKeys = ['transactionType', ...Object.keys(data), isSimpleSignature ? 'signature' : 'proofs'];
+
+    if (additionalKeys && additionalKeys.length) {
+        additionalKeys.reduce((arr, item) => {
+            arr.push(item);
+            return arr;
+        }, expectedKeys);
+    }
+
+    expect(givenKeys.sort()).to.deep.equal(expectedKeys.sort());
 
 }
 
@@ -26,10 +41,14 @@ let issueData;
 let transferData;
 let reissueData;
 let burnData;
-let createAliasData;
 let leaseData;
 let cancelLeasingData;
+let createAliasData;
+let massTransferEmptyData;
+let massTransferOneRecipientData;
 let orderData;
+
+let massTransferAdditionialKeys;
 
 let tempSignDataMethod;
 
@@ -99,13 +118,6 @@ describe('Transactions', () => {
                 timestamp: 1478864678621
             };
 
-            createAliasData = {
-                senderPublicKey: keys.publicKey,
-                alias: 'sasha',
-                fee: 1000000,
-                timestamp: 1491556329420
-            };
-
             leaseData = {
                 senderPublicKey: keys.publicKey,
                 recipient: '3MsiHfvFVUULdn8bpVoDQ7JLKKjtPXUrCLT',
@@ -121,6 +133,34 @@ describe('Transactions', () => {
                 timestamp: 1491491734819
             };
 
+            createAliasData = {
+                senderPublicKey: keys.publicKey,
+                alias: 'sasha',
+                fee: 1000000,
+                timestamp: 1491556329420
+            };
+
+            massTransferEmptyData = {
+                senderPublicKey: keys.publicKey,
+                assetId: Waves.constants.WAVES,
+                transfers: [],
+                timestamp: 1524149143749,
+                fee: 100000,
+                attachment: ''
+            };
+
+            massTransferOneRecipientData = {
+                senderPublicKey: keys.publicKey,
+                assetId: Waves.constants.WAVES,
+                transfers: [{
+                    amount: 1000000,
+                    recipient: '3Mz9N7YPfZPWGd4yYaX6H53Gcgrq6ifYiH7'
+                }],
+                timestamp: 1524149143749,
+                fee: 100000,
+                attachment: ''
+            };
+
             orderData = {
                 senderPublicKey: keys.publicKey,
                 matcherPublicKey: 'Ei5BT6ZvKmB5VQLSZGo8mNkSXsTwGG4zUWjN7yu7iZo5',
@@ -133,6 +173,8 @@ describe('Transactions', () => {
                 expiration: 1492184282029,
                 matcherFee: 1000000
             };
+
+            massTransferAdditionialKeys = ['type', 'version'];
 
         });
 
@@ -238,33 +280,6 @@ describe('Transactions', () => {
 
         });
 
-        it('should sign Create Alias transaction', (done) => {
-
-            const data = { ...createAliasData };
-
-            const createAliasTransaction = new Transactions.CreateAliasTransaction(data);
-
-            const expectedSignature = '2fDkcUaPrQjtL1Tfox1ikqfZWA7LkvWKrGZNaxJx98dmeLoopkwvAFa9nMJLww9PERGuQovfv8g9EPM6HkV5VPaH';
-
-            const api = createAliasTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
-                checkBasicCases(preparedData, data, Waves.constants.CREATE_ALIAS_TX_NAME, expectedSignature);
-            });
-
-            const signature = createAliasTransaction.getSignature(keys.privateKey).then((signature) => {
-                expect(signature).to.equal(expectedSignature);
-            });
-
-            const bytesByName = createAliasTransaction.getExactBytes('senderPublicKey').then((bytes) => {
-                expect(bytes).to.deep.equal(base58.decode(data.senderPublicKey));
-            });
-
-            // Should throw when bytes of a non-existing field are requested
-            expect(() => createAliasTransaction.getExactBytes('test')).to.throw();
-
-            Promise.all([api, signature, bytesByName]).then(() => done());
-
-        });
-
         it('should sign Lease transaction', (done) => {
 
             const data = { ...leaseData };
@@ -313,6 +328,87 @@ describe('Transactions', () => {
             });
 
             Promise.all([api]).then(() => done());
+
+        });
+
+        it('should sign Create Alias transaction', (done) => {
+
+            const data = { ...createAliasData };
+
+            const createAliasTransaction = new Transactions.CreateAliasTransaction(data);
+
+            const expectedSignature = '2fDkcUaPrQjtL1Tfox1ikqfZWA7LkvWKrGZNaxJx98dmeLoopkwvAFa9nMJLww9PERGuQovfv8g9EPM6HkV5VPaH';
+
+            const api = createAliasTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
+                checkBasicCases(preparedData, data, Waves.constants.CREATE_ALIAS_TX_NAME, expectedSignature);
+            });
+
+            const signature = createAliasTransaction.getSignature(keys.privateKey).then((signature) => {
+                expect(signature).to.equal(expectedSignature);
+            });
+
+            const bytesByName = createAliasTransaction.getExactBytes('senderPublicKey').then((bytes) => {
+                expect(bytes).to.deep.equal(base58.decode(data.senderPublicKey));
+            });
+
+            // Should throw when bytes of a non-existing field are requested
+            expect(() => createAliasTransaction.getExactBytes('test')).to.throw();
+
+            Promise.all([api, signature, bytesByName]).then(() => done());
+
+        });
+
+        it('should sign empty Mass Transfer transaction', (done) => {
+
+            const data = { ...massTransferEmptyData };
+
+            const massTransferTransaction = new Transactions.MassTransferTransaction(data);
+
+            const expectedProofs = ['2vEYE6ov9AAwHK6wFsDCN2qqvZF2GSYhUYSMHfUWrHmV29N9qP9jTjd1mjr5jqDeEDnZrTZt4Byiyy7JoJLXVshG'];
+
+            const api = massTransferTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
+                checkBasicCases(preparedData, data, Waves.constants.MASS_TRANSFER_TX_NAME, expectedProofs, massTransferAdditionialKeys);
+            });
+
+            const signature = massTransferTransaction.getSignature(keys.privateKey).then((signature) => {
+                expect(signature).to.equal(expectedProofs[0]);
+            });
+
+            const bytesByName = massTransferTransaction.getExactBytes('senderPublicKey').then((bytes) => {
+                expect(bytes).to.deep.equal(base58.decode(data.senderPublicKey));
+            });
+
+            // Should throw when bytes of a non-existing field are requested
+            expect(() => massTransferTransaction.getExactBytes('test')).to.throw();
+
+            Promise.all([api, signature, bytesByName]).then(() => done());
+
+        });
+
+        it('should sign Mass Transfer transaction with one recipient', (done) => {
+
+            const data = { ...massTransferOneRecipientData };
+
+            const massTransferTransaction = new Transactions.MassTransferTransaction(data);
+
+            const expectedProofs = ['2aoaE45GeCcyN14mZC1vBTxHd5C48mfYMw7ZDaUpkT3HmFD4i1EAKzy13CwpUxoZb4yPW3hEimTCF48pCcgRytiy'];
+
+            const api = massTransferTransaction.prepareForAPI(keys.privateKey).then((preparedData) => {
+                checkBasicCases(preparedData, data, Waves.constants.MASS_TRANSFER_TX_NAME, expectedProofs, massTransferAdditionialKeys);
+            });
+
+            const signature = massTransferTransaction.getSignature(keys.privateKey).then((signature) => {
+                expect(signature).to.equal(expectedProofs[0]);
+            });
+
+            const bytesByName = massTransferTransaction.getExactBytes('senderPublicKey').then((bytes) => {
+                expect(bytes).to.deep.equal(base58.decode(data.senderPublicKey));
+            });
+
+            // Should throw when bytes of a non-existing field are requested
+            expect(() => massTransferTransaction.getExactBytes('test')).to.throw();
+
+            Promise.all([api, signature, bytesByName]).then(() => done());
 
         });
 
