@@ -7,22 +7,22 @@ The latest and most actual version of this documentation [is hosted on GitHub](h
 ## Installation
 
 ```
-npm install waves-api --save
+npm install @waves/waves-api --save
 ```
 
 In Node.js:
 
 ```
-const WavesAPI = require('waves-api');
+const WavesAPI = require('@waves/waves-api');
 ```
 
 In browser:
 
 ```
-<script src="./node_modules/waves-api/dist/waves-api.min.js"></script>
+<script src="./node_modules/@waves/waves-api/dist/waves-api.min.js"></script>
 ```
 
-You can use `waves-api` even within Web Workers.
+You can use `@waves/waves-api` even within Web Workers.
 
 ## Usage
 
@@ -457,13 +457,13 @@ Generating balance gives you mining power.
 ## Tests
 
 ```
-cd ./node_modules/waves-api/
+cd ./node_modules/@waves/waves-api/
 npm install
 npm run test # to run tests in Node.js
 npm run test-browser # to run test in Chrome browser
 ```
 
-Test configuration may be changed in the _./node_modules/waves-api/karma.conf.js_ file.
+Test configuration may be changed in the _./node_modules/@waves/waves-api/karma.conf.js_ file.
 
 ## Tools
 
