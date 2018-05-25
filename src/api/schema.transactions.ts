@@ -220,7 +220,7 @@ export const issueTransactionSchema = new Schema({
     required: true,
     content: {
         ...getTxCommonFields(constants.ISSUE_TX_NAME, true),
-        assetId: getTxAssetId(),
+        assetId: getTxAssetId('id'),
         name: getTxAssetName(),
         description: getTxAssetDescription(),
         precision: getTxAssetPrecision(),
