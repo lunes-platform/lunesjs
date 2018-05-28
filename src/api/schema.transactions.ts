@@ -17,6 +17,10 @@ const getTxCommonFields = (typeName, wavesFeeOnly) => ({
         type: StringPart,
         required: true
     },
+    version: {
+        type: NumberPart
+        // TODO : required (later, when it's stable)
+    },
     senderPublicKey: {
         type: StringPart,
         required: true
@@ -38,7 +42,7 @@ const getTxCommonFields = (typeName, wavesFeeOnly) => ({
     },
     height: {
         type: NumberPart
-        // TODO : make it required in the new API
+        // TODO : required (later, when it's stable)
     },
     timestamp: {
         type: DatePart,
@@ -78,6 +82,11 @@ const getTxAssetId = (path?) => ({
 const getTxAssetName = () => ({
     type: StringPart,
     required: true
+});
+
+const getTxChainId = () => ({
+    type: NumberPart
+    // TODO : required (later, when it's stable)
 });
 
 const getTxAssetDescription = () => ({
@@ -250,6 +259,7 @@ export const reissueTransactionSchema = new Schema({
     content: {
         ...getTxCommonFields(constants.REISSUE_TX_NAME, true),
         assetId: getTxAssetId(),
+        chainId: getTxChainId(),
         quantity: getTxAssetTotalAmount('quantity', 'assetId'),
         reissuable: getTxAssetReissuable()
     }
@@ -261,6 +271,7 @@ export const burnTransactionSchema = new Schema({
     content: {
         ...getTxCommonFields(constants.BURN_TX_NAME, true),
         assetId: getTxAssetId(),
+        chainId: getTxChainId(),
         quantity: getTxAssetTotalAmount('amount', 'assetId')
     }
 });
