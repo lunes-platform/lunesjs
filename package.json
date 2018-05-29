@@ -1,6 +1,6 @@
 {
   "name": "@waves/waves-api",
-  "version": "0.28.1",
+  "version": "0.28.2",
   "description": "Waves client-side API library",
   "keywords": [
     "cryptocurrency",
