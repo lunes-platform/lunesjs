@@ -1,6 +1,24 @@
 import { TBuffer } from '../../interfaces';
 
+import BigNumber from '../libs/bignumber';
 import converters from '../libs/converters';
+
+
+function performBitwiseAnd(a: BigNumber, b: BigNumber): number {
+    const sa = a.toString(2).split('.')[0];
+    const sb = b.toString(2).split('.')[0];
+    const len = Math.min(sa.length, sb.length);
+
+    const s1 = sa.slice(sa.length - len);
+    const s2 = sb.slice(sb.length - len);
+
+    let result = new Array(len);
+    for (let i = len - 1; i >= 0; i--) {
+        result[i] = (s1[i] === '1' && s2[i] === '1') ? '1' : '0';
+    }
+
+    return parseInt(result.join(''), 2);
+}
 
 
 export default {
@@ -52,6 +70,24 @@ export default {
         for (let k = 7; k >= 0; k--) {
             bytes[k] = input & (255);
             input = input / 256;
+        }
+
+        return bytes;
+
+    },
+
+    bigNumberToByteArray(input: BigNumber): number[] {
+
+        if (!(input instanceof BigNumber)) {
+            throw new Error('BigNumber input is expected');
+        }
+
+        const performBitwiseAnd255 = performBitwiseAnd.bind(null, new BigNumber(255));
+
+        const bytes = new Array(7);
+        for (let k = 7; k >= 0; k--) {
+            bytes[k] = performBitwiseAnd255(input);
+            input = input.div(256);
         }
 
         return bytes;
