@@ -121,6 +121,16 @@ describe('ByteProcessor', () => {
             ]).then(() => done());
         });
 
+        it('should convert a long value to bytes (from string)', (done) => {
+            Promise.all([
+                processor.process('0').then((bytes) => compareBytes(bytes, [0, 0, 0, 0, 0, 0, 0, 0])),
+                processor.process('255').then((bytes) => compareBytes(bytes, [0, 0, 0, 0, 0, 0, 0, 255])),
+                processor.process('256').then((bytes) => compareBytes(bytes, [0, 0, 0, 0, 0, 0, 1, 0])),
+                processor.process('144125').then((bytes) => compareBytes(bytes, [0, 0, 0, 0, 0, 2, 50, 253])),
+                processor.process('12141209481023').then((bytes) => compareBytes(bytes, [0, 0, 11, 10, 216, 122, 111, 63]))
+            ]).then(() => done());
+        });
+
         it('should convert a long value to bytes (from BigNumber)', (done) => {
             Promise.all([
                 processor.process(new BigNumber(0)).then((bytes) => compareBytes(bytes, [0, 0, 0, 0, 0, 0, 0, 0])),
