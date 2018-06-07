@@ -1,7 +1,7 @@
 import { IHash } from '../../interfaces';
 
 import {
-    ByteProcessor, Alias, Base58, Bool, Byte, Long, StringWithLength, AssetId, Attachment, MandatoryAssetId,
+    ByteProcessor, Alias, Base58, Bool, Byte, Long, StringWithLength, AssetId, MandatoryAssetId,
     OrderType, Recipient, Transfers
 } from './ByteProcessor';
 
@@ -220,8 +220,7 @@ export default {
         new Long('timestamp'),
         new Long('amount'),
         new Long('fee'),
-        new Recipient('recipient'),
-        new Attachment('attachment')
+        new Recipient('recipient')
     ], {
         attachment: {
             from: 'bytes',
@@ -289,8 +288,7 @@ export default {
         new AssetId('assetId'),
         new Transfers('transfers'),
         new Long('timestamp'),
-        new Long('fee'),
-        new Attachment('attachment')
+        new Long('fee')
     ], {
         attachment: {
             from: 'bytes',

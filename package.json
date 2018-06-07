@@ -1,6 +1,6 @@
 {
   "name": "lunes-js-api",
-  "version": "0.30.0",
+  "version": "0.31.0",
   "description": "Lunes client-side API library",
   "keywords": [
     "cryptocurrency",
@@ -44,14 +44,14 @@
     "ts-api-validator": "2.1.2",
     "ts-utils": "6.0.1"
   },
-  "scripts": {
+  "scripts": {   
     "_build-partial": "node_modules/.bin/browserify raw/src/WavesAPI.js --im -s WavesAPI -u parse-json-bignumber -u bignumber.js -u crypto -u node-fetch -u ts-utils -u ts-api-validator > ./dist/waves-api.partial.js",
     "_build-full": "node_modules/.bin/browserify raw/src/WavesAPI.js --im -s WavesAPI -u crypto -u node-fetch > ./dist/waves-api.js",
-    "build": "npm run compile && mkdir -p dist && npm run _build-partial && npm run _build-full && npm run uglifyjs",
-    "compile": "mkdir -p raw && ./node_modules/.bin/tsc -p ./tsconfig.json --declaration --outDir raw",
-    "uglifyjs": "node_modules/.bin/uglifyjs ./dist/waves-api.js -o ./dist/waves-api.min.js && node_modules/.bin/uglifyjs ./dist/waves-api.partial.js -o ./dist/waves-api.partial.min.js",
-    "prepublishOnly": "npm run build && npm run test && npm run test-browser",
-    "test": "npm run build && ./node_modules/.bin/tsc -p ./test/tsconfig.json && ./node_modules/.bin/mocha $(find ./tmp-node/test -name '*.spec.js')",
-    "test-browser": "npm run build && ./node_modules/.bin/tsc -p ./test/tsconfig.browser.json && ./node_modules/.bin/karma start karma.conf.js"
+    "build": "npm run compile && npm run ponto && mkdir dist && npm run _build-partial && npm run _build-full && npm run uglifyjs",
+    "compile": "mkdir raw",
+    "ponto": "./node_modules/.bin/tsc --declaration --outDir raw",
+    "uglifyjs": "node_modules/.bin/uglifyjs ./dist/waves-api.js -o ./dist/waves-api.min.js && npm run nodeerror",
+    "nodeerror": "node_modules/.bin/uglifyjs ./dist/waves-api.partial.js -o ./dist/waves-api.partial.min.js",
+    "prepublishOnly": "npm run build"
   }
 }
