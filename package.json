@@ -1,6 +1,6 @@
 {
   "name": "lunes-js-api",
-  "version": "0.31.0",
+  "version": "0.31.1",
   "description": "Lunes client-side API library",
   "keywords": [
     "cryptocurrency",
@@ -44,7 +44,7 @@
     "ts-api-validator": "2.1.2",
     "ts-utils": "6.0.1"
   },
-  "scripts": {   
+  "scripts": {
     "_build-partial": "node_modules/.bin/browserify raw/src/WavesAPI.js --im -s WavesAPI -u parse-json-bignumber -u bignumber.js -u crypto -u node-fetch -u ts-utils -u ts-api-validator > ./dist/waves-api.partial.js",
     "_build-full": "node_modules/.bin/browserify raw/src/WavesAPI.js --im -s WavesAPI -u crypto -u node-fetch > ./dist/waves-api.js",
     "build": "npm run compile && npm run ponto && mkdir dist && npm run _build-partial && npm run _build-full && npm run uglifyjs",
