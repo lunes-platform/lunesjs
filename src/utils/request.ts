@@ -1,5 +1,6 @@
+import { ISignatureGenerator, ISignatureGeneratorConstructor } from '@waves/waves-signature-generator';
 import { IHash, IKeyPair } from '../../interfaces';
-import { ITransactionClassConstructor } from '../classes/Transactions';
+
 import * as create from 'parse-json-bignumber';
 
 import WavesRequestError from '../errors/WavesRequestError';
@@ -81,7 +82,7 @@ export function createFetchWrapper(product: PRODUCTS, version: VERSIONS, pipe?: 
 
 }
 
-export function wrapTransactionRequest(TransactionConstructor: ITransactionClassConstructor,
+export function wrapTransactionRequest(SignatureGenerator: ISignatureGeneratorConstructor<any>,
                                        preRemapAsync: (data: IHash<any>) => Promise<IHash<any>>,
                                        postRemap: (data: IHash<any>) => IHash<any>,
                                        callback: (postParams: IHash<any>) => Promise<any>) {
@@ -96,10 +97,10 @@ export function wrapTransactionRequest(TransactionConstructor: ITransactionClass
 
         }).then((validatedData) => {
 
-            const transaction = new TransactionConstructor(validatedData);
+            const transaction: ISignatureGenerator = new SignatureGenerator(validatedData);
 
-            return transaction.prepareForAPI(keyPair.privateKey)
-                .then(postRemap)
+            return transaction.getSignature(keyPair.privateKey)
+                .then((signature) => postRemap({ ...validatedData, signature }))
                 .then((tx) => {
                     return callback({
                         ...POST_TEMPLATE,

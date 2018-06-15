@@ -1,9 +1,10 @@
-import { TTransactionRequest } from '../../../utils/request';
+import { TTransactionRequest } from '../../utils/request';
 
-import Transactions from '../../../classes/Transactions';
-import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTransactionRequest } from '../../../utils/request';
+import { TX_TYPE_MAP} from '@waves/waves-signature-generator';
+
+import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTransactionRequest } from '../../utils/request';
 import { createAliasSchema } from './aliases.x';
-import { createRemapper } from '../../../utils/remap';
+import { createRemapper } from '../../utils/remap';
 
 
 const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
@@ -24,7 +25,7 @@ export default {
         return fetch(`/alias/by-address/${address}`);
     },
 
-    createAlias: wrapTransactionRequest(Transactions.CreateAliasTransaction, preCreateAliasAsync, postCreateAlias, (postParams) => {
+    createAlias: wrapTransactionRequest(TX_TYPE_MAP.createAlias, preCreateAliasAsync, postCreateAlias, (postParams) => {
         return fetch('/alias/broadcast/create', postParams);
     }) as TTransactionRequest
 

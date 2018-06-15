@@ -2,8 +2,6 @@ export type TPrecision = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
 export type TBuffer = Uint8Array | number[];
 
-export type TTransactionType = 'issue' | 'transfer' | 'reissue' | 'burn' | 'exchange' | 'lease' | 'cancelLeasing' | 'createAlias';
-
 export type TLogLevel = 'none' | 'error' | 'warning' | 'info';
 
 
@@ -28,11 +26,6 @@ export interface IKeyPairBytes {
     readonly publicKey: Uint8Array;
 }
 
-export interface IMassTransferTransfers {
-    readonly recipient: string;
-    readonly amount: number;
-}
-
 export interface IWavesBasicConfig {
     minimumSeedLength: number;
     requestOffset: number;
@@ -46,24 +39,6 @@ export interface IWavesConfig extends IWavesBasicConfig {
     nodeAddress: string;
     matcherAddress: string;
     assetFactory?: Function;
-}
-
-
-// API interfaces
-
-export interface IAPIListOptions {
-    offset?: number;
-    limit?: number;
-}
-
-export interface IAPIBalanceOptions extends IAPIListOptions {
-    assets?: string[];
-}
-
-export interface IAPITransactionsOptions extends IAPIListOptions {
-    type?: TTransactionType;
-    sender?: string;
-    recipient?: string;
 }
 
 

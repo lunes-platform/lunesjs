@@ -1,7 +1,7 @@
 import { Schema, NumberPart, ObjectPart, StringPart } from 'ts-api-validator';
-import { precisionCheck } from '../../../utils/remap';
-import * as constants from '../../../constants';
-import schemaFields from '../../schemaFields';
+import { precisionCheck } from '../../utils/remap';
+import * as constants from '../../constants';
+import schemaFields from '../schemaFields';
 
 
 export const issueSchema = new Schema({

@@ -1,5 +1,5 @@
 import { Schema, NumberPart, ObjectPart, StringPart } from 'ts-api-validator';
-import schemaFields from '../../schemaFields';
+import schemaFields from '../schemaFields';
 
 
 export const leaseSchema = new Schema({

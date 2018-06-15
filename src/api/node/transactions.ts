@@ -1,11 +1,12 @@
-import { TTransactionRequest } from '../../../utils/request';
+import { TTransactionRequest } from '../../utils/request';
 
-import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTransactionRequest } from '../../../utils/request';
-import { createRemapper, normalizeAssetId } from '../../../utils/remap';
+import { TX_TYPE_MAP } from '@waves/waves-signature-generator';
+
+import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTransactionRequest } from '../../utils/request';
+import { createRemapper, normalizeAssetId } from '../../utils/remap';
 import { massTransferSchema } from './transactions.x';
-import { WAVES, WAVES_V1_ISSUE_TX } from '../../../constants';
-import Transactions from '../../../classes/Transactions';
-import config from '../../../config';
+import * as constants from '../../constants';
+import config from '../../config';
 
 
 const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
@@ -13,15 +14,26 @@ const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
 const preMassTransferAsync = (data) => massTransferSchema.parse(data);
 const postMassTransfer = createRemapper({
     transactionType: null,
-    assetId: normalizeAssetId
+    assetId: normalizeAssetId,
+    attachment: {
+        from: 'bytes',
+        to: 'base58'
+    },
+    transfers: {
+        from: 'raw',
+        to: 'prefixed',
+        path: 'recipient'
+    },
+    type: () => constants.MASS_TRANSFER_TX,
+    version: () => constants.MASS_TRANSFER_TX_VERSION
 });
 
 
 export default {
 
     get(id: string) {
-        if (id === WAVES) {
-            return Promise.resolve(WAVES_V1_ISSUE_TX);
+        if (id === constants.WAVES) {
+            return Promise.resolve(constants.WAVES_V1_ISSUE_TX);
         } else {
             return fetch(`/transactions/info/${id}`);
         }
@@ -44,7 +56,7 @@ export default {
         return fetch('/transactions/unconfirmed');
     },
 
-    massTransfer: wrapTransactionRequest(Transactions.MassTransferTransaction, preMassTransferAsync, postMassTransfer, (postParams) => {
+    massTransfer: wrapTransactionRequest(TX_TYPE_MAP.massTransfer, preMassTransferAsync, postMassTransfer, (postParams) => {
         return fetch('/transactions/broadcast', postParams);
     }) as TTransactionRequest
 

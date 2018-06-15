@@ -1,5 +1,5 @@
 import { Schema, NumberPart, ObjectPart, StringPart, ArrayPart } from 'ts-api-validator';
-import schemaFields from '../../schemaFields';
+import schemaFields from '../schemaFields';
 
 
 export const massTransferSchema = new Schema({
