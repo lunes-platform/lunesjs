@@ -1,18 +1,9 @@
-import { TTransactionRequest } from '../../utils/request';
-
-import { TX_TYPE_MAP} from '@waves/waves-signature-generator';
-
-import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTransactionRequest } from '../../utils/request';
-import { createAliasSchema } from './aliases.x';
-import { createRemapper } from '../../utils/remap';
+import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON } from '../../utils/request';
+import * as constants from '../../constants';
+import transactions from './transactions';
 
 
 const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
-
-const preCreateAliasAsync = (data) => createAliasSchema.parse(data);
-const postCreateAlias = createRemapper({
-    transactionType: null
-});
 
 
 export default {
@@ -25,8 +16,6 @@ export default {
         return fetch(`/alias/by-address/${address}`);
     },
 
-    createAlias: wrapTransactionRequest(TX_TYPE_MAP.createAlias, preCreateAliasAsync, postCreateAlias, (postParams) => {
-        return fetch('/alias/broadcast/create', postParams);
-    }) as TTransactionRequest
+    createAlias: (data, keys) => transactions.broadcast(constants.CREATE_ALIAS_TX_NAME, data, keys)
 
 };

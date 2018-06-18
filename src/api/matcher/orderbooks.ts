@@ -3,7 +3,7 @@ import { TTransactionRequest } from '../../utils/request';
 
 import { CREATE_ORDER_SIGNATURE, AUTH_ORDER_SIGNATURE, CANCEL_ORDER_SIGNATURE } from '@waves/waves-signature-generator';
 
-import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTransactionRequest } from '../../utils/request';
+import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTxRequest } from '../../utils/request';
 import { createRemapper, getTimestamp, normalizeAssetId } from '../../utils/remap';
 import { POST_TEMPLATE } from '../../utils/request';
 import { createOrderSchema } from './orderbooks.x';
@@ -108,7 +108,7 @@ export default {
 
     },
 
-    createOrder: wrapTransactionRequest(CREATE_ORDER_SIGNATURE, preCreateOrderAsync, postCreateOrder, (postParams) => {
+    createOrder: wrapTxRequest(CREATE_ORDER_SIGNATURE, preCreateOrderAsync, postCreateOrder, (postParams) => {
         return fetch('/orderbook', postParams);
     }) as TTransactionRequest,
 

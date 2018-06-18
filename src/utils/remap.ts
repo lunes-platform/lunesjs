@@ -59,14 +59,11 @@ export function createRemapper(rules) {
 
     return function (data: IHash<any>): IHash<any> {
 
-        return Object.keys(data).reduce((result, key) => {
+        return Object.keys({ ...data, ...rules }).reduce((result, key) => {
 
             const rule = rules[key];
 
-            if (typeof rule === 'function') {
-                // Process with the function
-                result[key] = rule(data[key]);
-            } else if (typeof rule === 'string') {
+            if (typeof rule === 'string') {
                 // Rename a field with the rule name
                 result[rule] = data[key];
             } else if (rule && typeof rule === 'object') {
@@ -79,8 +76,8 @@ export function createRemapper(rules) {
                 }
 
             } else if (rule !== null) {
-                // Leave the data as is
-                result[key] = data[key];
+                // Leave the data as is (or add some default value from the rule)
+                result[key] = data[key] || rule;
             }
 
             return result;
