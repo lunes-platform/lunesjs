@@ -1,4 +1,4 @@
-import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON } from '../../utils/request';
+import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, POST_TEMPLATE } from '../../utils/request';
 import WavesError from '../../errors/WavesError';
 import * as constants from '../../constants';
 import config from '../../config';
@@ -58,6 +58,13 @@ export default {
             default:
                 throw new WavesError(`Wrong transaction type: ${type}`, data);
         }
+    },
+
+    rawBroadcast(data) {
+        return fetch(constants.BROADCAST_PATH, {
+            ...POST_TEMPLATE,
+            body: JSON.stringify(data)
+        });
     }
 
 };

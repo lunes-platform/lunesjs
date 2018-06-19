@@ -9,16 +9,14 @@ import { createFetchWrapper, processJSON, PRODUCTS, VERSIONS, wrapTxRequest } fr
 import * as constants from '../../constants';
 
 
+const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
+
+
 class AnyPart extends BasePart<any> {
     protected getValue<T>(data: T): T {
         return data;
     }
 }
-
-
-const BROADCAST_PATH = '/transactions/broadcast';
-
-const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
 
 
 /* ISSUE */
@@ -52,8 +50,8 @@ export const issueSchema = new Schema({
     }
 });
 
-const preIssue = (data) => issueSchema.parse(data);
-const postIssue = createRemapper({
+export const preIssue = (data) => issueSchema.parse(data);
+export const postIssue = createRemapper({
     transactionType: null,
     precision: 'decimals',
     type: constants.ISSUE_TX,
@@ -61,7 +59,7 @@ const postIssue = createRemapper({
 });
 
 export const sendIssueTx = wrapTxRequest(TX_TYPE_MAP.issue, preIssue, postIssue, (postParams) => {
-    return fetch(BROADCAST_PATH, postParams);
+    return fetch(constants.BROADCAST_PATH, postParams);
 }, true) as TTransactionRequest;
 
 
@@ -94,8 +92,8 @@ export const transferSchema = new Schema({
     }
 });
 
-const preTransfer = (data) => transferSchema.parse(data);
-const postTransfer = createRemapper({
+export const preTransfer = (data) => transferSchema.parse(data);
+export const postTransfer = createRemapper({
     transactionType: null,
     assetId: normalizeAssetId,
     feeAssetId: normalizeAssetId,
@@ -112,7 +110,7 @@ const postTransfer = createRemapper({
 });
 
 export const sendTransferTx = wrapTxRequest(TX_TYPE_MAP.transfer, preTransfer, postTransfer, (postParams) => {
-    return fetch(BROADCAST_PATH, postParams);
+    return fetch(constants.BROADCAST_PATH, postParams);
 }, true) as TTransactionRequest;
 
 
@@ -134,15 +132,15 @@ export const reissueSchema = new Schema({
     }
 });
 
-const preReissue = (data) => reissueSchema.parse(data);
-const postReissue = createRemapper({
+export const preReissue = (data) => reissueSchema.parse(data);
+export const postReissue = createRemapper({
     transactionType: null,
     type: constants.REISSUE_TX,
     version: constants.REISSUE_TX_VERSION
 });
 
 export const sendReissueTx = wrapTxRequest(TX_TYPE_MAP.reissue, preReissue, postReissue, (postParams) => {
-    return fetch(BROADCAST_PATH, postParams);
+    return fetch(constants.BROADCAST_PATH, postParams);
 }, true) as TTransactionRequest;
 
 
@@ -163,15 +161,15 @@ export const burnSchema = new Schema({
     }
 });
 
-const preBurn = (data) => burnSchema.parse(data);
-const postBurn = createRemapper(({
+export const preBurn = (data) => burnSchema.parse(data);
+export const postBurn = createRemapper(({
     transactionType: null,
     type: constants.BURN_TX,
     version: constants.BURN_TX_VERSION
 }));
 
 export const sendBurnTx = wrapTxRequest(TX_TYPE_MAP.burn, preBurn, postBurn, (postParams) => {
-    return fetch(BROADCAST_PATH, postParams);
+    return fetch(constants.BROADCAST_PATH, postParams);
 }, true) as TTransactionRequest;
 
 
@@ -192,8 +190,8 @@ export const leaseSchema = new Schema({
     }
 });
 
-const preLease = (data) => leaseSchema.parse(data);
-const postLease = createRemapper({
+export const preLease = (data) => leaseSchema.parse(data);
+export const postLease = createRemapper({
     transactionType: null,
     recipient: {
         from: 'raw',
@@ -204,7 +202,7 @@ const postLease = createRemapper({
 });
 
 export const sendLeaseTx = wrapTxRequest(TX_TYPE_MAP.lease, preLease, postLease, (postParams) => {
-    return fetch(BROADCAST_PATH, postParams);
+    return fetch(constants.BROADCAST_PATH, postParams);
 }, true) as TTransactionRequest;
 
 
@@ -224,8 +222,8 @@ export const cancelLeasingSchema = new Schema({
     }
 });
 
-const preCancelLeasing = (data) => cancelLeasingSchema.parse(data);
-const postCancelLeasing = createRemapper({
+export const preCancelLeasing = (data) => cancelLeasingSchema.parse(data);
+export const postCancelLeasing = createRemapper({
     transactionType: null,
     transactionId: 'txId',
     type: constants.CANCEL_LEASING_TX,
@@ -233,7 +231,7 @@ const postCancelLeasing = createRemapper({
 });
 
 export const sendCancelLeasingTx = wrapTxRequest(TX_TYPE_MAP.cancelLeasing, preCancelLeasing, postCancelLeasing, (postParams) => {
-    return fetch(BROADCAST_PATH, postParams);
+    return fetch(constants.BROADCAST_PATH, postParams);
 }, true) as TTransactionRequest;
 
 
@@ -254,15 +252,15 @@ export const createAliasSchema = new Schema({
     }
 });
 
-const preCreateAlias = (data) => createAliasSchema.parse(data);
-const postCreateAlias = createRemapper({
+export const preCreateAlias = (data) => createAliasSchema.parse(data);
+export const postCreateAlias = createRemapper({
     transactionType: null,
     type: constants.CREATE_ALIAS_TX,
     version: constants.CREATE_ALIAS_TX_VERSION
 });
 
 export const sendCreateAliasTx = wrapTxRequest(TX_TYPE_MAP.createAlias, preCreateAlias, postCreateAlias, (postParams) => {
-    return fetch(BROADCAST_PATH, postParams);
+    return fetch(constants.BROADCAST_PATH, postParams);
 }, true) as TTransactionRequest;
 
 
@@ -300,8 +298,8 @@ export const massTransferSchema = new Schema({
     }
 });
 
-const preMassTransfer = (data) => massTransferSchema.parse(data);
-const postMassTransfer = createRemapper({
+export const preMassTransfer = (data) => massTransferSchema.parse(data);
+export const postMassTransfer = createRemapper({
     transactionType: null,
     assetId: normalizeAssetId,
     attachment: {
@@ -318,7 +316,7 @@ const postMassTransfer = createRemapper({
 });
 
 export const sendMassTransferTx = wrapTxRequest(TX_TYPE_MAP.massTransfer, preMassTransfer, postMassTransfer, (postParams) => {
-    return fetch(BROADCAST_PATH, postParams);
+    return fetch(constants.BROADCAST_PATH, postParams);
 }, true) as TTransactionRequest;
 
 
@@ -356,13 +354,13 @@ export const dataTxSchema = new Schema({
     }
 });
 
-const preData = (data) => dataTxSchema.parse(data);
-const postData = createRemapper({
+export const preData = (data) => dataTxSchema.parse(data);
+export const postData = createRemapper({
     transactionType: null,
     type: constants.DATA_TX,
     version: constants.DATA_TX_VERSION
 });
 
 export const sendDataTx = wrapTxRequest(TX_TYPE_MAP.data, preData, postData, (postParams) => {
-    return fetch(BROADCAST_PATH, postParams);
+    return fetch(constants.BROADCAST_PATH, postParams);
 }, true) as TTransactionRequest;

@@ -1,8 +1,9 @@
 import { TX_TYPE_MAP } from '@waves/waves-signature-generator';
 
+import { MINIMUM_DATA_FEE_PER_KB } from './constants';
 import base58 from './libs/base58';
 import crypto from './utils/crypto';
-import { MINIMUM_DATA_FEE_PER_KB } from './constants';
+import { createTransaction, ITransactionWrapper } from './utils/transactions';
 
 
 export default {
@@ -30,6 +31,8 @@ export default {
         });
 
         return emptyDataTx.getBytes().then((bytes) => Math.ceil(bytes.length / 1024) * MINIMUM_DATA_FEE_PER_KB);
-    }
+    },
+
+    createTransaction
 
 };

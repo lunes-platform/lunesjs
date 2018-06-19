@@ -1,6 +1,9 @@
 import { IWavesBasicConfig, IWavesConfig } from '../interfaces';
 
 
+// TODO : import constants from @waves/waves-signature-generator
+
+
 export const WAVES = 'WAVES';
 
 export const MAINNET_BYTE: number = 'W'.charCodeAt(0);
@@ -102,3 +105,5 @@ export const WAVES_V1_ISSUE_TX = {
     timestamp: 1460419200000,
     type: ISSUE_TX
 };
+
+export const BROADCAST_PATH = '/transactions/broadcast';
