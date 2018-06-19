@@ -63,7 +63,10 @@ export function createRemapper(rules) {
 
             const rule = rules[key];
 
-            if (typeof rule === 'string') {
+            if (typeof rule === 'function') {
+                // Process with a function
+                result[key] = rule(data[key]);
+            } else if (typeof rule === 'string') {
                 // Rename a field with the rule name
                 result[rule] = data[key];
             } else if (rule && typeof rule === 'object') {
