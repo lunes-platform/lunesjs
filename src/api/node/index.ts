@@ -42,6 +42,9 @@ export interface INodeAPI {
     },
     utils: {
         time(): Promise<number>;
+        script: {
+            compile(code: string): Promise<string>;
+        }
     }
 }
 

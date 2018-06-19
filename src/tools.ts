@@ -3,7 +3,7 @@ import { TX_TYPE_MAP } from '@waves/waves-signature-generator';
 import { MINIMUM_DATA_FEE_PER_KB } from './constants';
 import base58 from './libs/base58';
 import crypto from './utils/crypto';
-import { createTransaction, ITransactionWrapper } from './utils/transactions';
+import { createTransaction, ITransactionWrapper } from './utils/transactions'; // TODO : fix this issue with interface
 
 
 export default {

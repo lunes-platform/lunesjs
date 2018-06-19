@@ -1,6 +1,6 @@
 {
   "name": "@waves/waves-api",
-  "version": "0.28.4",
+  "version": "1.0.0",
   "description": "Waves client-side API library",
   "keywords": [
     "cryptocurrency",
@@ -42,7 +42,7 @@
     "uglify-es": "^3.3.9"
   },
   "dependencies": {
-    "@waves/waves-signature-generator": "^0.7.0",
+    "@waves/waves-signature-generator": "^0.9.4",
     "bignumber.js": "7.0.1",
     "crypto-js": "3.1.9-1",
     "node-fetch": "1.7.3",

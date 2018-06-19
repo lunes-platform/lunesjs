@@ -8,6 +8,7 @@ import schemaFields from '../schemaFields';
 import { createRemapper, normalizeAssetId, precisionCheck, removeAliasPrefix } from '../../utils/remap';
 import { createFetchWrapper, processJSON, PRODUCTS, VERSIONS, wrapTxRequest } from '../../utils/request';
 import * as constants from '../../constants';
+import config from '../../config';
 
 
 const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
@@ -363,5 +364,38 @@ export const postData = createRemapper({
 });
 
 export const sendDataTx = wrapTxRequest(TX_TYPE_MAP.data, preData, postData, (postParams) => {
+    return fetch(constants.BROADCAST_PATH, postParams);
+}, true) as TTransactionRequest;
+
+
+/* SET SCRIPT */
+
+export const setScriptSchema = new Schema({
+    type: ObjectPart,
+    required: true,
+    content: {
+        senderPublicKey: schemaFields.publicKey,
+        script: {
+            type: StringPart,
+            required: true
+        },
+        chainId: {
+            type: NumberPart,
+            required: true,
+            parseValue: () => config.getNetworkByte()
+        },
+        timestamp: schemaFields.timestamp,
+        fee: schemaFields.fee // TODO : validate against the transaction size in bytes
+    }
+});
+
+export const preSetScript = (data) => setScriptSchema.parse(data);
+export const postSetScript = createRemapper({
+    transactionType: null,
+    type: constants.SET_SCRIPT_TX,
+    version: constants.SET_SCRIPT_TX_VERSION
+});
+
+export const sendSetScriptTx = wrapTxRequest(TX_TYPE_MAP.setScript, preSetScript, postSetScript, (postParams) => {
     return fetch(constants.BROADCAST_PATH, postParams);
 }, true) as TTransactionRequest;

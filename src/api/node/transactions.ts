@@ -55,6 +55,8 @@ export default {
                 return requests.sendMassTransferTx(data, keys);
             case constants.DATA_TX_NAME:
                 return requests.sendDataTx(data, keys);
+            case constants.SET_SCRIPT_TX_NAME:
+                return requests.sendSetScriptTx(data, keys);
             default:
                 throw new WavesError(`Wrong transaction type: ${type}`, data);
         }
