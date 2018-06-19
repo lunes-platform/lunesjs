@@ -23,7 +23,7 @@ const fetch = createFetchWrapper(PRODUCTS.NODE, VERSIONS.V1, processJSON);
 
 /* ISSUE */
 
-const issueSchema = new Schema({
+export const issueSchema = new Schema({
     type: ObjectPart,
     required: true,
     content: {
@@ -67,7 +67,7 @@ export const sendIssueTx = wrapTxRequest(TX_TYPE_MAP.issue, preIssue, postIssue,
 
 /* TRANSFER */
 
-const transferSchema = new Schema({
+export const transferSchema = new Schema({
     type: ObjectPart,
     required: true,
     content: {
@@ -118,7 +118,7 @@ export const sendTransferTx = wrapTxRequest(TX_TYPE_MAP.transfer, preTransfer, p
 
 /* REISSUE */
 
-const reissueSchema = new Schema({
+export const reissueSchema = new Schema({
     type: ObjectPart,
     required: true,
     content: {
@@ -148,7 +148,7 @@ export const sendReissueTx = wrapTxRequest(TX_TYPE_MAP.reissue, preReissue, post
 
 /* BURN */
 
-const burnSchema = new Schema({
+export const burnSchema = new Schema({
     type: ObjectPart,
     required: true,
     content: {
@@ -177,7 +177,7 @@ export const sendBurnTx = wrapTxRequest(TX_TYPE_MAP.burn, preBurn, postBurn, (po
 
 /* LEASE */
 
-const leaseSchema = new Schema({
+export const leaseSchema = new Schema({
     type: ObjectPart,
     required: true,
     content: {
@@ -210,7 +210,7 @@ export const sendLeaseTx = wrapTxRequest(TX_TYPE_MAP.lease, preLease, postLease,
 
 /* CANCEL LEASING */
 
-const cancelLeasingSchema = new Schema({
+export const cancelLeasingSchema = new Schema({
     type: ObjectPart,
     required: true,
     content: {
@@ -239,7 +239,7 @@ export const sendCancelLeasingTx = wrapTxRequest(TX_TYPE_MAP.cancelLeasing, preC
 
 /* CREATE ALIAS */
 
-const createAliasSchema = new Schema({
+export const createAliasSchema = new Schema({
     type: ObjectPart,
     required: true,
     content: {
@@ -268,7 +268,7 @@ export const sendCreateAliasTx = wrapTxRequest(TX_TYPE_MAP.createAlias, preCreat
 
 /* MASS TRANSFER */
 
-const massTransferSchema = new Schema({
+export const massTransferSchema = new Schema({
     type: ObjectPart,
     required: true,
     content: {
@@ -324,7 +324,7 @@ export const sendMassTransferTx = wrapTxRequest(TX_TYPE_MAP.massTransfer, preMas
 
 /* DATA */
 
-const dataTxSchema = new Schema({
+export const dataTxSchema = new Schema({
     type: ObjectPart,
     required: true,
     content: {
