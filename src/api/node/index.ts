@@ -17,16 +17,11 @@ export interface INodeAPI {
     aliases: {
         byAlias(alias: string): Promise<any>;
         byAddress(address: string): Promise<any>;
-        createAlias(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
     },
     assets: {
         balances(address: string): Promise<any>;
         balance(address: string, assetId: string): Promise<any>;
         distribution(assetId: string): Promise<any>;
-        issue(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
-        transfer(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
-        reissue(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
-        burn(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
     },
     blocks: {
         get(signature: string): Promise<any>;
@@ -36,8 +31,6 @@ export interface INodeAPI {
         height(): Promise<any>;
     },
     leasing: {
-        lease(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
-        cancelLeasing(data: IHash<any>, keyPair: IKeyPair): Promise<any>;
         getAllActiveLeases(address: string): Promise<any>;
     },
     transactions: {
@@ -46,7 +39,6 @@ export interface INodeAPI {
         utxSize(): Promise<any>;
         utxGet(id: string): Promise<any>;
         utxGetList(): Promise<any>;
-        broadcast(type: string, data: IHash<any>, keyPair: IKeyPair): Promise<any>;
     },
     utils: {
         time(): Promise<number>;
