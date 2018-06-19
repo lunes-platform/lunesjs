@@ -35,8 +35,6 @@ export default {
         return fetch('/transactions/unconfirmed');
     },
 
-    // TODO : remove aliases for separate methods throughout the API
-
     broadcast(type: string, data, keys) {
         switch (type) {
             case constants.ISSUE_TX_NAME:
