@@ -85,7 +85,8 @@ export function createFetchWrapper(product: PRODUCTS, version: VERSIONS, pipe?: 
 export function wrapTxRequest(SignatureGenerator: ISignatureGeneratorConstructor<any>,
                               preRemapAsync: (data: IHash<any>) => Promise<IHash<any>>,
                               postRemap: (data: IHash<any>) => IHash<any>,
-                              callback: (postParams: IHash<any>) => Promise<any>) {
+                              callback: (postParams: IHash<any>) => Promise<any>,
+                              withProofs: boolean = false) {
 
     return function (data: IHash<any>, keyPair: IKeyPair): Promise<any> {
 
@@ -100,7 +101,10 @@ export function wrapTxRequest(SignatureGenerator: ISignatureGeneratorConstructor
             const transaction: ISignatureGenerator = new SignatureGenerator(validatedData);
 
             return transaction.getSignature(keyPair.privateKey)
-                .then((signature) => postRemap({ ...validatedData, signature }))
+                .then((signature) => postRemap({
+                    ...validatedData,
+                    ...(withProofs ? { proofs: [signature] } : { signature })
+                }))
                 .then((tx) => {
                     return callback({
                         ...POST_TEMPLATE,
