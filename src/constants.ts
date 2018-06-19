@@ -34,6 +34,8 @@ export const CANCEL_LEASING_TX_VERSION = 2;
 export const CREATE_ALIAS_TX_VERSION = 2;
 export const MASS_TRANSFER_TX_VERSION = 1;
 export const DATA_TX_VERSION = 1;
+export const SET_SCRIPT_TX_VERSION = 1;
+export const SPONSORSHIP_TX_VERSION = 1;
 
 export const ISSUE_TX_NAME = 'issue';
 export const TRANSFER_TX_NAME = 'transfer';
