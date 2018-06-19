@@ -55,6 +55,8 @@ export default {
                 return requests.sendCreateAliasTx(data, keys);
             case constants.MASS_TRANSFER_TX_NAME:
                 return requests.sendMassTransferTx(data, keys);
+            case constants.DATA_TX_NAME:
+                return requests.sendDataTx(data, keys);
             default:
                 throw new WavesError(`Wrong transaction type: ${type}`, data);
         }

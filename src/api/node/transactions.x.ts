@@ -1,12 +1,19 @@
 import { TTransactionRequest } from '../../utils/request';
 
-import { Schema, NumberPart, ObjectPart, StringPart, ArrayPart } from 'ts-api-validator';
+import { Schema, NumberPart, ObjectPart, StringPart, ArrayPart, BasePart } from 'ts-api-validator';
 import { TX_TYPE_MAP } from '@waves/waves-signature-generator';
 
 import schemaFields from '../schemaFields';
 import { createRemapper, normalizeAssetId, precisionCheck, removeAliasPrefix } from '../../utils/remap';
 import { createFetchWrapper, processJSON, PRODUCTS, VERSIONS, wrapTxRequest } from '../../utils/request';
 import * as constants from '../../constants';
+
+
+class AnyPart extends BasePart<any> {
+    protected getValue<T>(data: T): T {
+        return data;
+    }
+}
 
 
 const BROADCAST_PATH = '/transactions/broadcast';
@@ -311,5 +318,51 @@ const postMassTransfer = createRemapper({
 });
 
 export const sendMassTransferTx = wrapTxRequest(TX_TYPE_MAP.massTransfer, preMassTransfer, postMassTransfer, (postParams) => {
+    return fetch(BROADCAST_PATH, postParams);
+}, true) as TTransactionRequest;
+
+
+/* DATA */
+
+const dataTxSchema = new Schema({
+    type: ObjectPart,
+    required: true,
+    content: {
+        senderPublicKey: schemaFields.publicKey,
+        data: {
+            type: ArrayPart,
+            content: {
+                type: ObjectPart,
+                required: true,
+                content: {
+                    type: {
+                        type: StringPart,
+                        required: true
+                    },
+                    key: {
+                        type: StringPart,
+                        required: true
+                    },
+                    value: {
+                        type: AnyPart,
+                        required: true
+                    }
+                }
+            },
+            defaultValue: []
+        },
+        timestamp: schemaFields.timestamp,
+        fee: schemaFields.fee // TODO : validate against the transaction size in bytes
+    }
+});
+
+const preData = (data) => dataTxSchema.parse(data);
+const postData = createRemapper({
+    transactionType: null,
+    type: constants.DATA_TX,
+    version: constants.DATA_TX_VERSION
+});
+
+export const sendDataTx = wrapTxRequest(TX_TYPE_MAP.data, preData, postData, (postParams) => {
     return fetch(BROADCAST_PATH, postParams);
 }, true) as TTransactionRequest;
