@@ -1,5 +1,3 @@
-export type TPrecision = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
-
 export type TBuffer = Uint8Array | number[];
 
 export type TLogLevel = 'none' | 'error' | 'warning' | 'info';
@@ -7,13 +5,6 @@ export type TLogLevel = 'none' | 'error' | 'warning' | 'info';
 
 export interface IHash<T> {
     [key: string]: T;
-}
-
-export interface IAssetObject {
-    readonly id: string;
-    readonly name: string;
-    readonly precision: TPrecision;
-    readonly description: string;
 }
 
 export interface IKeyPair {
