@@ -1,24 +1,12 @@
-import { IKeyPair } from '../../../../interfaces';
-import { TTransactionRequest } from '../../../utils/request';
+import { IKeyPair } from '../../../interfaces';
+import { TTransactionRequest } from '../../utils/request';
 
-import Transactions from '../../../classes/Transactions';
-import { Base58, Long } from '../../../classes/ByteProcessor';
+import { CREATE_ORDER_SIGNATURE, AUTH_ORDER_SIGNATURE, CANCEL_ORDER_SIGNATURE } from '@waves/waves-signature-generator';
 
-import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTransactionRequest } from '../../../utils/request';
-import { createRemapper, getTimestamp, normalizeAssetId } from '../../../utils/remap';
-import { POST_TEMPLATE } from '../../../utils/request';
+import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTxRequest } from '../../utils/request';
+import { createRemapper, getTimestamp, normalizeAssetId } from '../../utils/remap';
+import { POST_TEMPLATE } from '../../utils/request';
 import { createOrderSchema } from './orderbooks.x';
-
-
-const GetOrdersAuthData = Transactions.createSignableData([
-    new Base58('senderPublicKey'),
-    new Long('timestamp')
-]);
-
-const CancelOrderAuthData = Transactions.createSignableData([
-    new Base58('senderPublicKey'),
-    new Base58('orderId')
-]);
 
 
 const fetch = createFetchWrapper(PRODUCTS.MATCHER, VERSIONS.V1, processJSON);
@@ -47,13 +35,15 @@ const generateCancelLikeRequest = (type: string) => {
 
     return (amountAssetId: string, priceAssetId: string, orderId: string, keyPair: IKeyPair) => {
 
-        const authData = new CancelOrderAuthData({
+        const data = {
             senderPublicKey: keyPair.publicKey,
             orderId: orderId
-        });
+        };
 
-        return authData.prepareForAPI(keyPair.privateKey)
-            .then(postCancelOrder)
+        const authData = new CANCEL_ORDER_SIGNATURE(data);
+
+        return authData.getSignature(keyPair.privateKey)
+            .then((signature) => postCancelOrder({ ...data, signature }))
             .then((tx) => {
                 return fetch(`/orderbook/${amountAssetId}/${priceAssetId}/${type}`, {
                     ...POST_TEMPLATE,
@@ -78,12 +68,15 @@ export default {
 
     getOrders(assetOne: string, assetTwo: string, keyPair: IKeyPair) {
 
-        const authData = new GetOrdersAuthData({
+        const data = {
             senderPublicKey: keyPair.publicKey,
             timestamp: getTimestamp()
-        });
+        };
 
-        return authData.prepareForAPI(keyPair.privateKey).then((preparedData) => {
+        const authData = new AUTH_ORDER_SIGNATURE(data);
+
+        return authData.getSignature(keyPair.privateKey).then((signature) => {
+            const preparedData = { ...data, signature };
             return fetch(`/orderbook/${assetOne}/${assetTwo}/publicKey/${keyPair.publicKey}`, {
                 headers: {
                     Timestamp: preparedData.timestamp,
@@ -96,12 +89,15 @@ export default {
 
     getAllOrders(keyPair: IKeyPair) {
 
-        const authData = new GetOrdersAuthData({
+        const data = {
             senderPublicKey: keyPair.publicKey,
             timestamp: getTimestamp()
-        });
+        };
 
-        return authData.prepareForAPI(keyPair.privateKey).then((preparedData) => {
+        const authData = new AUTH_ORDER_SIGNATURE(data);
+
+        return authData.getSignature(keyPair.privateKey).then((signature) => {
+            const preparedData = { ...data, signature };
             return fetch(`/orderbook/${keyPair.publicKey}`, {
                 headers: {
                     Timestamp: preparedData.timestamp,
@@ -112,7 +108,7 @@ export default {
 
     },
 
-    createOrder: wrapTransactionRequest(Transactions.Order, preCreateOrderAsync, postCreateOrder, (postParams) => {
+    createOrder: wrapTxRequest(CREATE_ORDER_SIGNATURE, preCreateOrderAsync, postCreateOrder, (postParams) => {
         return fetch('/orderbook', postParams);
     }) as TTransactionRequest,
 

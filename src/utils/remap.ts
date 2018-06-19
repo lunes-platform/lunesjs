@@ -1,19 +1,13 @@
 import { IHash } from '../../interfaces';
-import * as constants from '../constants';
+
+import base58 from '../libs/base58';
+import { WAVES } from '../constants';
 import config from '../config';
 
 
 export function normalizeAssetId(original) {
-    if (!original || original === constants.WAVES) {
+    if (!original || original === WAVES) {
         return '';
-    } else {
-        return original;
-    }
-}
-
-export function denormalizeAssetId(original) {
-    if (!original) {
-        return constants.WAVES;
     } else {
         return original;
     }
@@ -35,15 +29,6 @@ export function removeAliasPrefix(original: string) {
     }
 }
 
-export function addRecipientPrefix(raw: string) {
-    if (raw.length > 30) {
-        return `address:${raw}`;
-    } else {
-        const networkCharacter = String.fromCharCode(config.getNetworkByte());
-        return `alias:${networkCharacter}:${raw}`;
-    }
-}
-
 // Adjusts user time to UTC
 // Should be used for creating transactions and requests only
 export function getTimestamp(timestamp?) {
@@ -54,11 +39,27 @@ export function precisionCheck(precision) {
     return (precision >= 0 && precision <= 8);
 }
 
+
+function castFromBytesToBase58(bytes, sliceIndex) {
+    bytes = Uint8Array.from(Array.prototype.slice.call(bytes, sliceIndex));
+    return base58.encode(bytes);
+}
+
+function castFromRawToPrefixed(raw) {
+    if (raw.length > 30) {
+        return `address:${raw}`;
+    } else {
+        const networkCharacter = String.fromCharCode(config.getNetworkByte());
+        return `alias:${networkCharacter}:${raw}`;
+    }
+}
+
+
 export function createRemapper(rules) {
 
     return function (data: IHash<any>): IHash<any> {
 
-        return Object.keys(data).reduce((result, key) => {
+        return Object.keys({ ...data, ...rules }).reduce((result, key) => {
 
             const rule = rules[key];
 
@@ -66,16 +67,25 @@ export function createRemapper(rules) {
                 // Process with a function
                 result[key] = rule(data[key]);
             } else if (typeof rule === 'string') {
-                // Rename a field
+                // Rename a field with the rule name
                 result[rule] = data[key];
+            } else if (rule && typeof rule === 'object') {
+
+                // Transform according to the rule
+                if (rule.from === 'bytes' && rule.to === 'base58') {
+                    result[key] = castFromBytesToBase58(data[key], rule.slice || 0);
+                } else if (rule.from === 'raw' && rule.to === 'prefixed') {
+                    result[rule.path || key] = castFromRawToPrefixed(data[key]);
+                }
+
             } else if (rule !== null) {
-                // Leave as is
-                result[key] = data[key];
+                // Leave the data as is (or add some default value from the rule)
+                result[key] = data[key] || rule;
             }
 
             return result;
 
-        }, {});
+        }, Object.create(null));
 
     };
 

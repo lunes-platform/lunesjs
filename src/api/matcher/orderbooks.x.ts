@@ -1,7 +1,7 @@
 import { Schema, NumberPart, ObjectPart, StringPart } from 'ts-api-validator';
-import { getTimestamp } from '../../../utils/remap';
-import { DEFAULT_ORDER_EXPIRATION_DAYS } from '../../../constants';
-import schemaFields from '../../schemaFields';
+import { getTimestamp } from '../../utils/remap';
+import { DEFAULT_ORDER_EXPIRATION_DAYS } from '../../constants';
+import schemaFields from '../schemaFields';
 
 
 export const createOrderSchema = new Schema({
