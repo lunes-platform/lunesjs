@@ -322,7 +322,7 @@ export const sendMassTransferTx = wrapTxRequest(TX_TYPE_MAP.massTransfer, preMas
 
 /* DATA */
 
-export const dataTxSchema = new Schema({
+export const dataSchema = new Schema({
     type: ObjectPart,
     required: true,
     content: {
@@ -354,7 +354,7 @@ export const dataTxSchema = new Schema({
     }
 });
 
-export const preData = (data) => dataTxSchema.parse(data);
+export const preData = (data) => dataSchema.parse(data);
 export const postData = createRemapper({
     transactionType: null,
     type: constants.DATA_TX,
