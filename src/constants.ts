@@ -14,8 +14,8 @@ export const TESTNET_BYTE: number = 'T'.charCodeAt(0);
 
 export const INITIAL_NONCE = 0;
 
-export const ADDRESS_VERSION = 1;
-export const ALIAS_VERSION = 2;
+export const ADDRESS_BYTE = 1;
+export const ALIAS_BYTE = 2;
 
 export const ISSUE_TX = 3;
 export const TRANSFER_TX = 4;
@@ -26,8 +26,20 @@ export const LEASE_TX = 8;
 export const CANCEL_LEASING_TX = 9;
 export const CREATE_ALIAS_TX = 10;
 export const MASS_TRANSFER_TX = 11;
+export const DATA_TX = 12;
+export const SET_SCRIPT_TX = 13;
+export const SPONSORSHIP_TX = 14;
 
+export const ISSUE_TX_VERSION = 2;
+export const TRANSFER_TX_VERSION = 2;
+export const REISSUE_TX_VERSION = 2;
+export const BURN_TX_VERSION = 2;
+export const EXCHANGE_TX_VERSION = 2;
+export const LEASE_TX_VERSION = 2;
+export const CANCEL_LEASING_TX_VERSION = 2;
+export const CREATE_ALIAS_TX_VERSION = 2;
 export const MASS_TRANSFER_TX_VERSION = 1;
+export const DATA_TX_VERSION = 1;
 
 export const ISSUE_TX_NAME = 'issue';
 export const TRANSFER_TX_NAME = 'transfer';
@@ -38,6 +50,9 @@ export const LEASE_TX_NAME = 'lease';
 export const CANCEL_LEASING_TX_NAME = 'cancelLeasing';
 export const CREATE_ALIAS_TX_NAME = 'createAlias';
 export const MASS_TRANSFER_TX_NAME = 'massTransfer';
+export const DATA_TX_NAME = 'data';
+export const SET_SCRIPT_TX_NAME = 'setScript';
+export const SPONSORSHIP_TX_NAME = 'sponsorship';
 
 export const PRIVATE_KEY_LENGTH = 32;
 export const PUBLIC_KEY_LENGTH = 32;
