@@ -1,6 +1,5 @@
 import { IHash, IWavesConfig } from '../interfaces';
 
-import { Asset, AssetPair, Money, OrderPrice } from '@waves/data-entities';
 import { ByteProcessor as byteProcessors } from '@waves/waves-signature-generator';
 
 import Seed from './classes/Seed';
@@ -25,10 +24,6 @@ export interface IAPIVersions {
 }
 
 export interface IWavesAPI {
-    Asset: any;
-    AssetPair: any;
-    Money: any;
-    OrderPrice: any;
     Seed: typeof Seed;
     byteProcessors: typeof byteProcessors;
     constants: IHash<any>;
@@ -41,14 +36,8 @@ export interface IWavesAPI {
 
 class WavesAPI implements IWavesAPI {
 
-    public readonly Asset = Asset;
-    public readonly AssetPair = AssetPair;
-    public readonly Money = Money;
-    public readonly OrderPrice = OrderPrice;
     public readonly Seed = Seed;
-
     public readonly byteProcessors = byteProcessors;
-
     public readonly config = config;
     public readonly constants = constants;
     public readonly crypto = crypto;

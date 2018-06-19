@@ -42,7 +42,6 @@
     "uglify-es": "^3.3.9"
   },
   "dependencies": {
-    "@waves/data-entities": "^1.5.0",
     "@waves/waves-signature-generator": "^0.4.0",
     "bignumber.js": "7.0.1",
     "crypto-js": "3.1.9-1",
