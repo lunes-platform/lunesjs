@@ -56,6 +56,7 @@ export const PUBLIC_KEY_LENGTH = 32;
 export const MINIMUM_FEE = 100000;
 export const MINIMUM_ISSUE_FEE = 100000000;
 export const MINIMUM_MATCHER_FEE = 300000;
+export const MINIMUM_DATA_FEE_PER_KB = 100000;
 
 export const TRANSFER_ATTACHMENT_BYTE_LIMIT = 140;
 
