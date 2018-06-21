@@ -4,7 +4,7 @@ import * as txHelpers from '../api/node/transactions.x';
 import { IHash } from '../../interfaces';
 
 
-// TODO : refactor this module and ugly dependency injections through name (like preIssue, postReissue, etc)
+// TODO : refactor this module and ugly dependency injections through names (like preIssue, postReissue, etc)
 
 
 const capitalize = (name) => name.slice(0, 1).toUpperCase() + name.slice(1);

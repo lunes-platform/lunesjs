@@ -399,3 +399,32 @@ export const postSetScript = createRemapper({
 export const sendSetScriptTx = wrapTxRequest(TX_TYPE_MAP.setScript, preSetScript, postSetScript, (postParams) => {
     return fetch(constants.BROADCAST_PATH, postParams);
 }, true) as TTransactionRequest;
+
+
+/* SPONSORSHIP */
+
+export const sponsorshipSchema = new Schema({
+    type: ObjectPart,
+    required: true,
+    content: {
+        senderPublicKey: schemaFields.publicKey,
+        assetId: schemaFields.assetId,
+        minSponsoredAssetFee: {
+            type: NumberPart,
+            required: true
+        },
+        timestamp: schemaFields.timestamp,
+        fee: schemaFields.fee
+    }
+});
+
+export const preSponsorship = (data) => sponsorshipSchema.parse(data);
+export const postSponsorship = createRemapper({
+    transactionType: null,
+    type: constants.SPONSORSHIP_TX,
+    version: constants.SPONSORSHIP_TX_VERSION
+});
+
+export const sendSponsorshipTx = wrapTxRequest(TX_TYPE_MAP.sponsorship, preSponsorship, postSponsorship, (postParams) => {
+    return fetch(constants.BROADCAST_PATH, postParams);
+}, true) as TTransactionRequest;
