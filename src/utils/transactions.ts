@@ -22,7 +22,8 @@ class TransactionWrapper {
     constructor(
         public signatureGenerator: ISignatureGenerator,
         public validatedData: IHash<any>,
-        public postRemap: (data: IHash<any>) => IHash<any>
+        public postRemap: (data: IHash<any>) => IHash<any>,
+        public proofs: Array<string>
     ) {}
 
     public addProof(privateKey: string): this {
@@ -33,10 +34,10 @@ class TransactionWrapper {
     public getJSON(): Promise<IHash<any>> {
         return Promise.all(this._privateKeys.map((privateKey) => {
             return this.signatureGenerator.getSignature(privateKey);
-        })).then((proofs) => {
+        })).then((newProofs) => {
             return this.postRemap({
                 ...this.validatedData,
-                proofs
+                proofs: [].concat(this.proofs, newProofs)
             });
         });
     }
@@ -53,8 +54,10 @@ export const createTransaction = (type: string, data): Promise<ITransactionWrapp
         throw new Error(`Unknown transaction type: ${type}`);
     }
 
+    const proofs = data.proofs || [];
+
     return preRemap(data).then((validatedData) => {
         const signatureGenerator = new TX_TYPE_MAP[type](validatedData);
-        return new TransactionWrapper(signatureGenerator, validatedData, postRemap);
+        return new TransactionWrapper(signatureGenerator, validatedData, postRemap, proofs);
     });
 };
