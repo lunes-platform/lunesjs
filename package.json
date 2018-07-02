@@ -34,10 +34,11 @@
     "mock-require": "^2.0.2",
     "requirejs": "^2.3.5",
     "typescript": "^2.5.3",
-    "uglify-js": "^3.1.4"
+    "uglify-es": "^3.3.9"
   },
   "dependencies": {
-    "bignumber.js": "4.1.0",
+    "@waves/waves-signature-generator": "^0.10.1",
+    "bignumber.js": "7.0.1",
     "crypto-js": "3.1.9-1",
     "node-fetch": "1.7.3",
     "parse-json-bignumber": "0.0.2",
@@ -47,11 +48,11 @@
   "scripts": {
     "_build-partial": "node_modules/.bin/browserify raw/src/WavesAPI.js --im -s WavesAPI -u parse-json-bignumber -u bignumber.js -u crypto -u node-fetch -u ts-utils -u ts-api-validator > ./dist/waves-api.partial.js",
     "_build-full": "node_modules/.bin/browserify raw/src/WavesAPI.js --im -s WavesAPI -u crypto -u node-fetch > ./dist/waves-api.js",
-    "build": "npm run compile && npm run ponto && mkdir dist && npm run _build-partial && npm run _build-full && npm run uglifyjs",
-    "compile": "mkdir raw",
-    "ponto": "./node_modules/.bin/tsc --declaration --outDir raw",
-    "uglifyjs": "node_modules/.bin/uglifyjs ./dist/waves-api.js -o ./dist/waves-api.min.js && npm run nodeerror",
-    "nodeerror": "node_modules/.bin/uglifyjs ./dist/waves-api.partial.js -o ./dist/waves-api.partial.min.js",
-    "prepublishOnly": "npm run build"
+    "build": "npm run compile && mkdir -p dist && npm run _build-partial && npm run _build-full && npm run uglifyjs && cp ./interfaces.d.ts ./raw/interfaces.d.ts",
+    "compile": "mkdir -p raw && ./node_modules/.bin/tsc -p ./tsconfig.json --declaration --outDir raw",
+    "uglifyjs": "node_modules/.bin/uglifyjs ./dist/waves-api.js -o ./dist/waves-api.min.js && node_modules/.bin/uglifyjs ./dist/waves-api.partial.js -o ./dist/waves-api.partial.min.js",
+    "prepublishOnly": "npm run build && npm run test && npm run test-browser",
+    "test": "npm run build && ./node_modules/.bin/tsc -p ./test/tsconfig.json && ./node_modules/.bin/mocha $(find ./tmp-node/test -name '*.spec.js')",
+    "test-browser": "npm run build && ./node_modules/.bin/tsc -p ./test/tsconfig.browser.json && ./node_modules/.bin/karma start karma.conf.js"
   }
 }

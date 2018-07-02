@@ -73,7 +73,43 @@ console.log(seed.keyPair); // { privateKey: '2gSboTPsiQfi1i3zNtFppVJVgjoCA9P4HE9
 
 ### Node API
 
-Right now only the first version of Node API is available. If you want to contribute to the new versions of Waves API please see [the section below](#see-also).
+Although the structure and naming of this API may seem strange, they reflect those of the backend Node API.
+
+First, a quick introduction into the structure:
+
+* addresses
+    * balance — your regular WAVES balance
+    * balanceDetails — the details on your WAVES balance ([see below](#different-types-of-waves-balance))
+* aliases
+    * byAlias — Waves address related to a given alias
+    * byAddress — a list of aliases related to a given Waves address
+    * createAlias — POST-method to create an alias for your Waves address
+* assets
+    * balances — your token balances
+    * balance — your balance for a given token
+    * distribution — the distribution of a given token between addresses
+    * issue — POST-method to create your own token
+    * transfer — POST-method to send send some amount of a given token or WAVES
+    * reissue — POST-method to emit an additional quantity of a given token
+    * burn — POST-method to burn some amount of a given token
+* blocks
+    * get — get a block by its signature (ID)
+    * at — get the block at a certain height
+    * first — get the first block
+    * last — get the last block
+    * height — get the current height of the blockchain
+* leasing
+    * lease — POST-method to lease your WAVES
+    * cancelLeasing — POST-method to cancel a given Lease transaction
+    * getAllActiveLeases — get all your active Lease transactions
+* transactions
+    * get — get a transaction by its signature (ID)
+    * getList — get the list of last N transactions for a given Waves address
+    * utxSize — get the current size of the unconfirmed transactions pool
+    * utxGet — get an unconfirmed transaction by its signature (ID)
+    * utxGetList — get the list of unconfirmed transactions for a given Waves address
+* utils
+    * time — get the current Node timestamp
 
 #### Sending transactions
 
@@ -84,6 +120,8 @@ const seed = Waves.Seed.fromExistingPhrase('a seed from an account with some fun
 ```
 
 ##### Issue transaction
+
+This is the way to create your own token which can be traded, distributed amongst users and used for your business purposes.
 
 ```
 const issueData = {
@@ -103,12 +141,14 @@ const issueData = {
 
 };
 
-Waves.API.Node.v1.assets.issue(issueData, seed.keyPair).then((responseData) => {
+Waves.API.Node.assets.issue(issueData, seed.keyPair).then((responseData) => {
     console.log(responseData);
 });
 ```
 
 ##### Transfer transaction
+
+The Transfer transaction allows you to send WAVES or any token you possess to another Waves address. 
 
 ```
 const transferData = {
@@ -133,12 +173,14 @@ const transferData = {
 
 };
 
-Waves.API.Node.v1.assets.transfer(transferData, seed.keyPair).then((responseData) => {
+Waves.API.Node.assets.transfer(transferData, seed.keyPair).then((responseData) => {
     console.log(responseData);
 });
 ```
 
 ##### Reissue transaction
+
+Despite this transaction name, it allows you to issue an additional amount of a token which was initially issued by you.
 
 ```
 const reissueData = {
@@ -155,12 +197,14 @@ const reissueData = {
 
 };
 
-Waves.API.Node.v1.assets.reissue(reissueData, seed.keyPair).then((responseData) => {
+Waves.API.Node.assets.reissue(reissueData, seed.keyPair).then((responseData) => {
     console.log(responseData);
 });
 ```
 
 ##### Burn transaction
+
+Here you can burn any amount of token which was issued by you *and is still on your balance*.
 
 ```
 const burnData = {
@@ -174,12 +218,14 @@ const burnData = {
 
 };
 
-Waves.API.Node.v1.assets.burn(burnData, seed.keyPair).then((responseData) => {
+Waves.API.Node.assets.burn(burnData, seed.keyPair).then((responseData) => {
     console.log(responseData);
 });
 ```
 
 ##### Lease transaction
+
+This is the way you can lease your WAVES to a different address.
 
 ```
 const leaseData = {
@@ -194,12 +240,14 @@ const leaseData = {
 
 };
 
-Waves.API.Node.v1.leasing.lease(leaseData, seed.keyPair).then((responseData) => {
+Waves.API.Node.leasing.lease(leaseData, seed.keyPair).then((responseData) => {
     console.log(responseData);
 });
 ```
 
 ##### Cancel Leasing transaction
+
+This transaction gives you a mean to cancel previously sent Lease transactions.
 
 ```
 const cancelLeasingData = {
@@ -212,12 +260,14 @@ const cancelLeasingData = {
 
 };
 
-Waves.API.Node.v1.leasing.cancelLeasing(cancelLeasingData, seed.keyPair).then((responseData) => {
+Waves.API.Node.leasing.cancelLeasing(cancelLeasingData, seed.keyPair).then((responseData) => {
     console.log(responseData);
 });
 ```
 
 ##### Create Alias transaction
+
+A Waves address can have aliases — short readable names which can be used instead of address. This transaction creates an alias. 
 
 ```
 const createAliasData = {
@@ -230,7 +280,7 @@ const createAliasData = {
 
 };
 
-Waves.API.Node.v1.aliases.createAlias(createAliasData, seed.keyPair).then((responseData) => {
+Waves.API.Node.aliases.createAlias(createAliasData, seed.keyPair).then((responseData) => {
     console.log(responseData);
 });
 ```
@@ -246,7 +296,7 @@ There are two types of Waves balance: simple, with optional `confirmations` para
 With the first type, without additional arguments, you get the current balance on an address:
 
 ```
-Waves.API.Node.v1.addresses.balance('3PMgh8ra7v9USWUJxUCxKQKr6PM3MgqNVR8').then((balance) => {
+Waves.API.Node.addresses.balance('3PMgh8ra7v9USWUJxUCxKQKr6PM3MgqNVR8').then((balance) => {
     console.log(balance);
 });
 ```
@@ -254,7 +304,7 @@ Waves.API.Node.v1.addresses.balance('3PMgh8ra7v9USWUJxUCxKQKr6PM3MgqNVR8').then(
 If you pass an optional `confirmations` argument, you get the balance with N confirmations, i.e. the balance as it was N blocks ago from the moment:
 
 ```
-Waves.API.Node.v1.addresses.balance('3PMgh8ra7v9USWUJxUCxKQKr6PM3MgqNVR8', 100).then((balance) => {
+Waves.API.Node.addresses.balance('3PMgh8ra7v9USWUJxUCxKQKr6PM3MgqNVR8', 100).then((balance) => {
     console.log(balance);
 });
 ```
@@ -262,7 +312,7 @@ Waves.API.Node.v1.addresses.balance('3PMgh8ra7v9USWUJxUCxKQKr6PM3MgqNVR8', 100).
 For the second type, there is a separate method:
 
 ```
-Waves.API.Node.v1.addresses.balanceDetails('3PMgh8ra7v9USWUJxUCxKQKr6PM3MgqNVR8').then((balanceDetails) => {
+Waves.API.Node.addresses.balanceDetails('3PMgh8ra7v9USWUJxUCxKQKr6PM3MgqNVR8').then((balanceDetails) => {
    console.log(balanceDetails);
 });
 ```
@@ -272,7 +322,7 @@ Waves.API.Node.v1.addresses.balanceDetails('3PMgh8ra7v9USWUJxUCxKQKr6PM3MgqNVR8'
 You can get the list of all balances on an address:
 
 ```
-Waves.API.Node.v1.assets.balances(address).then((balancesList) => {
+Waves.API.Node.assets.balances(address).then((balancesList) => {
    console.log(balancesList);
 });
 ```
@@ -280,7 +330,7 @@ Waves.API.Node.v1.assets.balances(address).then((balancesList) => {
 You also can get the balance of a given token:
 
 ```
-Waves.API.Node.v1.assets.balance(address, assetId).then((balance) => {
+Waves.API.Node.assets.balance(address, assetId).then((balance) => {
    console.log(balance);
 });
 ```
@@ -290,7 +340,7 @@ Waves.API.Node.v1.assets.balance(address, assetId).then((balance) => {
 A very useful method allowing you to get a map with balances of all addresses in possession of a token:
 
 ```
-Waves.API.Node.v1.assets.distribution(assetId).then((distributionMap) => {
+Waves.API.Node.assets.distribution(assetId).then((distributionMap) => {
    console.log(distributionMap);
 });
 ```
@@ -300,7 +350,7 @@ Waves.API.Node.v1.assets.distribution(assetId).then((distributionMap) => {
 Every transaction in the blockchain has its own ID. You can both get one by ID, or get a list of all recent transactions.
 
 ```
-Waves.API.Node.v1.transactions.get('Bn2opYvcmYAMCaJHKP1uXYCHFGnAyrzGoiboBLT8RALt').then((tx) => {
+Waves.API.Node.transactions.get('Bn2opYvcmYAMCaJHKP1uXYCHFGnAyrzGoiboBLT8RALt').then((tx) => {
     console.log(tx);
 });
 ```
@@ -308,7 +358,7 @@ Waves.API.Node.v1.transactions.get('Bn2opYvcmYAMCaJHKP1uXYCHFGnAyrzGoiboBLT8RALt
 To get the list you need to provide an address which is either the sender or the recipient of the transactions in the resulting list:
 
 ```
-Waves.API.Node.v1.transactions.getList('3PMgh8ra7v9USWUJxUCxKQKr6PM3MgqNVR8').then((txList) => {
+Waves.API.Node.transactions.getList('3PMgh8ra7v9USWUJxUCxKQKr6PM3MgqNVR8').then((txList) => {
     console.log(txList);
 }):
 ```
@@ -318,11 +368,11 @@ One of the concepts in most blockchains is UTX, unconfirmed transactions pool. D
 There are methods to get the size of UTX pool and UTX pool itself (note that the address is not needed here):
 
 ```
-Waves.API.Node.v1.transactions.utxSize().then((utxSize) => {
+Waves.API.Node.transactions.utxSize().then((utxSize) => {
     console.log(utxSize);
 });
 
-Waves.API.Node.v1.transactions.utxGetList().then((utxList) => {
+Waves.API.Node.transactions.utxGetList().then((utxList) => {
     console.log(utxList);
 });
 ```
@@ -330,7 +380,7 @@ Waves.API.Node.v1.transactions.utxGetList().then((utxList) => {
 Also if a transaction is still in UTX pool and you know its ID, you can get only it from UTX:
 
 ```
-Waves.API.Node.v1.transactions.utxGet('Bn2opYvcmYAMCaJHKP1uXYCHFGnAyrzGoiboBLT8RALt').then((tx) => {
+Waves.API.Node.transactions.utxGet('Bn2opYvcmYAMCaJHKP1uXYCHFGnAyrzGoiboBLT8RALt').then((tx) => {
     console.log(tx);
 });
 ```
@@ -340,11 +390,11 @@ Waves.API.Node.v1.transactions.utxGet('Bn2opYvcmYAMCaJHKP1uXYCHFGnAyrzGoiboBLT8R
 Aside from creating an alias, you also can get the list of aliases bound to an address, or get the address related to the given alias.
 
 ```
-Waves.API.Node.v1.aliases.byAddress('3PMgh8ra7v9USWUJxUCxKQKr6PM3MgqNVR8').then((aliasesList) => {
+Waves.API.Node.aliases.byAddress('3PMgh8ra7v9USWUJxUCxKQKr6PM3MgqNVR8').then((aliasesList) => {
     console.log(aliasesList);
 });
 
-Waves.API.Node.v1.aliases.byAlias('xenohunter').then((address) => {
+Waves.API.Node.aliases.byAlias('xenohunter').then((address) => {
     console.log(address);
 });
 ```
@@ -354,15 +404,15 @@ Waves.API.Node.v1.aliases.byAlias('xenohunter').then((address) => {
 Everything is simple here. You can get the whole block by its signature (`get()`) or height (`at()`). Method `height()` returns the current height of the Waves blockchain. The names of the remaining methods speak for themselves.
 
 ```
-Waves.API.Node.v1.blocks.get(signature).then((block) => console.log(block));
+Waves.API.Node.blocks.get(signature).then((block) => console.log(block));
 
-Waves.API.Node.v1.blocks.at(height).then((block) => console.log(block));
+Waves.API.Node.blocks.at(height).then((block) => console.log(block));
 
-Waves.API.Node.v1.blocks.height().then((currentHeight) => console.log(currentHeight));
+Waves.API.Node.blocks.height().then((currentHeight) => console.log(currentHeight));
 
-Waves.API.Node.v1.blocks.first().then((firstBlock) => console.log(firstBlock));
+Waves.API.Node.blocks.first().then((firstBlock) => console.log(firstBlock));
 
-Waves.API.Node.v1.blocks.last().then((lastBlock) => console.log(lastBlock));
+Waves.API.Node.blocks.last().then((lastBlock) => console.log(lastBlock));
 ```
 
 ### Configuration
@@ -442,7 +492,7 @@ It happened so that Waves balance and token balances are served through differen
 
 ### Different types of Waves balance
 
-There is the most understandable type of Waves balance. It is the regular balance. It is served through `Waves.API.Node.v1.addresses.balance()`. There are also several types of Waves balance related to leasing and the delays in its processing.
+There is the most understandable type of Waves balance. It is the regular balance. It is served through `Waves.API.Node.addresses.balance()`. There are also several types of Waves balance related to leasing and the delays in its processing.
 
 1. *Regular* — that's how much Waves you have, including those you leased;
 2. *Available* — the same as _regular_ only without Waves you leased;
@@ -481,7 +531,3 @@ See also the list of [contributors](https://github.com/wavesplatform/waves-api/c
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
-## See also
-
-* [Waves API design repository](https://github.com/wavesplatform/swagger-api-design)

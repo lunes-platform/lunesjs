@@ -1,10 +1,10 @@
 import { IHash, IKeyPair } from '../../../interfaces';
 
-import v1Info from './v1/info';
-import v1Orderbooks from './v1/orderbooks';
+import Info from './info';
+import Orderbooks from './orderbooks';
 
 
-export interface IMatcherAPIv1 {
+export interface IMatcherAPI {
     getMatcherKey(): Promise<any>;
     getOrderbooks(): Promise<any>;
     getOrderbook(assetOne: string, assetTwo: string): Promise<any>;
@@ -15,13 +15,12 @@ export interface IMatcherAPIv1 {
     deleteOrder(amountAssetId: string, priceAssetId: string, orderId: string, keyPair: IKeyPair): IHash<any>;
 }
 
-export const v1: IMatcherAPIv1 = {
-    getMatcherKey: v1Info.getMatcherKey,
-    getOrderbooks: v1Orderbooks.getOrderbooks,
-    getOrderbook: v1Orderbooks.getOrderbook,
-    getOrders: v1Orderbooks.getOrders,
-    getAllOrders: v1Orderbooks.getAllOrders,
-    createOrder: v1Orderbooks.createOrder,
-    cancelOrder: v1Orderbooks.cancelOrder,
-    deleteOrder: v1Orderbooks.deleteOrder
-};
+
+export const getMatcherKey = Info.getMatcherKey;
+export const getOrderbooks = Orderbooks.getOrderbooks;
+export const getOrderbook = Orderbooks.getOrderbook;
+export const getOrders = Orderbooks.getOrders;
+export const getAllOrders = Orderbooks.getAllOrders;
+export const createOrder = Orderbooks.createOrder;
+export const cancelOrder = Orderbooks.cancelOrder;
+export const deleteOrder = Orderbooks.deleteOrder;

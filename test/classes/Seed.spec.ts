@@ -1,4 +1,4 @@
-import { expect } from '../_helpers/getChai';
+import { expect } from '../getChai';
 import * as WavesAPI from '../../dist/waves-api.min';
 
 

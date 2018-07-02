@@ -163,7 +163,7 @@ export default {
             throw new Error('Missing or invalid public key');
         }
 
-        const prefix = Uint8Array.from([constants.ADDRESS_VERSION, config.getNetworkByte()]);
+        const prefix = Uint8Array.from([constants.ADDRESS_BYTE, config.getNetworkByte()]);
         const publicKeyHashPart = Uint8Array.from(hashChain(publicKeyBytes).slice(0, 20));
 
         const rawAddress = concatUint8Arrays(prefix, publicKeyHashPart);
