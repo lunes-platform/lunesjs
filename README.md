@@ -83,15 +83,10 @@ First, a quick introduction into the structure:
 * aliases
     * byAlias — Waves address related to a given alias
     * byAddress — a list of aliases related to a given Waves address
-    * createAlias — POST-method to create an alias for your Waves address
 * assets
     * balances — your token balances
     * balance — your balance for a given token
     * distribution — the distribution of a given token between addresses
-    * issue — POST-method to create your own token
-    * transfer — POST-method to send send some amount of a given token or WAVES
-    * reissue — POST-method to emit an additional quantity of a given token
-    * burn — POST-method to burn some amount of a given token
 * blocks
     * get — get a block by its signature (ID)
     * at — get the block at a certain height
@@ -99,8 +94,6 @@ First, a quick introduction into the structure:
     * last — get the last block
     * height — get the current height of the blockchain
 * leasing
-    * lease — POST-method to lease your WAVES
-    * cancelLeasing — POST-method to cancel a given Lease transaction
     * getAllActiveLeases — get all your active Lease transactions
 * transactions
     * get — get a transaction by its signature (ID)
@@ -108,6 +101,19 @@ First, a quick introduction into the structure:
     * utxSize — get the current size of the unconfirmed transactions pool
     * utxGet — get an unconfirmed transaction by its signature (ID)
     * utxGetList — get the list of unconfirmed transactions for a given Waves address
+    * broadcast — POST-methods to send the following transaction types
+        * [issue](#issue-transaction)
+        * [transfer](#transfer-transaction)
+        * [reissue](#reissue-transaction)
+        * [burn](#burn-transaction)
+        * [lease](#lease-transaction)
+        * [cancelLeasing](#cancel-leasing-transaction)
+        * [createAlias](#create-alias-transaction)
+        * massTransfer
+        * data
+        * setScript
+        * sponsorship
+    * rawBroadcast — POST-method to send any JSON to the `/transactions/broadcast` path
 * utils
     * time — get the current Node timestamp
 
@@ -141,7 +147,7 @@ const issueData = {
 
 };
 
-Waves.API.Node.assets.issue(issueData, seed.keyPair).then((responseData) => {
+Waves.API.Node.transactions.broadcast('issue', issueData, seed.keyPair).then((responseData) => {
     console.log(responseData);
 });
 ```
@@ -173,7 +179,7 @@ const transferData = {
 
 };
 
-Waves.API.Node.assets.transfer(transferData, seed.keyPair).then((responseData) => {
+Waves.API.Node.transactions.broadcast('transfer', transferData, seed.keyPair).then((responseData) => {
     console.log(responseData);
 });
 ```
@@ -197,7 +203,7 @@ const reissueData = {
 
 };
 
-Waves.API.Node.assets.reissue(reissueData, seed.keyPair).then((responseData) => {
+Waves.API.Node.transactions.broadcast('reissue', reissueData, seed.keyPair).then((responseData) => {
     console.log(responseData);
 });
 ```
@@ -218,7 +224,7 @@ const burnData = {
 
 };
 
-Waves.API.Node.assets.burn(burnData, seed.keyPair).then((responseData) => {
+Waves.API.Node.transactions.broadcast('burn', burnData, seed.keyPair).then((responseData) => {
     console.log(responseData);
 });
 ```
@@ -240,7 +246,7 @@ const leaseData = {
 
 };
 
-Waves.API.Node.leasing.lease(leaseData, seed.keyPair).then((responseData) => {
+Waves.API.Node.transactions.broadcast('lease', leaseData, seed.keyPair).then((responseData) => {
     console.log(responseData);
 });
 ```
@@ -260,7 +266,7 @@ const cancelLeasingData = {
 
 };
 
-Waves.API.Node.leasing.cancelLeasing(cancelLeasingData, seed.keyPair).then((responseData) => {
+Waves.API.Node.transactions.broadcast('cancelLeasing', cancelLeasingData, seed.keyPair).then((responseData) => {
     console.log(responseData);
 });
 ```
@@ -280,7 +286,7 @@ const createAliasData = {
 
 };
 
-Waves.API.Node.aliases.createAlias(createAliasData, seed.keyPair).then((responseData) => {
+Waves.API.Node.transactions.broadcast('createAlias', createAliasData, seed.keyPair).then((responseData) => {
     console.log(responseData);
 });
 ```
@@ -514,12 +520,6 @@ npm run test-browser # to run test in Chrome browser
 ```
 
 Test configuration may be changed in the _./node_modules/@waves/waves-api/karma.conf.js_ file.
-
-## Tools
-
-* [TypeScript](https://www.typescriptlang.org/) - Typed superset of JavaScript
-* [Karma](https://karma-runner.github.io/1.0/index.html) - Test runner
-* [Chai](http://chaijs.com/) - Assertion library
 
 ## Authors
 
