@@ -1,5 +1,7 @@
 import { IHash, IWavesConfig } from '../interfaces';
 
+import { config as outerConfig } from '@waves/waves-signature-generator';
+
 import { DEFAULT_BASIC_CONFIG } from './constants';
 import { normalizeHost } from './utils/request';
 
@@ -55,6 +57,8 @@ export default {
     },
 
     set(newConfig: Partial<IWavesConfig>) {
+
+        outerConfig.set(newConfig);
 
         // Extend incoming objects only when `config` is empty
         if (Object.keys(config).length === 0) {

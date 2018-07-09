@@ -1,16 +1,14 @@
-import { TX_TYPE_MAP } from '@waves/waves-signature-generator';
+import { libs, utils, TX_TYPE_MAP } from '@waves/waves-signature-generator';
 
 import { MINIMUM_DATA_FEE_PER_KB } from './constants';
-import base58 from './libs/base58';
-import crypto from './utils/crypto';
 import { createTransaction, ITransactionWrapper } from './utils/transactions'; // TODO : fix this issue with interface
 
 
 export default {
 
     getAddressFromPublicKey(publicKey: string) {
-        const publicKeyBytes = base58.decode(publicKey);
-        return crypto.buildRawAddress(publicKeyBytes);
+        const publicKeyBytes = libs.base58.decode(publicKey);
+        return utils.crypto.buildRawAddress(publicKeyBytes);
     },
 
     calculateTimeDiff(nodeTime, userTime) {
@@ -18,8 +16,8 @@ export default {
     },
 
     base58: {
-        encode: base58.encode,
-        decode: base58.decode
+        encode: libs.base58.encode,
+        decode: libs.base58.decode
     },
 
     getMinimumDataTxFee(data: any[]): Promise<number> {

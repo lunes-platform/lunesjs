@@ -1,10 +1,11 @@
 import { IHash, IWavesConfig } from '../interfaces';
 
-import { ByteProcessor as byteProcessors } from '@waves/waves-signature-generator';
+import {
+    utils,
+    Seed,
+    ByteProcessor as byteProcessors
+} from '@waves/waves-signature-generator';
 
-import Seed from './classes/Seed';
-
-import crypto from './utils/crypto';
 import * as request from './utils/request';
 
 import * as NodeAPI from './api/node/index';
@@ -40,7 +41,7 @@ class WavesAPI implements IWavesAPI {
     public readonly byteProcessors = byteProcessors;
     public readonly config = config;
     public readonly constants = constants;
-    public readonly crypto = crypto;
+    public readonly crypto = utils.crypto;
     public readonly request = request;
     public readonly tools = tools;
 
