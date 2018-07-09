@@ -1,6 +1,7 @@
 import { IHash } from '../../interfaces';
 
-import base58 from '../libs/base58';
+import { libs } from '@waves/waves-signature-generator';
+
 import { WAVES } from '../constants';
 import config from '../config';
 
@@ -42,7 +43,7 @@ export function precisionCheck(precision) {
 
 function castFromBytesToBase58(bytes, sliceIndex) {
     bytes = Uint8Array.from(Array.prototype.slice.call(bytes, sliceIndex));
-    return base58.encode(bytes);
+    return libs.base58.encode(bytes);
 }
 
 function castFromRawToPrefixed(raw) {
