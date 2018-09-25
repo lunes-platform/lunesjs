@@ -1,6 +1,6 @@
 import { IHash } from '../../interfaces';
 
-import { libs } from '@waves/waves-signature-generator';
+import { libs } from '@waves/signature-generator';
 
 import { WAVES } from '../constants';
 import config from '../config';

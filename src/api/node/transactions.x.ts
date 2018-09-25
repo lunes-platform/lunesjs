@@ -2,7 +2,7 @@ import { TTransactionRequest } from '../../utils/request';
 import { IHash } from '../../../interfaces';  // TODO : fix this issue with interface
 
 import { Schema, NumberPart, ObjectPart, StringPart, ArrayPart, BasePart } from 'ts-api-validator';
-import { TX_TYPE_MAP } from '@waves/waves-signature-generator';
+import { TX_TYPE_MAP } from '@waves/signature-generator';
 
 import schemaFields from '../schemaFields';
 import { createRemapper, normalizeAssetId, precisionCheck, removeAliasPrefix } from '../../utils/remap';

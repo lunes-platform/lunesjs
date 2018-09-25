@@ -4,7 +4,7 @@ import {
     utils,
     Seed,
     ByteProcessor as byteProcessors
-} from '@waves/waves-signature-generator';
+} from '@waves/signature-generator';
 
 import * as request from './utils/request';
 

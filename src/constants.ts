@@ -1,6 +1,6 @@
 import { IWavesBasicConfig, IWavesConfig } from '../interfaces';
 
-import { TRANSACTION_TYPE, TRANSACTION_TYPE_NUMBER, TRANSACTION_TYPE_VERSION } from '@waves/waves-signature-generator';
+import { TRANSACTION_TYPE, TRANSACTION_TYPE_NUMBER, TRANSACTION_TYPE_VERSION } from '@waves/signature-generator';
 
 
 export const WAVES = 'WAVES';

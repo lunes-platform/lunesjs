@@ -1,4 +1,4 @@
-import { TX_TYPE_MAP, ISignatureGenerator } from '@waves/waves-signature-generator';
+import { TX_TYPE_MAP, ISignatureGenerator } from '@waves/signature-generator';
 
 import * as txHelpers from '../api/node/transactions.x';
 import { IHash } from '../../interfaces';

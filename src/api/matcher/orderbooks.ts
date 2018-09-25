@@ -1,7 +1,7 @@
 import { IKeyPair } from '../../../interfaces';
 import { TTransactionRequest } from '../../utils/request';
 
-import { CREATE_ORDER_SIGNATURE, AUTH_ORDER_SIGNATURE, CANCEL_ORDER_SIGNATURE } from '@waves/waves-signature-generator';
+import { CREATE_ORDER_SIGNATURE, AUTH_ORDER_SIGNATURE, CANCEL_ORDER_SIGNATURE } from '@waves/signature-generator';
 
 import { createFetchWrapper, PRODUCTS, VERSIONS, processJSON, wrapTxRequest } from '../../utils/request';
 import { createRemapper, getTimestamp, normalizeAssetId } from '../../utils/remap';
