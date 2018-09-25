@@ -262,7 +262,7 @@ export const postCreateAlias = createRemapper({
 });
 
 export const sendCreateAliasTx = wrapTxRequest(TX_TYPE_MAP.createAlias, preCreateAlias, postCreateAlias, (postParams) => {
-    return fetch(constants.BROADCAST_PATH, postParams);
+    return fetch('/addresses/broadcast/alias-create', postParams);
 }, true) as TTransactionRequest;
 
 
