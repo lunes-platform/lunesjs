@@ -1,6 +1,6 @@
 import { IHash, IWavesConfig } from '../interfaces';
 
-import { config as outerConfig } from '@waves/waves-signature-generator';
+import { config as outerConfig } from '@waves/signature-generator';
 
 import { DEFAULT_BASIC_CONFIG } from './constants';
 import { normalizeHost } from './utils/request';

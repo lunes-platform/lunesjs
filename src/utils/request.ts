@@ -1,4 +1,4 @@
-import { ISignatureGenerator, ISignatureGeneratorConstructor } from '@waves/waves-signature-generator';
+import { ISignatureGenerator, ISignatureGeneratorConstructor } from '@waves/signature-generator';
 import { IHash, IKeyPair } from '../../interfaces';
 
 import * as create from 'parse-json-bignumber';
@@ -8,7 +8,7 @@ import WavesRequestError from '../errors/WavesRequestError';
 import fetch from '../libs/fetch';
 import config from '../config';
 
-const SAFE_JSON_PARSE = create();
+const SAFE_JSON_PARSE = create().parse;
 
 export type TTransactionRequest = (data: IHash<any>, keyPair: IKeyPair) => Promise<any>;
 

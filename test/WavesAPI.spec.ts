@@ -1,5 +1,5 @@
 import { expect } from './getChai';
-import * as WavesAPI from '../dist/waves-api.min';
+import * as WavesAPI from '../dist/waves-api';
 
 
 let requiredConfigValues;
@@ -43,6 +43,12 @@ describe('WavesAPI', () => {
         const Waves = WavesAPI.create(requiredConfigValues);
         const config = Waves.config.get();
         expect(Object.keys(config)).to.have.members(Object.keys(allConfigValues));
+    });
+
+    it('create seed', () => {
+        const Waves = WavesAPI.create(requiredConfigValues);
+        const seed = Waves.Seed.create();
+        expect(typeof seed.phrase).to.equal('string');
     });
 
     it('should only insert fallback basic values when stored config does not have them', () => {

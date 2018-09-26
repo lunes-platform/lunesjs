@@ -1,4 +1,4 @@
-import { libs, utils, TX_TYPE_MAP } from '@waves/waves-signature-generator';
+import { libs, utils, TX_TYPE_MAP } from '@waves/signature-generator';
 
 import { MINIMUM_DATA_FEE_PER_KB } from './constants';
 import { createTransaction, ITransactionWrapper } from './utils/transactions'; // TODO : fix this issue with interface
