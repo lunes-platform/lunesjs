@@ -45,10 +45,10 @@ describe('WavesAPI', () => {
         expect(Object.keys(config)).to.have.members(Object.keys(allConfigValues));
     });
 
-    it('create seed', () => {
+    it('should create seed without errors', () => {
         const Waves = WavesAPI.create(requiredConfigValues);
         const seed = Waves.Seed.create();
-        expect(typeof seed.phrase).to.equal('string');
+        expect(seed.phrase).to.be.a('string');
     });
 
     it('should only insert fallback basic values when stored config does not have them', () => {
