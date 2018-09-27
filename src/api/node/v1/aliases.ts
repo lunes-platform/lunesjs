@@ -17,15 +17,15 @@ const postCreateAlias = createRemapper({
 export default {
 
     byAlias(alias: string) {
-        return fetch(`/alias/by-alias/${alias}`);
+        return fetch(`/addresses/alias/by-alias/${alias}`);
     },
 
     byAddress(address: string) {
-        return fetch(`/alias/by-address/${address}`);
+        return fetch(`/addresses/alias/by-address/${address}`);
     },
 
     createAlias: wrapTransactionRequest(Transactions.CreateAliasTransaction, preCreateAliasAsync, postCreateAlias, (postParams) => {
-        return fetch('/alias/broadcast/create', postParams);
+        return fetch('/addresses/broadcast/alias-create', postParams);
     }) as TTransactionRequest
 
 };
