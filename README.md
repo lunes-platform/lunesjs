@@ -1,6 +1,6 @@
-# Waves API [![npm version](https://badge.fury.io/js/%40waves%2Fwaves-api.svg)](https://www.npmjs.com/package/@waves/waves-api) [![downloads/month](https://img.shields.io/npm/dm/%40waves%2Fwaves-api.svg)](https://www.npmjs.com/package/@waves/waves-api)
+# Lunes API [![npm version](https://badge.fury.io/js/%40waves%2Fwaves-api.svg)](https://www.npmjs.com/package/@waves/waves-api) [![downloads/month](https://img.shields.io/npm/dm/%40waves%2Fwaves-api.svg)](https://www.npmjs.com/package/@waves/waves-api)
 
-Waves Platform core features and Waves API library for both Node.js and browser.
+Lunes Platform core features and Lunes API library for both Node.js and browser.
 
 The latest and most actual version of this documentation [is hosted on GitHub](https://github.com/wavesplatform/waves-api/blob/master/README.md).
 
