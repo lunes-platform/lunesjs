@@ -1,7 +1,1 @@
-.idea/
-dist/
-node_modules/
-raw/
-tmp-browser/
-tmp-node/
-waves-api.iml
+node_modules
