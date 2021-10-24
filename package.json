@@ -11,6 +11,6 @@
     "url": "git@git.lunes.io:blockchain/labs/lunesjs.git"
   },
   "keywords": ["blockchain", "lunes", "client"],
-  "author": "lunesplatform",
+  "author": "lunes-platform",
   "license": "Apache 2.0"
 }
