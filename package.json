@@ -12,9 +12,6 @@
   "author": "lunes-platform",
   "license": "Apache 2.0",
   "scripts": {
-    "build": "ts-node-dev --respawn --transpile-only src/client/wallet/Wallet.ts"
-  },
-  "devDependencies": {
-    "typescript": "^4.4.4"
+    "run": "tsc && node ./build/src/main.js"
   }
 }
