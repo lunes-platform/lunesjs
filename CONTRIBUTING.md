@@ -8,9 +8,11 @@
 
 3 - Commit our code with a Convesion Commits
 
+---
+
 ## Convension of Commits and Semantic Versioning
 
-**Commit Structure**
+### **Commit Structure**
 
 ```
 type(escope): short description
@@ -20,8 +22,8 @@ why was it modified?
 
 #issue
 ```
+### **Types**
 
-**Types**
 
 **fixed** soluciona um bug
 
@@ -33,7 +35,7 @@ why was it modified?
 
 **deprecated** quebra a compatibilidade
 
-**#issue** : Update the status of `issue`
+---
 
 ## References
 
