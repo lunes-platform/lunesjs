@@ -1,23 +1,25 @@
-import { IAccount, Types } from "./types";
-import { walletGenerator } from "./generators"
+import { IAccount, WalletTypes } from "./wallet.types";
+import generate from "./generators"
 
 export class Account implements IAccount {
-    seed: Types.Seed
-    nonce: Types.Nonce
-    network: Types.Network
-    privateKey: Types.PrivateKey
-    publicKey: Types.PublicKey
-    address: Types.Address
-    nWords: Types.nWords
-    networkId: Types.NetworkId
+    seed: WalletTypes.Seed
+    hashSeed: WalletTypes.HashSeed;
+    nonce: WalletTypes.Nonce
+    chain: WalletTypes.Chain
+    privateKey: WalletTypes.PrivateKey
+    publicKey: WalletTypes.PublicKey
+    address: WalletTypes.Address
+    nWords: WalletTypes.nWords
+    chainId: WalletTypes.ChainId
 
-    constructor(data: IAccount) {
-        const wallet: IAccount = walletGenerator(data)
+    constructor(account: IAccount) {
+        const wallet: IAccount = generate.wallet(account)
         this.seed = wallet.seed
+        this.hashSeed = wallet.hashSeed
         this.nonce = wallet.nonce
         this.nWords = wallet.nWords
-        this.network = wallet.network
-        this.networkId = wallet.networkId
+        this.chain = wallet.chain
+        this.chainId = wallet.chainId
         this.privateKey = wallet.privateKey
         this.publicKey = wallet.publicKey
         this.address = wallet.address

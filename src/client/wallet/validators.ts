@@ -1,26 +1,42 @@
-import { walletGenerator } from "./generators"
-import { IAccount, Types } from "./types"
+import generate from "./generators"
+import { IAccount, WalletTypes } from "./wallet.types"
 
-export function net(chain: Types.Network): Types.NetworkId {
-    if (chain == "testnet") {
-        return "0"
-    } else {
-        return "1"
-    }
-}
 
-export function words(nWord: Types.nWords): number {
-    // number should be n % 3 == 0 or round this
-    if(typeof nWord === "number") {
-        if(nWord % 3 === 0) {
-            return nWord
+
+const validate = {
+    nonce: (nonce: WalletTypes.Nonce): number => {
+        if (typeof nonce === "number") {
+            return nonce
         } else {
-            return Math.round(nWord / 3) * 3
+            return 0
         }
+    },
+    chain: (chain: WalletTypes.Chain): WalletTypes.ChainId => {
+        if (chain == "testnet") {
+            return "0"
+        } else {
+            return "1"
+        }
+    },
+    words: (nWord: WalletTypes.nWords): number => {
+        const multipleOf3 = (n: number) => {
+            if (n % 3 === 0) {
+                return n
+            } else {
+                return 3 * Math.round(n / 3)
+            }
+        }
+
+        if (typeof nWord === "number") {
+            return multipleOf3(nWord)
+        } else {
+            return 12
+        }
+    },
+    address: (address: WalletTypes.Address): boolean => {
+        return true
     }
-    return 12
 }
 
-export function validateAddress(address: Types.Address): boolean {
-    return true
-}
+
+export default validate
