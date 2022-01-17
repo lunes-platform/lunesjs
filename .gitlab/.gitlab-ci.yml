@@ -14,12 +14,3 @@ CreateReportTests:
         when: always
         reports:
             junit: junit.xml
-
-# CreateReportTestsCoverage:
-#     stage: test
-#     script:
-#         - pytest --workers auto --tests-per-worker auto --cov-report xml:report_cov.xml --cov=lunespy/
-#     artifacts:
-#         when: always
-#         reports:
-#             junit: report_cov.xml
