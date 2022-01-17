@@ -1,7 +1,7 @@
-import { Account } from "../../../src/client/wallet/account"
+import { Account } from "../../../src/client/wallet/service.account"
 import { WalletTypes } from "../../../src/client/wallet/wallet.types"
 
-describe("Create new account with seed", () => {
+describe("Create new account", () => {
     it(`Create Account from New Seed`, () => {
         expect(new Account({
             chain: WalletTypes.Chain.Mainnet
