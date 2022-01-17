@@ -78,4 +78,25 @@ describe("Create new account with seed", () => {
             address: alreadyExistentAddress
         })
     })
+    it(`Create Account from Seed even passing Private Key, Public Key and Address`, () => {
+        const alreadyExistentSeed = "already existing Seed"
+        const alreadyExistentPrivateKey = "already existing Private Key"
+        const alreadyExistentPublicKey = "already existing Public Key"
+        const alreadyExistentAddress = "already existing Address"
+        expect(new Account({
+            seed: alreadyExistentSeed,
+            privateKey: alreadyExistentPrivateKey,
+            publicKey: alreadyExistentPublicKey,
+            address: alreadyExistentAddress,
+            chain: WalletTypes.Chain.Mainnet
+        })
+        ).toEqual({
+            chain: "1",
+            nonce: 0,
+            seed: alreadyExistentSeed,
+            privateKey: "",
+            publicKey: "",
+            address: ""
+        })
+    })
 })

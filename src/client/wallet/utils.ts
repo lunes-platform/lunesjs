@@ -9,20 +9,16 @@ function match(
     fromPublicKey:  (account: IAccount) => IAccount,
     fromAddress:  (account: IAccount) => IAccount
 ): IAccount {
-    if (account.seed != undefined && 
-        account.privateKey == undefined && account.publicKey == undefined && account.address == undefined) {
+    if (account.seed != undefined) {
         return fromExistingSeed(account)
     } else
-    if (account.privateKey != undefined && 
-        account.seed == undefined && account.publicKey == undefined && account.address == undefined) {
+    if (account.privateKey != undefined) {
         return fromPrivateKey(account)
     }else
-    if (account.publicKey != undefined && 
-        account.seed == undefined && account.privateKey == undefined && account.address == undefined) {
+    if (account.publicKey != undefined) {
         return fromPublicKey(account)
     } else
-    if (account.address != undefined && 
-        account.seed == undefined && account.privateKey == undefined && account.publicKey == undefined) {
+    if (account.address != undefined) {
         return fromAddress(account)
     }
     else {
