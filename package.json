@@ -16,10 +16,17 @@
     "test": "yarn jest",
     "autotest": "yarn jest --watchAll",
     "watch": "tsc --watch",
-    "wheel": "nodemon ./build/src/main.js"
+    "wheel": "nodemon ./build/src/main.js",
+    "postinstall": "husky install",
+    "commit": "cz"
   },
   "devDependencies": {
+    "@commitlint/cli": "^16.1.0",
+    "@commitlint/config-conventional": "^16.0.0",
     "@types/jest": "^27.0.3",
+    "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^7.0.4",
     "jest-junit": "^13.0.0",
     "nodemon": "^2.0.15",
     "ts-jest": "^27.1.2",
@@ -28,5 +35,32 @@
   "dependencies": {
     "base-x": "^3.0.9",
     "jest": "^27.4.5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog",
+      "types": {
+        "added": {
+          "description": "Add a new feature",
+          "title": "Added"
+        },
+        "merged": {
+          "description": "Resolves an issue and merge it to prod",
+          "title": "Merged"
+        },
+        "fixed": {
+          "description": "Fix a bug",
+          "title": "Fixed"
+        },
+        "refactored": {
+          "description": "Does not add a feature or fix a bug",
+          "title": "Refactored"
+        },
+        "deprecated": {
+          "description": "Breaks compatibility with an earlier version",
+          "title": "Deprecated"
+        }
+      }
+    }
   }
 }

@@ -1,4 +1,7 @@
 node_modules
 build
-.dev*
+
 ./src/main.ts
+
+yarn.lock
+package-lock.json
