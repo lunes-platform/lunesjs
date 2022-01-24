@@ -16,10 +16,14 @@
     "test": "yarn jest",
     "autotest": "yarn jest --watchAll",
     "watch": "tsc --watch",
-    "wheel": "nodemon ./build/src/main.js"
+    "wheel": "nodemon ./build/src/main.js",
+    "postinstall": "husky install"
   },
   "devDependencies": {
+    "@commitlint/cli": "^16.1.0",
+    "@commitlint/config-conventional": "^16.0.0",
     "@types/jest": "^27.0.3",
+    "husky": "^7.0.4",
     "jest-junit": "^13.0.0",
     "nodemon": "^2.0.15",
     "ts-jest": "^27.1.2",
