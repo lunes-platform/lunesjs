@@ -134,3 +134,33 @@ describe("Create Account from Private Key", () => {
 })
 
 
+describe("Create Account from Public Key", () => {
+    const publicKey = "2uuQVr3B5aGgvSJ5BMCw4Cd19tdYdnMGoYnji99aPde4"
+
+    const createMainnetAccountFromPublicKey = (publicKey: string) => {
+        return new Account({
+            publicKey: publicKey,
+            chain: WalletTypes.Chain.Mainnet
+        })
+    }
+
+    const createTestnetAccountFromPublicKey = (publicKey: string) => {
+        return new Account({
+            publicKey: publicKey,
+            chain: WalletTypes.Chain.Testnet
+        })
+    }
+
+    it("Test Create Mainnet Account From Public Key", () => {
+        expect(
+            createMainnetAccountFromPublicKey(publicKey).address
+        ).toEqual("37o7aY3eZZTXmzrDa5e4Wj3Z4ZZuyV42Aaj")
+    })
+
+    it("Test Create Testnet Account From Public Key", () => {
+        expect(
+            createTestnetAccountFromPublicKey(publicKey).address
+        ).toEqual("37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u")
+    })
+})
+
