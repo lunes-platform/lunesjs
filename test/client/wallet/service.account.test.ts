@@ -100,3 +100,35 @@ describe("Create Account From Seed", () => {
     })
 })
 
+
+describe("Create Account from Private Key", () => {
+    const privateKey = "BnafXBSq1VDUdZ1nSjJoxhnQdBv2hk3o6dbV49TD1bzo"
+
+    const createMainnetAccountFromPrivateKey = (privateKey: string) => {
+        return new Account({
+            privateKey: privateKey,
+            chain: WalletTypes.Chain.Mainnet
+        })
+    }
+
+    const createTestnetAccountFromPrivateKey = (privateKey: string) => {
+        return new Account({
+            privateKey: privateKey,
+            chain: WalletTypes.Chain.Mainnet
+        })
+    }
+
+    it("Create Mainnet Account from Private Key", () => {
+        expect(
+            createMainnetAccountFromPrivateKey(privateKey).address
+        ).toEqual("37o7aY3eZZTXmzrDa5e4Wj3Z4ZZuyV42Aaj")
+    })
+
+    it("Create Testnet Account from Private Key", () => {
+        expect(
+            createTestnetAccountFromPrivateKey(privateKey).address
+        ).toEqual("37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u")
+    })
+})
+
+
