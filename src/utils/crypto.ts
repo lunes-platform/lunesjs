@@ -50,7 +50,10 @@ const lunesCrypto = {
         publicKey: "",
         address: ""
     }
-}
+},
+    validateAddress: (address: WalletTypes.Address, chain: WalletTypes.Chain) => {
+        return true
+    }
 }
 
 

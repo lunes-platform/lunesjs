@@ -1,102 +1,39 @@
 import { Account } from "../../../src/client/wallet/service.account"
 import { WalletTypes } from "../../../src/client/wallet/wallet.types"
+import lunesCrypto from "../../../src/utils/crypto"
 
-describe("Create new account", () => {
-    it(`Create Account from New Seed`, () => {
-        expect(new Account({
-            chain: WalletTypes.Chain.Mainnet
-        })
-        ).toEqual({
-            chain: "1",
-            nonce: 0,
-            seed: "",
-            privateKey: "",
-            publicKey: "",
-            address: ""
-        })
+function newMainnetAccount() {
+    return new Account({
+        chain: WalletTypes.Chain.Mainnet
     })
-    it(`Create Account from Already Existing Seed`, () => {
-        const alreadyExistentSeed = "already existing Seed"
-        expect(new Account({
-            seed: alreadyExistentSeed,
-            chain: WalletTypes.Chain.Mainnet
-        })
-        ).toEqual({
-            chain: "1",
-            nonce: 0,
-            seed: alreadyExistentSeed,
-            privateKey: "",
-            publicKey: "",
-            address: ""
-        })
-    })
-    it(`Create Account from Already Existing Private Key`, () => {
+}
 
-        const alreadyExistentPrivateKey = "already existing Private Key"
-        expect(new Account({
-            privateKey: alreadyExistentPrivateKey,
-            chain: WalletTypes.Chain.Mainnet
-        })
-        ).toEqual({
-            chain: "1",
-            nonce: 0,
-            seed: "",
-            privateKey: alreadyExistentPrivateKey,
-            publicKey: "",
-            address: ""
-        })
+function newTestnetAccount() {
+    return new Account({
+        chain: WalletTypes.Chain.Testnet
     })
-    it(`Create Account from Already Existing Public Key`, () => {
+}
+describe("Create Account From New Seed", () => {
+    it("Test type of Mainnet Account from New Seed", () => {
+       expect(newMainnetAccount()).toBeInstanceOf(Account)
+    })
 
-        const alreadyExistentPublicKey = "already existing Public Key"
-        expect(new Account({
-            publicKey: alreadyExistentPublicKey,
-            chain: WalletTypes.Chain.Mainnet
-        })
-        ).toEqual({
-            chain: "1",
-            nonce: 0,
-            seed: "",
-            privateKey: "",
-            publicKey: alreadyExistentPublicKey,
-            address: ""
-        })
+    it("Test type of Testnet Account from New Seed", () => {
+       expect(newTestnetAccount()).toBeInstanceOf(Account)
     })
-    it(`Create Account from Already Existing Address`, () => {
 
-        const alreadyExistentAddress = "already existing Address"
-        expect(new Account({
-            address: alreadyExistentAddress,
-            chain: WalletTypes.Chain.Mainnet
-        })
-        ).toEqual({
-            chain: "1",
-            nonce: 0,
-            seed: "",
-            privateKey: "",
-            publicKey: "",
-            address: alreadyExistentAddress
-        })
-    })
-    it(`Create Account from Seed even passing Private Key, Public Key and Address`, () => {
-        const alreadyExistentSeed = "already existing Seed"
-        const alreadyExistentPrivateKey = "already existing Private Key"
-        const alreadyExistentPublicKey = "already existing Public Key"
-        const alreadyExistentAddress = "already existing Address"
-        expect(new Account({
-            seed: alreadyExistentSeed,
-            privateKey: alreadyExistentPrivateKey,
-            publicKey: alreadyExistentPublicKey,
-            address: alreadyExistentAddress,
-            chain: WalletTypes.Chain.Mainnet
-        })
-        ).toEqual({
-            chain: "1",
-            nonce: 0,
-            seed: alreadyExistentSeed,
-            privateKey: "",
-            publicKey: "",
-            address: ""
-        })
-    })
+    it("Test Address of Mainnet Account from New Seed", () => {
+        expect(
+            lunesCrypto.validateAddress(
+                newTestnetAccount().address, WalletTypes.Chain.Mainnet
+            )
+        ).toEqual(true)
+     })
+    it("Test Address of Testnet Account from New Seed", () => {
+        expect(
+            lunesCrypto.validateAddress(
+                newTestnetAccount().address, WalletTypes.Chain.Testnet
+            )
+        ).toEqual(true)
+     })
 })
