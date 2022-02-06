@@ -1,6 +1,6 @@
 import { Account } from "../../../src/client/wallet/service.account"
 import { WalletTypes } from "../../../src/client/wallet/wallet.types"
-import lunesCrypto from "../../../src/utils/crypto"
+import cryptoUtils from "../../../src/utils/crypto"
 
 
 describe("Create Account from New Seed", () => {
@@ -26,14 +26,14 @@ describe("Create Account from New Seed", () => {
 
     it("Test Address of Mainnet Account from New Seed", () => {
         expect(
-            lunesCrypto.validateAddress(
+            cryptoUtils.validateAddress(
                 createMainnetAccountFromNewSeed().address, WalletTypes.Chain.Mainnet
             )
         ).toEqual(true)
      })
     it("Test Address of Testnet Account from New Seed", () => {
         expect(
-            lunesCrypto.validateAddress(
+            cryptoUtils.validateAddress(
                 createTestnetAccountFromNewSeed().address, WalletTypes.Chain.Testnet
             )
         ).toEqual(true)

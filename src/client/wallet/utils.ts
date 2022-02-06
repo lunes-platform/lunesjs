@@ -1,5 +1,5 @@
 import { IAccount } from "./wallet.types"
-import lunesCrypto from "../../utils/crypto"
+import cryptoUtils from "../../utils/crypto"
 
 function match(
     account: IAccount,
@@ -31,11 +31,11 @@ const generate = {
     wallet: (account: IAccount): IAccount => {
         return match(
             account,
-            lunesCrypto.fromNewSeed,
-            lunesCrypto.fromExistingSeed,
-            lunesCrypto.fromPrivateKey,
-            lunesCrypto.fromPublicKey,
-            lunesCrypto.fromAddress
+            cryptoUtils.fromNewSeed,
+            cryptoUtils.fromExistingSeed,
+            cryptoUtils.fromPrivateKey,
+            cryptoUtils.fromPublicKey,
+            cryptoUtils.fromAddress
         )
     }
 }
