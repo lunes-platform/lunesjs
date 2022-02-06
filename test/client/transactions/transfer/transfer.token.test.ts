@@ -1,112 +1,77 @@
-import {TransferToken} from "../../../../src/client/transactions/transfer/service.transfer"
+import { TransferToken } from "../../../../src/client/transactions/transfer/service.transfer"
 import { WalletTypes } from "../../../../src/client/wallet/wallet.types"
 import { Account } from "../../../../src/client/wallet/service.account"
+import { TransactionsTypes } from "../../../../src/client/transactions/transactions.types";
+import cryptoUtils from "../../../../src/utils/crypto";
 
 
+describe("Create Transfer Transaction", ()=>{
 
-const sender = new Account({
-    chain: WalletTypes.Chain.Testnet,
-    privateKey: "8YMbX5BCQdazwgdVfeUpKuoUJrmYpMyGVAGAsNaHVj1u"
-});
+    const timestamp = () => {
+        return new Date().getTime()
+    }
 
-
-
-
-describe("Should return a bool, for validate passed data", ()=>{
-    it("Should receive transfer data and return true", () => {
-        expect(new TransferToken({
-            sender:sender.publicKey,
-            chain: WalletTypes.Chain.Testnet
-            amount: 10000,
-            receiver: "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u"
-        })
-        .ready)
-        .toEqual(true)
-    })
-
-    it("Should receive transfer data and return false", () => {
-        expect(new TransferToken({
-            sender:sender.publicKey,
-            chain: WalletTypes.Chain.Testnet
-            amount: 0,
-            receiver: "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u"
-        })
-        .ready)
-        .toEqual(false)
-    })
-})
-
-
-describe('Test transaction', () => {
-    it('Should return obj with data of transactions type 4', () => {
-        expect(new TransferToken({
-            sender: "2uuQVr3B5aGgvSJ5BMCw4Cd19tdYdnMGoYnji99aPde4",
-            receiver: "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u",
-            amount: 1000,
+    const sender = () => {
+        return new Account({
             chain: WalletTypes.Chain.Mainnet,
-            fee: 100000
+            privateKey: "8YMbX5BCQdazwgdVfeUpKuoUJrmYpMyGVAGAsNaHVj1u"
         })
-        .transaction)
-        .toEqual({
-            type: 4,
-            senderPublicKey: "2uuQVr3B5aGgvSJ5BMCw4Cd19tdYdnMGoYnji99aPde4",
-            recipient: "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u",
-            feeAsset: "",
-            assetId: "",
-            amount: 1000,
-            sender: "",
-            fee: 100000,
-        })
-    })
-})
+    };
 
-describe("Test sign method", () => {
-    it("Should sign and return a transfer transaction", () => {
-        expect(new TransferToken({
-            type: 4,
-            sender: sender.publicKey,
-            chain: WalletTypes.Chain.Testnet
-            amount: 10000,
-            receiver: "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u",
-            ready: true,
-            fee: 100000,
-            assetId:""
+    const renceiver = () => {
+        return new Account({
+            chain: WalletTypes.Chain.Mainnet,
+            privateKey: "G6E2xNBWtsRG8XBDmeTQQxZNHHUa6K9dnc9KrYtKyGwM"
         })
-        .sign(sender.privateKey))
-        .toEqual({
-            type: 4,
+    };
+
+    const basicTransferToken = (sender: Account, receiver: Account) => {
+        return new TransferToken({
+            sender:sender.publicKey,
+            chain: WalletTypes.Chain.Mainnet
+            amount: 1, // Lunes
+            receiver: receiver.address
+        })
+    }
+
+    const transferTransaction = (sender: Account, receiver: Account, timestamp: number) => {
+        return {
+            ready: true,
+            type:  TransactionsTypes.TransferToken.int,
+            sender: sender.address,
             senderPublicKey: sender.publicKey,
-            timestamp: "",
-            recipient: "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u",
-            feeAsset: "",
+            recipient: receiver.address,
+            amount: 100000000000, // Unes
+            timestamp: timestamp,
+            fee: TransactionsTypes.TransferToken.fee,
             assetId: "",
-            amount: "",
-            sender: "",
-            fee: 100000,
+            feeAsset: "",
+            message: "",
             signature: ""
-        })
+        }
+    }
+
+        it("Test validated passed data for Transfer Token", () => {
+        expect(
+            basicTransferToken(sender(), renceiver())
+            .ready
+        ).toEqual(true)
     })
-})
 
+    it('Should return TransferTransaction', () => {
+        expect(
+            basicTransferToken(sender(), renceiver())
+            .transaction
+        ).toEqual(
+            transferTransaction(sender(), renceiver(), timestamp())
+        )
+    })
 
-describe('Test send method', () => {
-    it('Should send a transaction signed for a lunes node', () => {
-        expect(new TransferToken({
-            type: 4,
-            sender: "2uuQVr3B5aGgvSJ5BMCw4Cd19tdYdnMGoYnji99aPde4",
-            chain: WalletTypes.Chain.Testnet
-            amount: 10000,
-            receiver: "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u",
-            ready: true,
-            fee: 100000,
-            assetId:""
-        })
-        .sign(sender.privateKey)
-        .send(url)
-        .toEqual({
-            sended: true,
-            response: {}
-        })
+    it("Should return a TransferTransaction signed", () => {
+        const {message, signature} = transferTransaction(sender(), renceiver(), timestamp())
+        expect(
+            cryptoUtils.validateSignature(sender().publicKey, message, signature)
+        ).toEqual(true)
     })
 })
 

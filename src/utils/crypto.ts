@@ -53,6 +53,9 @@ const cryptoUtils = {
 },
     validateAddress: (address: WalletTypes.Address, chain: WalletTypes.Chain) => {
         return true
+    },
+    validateSignature: (signer: WalletTypes.PublicKey, message: string, signature: string) => {
+        return true
     }
 }
 
