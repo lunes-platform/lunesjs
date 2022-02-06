@@ -3,7 +3,7 @@ import { WalletTypes } from "../../../src/client/wallet/wallet.types"
 import lunesCrypto from "../../../src/utils/crypto"
 
 
-describe("Create Account From New Seed", () => {
+describe("Create Account from New Seed", () => {
     const createMainnetAccountFromNewSeed = () => {
         return new Account({
             chain: WalletTypes.Chain.Mainnet
@@ -41,7 +41,7 @@ describe("Create Account From New Seed", () => {
 })
 
 
-describe("Create Account From Seed", () => {
+describe("Create Account from Seed", () => {
     const seed = "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit"
 
     const createMainnetAccountFromSeed = (seed: string, nonce?: number) => {
@@ -164,3 +164,31 @@ describe("Create Account from Public Key", () => {
     })
 })
 
+
+describe("Create Account from Address", () => {
+    const createMainnetAccountFromAdress = () => {
+        return new Account({
+            address: "37o7aY3eZZTXmzrDa5e4Wj3Z4ZZuyV42Aaj",
+            chain: WalletTypes.Chain.Mainnet
+        })
+    }
+
+    const createTestnetAccountFromAdress = () => {
+        return new Account({
+            address: "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u",
+            chain: WalletTypes.Chain.Mainnet
+        })
+    }
+
+    it("Test Create Mainnet Account from Address", () => {
+        expect(
+            createMainnetAccountFromAdress().address
+        ).toEqual("37o7aY3eZZTXmzrDa5e4Wj3Z4ZZuyV42Aaj")
+    })
+
+    it("Test Create Testnet Account from Address", () => {
+        expect(
+            createTestnetAccountFromAdress().address
+        ).toEqual("37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u")
+    })
+})
