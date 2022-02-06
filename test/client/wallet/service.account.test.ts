@@ -4,37 +4,37 @@ import lunesCrypto from "../../../src/utils/crypto"
 
 
 describe("Create Account From New Seed", () => {
-    const mainnetAccountFromNewSeed = () => {
+    const createMainnetAccountFromNewSeed = () => {
         return new Account({
             chain: WalletTypes.Chain.Mainnet
         })
     }
 
-    const testnetAccountFromNewSeed = () => {
+    const createTestnetAccountFromNewSeed = () => {
         return new Account({
             chain: WalletTypes.Chain.Testnet
         })
     }
 
     it("Test type of Mainnet Account from New Seed", () => {
-       expect(mainnetAccountFromNewSeed()).toBeInstanceOf(Account)
+       expect(createMainnetAccountFromNewSeed()).toBeInstanceOf(Account)
     })
 
     it("Test type of Testnet Account from New Seed", () => {
-       expect(testnetAccountFromNewSeed()).toBeInstanceOf(Account)
+       expect(createTestnetAccountFromNewSeed()).toBeInstanceOf(Account)
     })
 
     it("Test Address of Mainnet Account from New Seed", () => {
         expect(
             lunesCrypto.validateAddress(
-                mainnetAccountFromNewSeed().address, WalletTypes.Chain.Mainnet
+                createMainnetAccountFromNewSeed().address, WalletTypes.Chain.Mainnet
             )
         ).toEqual(true)
      })
     it("Test Address of Testnet Account from New Seed", () => {
         expect(
             lunesCrypto.validateAddress(
-                testnetAccountFromNewSeed().address, WalletTypes.Chain.Testnet
+                createTestnetAccountFromNewSeed().address, WalletTypes.Chain.Testnet
             )
         ).toEqual(true)
      })
@@ -42,8 +42,9 @@ describe("Create Account From New Seed", () => {
 
 
 describe("Create Account From Seed", () => {
-    const mainnetAccountFromSeed = (nonce?: number) => {
-        const seed = "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit"
+    const seed = "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit"
+
+    const createMainnetAccountFromSeed = (seed: string, nonce?: number) => {
         return new Account({
             seed: seed,
             nonce: nonce != undefined ? nonce : 0,
@@ -51,8 +52,7 @@ describe("Create Account From Seed", () => {
         })
     }
 
-    const testnetAccountFromSeed = (nonce?: number) => {
-        const seed = "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit"
+    const createTestnetAccountFromSeed = (seed: string, nonce?: number) => {
         return new Account({
             seed: seed,
             nonce: nonce != undefined ? nonce : 0,
@@ -60,15 +60,15 @@ describe("Create Account From Seed", () => {
         })
     }
 
-    it("Create Mainnet Account from seed", () => {
+    it("Test Create Mainnet Account from seed", () => {
         const addr = "37o7aY3eZZTXmzrDa5e4Wj3Z4ZZuyV42Aaj"
-        expect(mainnetAccountFromSeed().address)
+        expect(createMainnetAccountFromSeed(seed, 0).address)
         .toEqual(addr)
     })
 
-    it("Create Testnet Account from seed", () => {
+    it("Test Create Testnet Account from seed", () => {
         const addr = "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u"
-        expect(mainnetAccountFromSeed().address)
+        expect(createTestnetAccountFromSeed(seed).address)
         .toEqual(addr)
     })
 
@@ -79,9 +79,10 @@ describe("Create Account From Seed", () => {
         [3, "37w8stLd9JQwUKBrBUQr1VryJuhS3RWqEen"],
         [4, "37vVbQVXEE4Lvs7X4wimsoxAvqBmoyHsWDJ"],
     ]
-    test.each(mainnetNonce12345Address)("Create Mainnet Account with range of nonces", (nonce, address) =>{
+    test.each(mainnetNonce12345Address)
+    ("Test Create Mainnet Account with range of nonces", (nonce, address) =>{
         expect(
-            mainnetAccountFromSeed(nonce).address
+            createMainnetAccountFromSeed(seed, nonce).address
         ).toEqual(address)
     })
 
@@ -93,9 +94,10 @@ describe("Create Account From Seed", () => {
         [4, "37X9zRPDwWst43gNyvJSZKpu9CgWsHt1U8i"],
     ]
 
-    test.each(testnetNonce12345Address)("Create Testnet Account with range of nonces", (nonce, address) =>{
+    test.each(testnetNonce12345Address)
+    ("Test Create Testnet Account with range of nonces", (nonce, address) =>{
         expect(
-            testnetAccountFromSeed(nonce).address
+            createTestnetAccountFromSeed(seed, nonce).address
         ).toEqual(address)
     })
 })
@@ -118,13 +120,13 @@ describe("Create Account from Private Key", () => {
         })
     }
 
-    it("Create Mainnet Account from Private Key", () => {
+    it("Test Create Mainnet Account from Private Key", () => {
         expect(
             createMainnetAccountFromPrivateKey(privateKey).address
         ).toEqual("37o7aY3eZZTXmzrDa5e4Wj3Z4ZZuyV42Aaj")
     })
 
-    it("Create Testnet Account from Private Key", () => {
+    it("Test Create Testnet Account from Private Key", () => {
         expect(
             createTestnetAccountFromPrivateKey(privateKey).address
         ).toEqual("37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u")
