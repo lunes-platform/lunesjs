@@ -1,4 +1,4 @@
-import { IAccount, WalletTypes } from "./wallet.types";
+import { IAccount, WalletTypes } from "./wallet.types"
 import generate from "./utils"
 
 export class Account implements IAccount {
@@ -18,6 +18,5 @@ export class Account implements IAccount {
         this.privateKey = wallet.privateKey
         this.publicKey = wallet.publicKey
         this.address = wallet.address
-        }
+    }
 }
-
