@@ -15,7 +15,7 @@ describe("Should return a bool, for validate passed data", ()=>{
             amount: 10000,
             receiver: "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u"
         })
-        .ready())
+        .ready)
         .toEqual(true)
     })
 
@@ -26,7 +26,7 @@ describe("Should return a bool, for validate passed data", ()=>{
             amount: 0,
             receiver: "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u"
         })
-        .ready())
+        .ready)
         .toEqual(false)
     })
 })
@@ -34,13 +34,15 @@ describe("Should return a bool, for validate passed data", ()=>{
 
 describe('Test transaction', () => {
     it('Should return obj with data of transactions type 4', () => {
-        expect({
+        expect(new TransferToken({
             sender: "2uuQVr3B5aGgvSJ5BMCw4Cd19tdYdnMGoYnji99aPde4",
             receiver: "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u",
             amount: 1000,
             chain: WalletTypes.Chain.Mainnet,
             fee: 100000
-        }).toEqual({
+        })
+        .transaction)
+        .toEqual({
             type: 4,
             senderPublicKey: "2uuQVr3B5aGgvSJ5BMCw4Cd19tdYdnMGoYnji99aPde4",
             recipient: "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u",
@@ -65,7 +67,7 @@ describe("Test sign method", () => {
             fee: 100000,
             assetId:""
         })
-        .sign())
+        .sign(sender.privateKey))
         .toEqual({
             type: 4,
             senderPublicKey: "",
@@ -84,7 +86,19 @@ describe("Test sign method", () => {
 
 describe('Test send method', () => {
     it('Should send a transaction signed for a lunes node', () => {
-        expect({}).toEqual({
+        expect(new TransferToken({
+            type: 4,
+            sender: "2uuQVr3B5aGgvSJ5BMCw4Cd19tdYdnMGoYnji99aPde4",
+            chain: WalletTypes.Chain.Testnet
+            amount: 10000,
+            receiver: "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u",
+            ready: true,
+            fee: 100000,
+            assetId:""
+        })
+        .sign(sender.privateKey)
+        .send(url)
+        .toEqual({
             sended: true,
             response: {}
         })
