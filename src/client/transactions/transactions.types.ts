@@ -8,5 +8,4 @@ export namespace TransactionsTypes {
         fee = 1000000000
     }
     //...
-
 }
