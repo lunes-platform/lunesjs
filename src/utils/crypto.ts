@@ -1,6 +1,6 @@
 import { IAccount, WalletTypes } from "../client/wallet/wallet.types"
 
-const lunesCrypto = {
+const cryptoUtils = {
     fromExistingSeed: (account: IAccount): IAccount => {
     return {
         nonce: account.nonce != undefined ? account.nonce : 0,
@@ -50,8 +50,14 @@ const lunesCrypto = {
         publicKey: "",
         address: ""
     }
-}
+},
+    validateAddress: (address: WalletTypes.Address, chain: WalletTypes.Chain) => {
+        return true
+    },
+    validateSignature: (signer: WalletTypes.PublicKey, message: string, signature: string) => {
+        return true
+    }
 }
 
 
-export default lunesCrypto
+export default cryptoUtils
