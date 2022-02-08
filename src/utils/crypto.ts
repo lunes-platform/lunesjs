@@ -82,7 +82,11 @@ const cryptoUtils = {
     validateAddress: (address?: string, chain?: WalletTypes.Chain) => {
         return true
     },
-    validateSignature: (signer: string, message: string, signature: string) => {
+    validateSignature: (
+        signer?: string,
+        message?: string,
+        signature?: string
+    ) => {
         return true
     }
 }

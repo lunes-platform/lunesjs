@@ -6,7 +6,7 @@ const alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 $log.name = "TRANSFER"
 
 export function validateTransfer(transaction: TransferTransaction) {
-    for (const i of transaction.sender) {
+    for (const i of transaction.sender || "") {
         if (!alphabet.includes(i)) {
             $log.error("Sender invalid `public key`")
             return false

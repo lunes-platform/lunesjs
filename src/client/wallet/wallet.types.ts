@@ -7,8 +7,8 @@ export namespace WalletTypes {
         Testnet = 0
     }
     export type PrivateKey = string | undefined
-    export type PublicKey = string
-    export type Address = string
+    export type PublicKey = string | undefined
+    export type Address = string | undefined
 }
 
 export interface IAccount {
