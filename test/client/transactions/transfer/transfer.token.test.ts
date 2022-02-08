@@ -54,7 +54,7 @@ describe("Create Transfer Transaction", () => {
     }
 
     it("Test validated passed data for Transfer Token", () => {
-        expect(basicTransferToken(sender(), renceiver()).ready).toEqual(true)
+        expect(basicTransferToken(sender(), renceiver()).ready()).toEqual(true)
     })
 
     it("Should return TransferTransaction", () => {
