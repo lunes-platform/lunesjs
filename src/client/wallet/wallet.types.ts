@@ -3,8 +3,8 @@ export namespace WalletTypes {
     export type Seed = string | undefined
     export type Nonce = number | undefined // 0 ... 4294967295
     export enum Chain {
-        Mainnet = "1",
-        Testnet = "0"
+        Mainnet = 1,
+        Testnet = 0
     }
     export type PrivateKey = string | undefined
     export type PublicKey = string
@@ -15,7 +15,7 @@ export interface IAccount {
     nWords?: WalletTypes.nWords
     seed?: WalletTypes.Seed
     nonce?: WalletTypes.Nonce
-    chain?: WalletTypes.Chain
+    chain: WalletTypes.Chain
     privateKey?: WalletTypes.PrivateKey
     publicKey?: WalletTypes.PublicKey
     address?: WalletTypes.Address
