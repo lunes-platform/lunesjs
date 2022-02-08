@@ -9,10 +9,10 @@ export interface BaseTransaction {
 }
 
 export type TransferTransaction = {
-    sender?: WalletTypes.PublicKey
-    receiver?: WalletTypes.Address
-    chain?: WalletTypes.Chain.Mainnet | WalletTypes.Chain.Testnet
-    amount?: number
+    sender: WalletTypes.PublicKey
+    receiver: WalletTypes.Address
+    chain: WalletTypes.Chain.Mainnet | WalletTypes.Chain.Testnet
+    amount: number
     assetFee?: string
     assetId?: string
     timestamp?: number
