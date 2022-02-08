@@ -7,15 +7,15 @@ export namespace WalletTypes {
         Testnet = "0"
     }
     export type PrivateKey = string | undefined
-    export type PublicKey = string | undefined
-    export type Address = string | undefined
+    export type PublicKey = string
+    export type Address = string
 }
 
 export interface IAccount {
     nWords?: WalletTypes.nWords
     seed?: WalletTypes.Seed
     nonce?: WalletTypes.Nonce
-    chain: WalletTypes.Chain
+    chain?: WalletTypes.Chain
     privateKey?: WalletTypes.PrivateKey
     publicKey?: WalletTypes.PublicKey
     address?: WalletTypes.Address
