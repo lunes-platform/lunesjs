@@ -35,7 +35,8 @@
     },
     "dependencies": {
         "base-x": "^3.0.9",
-        "lunesrs": "file:./pkg/lunesrs"
+        "lunesrs": "^1.1.0",
+        "ts-log-debug": "5.5.3"
     },
     "lint-staged": {
         "**/*": "prettier --write"
