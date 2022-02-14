@@ -5,4 +5,4 @@ RUN npm install -g npm@latest
 RUN npm install -g commitizen
 RUN npm install -g --save-dev --save-exact prettier
 RUN npm install -g jest
-RUN yarn install
+
