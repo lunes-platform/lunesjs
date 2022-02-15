@@ -8,7 +8,7 @@
 
 - Built from the WebAssembly Library for communication with nodes on the mainnet or testnet of the lunes-blockchain network Allows automation of asset submission, final issuance of token reissue, leasing, registration and creation of a new wallet.
 
-[![Build](https://github.com/lunes-plataform/lunesjs/actions/workflows/build.yml/badge.svg)](https://github.com/lunes-plataform/lunesjs/actions/workflows/build.yml)
+[![Build](https://github.com/lunes-platform/lunesjs/actions/workflows/build.yml/badge.svg)](https://github.com/lunes-platform/lunesjs/actions/workflows/build.yml)
 [![Test](https://github.com/lunes-platform/lunesjs/actions/workflows/test.yml/badge.svg)](https://github.com/lunes-platform/lunesjs/actions/workflows/test.yml)
 [![Stars](https://img.shields.io/github/stars/lunes-platform/lunesjs?color=blueviolet)](https://github.com/lunes-platform/lunesjs/stargazers)
 [![Release](https://img.shields.io/github/v/release/lunes-platform/lunesjs)](https://github.com/lunes-platform/lunesjs/releases)
