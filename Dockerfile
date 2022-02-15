@@ -4,5 +4,5 @@ RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/inst
 RUN npm install -g npm@latest
 RUN npm install -g commitizen
 RUN npm install -g --save-dev --save-exact prettier
-RUN yarn install
-	
+RUN npm install -g jest
+
