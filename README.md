@@ -8,8 +8,10 @@
 
 - Built from the WebAssembly Library for communication with nodes on the mainnet or testnet of the lunes-blockchain network Allows automation of asset submission, final issuance of token reissue, leasing, registration and creation of a new wallet.
 
-[![Test](https://github.com/lunes-platform/lunesjs/actions/workflows/python-app.yml/badge.svg)](https://github.com/lunes-platform/lunesjs/actions/workflows/python-app.yml)
+[![Build](https://github.com/lunes-plataform/lunesjs/actions/workflows/build.yml/badge.svg)](https://github.com/lunes-plataform/lunesjs/actions/workflows/build.yml)
+[![Test](https://github.com/lunes-platform/lunesjs/actions/workflows/test.yml/badge.svg)](https://github.com/lunes-platform/lunesjs/actions/workflows/test.yml)
 [![Stars](https://img.shields.io/github/stars/lunes-platform/lunesjs?color=blueviolet)](https://github.com/lunes-platform/lunesjs/stargazers)
+[![Release](https://img.shields.io/github/v/release/lunes-platform/lunesjs)](https://github.com/lunes-platform/lunesjs/releases)
 [![License](https://img.shields.io/github/license/lunes-platform/lunesjs?color=blueviolet)](LICENSE)
 
 [![Issues](https://img.shields.io/github/issues/lunes-platform/lunesjs)](https://github.com/lunes-platform/lunesjs/issues)
@@ -48,7 +50,7 @@ The LunesJS documentations is hosted at [ Telescope ](https://blockchain.lunes.i
 
 Thanks to the following people who have contributed to this project:
 
-* [@olivmath](https://github.com/olivmath)
+[![GitHub Contributors Image](https://contrib.rocks/image?repo=lunes-platform/lunesjs)](https://github.com/lunes-platform/lunesjs/graphs/contributors)
 
 ## Contact
 
