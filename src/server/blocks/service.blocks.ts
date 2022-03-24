@@ -10,3 +10,9 @@ function blockByHeight(height: number): IBlock {
         "GET"
     ).json()
 }
+
+// fazer o fetch
+// pegar o data 
+// converter ou pegar o iblock da resposta
+
+// explicação do andré vioto 
