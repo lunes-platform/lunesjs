@@ -1,4 +1,4 @@
-import {blockByHeight} from "../../../src/server/blocks/service.blocks"
+import {blockByHeight, blockHeight} from "../../../src/server/blocks/service.blocks"
 
 describe ("test block service" , () => {
 
@@ -22,5 +22,12 @@ describe ("test block service" , () => {
         });
 
     } )
+
+    it("see height block from node ",  async()  => {
+
+    const result = await blockHeight();
+    expect(200);
+    //expect(result.statusCode).toEqual(200);
+    })
 
 } )
