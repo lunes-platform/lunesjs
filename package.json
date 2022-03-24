@@ -34,6 +34,7 @@
         "typescript": "^4.5.4"
     },
     "dependencies": {
+        "axios": "^0.26.1",
         "base-x": "^3.0.9",
         "lunesrs": "1.5.5"
     },
