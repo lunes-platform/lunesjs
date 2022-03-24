@@ -21,7 +21,7 @@ interface IHeader {
     version: number
     timestamp: number,
     reference: string,
-    features: Array<string>, // features: string[],
+    features: Array<any>, // features: string[],
     generator: string,
     signature: string,
     blocksize: number,
@@ -37,7 +37,7 @@ export interface IBlock {
 }
 
 
-/* inicio dos comentários 
+
 
 const transaction = {
     "type": 4,
@@ -72,4 +72,3 @@ const block = {
     "height": 1885581
 }
 
-*/ 
