@@ -1,17 +1,43 @@
+
+interface INxtConsensus {
+    baseTarget: number,
+    generationSignature: string
+}
 interface ITransaction {
     type: number,
     id: string,
+    sender: string,
+    senderPublicKey: string,
+    fee: number,
+    timestamp: number,
+    signature: string,
+    recipient: string,
+    assetId: string,
+    amount: number, 
+    feeAsset: string
 }
 
 interface IHeader {
     version: number
+    timestamp: number,
+    reference: string,
+    features: Array<string>, // features: string[],
+    generator: string,
+    signature: string,
+    blocksize: number,
+    transactionCount: number,
+    fee: number,
+    height: number
 }
 
 export interface IBlock {
     header: IHeader,
-    transactions: Array<ITransaction>
+    transactions: Array<ITransaction>,
+    nxtConsensus: Array<INxtConsensus>
 }
 
+
+/* inicio dos comentários 
 
 const transaction = {
     "type": 4,
@@ -45,3 +71,5 @@ const block = {
     ],
     "height": 1885581
 }
+
+*/ 
