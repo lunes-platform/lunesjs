@@ -2,7 +2,7 @@ import { IBlock } from "./block.types"
 import axios from "axios"
 
 /*
-* This function get `height` e return a full block
+* This function get blockchain `height` e return a full block
 */
 export async function blockByHeight(height: number):Promise<IBlock>  {
 
@@ -12,7 +12,7 @@ export async function blockByHeight(height: number):Promise<IBlock>  {
 }
 
 /*
-* This function return full block
+* This function get a blockchain height
 */
 export async function blockHeight():Promise<any> {
 
@@ -22,3 +22,13 @@ export async function blockHeight():Promise<any> {
 
 }
 
+/*
+* Average delay in milliseconds between last blockNum blocks starting from block with signature
+    signature = signature block
+    blockNum = 1 to 9
+*/
+
+export async function blockAverageDelay(signature: string, blockNum: number):Promise<any> {
+        const response = await axios.get(`https://lunesnode.lunes.io/blocks/delay/${signature}/${blockNum}`);
+        return response.data;
+}

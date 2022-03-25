@@ -1,4 +1,4 @@
-import {blockByHeight, blockHeight} from "../../../src/server/blocks/service.blocks"
+import {blockByHeight, blockHeight, blockAverageDelay} from "../../../src/server/blocks/service.blocks"
 
 describe ("test block service" , () => {
 
@@ -32,12 +32,28 @@ describe ("test block service" , () => {
                 expect.objectContaining({
                 height: expect.any(Number),
                 }),
-            );*/
+            );*/ // estudar melhor o código
 
         expect(result).toMatchObject({
-        height: expect.any(Number)
+            height: expect.any(Number)
         });
 
     })
+
+
+    it("see Average delay ",  async()  => {
+        const result = await blockAverageDelay(
+            "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
+            1);
+            expect(result).toMatchObject({
+                delay: expect.any(Number)
+                
+        });
+
+    })
+
+
+
+    
 
 } )

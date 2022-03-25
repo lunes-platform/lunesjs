@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="2" failures="0" errors="0" time="38.433">
-  <testsuite name="test block service" errors="0" failures="0" skipped="1" timestamp="2022-03-25T00:53:33" time="30.683" tests="2">
-    <testcase classname="test block service receive number 10 param to get fetch" name="test block service receive number 10 param to get fetch" time="0">
-      <skipped/>
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="30.077">
+  <testsuite name="test block service" errors="0" failures="0" skipped="0" timestamp="2022-03-25T02:47:35" time="24.348" tests="3">
+    <testcase classname="test block service receive number 10 param to get fetch" name="test block service receive number 10 param to get fetch" time="1.056">
     </testcase>
-    <testcase classname="test block service see height block from node " name="test block service see height block from node " time="1.358">
+    <testcase classname="test block service see height block from node " name="test block service see height block from node " time="0.607">
+    </testcase>
+    <testcase classname="test block service see Average delay " name="test block service see Average delay " time="0.582">
     </testcase>
   </testsuite>
 </testsuites>
