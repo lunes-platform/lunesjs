@@ -102,17 +102,15 @@ describe ("test block service" , () => {
 
 
 
+        it("Get height of a block by its Base58-encoded signature ",  async()  => {
+            const result = await blockHeightEncoded("3Ho1ZKnxzKAvrwo5RsMAesdiw6EW3f5Mn8etEhPP2t5z6N3iVK385ezvbNkxUen6yRUhwuiXg97P9uGMVeUpHG4f")
+                expect(result).toStrictEqual( 
+                    {
+                        "height": 1887361
+                    }
+            );
 
-
-    it("Get height of a block by its Base58-encoded signature ",  async()  => {
-        const result = await blockHeightEncoded("3Ho1ZKnxzKAvrwo5RsMAesdiw6EW3f5Mn8etEhPP2t5z6N3iVK385ezvbNkxUen6yRUhwuiXg97P9uGMVeUpHG4f")
-            expect(result).toStrictEqual( 
-                {
-                    "height": 1887361
-                  }
-         );
-
-    })
+        })
 
 
 
