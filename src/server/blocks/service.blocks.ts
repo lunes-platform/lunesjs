@@ -78,3 +78,11 @@ export async function blockAtHeaderOnly(height: number):Promise<IBlock> {
 }
 
 
+/*
+* Get block without transactions payload at specified heights
+*/
+export async function blockSeqHeaderOnly(from: number , to: number):Promise<IBlock> {
+    const response = await axios.get(`https://lunesnode.lunes.io/blocks/headers/seq/${from}/${to}`);
+    return response.data;
+}
+
