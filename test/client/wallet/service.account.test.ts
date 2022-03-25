@@ -224,14 +224,12 @@ describe("Validate Account Address", () => {
         return w.address != undefined ? w.address : ""
     }
 
-    const addressMainnet = Array.from(
-        new Array(20),
-        () => createMainnetAccount()
+    const addressMainnet = Array.from(new Array(20), () =>
+        createMainnetAccount()
     )
 
-    const addressTestnet = Array.from(
-        new Array(20),
-        () => createTestnetAccount()
+    const addressTestnet = Array.from(new Array(20), () =>
+        createTestnetAccount()
     )
     test.each(addressMainnet)(
         "Test Validating Mainnet Account Address",
@@ -240,9 +238,7 @@ describe("Validate Account Address", () => {
                 addressMainnet,
                 WalletTypes.Chain.Mainnet
             )
-            expect(
-                result
-            ).toEqual(true)
+            expect(result).toEqual(true)
         }
     )
 
@@ -253,9 +249,7 @@ describe("Validate Account Address", () => {
                 addressTestnet,
                 WalletTypes.Chain.Mainnet
             )
-            expect(
-                result
-            ).toEqual(false)
+            expect(result).toEqual(false)
         }
     )
 })
@@ -293,56 +287,52 @@ describe("Create Signatures", () => {
         "Test sign and validate signatures for Mainnet random Account with FastSignature function",
         (message) => {
             const w = newAccountMainnet()
-            const signature = cryptoUtils.fastSignature(
-                w.privateKey,
-                message
+            const signature = cryptoUtils.fastSignature(w.privateKey, message)
+            const result = cryptoUtils.validateSignature(
+                w.publicKey,
+                message,
+                signature
             )
-            const result = cryptoUtils.validateSignature(w.publicKey, message, signature)
-            expect(
-                result
-            ).toEqual(true)
+            expect(result).toEqual(true)
         }
     )
     test.each(message)(
         "Test sign and validate signatures for Testnet random Account with FastSignature function",
         (message) => {
             const w = newAccountTestnet()
-            const signature = cryptoUtils.fastSignature(
-                w.privateKey,
-                message
+            const signature = cryptoUtils.fastSignature(w.privateKey, message)
+            const result = cryptoUtils.validateSignature(
+                w.publicKey,
+                message,
+                signature
             )
-            const result = cryptoUtils.validateSignature(w.publicKey, message, signature)
-            expect(
-                result
-            ).toEqual(true)
+            expect(result).toEqual(true)
         }
     )
     test.each(message)(
         "Test sign and validate signatures for Mainnet random Account with FullSignature function",
         (message) => {
             const w = newAccountMainnet()
-            const signature = cryptoUtils.fullSignature(
-                w.privateKey,
-                message
+            const signature = cryptoUtils.fullSignature(w.privateKey, message)
+            const result = cryptoUtils.validateSignature(
+                w.publicKey,
+                message,
+                signature
             )
-            const result = cryptoUtils.validateSignature(w.publicKey, message, signature)
-            expect(
-                result
-            ).toEqual(true)
+            expect(result).toEqual(true)
         }
     )
     test.each(message)(
         "Test sign and validate signatures for Testnet random Account with FullSignature function",
         (message) => {
             const w = newAccountTestnet()
-            const signature = cryptoUtils.fullSignature(
-                w.privateKey,
-                message
+            const signature = cryptoUtils.fullSignature(w.privateKey, message)
+            const result = cryptoUtils.validateSignature(
+                w.publicKey,
+                message,
+                signature
             )
-            const result = cryptoUtils.validateSignature(w.publicKey, message, signature)
-            expect(
-                result
-            ).toEqual(true)
+            expect(result).toEqual(true)
         }
     )
 })

@@ -9,15 +9,9 @@ const cryptoUtils = {
         chain: WalletTypes.Chain
     ): IAccount => {
         const hidden_seed = wasm.hiddenSeed(nonce, seed)
-        const privateKey = wasm.toPrivateKeyHex(
-            wasm.fromStrHex(hidden_seed)
-        )
+        const privateKey = wasm.toPrivateKeyHex(wasm.fromStrHex(hidden_seed))
         const publicKey = wasm.toPublicKeyHex(wasm.fromStrHex(privateKey))
-        const address = wasm.toAddressHex(
-            1,
-            chain,
-            wasm.fromStrHex(publicKey)
-        )
+        const address = wasm.toAddressHex(1, chain, wasm.fromStrHex(publicKey))
 
         return {
             nonce: nonce,
@@ -33,11 +27,7 @@ const cryptoUtils = {
         chain: WalletTypes.Chain
     ): IAccount => {
         const publicKey = wasm.toPublicKeyHex(wasm.b58ToVec(privateKey))
-        const address = wasm.toAddressHex(
-            1,
-            chain,
-            wasm.fromStrHex(publicKey)
-        )
+        const address = wasm.toAddressHex(1, chain, wasm.fromStrHex(publicKey))
 
         return {
             chain: chain,
@@ -47,11 +37,7 @@ const cryptoUtils = {
         }
     },
     fromPublicKey: (publicKey: string, chain: WalletTypes.Chain): IAccount => {
-        const address = wasm.toAddressHex(
-            1,
-            chain,
-            wasm.b58ToVec(publicKey)
-        )
+        const address = wasm.toAddressHex(1, chain, wasm.b58ToVec(publicKey))
 
         return {
             chain: chain,
@@ -80,12 +66,13 @@ const cryptoUtils = {
         return cryptoUtils.fromExistingSeed(seed.join(" "), nonce, chain)
     },
     validateAddress: (address: string, chain: WalletTypes.Chain): boolean => {
-        return wasm.validateAddress(
-            chain,
-            wasm.b58ToVec(address)
-        )
+        return wasm.validateAddress(chain, wasm.b58ToVec(address))
     },
-    validateSignature: (publicKey: string, message: string, signature: string): boolean => {
+    validateSignature: (
+        publicKey: string,
+        message: string,
+        signature: string
+    ): boolean => {
         return wasm.validateSignature(
             wasm.toVecu32(wasm.b58ToVec(publicKey)),
             wasm.stringToVecu32(message),
@@ -93,16 +80,24 @@ const cryptoUtils = {
         )
     },
     fastSignature: (privateKey: string, message: string) => {
-        return wasm.hexToB58(wasm.vecu32ToHex(wasm.fastSignature(
-            wasm.toVecu32(wasm.b58ToVec(privateKey)),
-            wasm.stringToVecu32(message)
-        )))
+        return wasm.hexToB58(
+            wasm.vecu32ToHex(
+                wasm.fastSignature(
+                    wasm.toVecu32(wasm.b58ToVec(privateKey)),
+                    wasm.stringToVecu32(message)
+                )
+            )
+        )
     },
     fullSignature: (privateKey: string, message: string) => {
-        return wasm.hexToB58(wasm.vecu32ToHex(wasm.fullSignature(
-            wasm.toVecu32(wasm.b58ToVec(privateKey)),
-            wasm.stringToVecu32(message)
-        )))
+        return wasm.hexToB58(
+            wasm.vecu32ToHex(
+                wasm.fullSignature(
+                    wasm.toVecu32(wasm.b58ToVec(privateKey)),
+                    wasm.stringToVecu32(message)
+                )
+            )
+        )
     }
 }
 

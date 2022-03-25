@@ -18,7 +18,8 @@
         "watch": "tsc --watch",
         "wheel": "nodemon ./build/src/main.js",
         "postinstall": "husky install",
-        "commit": "cz"
+        "commit": "cz",
+        "fmt": "prettier -w ."
     },
     "devDependencies": {
         "@commitlint/cli": "^16.1.0",
