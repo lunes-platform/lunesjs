@@ -58,3 +58,12 @@ export async function blockChild(signature: string):Promise<IBlock> {
     const response = await axios.get(`https://lunesnode.lunes.io/blocks/child/${signature}`);
     return response.data;
 }
+
+
+/*
+* Get height of a block by its Base58-encoded signature
+*/
+export async function blockHeightEncoded(signature: string):Promise<any> {
+    const response = await axios.get(`https://lunesnode.lunes.io/blocks/height/${signature}`);
+    return response.data;
+}

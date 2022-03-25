@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="6" failures="0" errors="0" time="46.465">
-  <testsuite name="test block service" errors="0" failures="0" skipped="5" timestamp="2022-03-25T05:07:19" time="36.778" tests="6">
+<testsuites name="jest tests" tests="7" failures="0" errors="0" time="26.884">
+  <testsuite name="test block service" errors="0" failures="0" skipped="6" timestamp="2022-03-25T05:19:33" time="22.366" tests="7">
     <testcase classname="test block service receive number 10 param to get fetch" name="test block service receive number 10 param to get fetch" time="0">
       <skipped/>
     </testcase>
@@ -16,7 +16,10 @@
     <testcase classname="test block service Get last block data " name="test block service Get last block data " time="0">
       <skipped/>
     </testcase>
-    <testcase classname="test block service Get children of specified block " name="test block service Get children of specified block " time="1.43">
+    <testcase classname="test block service Get children of specified block " name="test block service Get children of specified block " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="test block service Get height of a block by its Base58-encoded signature " name="test block service Get height of a block by its Base58-encoded signature " time="1.353">
     </testcase>
   </testsuite>
 </testsuites>
