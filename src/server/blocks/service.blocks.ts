@@ -86,3 +86,12 @@ export async function blockSeqHeaderOnly(from: number , to: number):Promise<IBlo
     return response.data;
 }
 
+
+
+/*
+* Get last block data without transactions payload
+*/
+export async function blockLastHeaderOnly():Promise<any> {
+    const response = await axios.get(`https://lunesnode.lunes.io/blocks/headers/last`);
+    return response.data;
+}

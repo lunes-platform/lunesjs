@@ -1,6 +1,6 @@
-import {    blockByHeight, blockHeight, blockAverageDelay, blockSeq, blockLast,
-         blockChild, blockHeightEncoded, blockAtHeaderOnly, blockSeqHeaderOnly
-
+import { blockByHeight, blockHeight, blockAverageDelay, blockSeq, blockLast,
+         blockChild, blockHeightEncoded, blockAtHeaderOnly, blockSeqHeaderOnly,
+         blockLastHeaderOnly
         } from "../../../src/server/blocks/service.blocks"
 
 describe ("test block service" , () => {
@@ -145,6 +145,15 @@ describe ("test block service" , () => {
                 );
             })
 
+
+
+            it("blockLastHeaderOnly test ",  async()  => {
+
+                const result = await blockLastHeaderOnly();
+                //expect(result).toMatchObject(result)
+                //https://stackoverflow.com/questions/47754777/jest-how-to-test-for-object-keys-and-values
+                expect(result).toHaveProperty("height"); // true
+            })
 
 
 
