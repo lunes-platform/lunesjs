@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="4" failures="0" errors="0" time="27.825">
-  <testsuite name="test block service" errors="0" failures="0" skipped="0" timestamp="2022-03-25T03:20:39" time="22.871" tests="4">
-    <testcase classname="test block service receive number 10 param to get fetch" name="test block service receive number 10 param to get fetch" time="1.079">
+<testsuites name="jest tests" tests="5" failures="0" errors="0" time="18.999">
+  <testsuite name="test block service" errors="0" failures="0" skipped="4" timestamp="2022-03-25T04:48:08" time="15.439" tests="5">
+    <testcase classname="test block service receive number 10 param to get fetch" name="test block service receive number 10 param to get fetch" time="0">
+      <skipped/>
     </testcase>
-    <testcase classname="test block service see height block from node " name="test block service see height block from node " time="0.613">
+    <testcase classname="test block service see height block from node " name="test block service see height block from node " time="0">
+      <skipped/>
     </testcase>
-    <testcase classname="test block service see Average delay " name="test block service see Average delay " time="0.608">
+    <testcase classname="test block service see Average delay " name="test block service see Average delay " time="0">
+      <skipped/>
     </testcase>
-    <testcase classname="test block service Get block at specified heights " name="test block service Get block at specified heights " time="0.596">
+    <testcase classname="test block service Get block at specified heights " name="test block service Get block at specified heights " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="test block service Get last block data " name="test block service Get last block data " time="0.995">
     </testcase>
   </testsuite>
 </testsuites>

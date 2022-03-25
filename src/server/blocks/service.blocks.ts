@@ -41,3 +41,12 @@ export async function blockSeq(from: number , to: number):Promise<IBlock> {
     const response = await axios.get(`https://lunesnode.lunes.io/blocks/seq/${from}/${to}`);
     return response.data;
 }
+
+
+/*
+* Get last block data
+*/
+export async function blockLast():Promise<any> {
+    const response = await axios.get(`https://lunesnode.lunes.io/blocks/last`);
+    return response.data;
+}
