@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="10" failures="0" errors="0" time="30.272">
-  <testsuite name="test block service" errors="0" failures="0" skipped="9" timestamp="2022-03-25T13:44:15" time="24.473" tests="10">
+<testsuites name="jest tests" tests="12" failures="0" errors="0" time="30.092">
+  <testsuite name="test block service" errors="0" failures="0" skipped="11" timestamp="2022-03-25T14:31:08" time="24.363" tests="12">
     <testcase classname="test block service receive number 10 param to get fetch" name="test block service receive number 10 param to get fetch" time="0">
       <skipped/>
     </testcase>
@@ -28,7 +28,13 @@
     <testcase classname="test block service blockSeqHeaderOnly test " name="test block service blockSeqHeaderOnly test " time="0">
       <skipped/>
     </testcase>
-    <testcase classname="test block service blockLastHeaderOnly test " name="test block service blockLastHeaderOnly test " time="1.093">
+    <testcase classname="test block service blockLastHeaderOnly test " name="test block service blockLastHeaderOnly test " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="test block service blockSignature test" name="test block service blockSignature test" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="test block service blockFirst test " name="test block service blockFirst test " time="1.435">
     </testcase>
   </testsuite>
 </testsuites>
