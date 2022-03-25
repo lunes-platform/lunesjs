@@ -50,3 +50,11 @@ export async function blockLast():Promise<any> {
     const response = await axios.get(`https://lunesnode.lunes.io/blocks/last`);
     return response.data;
 }
+
+/*
+* Get children of specified block
+*/
+export async function blockChild(signature: string):Promise<IBlock> {
+    const response = await axios.get(`https://lunesnode.lunes.io/blocks/child/${signature}`);
+    return response.data;
+}
