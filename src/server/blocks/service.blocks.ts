@@ -11,9 +11,13 @@ export async function blockByHeight(height: number):Promise<IBlock>  {
 
 }
 
+/*
+* This function return full block
+*/
 export async function blockHeight():Promise<any> {
 
         const response = await axios.get(`https://lunesnode.lunes.io/blocks/height`);
+        //return response.data;
         return response.data;
 
 }

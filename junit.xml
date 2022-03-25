@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="2" failures="1" errors="0" time="30.253">
-  <testsuite name="test block service" errors="0" failures="1" skipped="1" timestamp="2022-03-24T22:36:45" time="24.535" tests="2">
+<testsuites name="jest tests" tests="2" failures="0" errors="0" time="38.433">
+  <testsuite name="test block service" errors="0" failures="0" skipped="1" timestamp="2022-03-25T00:53:33" time="30.683" tests="2">
     <testcase classname="test block service receive number 10 param to get fetch" name="test block service receive number 10 param to get fetch" time="0">
       <skipped/>
     </testcase>
-    <testcase classname="test block service see height block from node " name="test block service see height block from node " time="1.346">
-      <failure>Error: expect(received).toEqual(expected) // deep equality
-
-Expected: 200
-Received: undefined
-    at /workspaces/lunesjs/test/server/blocks/blocks.test.ts:30:31
-    at Generator.next (&lt;anonymous&gt;)
-    at fulfilled (/workspaces/lunesjs/test/server/blocks/blocks.test.ts:5:58)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)</failure>
+    <testcase classname="test block service see height block from node " name="test block service see height block from node " time="1.358">
     </testcase>
   </testsuite>
 </testsuites>
