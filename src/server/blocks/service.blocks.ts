@@ -32,3 +32,12 @@ export async function blockAverageDelay(signature: string, blockNum: number):Pro
         const response = await axios.get(`https://lunesnode.lunes.io/blocks/delay/${signature}/${blockNum}`);
         return response.data;
 }
+
+/*
+* Get block at specified heights
+*/
+//GET /blocks/seq/{from}/{to}
+export async function blockSeq(from: number , to: number):Promise<IBlock> {
+    const response = await axios.get(`https://lunesnode.lunes.io/blocks/seq/${from}/${to}`);
+    return response.data;
+}
