@@ -1,5 +1,5 @@
 import {    blockByHeight, blockHeight, blockAverageDelay, blockSeq, blockLast,
-         blockChild, blockHeightEncoded
+         blockChild, blockHeightEncoded, blockAtHeaderOnly
         } from "../../../src/server/blocks/service.blocks"
 
 describe ("test block service" , () => {
@@ -107,6 +107,30 @@ describe ("test block service" , () => {
                 expect(result).toStrictEqual( 
                     {
                         "height": 1887361
+                    }
+            );
+
+        })
+
+
+        it("Get block at specified height without transactions payload ",  async()  => {
+            const result = await blockAtHeaderOnly(1)
+                expect(result).toStrictEqual( 
+                    {
+                        
+                            "version": 1,
+                            "timestamp": 1528077600000,
+                            "reference": "67rpwLCuS5DGA8KGZXKsVQ7dnPb9goRLoKfgGbLfQg9WoLUgNY77E2jT11fem3coV9nAkguBACzrU1iyZM4B8roQ",
+                            "nxt-consensus": {
+                              "base-target": 153722867,
+                              "generation-signature": "11111111111111111111111111111111"
+                            },
+                            "generator": "37jG983kttnpw4kAAQ6wi1yTyegkLN5LMNb",
+                            "signature": "soKTPcsb5cD97jnm64zF3pVuVUqUYx3caaDvuPyM6PXPY7eWCxeHeYvKSE2aJwZwRpXdRFdW1g5BQMFpYkHcf85",
+                            "blocksize": 312,
+                            "transactionCount": 2,
+                            "height": 1
+                          
                     }
             );
 

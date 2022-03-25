@@ -67,3 +67,14 @@ export async function blockHeightEncoded(signature: string):Promise<any> {
     const response = await axios.get(`https://lunesnode.lunes.io/blocks/height/${signature}`);
     return response.data;
 }
+
+
+/*
+* Get block at specified height without transactions payload
+*/
+export async function blockAtHeaderOnly(height: number):Promise<IBlock> {
+    const response = await axios.get(`https://lunesnode.lunes.io/blocks/headers/at/${height}`);
+    return response.data;
+}
+
+
