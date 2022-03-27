@@ -1,6 +1,6 @@
 {
     "name": "lunesjs",
-    "version": "1.3.1",
+    "version": "1.4.0",
     "description": "Library for communication with nodes in mainnet or testnet of the lunes-blockchain network",
     "main": "index.js",
     "repository": "git@git.lunes.io:blockchain/labs/lunesjs.git",
@@ -12,11 +12,11 @@
     "author": "lunes-platform",
     "license": "SEE LICENSE IN ./LICENSE",
     "scripts": {
-        "fmt": "prettier -w .",
-        "build": "tsc",
-        "test": "yarn jest",
         "autotest": "yarn jest --watchAll",
         "postinstall": "husky install",
+        "fmt": "prettier -w .",
+        "test": "yarn jest",
+        "build": "tsc",
         "commit": "cz"
     },
     "devDependencies": {
@@ -33,7 +33,7 @@
     },
     "dependencies": {
         "base-x": "^3.0.9",
-        "lunesrs": "1.5.5",
+        "lunesrs": "1.7.0",
         "axios": "^0.26.1"
     },
     "lint-staged": {
