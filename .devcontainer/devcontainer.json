@@ -4,11 +4,11 @@
     "dockerFile": "../Dockerfile",
     "settings": {},
     "extensions": [
-        "eamodio.gitlens",
         "donjayamanne.githistory",
-        "vespa-dev-works.jestrunit",
         "esbenp.prettier-vscode",
-        "mhutchie.git-graph"
+        "mhutchie.git-graph",
+        "Tyriar.sort-lines",
+        "eamodio.gitlens"
     ],
     "postCreateCommand": "yarn install"
 }

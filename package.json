@@ -10,32 +10,31 @@
         "client"
     ],
     "author": "lunes-platform",
-    "license": "Apache 2.0",
+    "license": "SEE LICENSE IN ./LICENSE",
     "scripts": {
+        "fmt": "prettier -w .",
         "build": "tsc",
         "test": "yarn jest",
         "autotest": "yarn jest --watchAll",
-        "watch": "tsc --watch",
-        "wheel": "nodemon ./build/src/main.js",
         "postinstall": "husky install",
         "commit": "cz"
     },
     "devDependencies": {
-        "@commitlint/cli": "^16.1.0",
         "@commitlint/config-conventional": "^16.0.0",
-        "@types/jest": "^27.0.3",
         "cz-conventional-changelog": "^3.3.0",
-        "husky": "^7.0.4",
-        "jest": "^27.4.5",
+        "@commitlint/cli": "^16.1.0",
+        "@types/jest": "^27.0.3",
         "jest-junit": "^13.0.0",
-        "nodemon": "^2.0.15",
-        "prettier": "2.5.1",
+        "typescript": "^4.5.4",
         "ts-jest": "^27.1.2",
-        "typescript": "^4.5.4"
+        "prettier": "2.5.1",
+        "husky": "^7.0.4",
+        "jest": "^27.4.5"
     },
     "dependencies": {
         "base-x": "^3.0.9",
-        "lunesrs": "1.5.5"
+        "lunesrs": "1.5.5",
+        "axios": "^0.26.1"
     },
     "lint-staged": {
         "**/*": "prettier --write"
