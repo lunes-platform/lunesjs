@@ -2,8 +2,6 @@ import { accountFactory } from "../../../src/client/wallet/service.account"
 import { WalletTypes } from "../../../src/client/wallet/wallet.types"
 import cryptoUtils from "../../../src/utils/crypto"
 import * as wasm from "lunesrs"
-import base58 from "base-x"
-const b58 = base58("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")
 
 describe("Create Account from New Seed", () => {
     const createMainnetAccountFromNewSeed = () => {
