@@ -14,3 +14,8 @@ CreateReportTests:
         when: always
         reports:
             junit: junit.xml
+
+LintChecker:
+    stage: test
+    script:
+        - yarn fmt

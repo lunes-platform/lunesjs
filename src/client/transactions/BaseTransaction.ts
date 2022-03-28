@@ -1,6 +1,7 @@
+import { WalletTypes } from "../wallet/wallet.types"
+
 export interface BaseTransaction {
+    sign(privateKey: WalletTypes.PrivateKey): object
     transaction(): object
-    sign(): object
-    ready(): boolean
     send(): object
 }

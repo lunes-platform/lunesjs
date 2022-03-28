@@ -1,27 +1,15 @@
-import { Account } from "../../../src/client/wallet/service.account"
+import { accountFactory } from "../../../src/client/wallet/service.account"
 import { WalletTypes } from "../../../src/client/wallet/wallet.types"
 import cryptoUtils from "../../../src/utils/crypto"
+import * as wasm from "lunesrs"
 
 describe("Create Account from New Seed", () => {
     const createMainnetAccountFromNewSeed = () => {
-        return new Account({
-            chain: WalletTypes.Chain.Mainnet
-        })
+        return accountFactory()
     }
-
     const createTestnetAccountFromNewSeed = () => {
-        return new Account({
-            chain: WalletTypes.Chain.Testnet
-        })
+        return accountFactory({ chain: WalletTypes.Chain.Testnet })
     }
-
-    it("Test type of Mainnet Account from New Seed", () => {
-        expect(createMainnetAccountFromNewSeed()).toBeInstanceOf(Account)
-    })
-
-    it("Test type of Testnet Account from New Seed", () => {
-        expect(createTestnetAccountFromNewSeed()).toBeInstanceOf(Account)
-    })
 
     it("Test Address of Mainnet Account from New Seed", () => {
         const w = createMainnetAccountFromNewSeed()
@@ -33,11 +21,11 @@ describe("Create Account from New Seed", () => {
         ).toEqual(true)
     })
     it("Test Address of Testnet Account from New Seed", () => {
-        const w = createMainnetAccountFromNewSeed()
+        const w = createTestnetAccountFromNewSeed()
         expect(
             cryptoUtils.validateAddress(
                 w.address != undefined ? w.address : "",
-                WalletTypes.Chain.Mainnet
+                WalletTypes.Chain.Testnet
             )
         ).toEqual(true)
     })
@@ -48,7 +36,7 @@ describe("Create Account from Seed", () => {
         "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit"
 
     const createMainnetAccountFromSeed = (seed: string, nonce?: number) => {
-        return new Account({
+        return accountFactory({
             seed: seed,
             nonce: nonce != undefined ? nonce : 0,
             chain: WalletTypes.Chain.Mainnet
@@ -56,7 +44,7 @@ describe("Create Account from Seed", () => {
     }
 
     const createTestnetAccountFromSeed = (seed: string, nonce?: number) => {
-        return new Account({
+        return accountFactory({
             seed: seed,
             nonce: nonce != undefined ? nonce : 0,
             chain: WalletTypes.Chain.Testnet
@@ -121,14 +109,14 @@ describe("Create Account from Private Key", () => {
     const publicKey = "2uuQVr3B5aGgvSJ5BMCw4Cd19tdYdnMGoYnji99aPde4"
 
     const createMainnetAccountFromPrivateKey = (privateKey: string) => {
-        return new Account({
+        return accountFactory({
             privateKey: privateKey,
             chain: WalletTypes.Chain.Mainnet
         })
     }
 
     const createTestnetAccountFromPrivateKey = (privateKey: string) => {
-        return new Account({
+        return accountFactory({
             privateKey: privateKey,
             chain: WalletTypes.Chain.Testnet
         })
@@ -155,14 +143,14 @@ describe("Create Account from Public Key", () => {
     const publicKey = "2uuQVr3B5aGgvSJ5BMCw4Cd19tdYdnMGoYnji99aPde4"
 
     const createMainnetAccountFromPublicKey = (publicKey: string) => {
-        return new Account({
+        return accountFactory({
             publicKey: publicKey,
             chain: WalletTypes.Chain.Mainnet
         })
     }
 
     const createTestnetAccountFromPublicKey = (publicKey: string) => {
-        return new Account({
+        return accountFactory({
             publicKey: publicKey,
             chain: WalletTypes.Chain.Testnet
         })
@@ -183,14 +171,14 @@ describe("Create Account from Public Key", () => {
 
 describe("Create Account from Address", () => {
     const createMainnetAccountFromAdress = () => {
-        return new Account({
+        return accountFactory({
             address: "37o7aY3eZZTXmzrDa5e4Wj3Z4ZZuyV42Aaj",
             chain: WalletTypes.Chain.Mainnet
         })
     }
 
     const createTestnetAccountFromAdress = () => {
-        return new Account({
+        return accountFactory({
             address: "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u",
             chain: WalletTypes.Chain.Mainnet
         })
@@ -211,27 +199,23 @@ describe("Create Account from Address", () => {
 
 describe("Validate Account Address", () => {
     const createMainnetAccount = () => {
-        const w = new Account({
+        return accountFactory({
             chain: WalletTypes.Chain.Mainnet
-        })
-        return w.address != undefined ? w.address : ""
+        }).address
     }
 
     const createTestnetAccount = () => {
-        const w = new Account({
+        return accountFactory({
             chain: WalletTypes.Chain.Testnet
-        })
-        return w.address != undefined ? w.address : ""
+        }).address
     }
 
-    const addressMainnet = Array.from(
-        new Array(20),
-        () => createMainnetAccount()
+    const addressMainnet = Array.from(new Array(20), () =>
+        createMainnetAccount()
     )
 
-    const addressTestnet = Array.from(
-        new Array(20),
-        () => createTestnetAccount()
+    const addressTestnet = Array.from(new Array(20), () =>
+        createTestnetAccount()
     )
     test.each(addressMainnet)(
         "Test Validating Mainnet Account Address",
@@ -240,9 +224,7 @@ describe("Validate Account Address", () => {
                 addressMainnet,
                 WalletTypes.Chain.Mainnet
             )
-            expect(
-                result
-            ).toEqual(true)
+            expect(result).toEqual(true)
         }
     )
 
@@ -253,96 +235,86 @@ describe("Validate Account Address", () => {
                 addressTestnet,
                 WalletTypes.Chain.Mainnet
             )
-            expect(
-                result
-            ).toEqual(false)
+            expect(result).toEqual(false)
         }
     )
 })
 
 describe("Create Signatures", () => {
     const newAccountMainnet = () => {
-        const w = new Account({
+        return accountFactory({
             chain: WalletTypes.Chain.Mainnet
         })
-        return {
-            privateKey: w.privateKey != undefined ? w.privateKey : "",
-            publicKey: w.publicKey != undefined ? w.publicKey : ""
-        }
     }
     const newAccountTestnet = () => {
-        const w = new Account({
+        return accountFactory({
             chain: WalletTypes.Chain.Mainnet
         })
-        return {
-            privateKey: w.privateKey != undefined ? w.privateKey : "",
-            publicKey: w.publicKey != undefined ? w.publicKey : ""
-        }
     }
     const message = [
-        "Hello, Lunes Signature!",
-        "This is a new test for validate Signatures in Lunes Cryptography",
-        "Let's do some more tests just in case",
-        "One more to see if everything is working well",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
+        wasm.stringToB58("Hello, Lunes Signature!"),
+        wasm.stringToB58(
+            "This is a new test for validate Signatures in Lunes Cryptography"
+        ),
+        wasm.stringToB58("Let's do some more tests just in case"),
+        wasm.stringToB58("One more to see if everything is working well"),
+        wasm.stringToB58(
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
         Maecenas turpis felis, gravida eget dapibus quis, molestie at mi. \
         Phasellus quis mollis nulla. Nam euismod nec diam in viverra."
+        )
     ]
 
     test.each(message)(
         "Test sign and validate signatures for Mainnet random Account with FastSignature function",
         (message) => {
             const w = newAccountMainnet()
-            const signature = cryptoUtils.fastSignature(
-                w.privateKey,
-                message
+            const signature = cryptoUtils.fastSignature(w.privateKey, message)
+            const result = cryptoUtils.validateSignature(
+                w.publicKey,
+                message,
+                signature
             )
-            const result = cryptoUtils.validateSignature(w.publicKey, message, signature)
-            expect(
-                result
-            ).toEqual(true)
+            expect(result).toEqual(true)
         }
     )
     test.each(message)(
         "Test sign and validate signatures for Testnet random Account with FastSignature function",
         (message) => {
             const w = newAccountTestnet()
-            const signature = cryptoUtils.fastSignature(
-                w.privateKey,
-                message
+            const signature = cryptoUtils.fastSignature(w.privateKey, message)
+            const result = cryptoUtils.validateSignature(
+                w.publicKey,
+                message,
+                signature
             )
-            const result = cryptoUtils.validateSignature(w.publicKey, message, signature)
-            expect(
-                result
-            ).toEqual(true)
+            expect(result).toEqual(true)
         }
     )
     test.each(message)(
         "Test sign and validate signatures for Mainnet random Account with FullSignature function",
         (message) => {
             const w = newAccountMainnet()
-            const signature = cryptoUtils.fullSignature(
-                w.privateKey,
-                message
+            const signature = cryptoUtils.fullSignature(w.privateKey, message)
+            const result = cryptoUtils.validateSignature(
+                w.publicKey,
+                message,
+                signature
             )
-            const result = cryptoUtils.validateSignature(w.publicKey, message, signature)
-            expect(
-                result
-            ).toEqual(true)
+            expect(result).toEqual(true)
         }
     )
     test.each(message)(
         "Test sign and validate signatures for Testnet random Account with FullSignature function",
         (message) => {
             const w = newAccountTestnet()
-            const signature = cryptoUtils.fullSignature(
-                w.privateKey,
-                message
+            const signature = cryptoUtils.fullSignature(w.privateKey, message)
+            const result = cryptoUtils.validateSignature(
+                w.publicKey,
+                message,
+                signature
             )
-            const result = cryptoUtils.validateSignature(w.publicKey, message, signature)
-            expect(
-                result
-            ).toEqual(true)
+            expect(result).toEqual(true)
         }
     )
 })

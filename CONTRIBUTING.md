@@ -21,7 +21,6 @@ why was it modified?
 
 #issue
 ```
-### **Types**
 
 - **fixed** fixes a bug
 - **added** adds a new feature
