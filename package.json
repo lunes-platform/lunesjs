@@ -1,6 +1,6 @@
 {
     "name": "lunesjs",
-    "version": "1.5.0",
+    "version": "1.5.1",
     "description": "Library for communication with nodes in mainnet or testnet of the lunes-blockchain network",
     "main": "index.js",
     "repository": "git@git.lunes.io:blockchain/labs/lunesjs.git",
