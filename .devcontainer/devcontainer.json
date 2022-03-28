@@ -10,5 +10,5 @@
         "Tyriar.sort-lines",
         "eamodio.gitlens"
     ],
-    "postCreateCommand": "yarn install"
+    "postCreateCommand": "yarn install &&  yarn upgrade --latest"
 }
