@@ -22,12 +22,10 @@ why was it modified?
 #issue
 ```
 
-- **fixed** fixes a bug
-- **added** adds a new feature
-- **removed** remove a peace of code
-- **merged** solve a problem and merge in `main`
-- **refactored** does not add a feature or fix a bug
-- **deprecated** compatibility break
+- **fixed** Fix a bug
+- **added** Add a new feature
+- **removed** Remove a peace of code
+- **updated** Update any thing. e.g. feature, piece, refact
 
 ### **Semantic Version**
 

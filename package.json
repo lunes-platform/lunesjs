@@ -46,21 +46,17 @@
                     "description": "Add a new feature",
                     "title": "Added"
                 },
-                "merged": {
-                    "description": "Resolves an issue and merge it to prod",
-                    "title": "Merged"
+                "removed": {
+                    "description": "Remove a peace of code",
+                    "title": "Removed"
                 },
                 "fixed": {
                     "description": "Fix a bug",
                     "title": "Fixed"
                 },
-                "refactored": {
-                    "description": "Does not add a feature or fix a bug",
-                    "title": "Refactored"
-                },
-                "deprecated": {
-                    "description": "Breaks compatibility with an earlier version",
-                    "title": "Deprecated"
+                "updated": {
+                    "description": "Update any thing. e.g. feature, piece, refact",
+                    "title": "Updated"
                 }
             }
         }
