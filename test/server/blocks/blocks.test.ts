@@ -1,3 +1,4 @@
+import { IError } from "../../../src/server/blocks/block.types"
 import {
     blockByHeight,
     blockHeight,
@@ -39,8 +40,16 @@ describe("test block service", () => {
         })
     })
 
-
-
+    it.only("block testing error, passing -1 number", async () => {
+        try {
+            const result = await blockByHeight(-1)
+        } catch (error) {
+            console.log(error)
+            //expect(error).toEqual(error);
+            expect(error).toBeInstanceOf(IError)
+            expect(error).toHaveProperty("status")
+        }
+    })
 
     it("see height block from node ", async () => {
         const result = await blockHeight()
