@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="2" failures="0" errors="0" time="21.996">
-  <testsuite name="test block service - validation errors" errors="0" failures="0" skipped="1" timestamp="2022-03-31T02:03:43" time="19.368" tests="2">
-    <testcase classname="test block service - validation errors blockHeight - block testing error, passing -1 number" name="test block service - validation errors blockHeight - block testing error, passing -1 number" time="0">
-      <skipped/>
+<testsuites name="jest tests" tests="4" failures="0" errors="0" time="24.232">
+  <testsuite name="blockbyHeight - suite test block service" errors="0" failures="0" skipped="0" timestamp="2022-03-31T17:40:47" time="20.555" tests="4">
+    <testcase classname="blockbyHeight - suite test block service blockbyHeight - block testing error, passing -1 number" name="blockbyHeight - suite test block service blockbyHeight - block testing error, passing -1 number" time="0.008">
     </testcase>
-    <testcase classname="test block service - validation errors blockHeight - block testing error, passing i32Max " name="test block service - validation errors blockHeight - block testing error, passing i32Max " time="0.014">
+    <testcase classname="blockbyHeight - suite test block service blockbyHeight - block testing error, passing i32Max " name="blockbyHeight - suite test block service blockbyHeight - block testing error, passing i32Max " time="0.002">
+    </testcase>
+    <testcase classname="blockbyHeight - suite test block service blockbyHeight - receive number 10 param to get fetch" name="blockbyHeight - suite test block service blockbyHeight - receive number 10 param to get fetch" time="1.205">
+    </testcase>
+    <testcase classname="blockbyHeight - suite test block service blockbyHeight - block testing error, passing -100 number" name="blockbyHeight - suite test block service blockbyHeight - block testing error, passing -100 number" time="0.001">
     </testcase>
   </testsuite>
 </testsuites>

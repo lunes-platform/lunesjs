@@ -43,7 +43,7 @@ export interface IBlock {
 
 export interface IBlockError {
     status: string
-    mensagem: string
+    message: string
 }
 
 /*

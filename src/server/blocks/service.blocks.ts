@@ -5,36 +5,28 @@ const BASEURL = "https://lunesnode.lunes.io/blocks/"
 
 /*
  * This function get blockchain `height` e return a full block
+ * --- validation: zero number, big number and string type
  */
+
 export async function blockByHeight(
     height: number
 ): Promise<IBlock | IBlockError> {
-    const url = `https://lunesnode.lunes.io/blocks/at/${height}`
+    //const url = `https://lunesnode.lunes.io/blocks/at/${height}`
+    const url = `${BASEURL}at/${height}`
 
-    //verificar o erro, número negativo, string e retonar o erro!
-    //pesquisar tratamento de erros
-    //se o número for negativo ou maior que o bloco atual, retorna o erro throw error - estudar try catch - reponse dentor do try, erro dentro do catch
-    //promise a partir do axios
-
-    //return await axios.get(url).then(response => response.data).catch(error => error)
-
-    // passar o zero
-    // passar numero grande
-    // passar número negativo
-    // -- FAZER a validação de string
     const i32Max = 2147483647
 
     if (height <= 0 || height >= i32Max) {
         const error: IBlockError = {
-            status: `erro`,
-            mensagem: `o bloco não pode ser menor ou igual a zero ou maior ou igual 2147483647 `
+            status: `error`,
+            message: `the block cannot be less than or equal to zero or greater than or equal 2147483647`
         }
         return error
-        //throw new  (`Invalid block.`, 404 );
+        //throw new error (`Invalid block.`, 404 );
     } else if (typeof height === "string") {
         const error: IBlockError = {
-            status: `erro`,
-            mensagem: `o bloco não pode receber tipo string `
+            status: `error`,
+            message: `block cannot receive string type `
         }
         return error
     } else {
@@ -43,16 +35,10 @@ export async function blockByHeight(
             if (response.status === 200) {
                 resolve(response.data)
             } else {
-                //reject("deu pau")
                 reject(response.data)
             }
         })
-    } //
-
-    // return response.data
-    // The requested resource could not be found but may be available again in the future.
-
-    //erro 404
+    }
 }
 
 /*
