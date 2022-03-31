@@ -45,15 +45,36 @@ export async function blockByHeight(
  * This function get a blockchain height
  */
 export async function blockHeight(): Promise<any> {
-    const response = await axios.get(`https://lunesnode.lunes.io/blocks/height`)
-    //return response.data;
-    return response.data
+    //const url = `https://lunesnode.lunes.io/blocks/height`;
+    const url = `${BASEURL}height`
+    //const response = await axios.get(`${url}`)
+    //return response.data
+
+    return new Promise(async (resolve, reject) => {
+        const response = await axios.get(url)
+        if (
+            response.status === 404 ||
+            response.status === 401 ||
+            response.status === 403 ||
+            response.status === 501
+        ) {
+            const error: IBlockError = {
+                status: `error`,
+                message: `system error, come back later`
+            }
+            return error
+        } else if (response.status === 200) {
+            resolve(response.data)
+        } else {
+            reject(response.data)
+        }
+    })
 }
 
 /*
 * Average delay in milliseconds between last blockNum blocks starting from block with signature
-    signature = signature block
-    blockNum = 1 to 9
+*   signature = signature block
+*   blockNum = 1 to 9
 */
 
 export async function blockAverageDelay(

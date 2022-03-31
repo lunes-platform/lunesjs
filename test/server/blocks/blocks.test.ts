@@ -16,10 +16,6 @@ import {
 } from "../../../src/server/blocks/service.blocks"
 
 describe("test block service", () => {
-
-
-
-
     it("see Average delay ", async () => {
         const result = await blockAverageDelay(
             "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",

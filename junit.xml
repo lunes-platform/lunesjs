@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="5" failures="0" errors="0" time="26.945">
-  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="4" timestamp="2022-03-31T18:09:34" time="20.039" tests="5">
+<testsuites name="jest tests" tests="5" failures="0" errors="0" time="29.734">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="4" timestamp="2022-03-31T20:30:58" time="24.05" tests="5">
     <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0">
       <skipped/>
     </testcase>
@@ -13,7 +13,7 @@
     <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -100 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -100 number" time="0">
       <skipped/>
     </testcase>
-    <testcase classname="blockHeight function - suite test block service see height block from node " name="blockHeight function - suite test block service see height block from node " time="1.371">
+    <testcase classname="blockHeight function - suite test block service blockHeight - see height block from node " name="blockHeight function - suite test block service blockHeight - see height block from node " time="1.07">
     </testcase>
   </testsuite>
 </testsuites>

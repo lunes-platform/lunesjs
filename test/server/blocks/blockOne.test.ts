@@ -1,5 +1,8 @@
 import { IBlockError } from "../../../src/server/blocks/block.types"
-import { blockByHeight, blockHeight } from "../../../src/server/blocks/service.blocks"
+import {
+    blockByHeight,
+    blockHeight
+} from "../../../src/server/blocks/service.blocks"
 
 describe("blockByHeight function- suite test block service", () => {
     it("blockByHeight - block testing error, passing -1 number", async () => {
@@ -74,7 +77,6 @@ describe("blockByHeight function- suite test block service", () => {
 })
 
 describe("blockHeight function - suite test block service", () => {
-
     it("blockHeight - see height block from node ", async () => {
         const result = await blockHeight()
         //expect(200);
@@ -89,5 +91,5 @@ describe("blockHeight function - suite test block service", () => {
             height: expect.any(Number)
         })
     })
-
 })
+
