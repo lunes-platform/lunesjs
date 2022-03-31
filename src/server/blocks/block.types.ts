@@ -34,3 +34,36 @@ export interface IBlock {
     header: IHeader
     body: Array<ITransaction>
 }
+
+/*{
+    "status": "error",
+    "details": "No block for this height"
+  }
+  */
+
+export interface IBlockError {
+    status: string
+    mensagem: string
+}
+
+/*
+ export class IError extends Error{
+
+    public readonly status: string;
+    public readonly code: number;
+
+    constructor  ( status:string, code:number) {
+        super();
+        
+        this.status = status;
+        this.code = code;
+        Object.setPrototypeOf(this, new.target.prototype);
+        Error.captureStackTrace(this);
+    }
+
+ }
+*/
+
+//    super(description);
+//Object.setPrototypeOf(this, new.target.prototype);
+//Error.captureStackTrace(this);

@@ -1,31 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="13" failures="0" errors="0" time="43.715">
-  <testsuite name="test block service" errors="0" failures="0" skipped="0" timestamp="2022-03-25T15:11:22" time="37.813" tests="13">
-    <testcase classname="test block service receive number 10 param to get fetch" name="test block service receive number 10 param to get fetch" time="0.979">
+<testsuites name="jest tests" tests="2" failures="0" errors="0" time="21.996">
+  <testsuite name="test block service - validation errors" errors="0" failures="0" skipped="1" timestamp="2022-03-31T02:03:43" time="19.368" tests="2">
+    <testcase classname="test block service - validation errors blockHeight - block testing error, passing -1 number" name="test block service - validation errors blockHeight - block testing error, passing -1 number" time="0">
+      <skipped/>
     </testcase>
-    <testcase classname="test block service see height block from node " name="test block service see height block from node " time="0.591">
-    </testcase>
-    <testcase classname="test block service see Average delay " name="test block service see Average delay " time="0.583">
-    </testcase>
-    <testcase classname="test block service Get block at specified heights " name="test block service Get block at specified heights " time="0.599">
-    </testcase>
-    <testcase classname="test block service Get last block data " name="test block service Get last block data " time="0.575">
-    </testcase>
-    <testcase classname="test block service Get children of specified block " name="test block service Get children of specified block " time="0.559">
-    </testcase>
-    <testcase classname="test block service Get height of a block by its Base58-encoded signature " name="test block service Get height of a block by its Base58-encoded signature " time="0.354">
-    </testcase>
-    <testcase classname="test block service Get block at specified height without transactions payload " name="test block service Get block at specified height without transactions payload " time="0.587">
-    </testcase>
-    <testcase classname="test block service blockSeqHeaderOnly test " name="test block service blockSeqHeaderOnly test " time="0.571">
-    </testcase>
-    <testcase classname="test block service blockLastHeaderOnly test " name="test block service blockLastHeaderOnly test " time="0.379">
-    </testcase>
-    <testcase classname="test block service blockSignature test" name="test block service blockSignature test" time="0.374">
-    </testcase>
-    <testcase classname="test block service blockFirst test " name="test block service blockFirst test " time="0.371">
-    </testcase>
-    <testcase classname="test block service blockAddress test " name="test block service blockAddress test " time="0.367">
+    <testcase classname="test block service - validation errors blockHeight - block testing error, passing i32Max " name="test block service - validation errors blockHeight - block testing error, passing i32Max " time="0.014">
     </testcase>
   </testsuite>
 </testsuites>
