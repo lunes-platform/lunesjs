@@ -1,8 +1,8 @@
 import { IBlockError } from "../../../src/server/blocks/block.types"
-import { blockByHeight } from "../../../src/server/blocks/service.blocks"
+import { blockByHeight, blockHeight } from "../../../src/server/blocks/service.blocks"
 
-describe("blockbyHeight - suite test block service", () => {
-    it("blockbyHeight - block testing error, passing -1 number", async () => {
+describe("blockByHeight function- suite test block service", () => {
+    it("blockByHeight - block testing error, passing -1 number", async () => {
         // const result = await blockByHeight(-1);
         // expect(result).toEqual(1);
         // expect().toEqual(error);
@@ -37,7 +37,7 @@ describe("blockbyHeight - suite test block service", () => {
         })
     })
 
-    it("blockbyHeight - receive number 10 param to get fetch", async () => {
+    it("blockByHeight- receive number 10 param to get fetch", async () => {
         const result = await blockByHeight(10)
         expect(result).toStrictEqual({
             version: 3,
@@ -61,7 +61,7 @@ describe("blockbyHeight - suite test block service", () => {
         })
     })
 
-    it("blockbyHeight - block testing error, passing -100 number", async () => {
+    it("blockByHeight - block testing error, passing -100 number", async () => {
         try {
             const result = await blockByHeight(-100)
         } catch (error) {
@@ -71,4 +71,23 @@ describe("blockbyHeight - suite test block service", () => {
             expect(error).toHaveProperty("status")
         }
     })
+})
+
+describe("blockHeight function - suite test block service", () => {
+
+    it("blockHeight - see height block from node ", async () => {
+        const result = await blockHeight()
+        //expect(200);
+        //expect(result.statusCode).toEqual(200);
+        /*expect(result).toBeCalledWith(
+                expect.objectContaining({
+                height: expect.any(Number),
+                }),
+            );*/ // estudar melhor o código
+
+        expect(result).toMatchObject({
+            height: expect.any(Number)
+        })
+    })
+
 })

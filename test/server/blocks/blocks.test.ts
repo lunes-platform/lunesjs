@@ -18,20 +18,7 @@ import {
 describe("test block service", () => {
 
 
-    it("see height block from node ", async () => {
-        const result = await blockHeight()
-        //expect(200);
-        //expect(result.statusCode).toEqual(200);
-        /*expect(result).toBeCalledWith(
-                expect.objectContaining({
-                height: expect.any(Number),
-                }),
-            );*/ // estudar melhor o código
 
-        expect(result).toMatchObject({
-            height: expect.any(Number)
-        })
-    })
 
     it("see Average delay ", async () => {
         const result = await blockAverageDelay(
