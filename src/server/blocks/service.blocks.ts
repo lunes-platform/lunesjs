@@ -68,8 +68,8 @@ export async function blockHeight(): Promise<any> {
 
 /*
  * Average delay in milliseconds between last blockNum blocks starting from block with signature
- *   signature = signature block - Base58-encoded signature
- *   blockNum = 1 to 9 - Number of blocks to count delay
+ * --- signature = signature block - Base58-encoded signature
+ * --- blockNum = 1 to 9 - Number of blocks to count delay
  */
 
 export async function blockAverageDelay(
@@ -102,13 +102,46 @@ export async function blockAverageDelay(
 
 /*
  * Get block at specified heights
+* max value (from) (to) 1 - 100 (99 difference)
+* from value < to value
+* `https://lunesnode.lunes.io/blocks/seq/${from}/${to}`
  */
-//GET /blocks/seq/{from}/{to}
-export async function blockSeq(from: number, to: number): Promise<IBlock> {
-    const response = await axios.get(
-        `https://lunesnode.lunes.io/blocks/seq/${from}/${to}`
-    )
-    return response.data
+
+export async function blockSeq(from: number, to: number): Promise<IBlock | IBlockError> {
+    const url = `${BASEURL}seq/${from}/${to}`
+    //`https://lunesnode.lunes.io/blocks/seq/${from}/${to}`
+    const Max: boolean = (to - from) < 100 
+
+    if ( from > to || Max === false){
+        const error: IBlockError = {
+            status: `error`,
+            message: `Too big sequences requested OR {from} cannot be bigger than {to}, change it`
+        }  
+        return error
+
+    } else {   
+        const response = await axios.get(url)
+        return response.data}
+
+  /*  if (Max === true && from < to){
+
+        const response = await axios.get(url)
+        return response.data
+
+    }
+*/
+
+
+
+/*
+    //`https://lunesnode.lunes.io/blocks/seq/${from}/${to}`
+    const Max: boolean = (to - from) < 100 
+
+    if ( Max === true && from < to ){
+        const response = await axios.get(url)
+        return response.data
+    }
+*/    
 }
 
 /*

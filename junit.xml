@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="7" failures="0" errors="0" time="23.916">
-  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="5" timestamp="2022-04-01T17:05:43" time="20.877" tests="7">
+<testsuites name="jest tests" tests="11" failures="0" errors="0" time="12.128">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="7" timestamp="2022-04-01T23:48:51" time="9.961" tests="11">
     <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0">
       <skipped/>
     </testcase>
@@ -16,9 +16,19 @@
     <testcase classname="blockHeight function - suite test block service blockHeight - see height block from node " name="blockHeight function - suite test block service blockHeight - see height block from node " time="0">
       <skipped/>
     </testcase>
-    <testcase classname="blockAverageDelay function - suite test block service blockAverageDelay - see Average delay " name="blockAverageDelay function - suite test block service blockAverageDelay - see Average delay " time="1.556">
+    <testcase classname="blockAverageDelay function - suite test block service blockAverageDelay - see Average delay " name="blockAverageDelay function - suite test block service blockAverageDelay - see Average delay " time="0">
+      <skipped/>
     </testcase>
-    <testcase classname="blockAverageDelay function - suite test block service blockAverageDelay - blockNum &gt;9 error " name="blockAverageDelay function - suite test block service blockAverageDelay - blockNum &gt;9 error " time="0.004">
+    <testcase classname="blockAverageDelay function - suite test block service blockAverageDelay - blockNum &gt;9 error " name="blockAverageDelay function - suite test block service blockAverageDelay - blockNum &gt;9 error " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="blockSeq function - suite test block service blockSeq - Get block at specified heights " name="blockSeq function - suite test block service blockSeq - Get block at specified heights " time="0.815">
+    </testcase>
+    <testcase classname="blockSeq function - suite test block service blockSeq - from &gt; to error " name="blockSeq function - suite test block service blockSeq - from &gt; to error " time="0.001">
+    </testcase>
+    <testcase classname="blockSeq function - suite test block service blockSeq - big sequences " name="blockSeq function - suite test block service blockSeq - big sequences " time="0.001">
+    </testcase>
+    <testcase classname="blockSeq function - suite test block service blockSeq - max === false " name="blockSeq function - suite test block service blockSeq - max === false " time="0.003">
     </testcase>
   </testsuite>
 </testsuites>
