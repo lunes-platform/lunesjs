@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="5" failures="0" errors="0" time="29.734">
-  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="4" timestamp="2022-03-31T20:30:58" time="24.05" tests="5">
+<testsuites name="jest tests" tests="7" failures="0" errors="0" time="23.916">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="5" timestamp="2022-04-01T17:05:43" time="20.877" tests="7">
     <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0">
       <skipped/>
     </testcase>
@@ -13,7 +13,12 @@
     <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -100 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -100 number" time="0">
       <skipped/>
     </testcase>
-    <testcase classname="blockHeight function - suite test block service blockHeight - see height block from node " name="blockHeight function - suite test block service blockHeight - see height block from node " time="1.07">
+    <testcase classname="blockHeight function - suite test block service blockHeight - see height block from node " name="blockHeight function - suite test block service blockHeight - see height block from node " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="blockAverageDelay function - suite test block service blockAverageDelay - see Average delay " name="blockAverageDelay function - suite test block service blockAverageDelay - see Average delay " time="1.556">
+    </testcase>
+    <testcase classname="blockAverageDelay function - suite test block service blockAverageDelay - blockNum &gt;9 error " name="blockAverageDelay function - suite test block service blockAverageDelay - blockNum &gt;9 error " time="0.004">
     </testcase>
   </testsuite>
 </testsuites>

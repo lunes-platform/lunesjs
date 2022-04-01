@@ -11,7 +11,6 @@ const BASEURL = "https://lunesnode.lunes.io/blocks/"
 export async function blockByHeight(
     height: number
 ): Promise<IBlock | IBlockError> {
-    //const url = `https://lunesnode.lunes.io/blocks/at/${height}`
     const url = `${BASEURL}at/${height}`
 
     const i32Max = 2147483647
@@ -22,7 +21,6 @@ export async function blockByHeight(
             message: `the block cannot be less than or equal to zero or greater than or equal 2147483647`
         }
         return error
-        //throw new error (`Invalid block.`, 404 );
     } else if (typeof height === "string") {
         const error: IBlockError = {
             status: `error`,
@@ -45,10 +43,7 @@ export async function blockByHeight(
  * This function get a blockchain height
  */
 export async function blockHeight(): Promise<any> {
-    //const url = `https://lunesnode.lunes.io/blocks/height`;
     const url = `${BASEURL}height`
-    //const response = await axios.get(`${url}`)
-    //return response.data
 
     return new Promise(async (resolve, reject) => {
         const response = await axios.get(url)
@@ -72,19 +67,37 @@ export async function blockHeight(): Promise<any> {
 }
 
 /*
-* Average delay in milliseconds between last blockNum blocks starting from block with signature
-*   signature = signature block
-*   blockNum = 1 to 9
-*/
+ * Average delay in milliseconds between last blockNum blocks starting from block with signature
+ *   signature = signature block - Base58-encoded signature
+ *   blockNum = 1 to 9 - Number of blocks to count delay
+ */
 
 export async function blockAverageDelay(
     signature: string,
     blockNum: number
 ): Promise<any> {
-    const response = await axios.get(
-        `https://lunesnode.lunes.io/blocks/delay/${signature}/${blockNum}`
-    )
-    return response.data
+    const url = `${BASEURL}delay/${signature}/${blockNum}`
+
+    if (blockNum <= 0 || blockNum > 9) {
+        const error: IBlockError = {
+            status: `error`,
+            message: `the blockNum cannot be less than or equal to zero or greater than nine`
+        }
+        return error;
+    }
+    else  {
+
+        //const response = await axios.get(url)
+        //return response.data
+        return new Promise(async (resolve, reject) => {
+            const response = await axios.get(url)
+            if (response.status === 200) {
+                resolve(response.data)
+            } else {
+                reject(response.data)
+            }
+        })
+    }
 }
 
 /*

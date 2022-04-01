@@ -1,7 +1,7 @@
 import { IBlockError } from "../../../src/server/blocks/block.types"
 import {
     blockByHeight,
-    blockHeight
+    blockHeight, blockAverageDelay
 } from "../../../src/server/blocks/service.blocks"
 
 describe("blockByHeight function- suite test block service", () => {
@@ -79,17 +79,33 @@ describe("blockByHeight function- suite test block service", () => {
 describe("blockHeight function - suite test block service", () => {
     it("blockHeight - see height block from node ", async () => {
         const result = await blockHeight()
-        //expect(200);
-        //expect(result.statusCode).toEqual(200);
-        /*expect(result).toBeCalledWith(
-                expect.objectContaining({
-                height: expect.any(Number),
-                }),
-            );*/ // estudar melhor o código
-
         expect(result).toMatchObject({
             height: expect.any(Number)
         })
     })
 })
 
+
+describe("blockAverageDelay function - suite test block service", () => {
+    it("blockAverageDelay - see Average delay ", async () => {
+        const result = await blockAverageDelay(
+            "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
+            1
+        )
+        expect(result).toMatchObject({
+        delay: expect.any(Number)
+        })
+    })
+
+    it("blockAverageDelay - blockNum >9 error ", async () => {
+        const result = await blockAverageDelay(
+            "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
+            10
+        )
+       // expect(result).toMatchObject({
+       // delay: expect.any(Number)
+       // })
+       expect(result).toEqual({"message": "the blockNum cannot be less than or equal to zero or greater than nine", "status": "error"});
+    })
+
+})
