@@ -1,5 +1,5 @@
-# Proposal Issue *Name*
+# Proposal Issue _Name_
 
-## *What* should this issue solve?
+## _What_ should this issue solve?
 
-## *How* should this issue solve?
+## _How_ should this issue solve?

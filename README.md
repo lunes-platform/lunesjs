@@ -6,7 +6,7 @@
 
 # LunesJS
 
-- Built from the WebAssembly Library for communication with nodes on the mainnet or testnet of the lunes-blockchain network Allows automation of asset submission, final issuance of token reissue, leasing, registration and creation of a new wallet.
+-   Built from the WebAssembly Library for communication with nodes on the mainnet or testnet of the lunes-blockchain network Allows automation of asset submission, final issuance of token reissue, leasing, registration and creation of a new wallet.
 
 [![Build](https://github.com/lunes-platform/lunesjs/actions/workflows/build.yml/badge.svg)](https://github.com/lunes-platform/lunesjs/actions/workflows/build.yml)
 [![Test](https://github.com/lunes-platform/lunesjs/actions/workflows/test.yml/badge.svg)](https://github.com/lunes-platform/lunesjs/actions/workflows/test.yml)
