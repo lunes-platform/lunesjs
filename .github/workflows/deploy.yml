@@ -2,7 +2,7 @@ name: Deploy LunesJs on NPM
 
 on:
     push:
-        branches: [main]
+        branches: [auto-deploy]
 
 jobs:
     deploy-npm:
