@@ -12,6 +12,7 @@
     "author": "lunes-platform",
     "license": "SEE LICENSE IN ./LICENSE",
     "scripts": {
+        "fmtc": "prettier -c",
         "fmt": "prettier -w .",
         "test": "yarn jest"
     },
