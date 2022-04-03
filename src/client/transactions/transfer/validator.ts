@@ -15,8 +15,10 @@ const validator = {
         fee: number,
         recipient: string
     ): Array<number> => {
-        const tokenId = assetId != "" ? [1, ...wasm.base58ToArray(assetId)] : [0]
-        const tokenFee = feeAsset != "" ? [1, ...wasm.base58ToArray(feeAsset)] : [0]
+        const tokenId =
+            assetId != "" ? [1, ...wasm.base58ToArray(assetId)] : [0]
+        const tokenFee =
+            feeAsset != "" ? [1, ...wasm.base58ToArray(feeAsset)] : [0]
         return [
             ...[TransactionsTypes.TransferToken.int],
             ...wasm.base58ToArray(senderPublicKey),
