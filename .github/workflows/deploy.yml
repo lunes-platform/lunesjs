@@ -1,11 +1,11 @@
-name: Deploy LunesJs on NPM
+name: Deploy
 
 on:
     push:
         branches: [main]
 
 jobs:
-    fmt:
+    lint:
       runs-on: ubuntu-latest
 
       steps:
@@ -34,7 +34,7 @@ jobs:
 
     deploy-npm:
         runs-on: ubuntu-latest
-        needs: [fmt, test]
+        needs: [lint, test]
 
         steps:
             - uses: actions/checkout@v1
