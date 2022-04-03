@@ -55,7 +55,7 @@ describe("Transfer Token Suite", () => {
     })
 
     it("Serialize Transfer Transaction ", () => {
-        expect(wasm.vecToB58(Uint8Array.from(message))).toEqual(
+        expect(wasm.arrayToBase58(Uint8Array.from(message))).toEqual(
             "2J2EfWqeqbH17PC5yfioAeQ5h27J76uduH5nafAUuJhKb8gHCSqpDFV4oGgWPwQkBgg9tfQjatWZu8eiYYe6NF67Sd5Hf7ieAsaZT5hZow9xgjefbfs5"
         )
         expect(message).toEqual([
@@ -86,9 +86,9 @@ describe("Transfer Token Suite", () => {
         expect(tx.transaction().signature).not.toBe("")
 
         const result = wasm.validateSignature(
-            wasm.toVecu32(wasm.b58ToVec(senderAccount.publicKey)),
-            new Uint32Array(message),
-            wasm.toVecu32(wasm.b58ToVec(sign))
+            wasm.base58ToArray(senderAccount.publicKey),
+            new Uint8Array(message),
+            wasm.base58ToArray(sign)
         )
         expect(result).toBe(true)
     })

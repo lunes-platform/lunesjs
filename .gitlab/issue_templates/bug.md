@@ -1,4 +1,4 @@
-# Bug Issue *Error Name*
+# Bug Issue _Error Name_
 
 ## Expected behavior
 
@@ -8,6 +8,6 @@
 
 ## Your Setup
 
-- Version Application
-- OS Version
-- And more...
+-   Version Application
+-   OS Version
+-   And more...

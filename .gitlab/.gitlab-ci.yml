@@ -4,7 +4,7 @@ stages:
     - test
 
 before_script:
-  - yarn install
+    - yarn install
 
 CreateReportTests:
     stage: test

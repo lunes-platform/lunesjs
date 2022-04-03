@@ -1,0 +1,27 @@
+name: Deploy LunesJs on NPM
+
+on:
+    push:
+        branches: [main]
+
+jobs:
+    deploy-npm:
+        runs-on: ubuntu-latest
+
+        # needs: format-checker
+        # needs: unit-test
+
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: 16
+                  registry-url: https://registry.npmjs.org/
+
+            - name: Packing Dependencies
+            - run: npm pack
+
+            - name: Publishing in NPM
+            - run: npm publish
+              env:
+                  NODE_AUTH_TOKEN: ${{secrets.npm_token}}

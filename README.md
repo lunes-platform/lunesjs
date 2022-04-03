@@ -6,10 +6,10 @@
 
 # LunesJS
 
-- Built from the WebAssembly Library for communication with nodes on the mainnet or testnet of the lunes-blockchain network Allows automation of asset submission, final issuance of token reissue, leasing, registration and creation of a new wallet.
+-   Built from the WebAssembly Library for communication with nodes on the mainnet or testnet of the lunes-blockchain network Allows automation of asset submission, final issuance of token reissue, leasing, registration and creation of a new wallet.
 
-[![Build](https://github.com/lunes-platform/lunesjs/actions/workflows/build.yml/badge.svg)](https://github.com/lunes-platform/lunesjs/actions/workflows/build.yml)
-[![Test](https://github.com/lunes-platform/lunesjs/actions/workflows/test.yml/badge.svg)](https://github.com/lunes-platform/lunesjs/actions/workflows/test.yml)
+[![Test](https://github.com/lunes-platform/lunesjs/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/lunes-platform/lunesjs/actions/workflows/test.yml)
+[![Format Checker](https://github.com/lunes-platform/lunesjs/actions/workflows/fmt.yml/badge.svg?branch=main)](https://github.com/lunes-platform/lunesjs/actions/workflows/fmt.yml)
 [![Stars](https://img.shields.io/github/stars/lunes-platform/lunesjs?color=blueviolet)](https://github.com/lunes-platform/lunesjs/stargazers)
 [![Release](https://img.shields.io/github/v/release/lunes-platform/lunesjs)](https://github.com/lunes-platform/lunesjs/releases)
 [![License](https://img.shields.io/github/license/lunes-platform/lunesjs?color=blueviolet)](LICENSE)

@@ -252,16 +252,26 @@ describe("Create Signatures", () => {
         })
     }
     const message = [
-        wasm.stringToB58("Hello, Lunes Signature!"),
-        wasm.stringToB58(
-            "This is a new test for validate Signatures in Lunes Cryptography"
+        wasm.arrayToBase58(wasm.serializeString("Hello, Lunes Signature!")),
+        wasm.arrayToBase58(
+            wasm.serializeString(
+                "This is a new test for validate Signatures in Lunes Cryptography"
+            )
         ),
-        wasm.stringToB58("Let's do some more tests just in case"),
-        wasm.stringToB58("One more to see if everything is working well"),
-        wasm.stringToB58(
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
+        wasm.arrayToBase58(
+            wasm.serializeString("Let's do some more tests just in case")
+        ),
+        wasm.arrayToBase58(
+            wasm.serializeString(
+                "One more to see if everything is working well"
+            )
+        ),
+        wasm.arrayToBase58(
+            wasm.serializeString(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
         Maecenas turpis felis, gravida eget dapibus quis, molestie at mi. \
         Phasellus quis mollis nulla. Nam euismod nec diam in viverra."
+            )
         )
     ]
 
