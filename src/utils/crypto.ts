@@ -9,37 +9,37 @@ const cryptoUtils = {
         chain: WalletTypes.Chain
     ): IAccount => {
         const hidden_seed = wasm.hiddenSeed(nonce, seed)
-        const privateKey = wasm.toPrivateKeyHex(wasm.fromStrHex(hidden_seed))
-        const publicKey = wasm.toPublicKeyHex(wasm.fromStrHex(privateKey))
-        const address = wasm.toAddressHex(1, chain, wasm.fromStrHex(publicKey))
+        const privateKey = wasm.toPrivateKey(hidden_seed)
+        const publicKey = wasm.toPublicKey(privateKey)
+        const address = wasm.toAddress(1, chain, publicKey)
 
         return {
             nonce: nonce,
             chain: chain,
             seed: seed,
-            privateKey: wasm.hexToB58(privateKey),
-            publicKey: wasm.hexToB58(publicKey),
-            address: wasm.hexToB58(address)
+            privateKey: wasm.arrayToBase58(privateKey),
+            publicKey: wasm.arrayToBase58(publicKey),
+            address: wasm.arrayToBase58(address)
         }
     },
     fromPrivateKey: (
         privateKey: string,
         chain: WalletTypes.Chain
     ): IAccount => {
-        const publicKey = wasm.toPublicKeyHex(wasm.b58ToVec(privateKey))
-        const address = wasm.toAddressHex(1, chain, wasm.fromStrHex(publicKey))
+        const publicKey = wasm.toPublicKey(wasm.base58ToArray(privateKey))
+        const address = wasm.toAddress(1, chain, publicKey)
 
         return {
             seed: "",
             nonce: 0,
             chain: chain,
             privateKey: privateKey,
-            publicKey: wasm.hexToB58(publicKey),
-            address: wasm.hexToB58(address)
+            publicKey: wasm.arrayToBase58(publicKey),
+            address: wasm.arrayToBase58(address)
         }
     },
     fromPublicKey: (publicKey: string, chain: WalletTypes.Chain): IAccount => {
-        const address = wasm.toAddressHex(1, chain, wasm.b58ToVec(publicKey))
+        const address = wasm.toAddress(1, chain, wasm.base58ToArray(publicKey))
 
         return {
             seed: "",
@@ -47,7 +47,7 @@ const cryptoUtils = {
             privateKey: "",
             chain: chain,
             publicKey: publicKey,
-            address: wasm.hexToB58(address)
+            address: wasm.arrayToBase58(address)
         }
     },
     fromAddress: (address: string, chain: WalletTypes.Chain): IAccount => {
@@ -75,7 +75,7 @@ const cryptoUtils = {
         return cryptoUtils.fromExistingSeed(seed.join(" "), nonce, chain)
     },
     validateAddress: (address: string, chain: WalletTypes.Chain): boolean => {
-        return wasm.validateAddress(chain, wasm.b58ToVec(address))
+        return wasm.validateAddress(chain, wasm.base58ToArray(address))
     },
     validateSignature: (
         publicKey: string,
@@ -83,28 +83,24 @@ const cryptoUtils = {
         signature: string
     ): boolean => {
         return wasm.validateSignature(
-            wasm.toVecu32(wasm.b58ToVec(publicKey)),
-            wasm.toVecu32(wasm.b58ToVec(message)),
-            wasm.toVecu32(wasm.b58ToVec(signature))
+            wasm.base58ToArray(publicKey),
+            wasm.base58ToArray(message),
+            wasm.base58ToArray(signature)
         )
     },
     fastSignature: (privateKey: string, message: string) => {
-        return wasm.hexToB58(
-            wasm.vecu32ToHex(
-                wasm.fastSignature(
-                    wasm.toVecu32(wasm.b58ToVec(privateKey)),
-                    wasm.toVecu32(wasm.b58ToVec(message))
-                )
+        return wasm.arrayToBase58(
+            wasm.fastSignature(
+                wasm.base58ToArray(privateKey),
+                wasm.base58ToArray(message)
             )
         )
     },
     fullSignature: (privateKey: string, message: string) => {
-        return wasm.hexToB58(
-            wasm.vecu32ToHex(
-                wasm.fullSignature(
-                    wasm.toVecu32(wasm.b58ToVec(privateKey)),
-                    wasm.toVecu32(wasm.b58ToVec(message))
-                )
+        return wasm.arrayToBase58(
+            wasm.fullSignature(
+                wasm.base58ToArray(privateKey),
+                wasm.base58ToArray(message)
             )
         )
     }

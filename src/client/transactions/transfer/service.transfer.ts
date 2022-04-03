@@ -48,8 +48,8 @@ export function transferTokenFactory(
             senderPublicKey: senderPublicKey,
             recipient: recipient,
             amount: amount,
-            sender: wasm.hexToB58(
-                wasm.toAddressHex(1, chain_id, wasm.b58ToVec(senderPublicKey))
+            sender: wasm.arrayToBase58(
+                wasm.toAddress(1, chain_id, wasm.base58ToArray(senderPublicKey))
             ),
             timestamp:
                 timestamp != undefined ? timestamp : new Date().getTime(),

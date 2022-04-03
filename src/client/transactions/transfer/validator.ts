@@ -15,17 +15,17 @@ const validator = {
         fee: number,
         recipient: string
     ): Array<number> => {
-        const tokenId = assetId != "" ? [1, ...wasm.b58ToVec(assetId)] : [0]
-        const tokenFee = feeAsset != "" ? [1, ...wasm.b58ToVec(feeAsset)] : [0]
+        const tokenId = assetId != "" ? [1, ...wasm.base58ToArray(assetId)] : [0]
+        const tokenFee = feeAsset != "" ? [1, ...wasm.base58ToArray(feeAsset)] : [0]
         return [
             ...[TransactionsTypes.TransferToken.int],
-            ...wasm.b58ToVec(senderPublicKey),
+            ...wasm.base58ToArray(senderPublicKey),
             ...tokenId,
             ...tokenFee,
             ...wasm.serializeUInteger(BigInt(timestamp)),
             ...wasm.serializeUInteger(BigInt(amount)),
             ...wasm.serializeUInteger(BigInt(fee)),
-            ...wasm.b58ToVec(recipient)
+            ...wasm.base58ToArray(recipient)
         ]
     },
     ready: (
@@ -34,8 +34,8 @@ const validator = {
         amount: number,
         chain: WalletTypes.Chain
     ): boolean => {
-        const sender = wasm.hexToB58(
-            wasm.toAddressHex(1, chain, wasm.b58ToVec(senderPublicKey))
+        const sender = wasm.arrayToBase58(
+            wasm.toAddress(1, chain, wasm.base58ToArray(senderPublicKey))
         )
         if (amount <= 0) {
             return false
@@ -62,7 +62,7 @@ const validator = {
         )
         return cryptoUtils.fastSignature(
             privateKey,
-            wasm.vecToB58(new Uint8Array(message))
+            wasm.arrayToBase58(new Uint8Array(message))
         )
     },
     send: async (tx: ITransfer) => {
