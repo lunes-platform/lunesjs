@@ -7,13 +7,16 @@ on:
         branches: [main]
 
 jobs:
-    build:
-        name: Test
+    unit-test:
         runs-on: ubuntu-latest
+        needs: format-checker
+
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v3
+
             - name: Install dependencies
               run: yarn install -D
+
             - name: Test with jest
               run: yarn test
