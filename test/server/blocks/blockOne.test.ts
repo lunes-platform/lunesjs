@@ -2,7 +2,7 @@ import { IBlockError } from "../../../src/server/blocks/block.types"
 import {
     blockByHeight,
     blockHeight,
-    blockAverageDelay, blockSeq
+    blockAverageDelay, blockSeq, blockLast
 } from "../../../src/server/blocks/service.blocks"
 
 describe("blockByHeight function- suite test block service", () => {
@@ -195,4 +195,12 @@ it("blockSeq - max === false ", async () => {
     expect(result).toEqual({"message": "Too big sequences requested OR {from} cannot be bigger than {to}, change it", "status": "error"})
 })
 
+})
+
+describe("blockLast function - suite test block service", () => {
+    it("blockLast - Get last block data ", async () => {
+        const result = await blockLast()
+        expect(result).toMatchObject(result)
+        //https://stackoverflow.com/questions/47754777/jest-how-to-test-for-object-keys-and-values
+    })
 })

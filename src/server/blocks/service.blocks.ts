@@ -83,10 +83,8 @@ export async function blockAverageDelay(
             status: `error`,
             message: `the blockNum cannot be less than or equal to zero or greater than nine`
         }
-        return error;
-    }
-    else  {
-
+        return error
+    } else {
         //const response = await axios.get(url)
         //return response.data
         return new Promise(async (resolve, reject) => {
@@ -102,54 +100,58 @@ export async function blockAverageDelay(
 
 /*
  * Get block at specified heights
-* max value (from) (to) 1 - 100 (99 difference)
-* from value < to value
-* `https://lunesnode.lunes.io/blocks/seq/${from}/${to}`
+ * max value (from) (to) 1 - 100 (99 difference)
+ * from value < to value
+ * `https://lunesnode.lunes.io/blocks/seq/${from}/${to}`
  */
 
-export async function blockSeq(from: number, to: number): Promise<IBlock | IBlockError> {
+export async function blockSeq(
+    from: number,
+    to: number
+): Promise<IBlock | IBlockError> {
     const url = `${BASEURL}seq/${from}/${to}`
     //`https://lunesnode.lunes.io/blocks/seq/${from}/${to}`
-    const Max: boolean = (to - from) < 100 
+    const Max: boolean = to - from < 100
 
-    if ( from > to || Max === false){
+    if (from > to || Max === false) {
         const error: IBlockError = {
             status: `error`,
             message: `Too big sequences requested OR {from} cannot be bigger than {to}, change it`
-        }  
+        }
         return error
-
-    } else {   
-        const response = await axios.get(url)
-        return response.data}
-
-  /*  if (Max === true && from < to){
-
-        const response = await axios.get(url)
-        return response.data
-
-    }
-*/
-
-
-
-/*
-    //`https://lunesnode.lunes.io/blocks/seq/${from}/${to}`
-    const Max: boolean = (to - from) < 100 
-
-    if ( Max === true && from < to ){
+    } else {
         const response = await axios.get(url)
         return response.data
     }
-*/    
 }
 
 /*
  * Get last block data
  */
-export async function blockLast(): Promise<any> {
-    const response = await axios.get(`https://lunesnode.lunes.io/blocks/last`)
-    return response.data
+export async function blockLast(): Promise<any | IBlockError> {
+    const url = `${BASEURL}last`
+    return new Promise(async (resolve, reject) => {
+        const response = await axios.get(url)
+        if (
+            response.status === 404 ||
+            response.status === 401 ||
+            response.status === 403 ||
+            response.status === 501
+        ) {
+            const error: IBlockError = {
+                status: `error`,
+                message: `system error, come back later`
+            }
+            return error
+        } else if (response.status === 200) {
+            resolve(response.data)
+        } else {
+            reject(response.data)
+        }
+        //`https://lunesnode.lunes.io/blocks/last
+        //const response = await axios.get(url)
+        //return response.data
+    })
 }
 
 /*
