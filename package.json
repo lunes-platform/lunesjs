@@ -1,7 +1,7 @@
 {
     "name": "lunesjs",
-    "version": "1.5.9",
-    "description": "Li™brary for communication with nodes in mainnet or testnet of the lunes-blockchain network",
+    "version": "1.5.10",
+    "description": "Library for communication with nodes in mainnet or testnet of the lunes-blockchain network",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "files": [
@@ -34,6 +34,6 @@
     },
     "dependencies": {
         "axios": "^0.26.1",
-        "lunesrs": "1.8.1"
+        "lunesrs": "^1.8.2"
     }
 }
