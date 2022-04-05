@@ -1,9 +1,15 @@
 {
     "name": "lunesjs",
-    "version": "1.5.8",
-    "description": "Library for communication with nodes in mainnet or testnet of the lunes-blockchain network",
-    "main": "dist/**/*.js",
-    "types": "dist/**/*/*.d.ts",
+    "version": "1.5.9",
+    "description": "Li™brary for communication with nodes in mainnet or testnet of the lunes-blockchain network",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "/dist",
+        "LICENSE",
+        "README.md",
+        "package.json"
+    ],
     "repository": "git@git.lunes.io:blockchain/labs/lunesjs.git",
     "keywords": [
         "blockchain",
