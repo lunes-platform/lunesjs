@@ -44,7 +44,8 @@ describe("Transfer Token Suite", () => {
         recipientAccount.address,
         100000000000,
         undefined,
-        1648349834003
+        undefined,
+        1648349834003,
     )
 
     it("Create a Transfer Transaction", () => {
