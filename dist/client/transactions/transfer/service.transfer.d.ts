@@ -8,5 +8,5 @@ declare class TransferToken implements BaseTransaction {
     sign(privateKey: WalletTypes.PrivateKey): ITransfer;
     send(): Promise<void>;
 }
-export declare function transferTokenFactory(senderPublicKey: string, recipient: string, amount: number, chain?: WalletTypes.Chain, timestamp?: number, feeAsset?: string, assetId?: string, fee?: number): TransferToken;
+export declare function transferTokenFactory(senderPublicKey: string, recipient: string, amount: number, assetId?: string, chain?: WalletTypes.Chain, timestamp?: number, feeAsset?: string, fee?: number): TransferToken;
 export {};

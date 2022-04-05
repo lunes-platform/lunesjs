@@ -57,7 +57,7 @@ class TransferToken {
         });
     }
 }
-function transferTokenFactory(senderPublicKey, recipient, amount, chain, timestamp, feeAsset, assetId, fee) {
+function transferTokenFactory(senderPublicKey, recipient, amount, assetId, chain, timestamp, feeAsset, fee) {
     const chain_id = chain != undefined ? chain : wallet_types_1.WalletTypes.Chain.Mainnet;
     if (false == validator_1.default.ready(senderPublicKey, recipient, amount, chain_id)) {
         throw new Error("dados invalidos");

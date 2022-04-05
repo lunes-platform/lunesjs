@@ -45,7 +45,7 @@ describe("Transfer Token Suite", () => {
         100000000000,
         undefined,
         undefined,
-        1648349834003,
+        1648349834003
     )
 
     it("Create a Transfer Transaction", () => {

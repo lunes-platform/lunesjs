@@ -11,7 +11,7 @@
         "client"
     ],
     "author": "lunes-platform",
-    "license": "Apache 2.0",
+    "license": "Apache-2.0",
     "scripts": {
         "build": "tsc --declaration",
         "fmtc": "prettier -c",
