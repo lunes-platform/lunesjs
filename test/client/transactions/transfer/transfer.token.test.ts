@@ -58,14 +58,16 @@ describe("Transfer Token Suite", () => {
         expect(wasm.arrayToBase58(Uint8Array.from(message))).toEqual(
             "2J2EfWqeqbH17PC5yfioAeQ5h27J76uduH5nafAUuJhKb8gHCSqpDFV4oGgWPwQkBgg9tfQjatWZu8eiYYe6NF67Sd5Hf7ieAsaZT5hZow9xgjefbfs5"
         )
-        expect(message).toEqual([
-            4, 28, 26, 172, 20, 253, 115, 23, 6, 248, 59, 119, 129, 151, 144, 5,
-            252, 208, 116, 12, 81, 146, 227, 208, 88, 57, 27, 134, 143, 7, 76,
-            94, 8, 0, 0, 0, 0, 1, 127, 201, 78, 107, 19, 0, 0, 0, 23, 72, 118,
-            232, 0, 0, 0, 0, 0, 0, 15, 66, 64, 1, 49, 146, 80, 170, 11, 139, 27,
-            185, 41, 131, 242, 219, 45, 180, 199, 38, 41, 173, 240, 198, 30,
-            146, 73, 23, 128
-        ])
+        expect(message).toEqual(
+            new Uint8Array([
+                4, 28, 26, 172, 20, 253, 115, 23, 6, 248, 59, 119, 129, 151,
+                144, 5, 252, 208, 116, 12, 81, 146, 227, 208, 88, 57, 27, 134,
+                143, 7, 76, 94, 8, 0, 0, 0, 0, 1, 127, 201, 78, 107, 19, 0, 0,
+                0, 23, 72, 118, 232, 0, 0, 0, 0, 0, 0, 15, 66, 64, 1, 49, 146,
+                80, 170, 11, 139, 27, 185, 41, 131, 242, 219, 45, 180, 199, 38,
+                41, 173, 240, 198, 30, 146, 73, 23, 128
+            ])
+        )
         expect(rawTx).toStrictEqual({
             senderPublicKey: "2ti1GM7F7J78J347fqSWSVocueDV3RSCFkLSKqmhk35Z",
             recipient: "37xRcbn1LiT1Az4REoLhjpca93jPG1gTEwq",
