@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="14" failures="0" errors="0" time="28.109">
-  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="12" timestamp="2022-04-05T16:58:38" time="22.739" tests="14">
+<testsuites name="jest tests" tests="16" failures="0" errors="0" time="32.694">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="14" timestamp="2022-04-05T17:31:58" time="26.655" tests="16">
     <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0">
       <skipped/>
     </testcase>
@@ -37,9 +37,15 @@
     <testcase classname="blockLast function - suite test block service blockLast - Get last block data " name="blockLast function - suite test block service blockLast - Get last block data " time="0">
       <skipped/>
     </testcase>
-    <testcase classname="blockChild function - suite test block service blockChild - Get children of specified block " name="blockChild function - suite test block service blockChild - Get children of specified block " time="1.028">
+    <testcase classname="blockChild function - suite test block service blockChild - Get children of specified block " name="blockChild function - suite test block service blockChild - Get children of specified block " time="0">
+      <skipped/>
     </testcase>
-    <testcase classname="blockChild function - suite test block service blockChild - error 404 " name="blockChild function - suite test block service blockChild - error 404 " time="0.008">
+    <testcase classname="blockChild function - suite test block service blockChild - error 404 " name="blockChild function - suite test block service blockChild - error 404 " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="blockHeightEncoded function - suite test block service blockHeightEncoded - Get height of a block by its Base58-encoded signature " name="blockHeightEncoded function - suite test block service blockHeightEncoded - Get height of a block by its Base58-encoded signature " time="1.439">
+    </testcase>
+    <testcase classname="blockHeightEncoded function - suite test block service blockHeightEncoded - error 404 " name="blockHeightEncoded function - suite test block service blockHeightEncoded - error 404 " time="0.012">
     </testcase>
   </testsuite>
 </testsuites>

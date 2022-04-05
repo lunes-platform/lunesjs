@@ -2,7 +2,7 @@ import { IBlockError } from "../../../src/server/blocks/block.types"
 import {
     blockByHeight,
     blockHeight,
-    blockAverageDelay, blockSeq, blockLast, blockChild
+    blockAverageDelay, blockSeq, blockLast, blockChild, blockHeightEncoded
 } from "../../../src/server/blocks/service.blocks"
 
 
@@ -265,5 +265,27 @@ describe("blockChild function - suite test block service", () => {
         })
     */
     })  
+
+})
+
+
+describe("blockHeightEncoded function - suite test block service", () => {
+it("blockHeightEncoded - Get height of a block by its Base58-encoded signature ", async () => {
+    const result = await blockHeightEncoded(
+        "3Ho1ZKnxzKAvrwo5RsMAesdiw6EW3f5Mn8etEhPP2t5z6N3iVK385ezvbNkxUen6yRUhwuiXg97P9uGMVeUpHG4f"
+    )
+    expect(result).toStrictEqual({
+        height: 1887361
+    })
+})
+
+it("blockHeightEncoded - error 404 ", async () => {
+    const result = async () => {
+        await blockHeightEncoded("124afdsfaf");
+      };
+      
+      expect(result()).rejects.toThrow();
+})
+
 
 })

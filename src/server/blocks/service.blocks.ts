@@ -185,10 +185,26 @@ export async function blockChild(
  * Get height of a block by its Base58-encoded signature
  */
 export async function blockHeightEncoded(signature: string): Promise<any> {
-    const response = await axios.get(
-        `https://lunesnode.lunes.io/blocks/height/${signature}`
-    )
-    return response.data
+    const url = `${BASEURL}height/${signature}`
+    //`https://lunesnode.lunes.io/blocks/height/${signature}`
+    //const response = await axios.get(url)
+    //return response.data
+
+    return new Promise(async (resolve, reject) => {
+        const response = await axios.get(url)
+
+        if (response.status === 404) {
+            const error: IBlockError = {
+                status: `error`,
+                message: `block does not exist, try later`
+            }
+            return error
+        } else if (response.status === 200) {
+            resolve(response.data)
+        } else {
+            reject(response.data)
+        }
+    })
 }
 
 /*
