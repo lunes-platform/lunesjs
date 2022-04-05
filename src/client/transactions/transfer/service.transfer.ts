@@ -29,10 +29,10 @@ export function transferTokenFactory(
     senderPublicKey: string,
     recipient: string,
     amount: number,
+    assetId?: string,
     chain?: WalletTypes.Chain,
     timestamp?: number,
     feeAsset?: string,
-    assetId?: string,
     fee?: number
 ): TransferToken {
     const chain_id = chain != undefined ? chain : WalletTypes.Chain.Mainnet
