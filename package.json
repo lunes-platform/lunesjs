@@ -1,8 +1,9 @@
 {
     "name": "lunesjs",
-    "version": "1.5.3",
+    "version": "1.5.4",
     "description": "Library for communication with nodes in mainnet or testnet of the lunes-blockchain network",
-    "main": "index.js",
+    "main": "dist/*.js",
+    "types": "dist/*.d.ts",
     "repository": "git@git.lunes.io:blockchain/labs/lunesjs.git",
     "keywords": [
         "blockchain",
@@ -12,6 +13,7 @@
     "author": "lunes-platform",
     "license": "SEE LICENSE IN ./LICENSE",
     "scripts": {
+        "build": "tsc --declaration",
         "fmtc": "prettier -c",
         "fmt": "prettier -w .",
         "test": "yarn jest"

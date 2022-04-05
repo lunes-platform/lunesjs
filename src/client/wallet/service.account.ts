@@ -1,4 +1,4 @@
-import { IAccount, WalletTypes } from "./wallet.types"
+import { IAccount } from "./wallet.types"
 import cryptoUtils from "../../utils/crypto"
 
 class Account implements IAccount {

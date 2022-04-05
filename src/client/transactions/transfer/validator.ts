@@ -14,12 +14,17 @@ const validator = {
         amount: number,
         fee: number,
         recipient: string
-    ): Array<number> => {
-        const tokenId =
-            assetId != "" ? [1, ...wasm.base58ToArray(assetId)] : [0]
-        const tokenFee =
-            feeAsset != "" ? [1, ...wasm.base58ToArray(feeAsset)] : [0]
-        return [
+    ) => {
+        const tokenId: Uint8Array =
+            assetId != ""
+                ? new Uint8Array([1, ...wasm.base58ToArray(assetId)])
+                : new Uint8Array([0])
+        const tokenFee: Uint8Array =
+            feeAsset != ""
+                ? new Uint8Array([1, ...wasm.base58ToArray(feeAsset)])
+                : new Uint8Array([0])
+
+        return new Uint8Array([
             ...[TransactionsTypes.TransferToken.int],
             ...wasm.base58ToArray(senderPublicKey),
             ...tokenId,
@@ -28,7 +33,7 @@ const validator = {
             ...wasm.serializeUInteger(BigInt(amount)),
             ...wasm.serializeUInteger(BigInt(fee)),
             ...wasm.base58ToArray(recipient)
-        ]
+        ])
     },
     ready: (
         senderPublicKey: string,
@@ -62,6 +67,7 @@ const validator = {
             tx.fee,
             tx.recipient
         )
+
         return cryptoUtils.fastSignature(
             privateKey,
             wasm.arrayToBase58(new Uint8Array(message))

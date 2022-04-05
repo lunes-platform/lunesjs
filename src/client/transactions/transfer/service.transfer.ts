@@ -7,10 +7,8 @@ import * as wasm from "lunesrs"
 
 class TransferToken implements BaseTransaction {
     private tx: ITransfer
-    private chain: WalletTypes.Chain
-    constructor(tx: ITransfer, chain: WalletTypes.Chain) {
+    constructor(tx: ITransfer) {
         this.tx = tx
-        this.chain = chain
     }
 
     transaction(): ITransfer {
@@ -43,22 +41,18 @@ export function transferTokenFactory(
     ) {
         throw new Error("dados invalidos")
     }
-    return new TransferToken(
-        {
-            senderPublicKey: senderPublicKey,
-            recipient: recipient,
-            amount: amount,
-            sender: wasm.arrayToBase58(
-                wasm.toAddress(1, chain_id, wasm.base58ToArray(senderPublicKey))
-            ),
-            timestamp:
-                timestamp != undefined ? timestamp : new Date().getTime(),
-            feeAsset: feeAsset != undefined ? feeAsset : "",
-            assetId: assetId != undefined ? assetId : "",
-            type: TransactionsTypes.TransferToken.int,
-            fee: fee != undefined ? fee : TransactionsTypes.TransferToken.fee,
-            signature: ""
-        },
-        chain_id
-    )
+    return new TransferToken({
+        senderPublicKey: senderPublicKey,
+        recipient: recipient,
+        amount: amount,
+        sender: wasm.arrayToBase58(
+            wasm.toAddress(1, chain_id, wasm.base58ToArray(senderPublicKey))
+        ),
+        timestamp: timestamp != undefined ? timestamp : new Date().getTime(),
+        feeAsset: feeAsset != undefined ? feeAsset : "",
+        assetId: assetId != undefined ? assetId : "",
+        type: TransactionsTypes.TransferToken.int,
+        fee: fee != undefined ? fee : TransactionsTypes.TransferToken.fee,
+        signature: ""
+    })
 }

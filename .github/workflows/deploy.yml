@@ -6,31 +6,31 @@ on:
 
 jobs:
     lint:
-      runs-on: ubuntu-latest
+        runs-on: ubuntu-latest
 
-      steps:
-          - uses: actions/checkout@v2
-          - uses: actions/setup-node@v3
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v3
 
-          - name: Install dependencies
-            run: yarn install -D
+            - name: Install dependencies
+              run: yarn install -D
 
-          - name: Format Checker
-            run: yarn fmtc
+            - name: Format Checker
+              run: yarn fmtc
 
     test:
-      runs-on: ubuntu-latest
-      needs: lint
+        runs-on: ubuntu-latest
+        needs: lint
 
-      steps:
-        - uses: actions/checkout@v2
-        - uses: actions/setup-node@v3
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v3
 
-        - name: Install dependencies
-          run: yarn install -D
+            - name: Install dependencies
+              run: yarn install -D
 
-        - name: Format Checker
-          run: yarn test
+            - name: Format Checker
+              run: yarn test
 
     deploy-npm:
         runs-on: ubuntu-latest
