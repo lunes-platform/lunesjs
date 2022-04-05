@@ -41,21 +41,21 @@ export function accountFactory({
             ...cryptoUtils.fromExistingSeed(
                 seed,
                 nonce != undefined ? nonce : 0,
-                chain != undefined ? chain : 0
+                chain != undefined ? chain : 1
             )
         })
     } else if (privateKey != undefined) {
         return new Account({
             ...cryptoUtils.fromPrivateKey(
                 privateKey,
-                chain != undefined ? chain : 0
+                chain != undefined ? chain : 1
             )
         })
     } else if (publicKey != undefined) {
         return new Account({
             ...cryptoUtils.fromPublicKey(
                 publicKey,
-                chain != undefined ? chain : 0
+                chain != undefined ? chain : 1
             )
         })
     } else if (address != undefined) {

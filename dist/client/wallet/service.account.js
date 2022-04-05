@@ -17,13 +17,13 @@ class Account {
 }
 function accountFactory({ privateKey, publicKey, address, nWords, chain, nonce, seed } = {}) {
     if (seed != undefined) {
-        return new Account(Object.assign({}, crypto_1.default.fromExistingSeed(seed, nonce != undefined ? nonce : 0, chain != undefined ? chain : 0)));
+        return new Account(Object.assign({}, crypto_1.default.fromExistingSeed(seed, nonce != undefined ? nonce : 0, chain != undefined ? chain : 1)));
     }
     else if (privateKey != undefined) {
-        return new Account(Object.assign({}, crypto_1.default.fromPrivateKey(privateKey, chain != undefined ? chain : 0)));
+        return new Account(Object.assign({}, crypto_1.default.fromPrivateKey(privateKey, chain != undefined ? chain : 1)));
     }
     else if (publicKey != undefined) {
-        return new Account(Object.assign({}, crypto_1.default.fromPublicKey(publicKey, chain != undefined ? chain : 0)));
+        return new Account(Object.assign({}, crypto_1.default.fromPublicKey(publicKey, chain != undefined ? chain : 1)));
     }
     else if (address != undefined) {
         return new Account(Object.assign({}, crypto_1.default.fromAddress(address, chain != undefined ? chain : 0)));
