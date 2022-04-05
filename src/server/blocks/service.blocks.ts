@@ -42,7 +42,7 @@ export async function blockByHeight(
 /*
  * This function get a blockchain height
  */
-export async function blockHeight(): Promise<any> {
+export async function blockHeight(): Promise<any | IBlockError> {
     const url = `${BASEURL}height`
 
     return new Promise(async (resolve, reject) => {
@@ -75,7 +75,7 @@ export async function blockHeight(): Promise<any> {
 export async function blockAverageDelay(
     signature: string,
     blockNum: number
-): Promise<any> {
+): Promise<any | IBlockError> {
     const url = `${BASEURL}delay/${signature}/${blockNum}`
 
     if (blockNum <= 0 || blockNum > 9) {
@@ -157,11 +157,28 @@ export async function blockLast(): Promise<any | IBlockError> {
 /*
  * Get children of specified block
  */
-export async function blockChild(signature: string): Promise<IBlock> {
-    const response = await axios.get(
-        `https://lunesnode.lunes.io/blocks/child/${signature}`
-    )
-    return response.data
+export async function blockChild(
+    signature: string
+): Promise<IBlock | IBlockError> {
+    const url = `${BASEURL}child/${signature}`
+    //`https://lunesnode.lunes.io/blocks/child/${signature}`
+    //const response = await axios.get(url)
+    //return response.data
+    return new Promise(async (resolve, reject) => {
+        const response = await axios.get(url)
+
+        if (response.status === 404) {
+            const error: IBlockError = {
+                status: `error`,
+                message: `block does not exist, try later`
+            }
+            return error
+        } else if (response.status === 200) {
+            resolve(response.data)
+        } else {
+            reject(response.data)
+        }
+    })
 }
 
 /*

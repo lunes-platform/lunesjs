@@ -16,36 +16,9 @@ import {
 } from "../../../src/server/blocks/service.blocks"
 
 describe("test block service", () => {
-    it("Get last block data ", async () => {
-        const result = await blockLast()
-        expect(result).toMatchObject(result)
-        //https://stackoverflow.com/questions/47754777/jest-how-to-test-for-object-keys-and-values
-    })
 
-    it("Get children of specified block ", async () => {
-        const result = await blockChild(
-            "3Ho1ZKnxzKAvrwo5RsMAesdiw6EW3f5Mn8etEhPP2t5z6N3iVK385ezvbNkxUen6yRUhwuiXg97P9uGMVeUpHG4f"
-        )
-        expect(result).toStrictEqual({
-            version: 3,
-            timestamp: 1648064056012,
-            reference:
-                "3Ho1ZKnxzKAvrwo5RsMAesdiw6EW3f5Mn8etEhPP2t5z6N3iVK385ezvbNkxUen6yRUhwuiXg97P9uGMVeUpHG4f",
-            "nxt-consensus": {
-                "base-target": 39,
-                "generation-signature":
-                    "EKoXAqLn4ij3936rxtESW3EAjHtuJXDiFuTYrKNa4uku"
-            },
-            features: [],
-            generator: "37nX3hdCt1GWeSsAMNFmWgbQWZZhbvBG3mX",
-            signature:
-                "2jeAT1NG4XeH48ckeuPVj4Ejmxg4ZU4VYzpHNCMeq2WTZvcrtBt1RraXq7mtu5pphiiwdyWfVTPxcAZXQcm6V99a",
-            blocksize: 225,
-            transactionCount: 0,
-            fee: 0,
-            transactions: []
-        })
-    })
+
+
 
     it("Get height of a block by its Base58-encoded signature ", async () => {
         const result = await blockHeightEncoded(
