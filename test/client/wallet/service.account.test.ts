@@ -1,6 +1,6 @@
 import { accountFactory } from "../../../src/client/wallet/service.account"
 import { WalletTypes } from "../../../src/client/wallet/wallet.types"
-import cryptoUtils from "../../../src/utils/crypto"
+import { cryptoUtils } from "../../../src/utils/crypto"
 import * as wasm from "lunesrs"
 
 describe("Create Account from New Seed", () => {

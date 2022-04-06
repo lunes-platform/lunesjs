@@ -19,7 +19,7 @@
     "author": "lunes-platform",
     "license": "Apache-2.0",
     "scripts": {
-        "deploy": "yarn test && yarn build && yarn publish",
+        "deploy": "yarn build && yarn publish",
         "fmt": "prettier -w .",
         "fmtc": "prettier -c",
         "test": "yarn jest",
