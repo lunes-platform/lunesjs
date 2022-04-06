@@ -161,9 +161,6 @@ export async function blockChild(
     signature: string
 ): Promise<IBlock | IBlockError> {
     const url = `${BASEURL}child/${signature}`
-    //`https://lunesnode.lunes.io/blocks/child/${signature}`
-    //const response = await axios.get(url)
-    //return response.data
     return new Promise(async (resolve, reject) => {
         const response = await axios.get(url)
 
@@ -188,10 +185,6 @@ export async function blockHeightEncoded(
     signature: string
 ): Promise<any | IBlockError> {
     const url = `${BASEURL}height/${signature}`
-    //`https://lunesnode.lunes.io/blocks/height/${signature}`
-    //const response = await axios.get(url)
-    //return response.data
-
     return new Promise(async (resolve, reject) => {
         const response = await axios.get(url)
 
@@ -216,7 +209,6 @@ export async function blockAtHeaderOnly(
     height: number
 ): Promise<IBlock | IBlockError> {
     const url = `${BASEURL}headers/at/${height}`
-    //`https://lunesnode.lunes.io/blocks/headers/at/${height}`
 
     if (typeof height === "string") {
         const error: IBlockError = {
@@ -225,18 +217,6 @@ export async function blockAtHeaderOnly(
         }
         return error
     } else {
-        // const response = await axios.get(url)
-        //return response.data
-
-        /* if (response.status === 404) {
-            const error: IBlockError = {
-                status: `error`,
-                message: `The requested resource could not be found but may be available again in the future, try later`
-            }
-            return error
-        } else if (response.status === 200) {return response.data}
-        */
-
         return new Promise(async (resolve, reject) => {
             const response = await axios.get(url)
 
@@ -250,10 +230,6 @@ export async function blockAtHeaderOnly(
                 resolve(response.data)
             } else {
                 reject(response.data)
-                const error: IBlockError = {
-                    status: `error`,
-                    message: `The requested resource could not be found but may be available again in the future, try later`
-                }
             }
         })
     }
