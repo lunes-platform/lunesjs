@@ -16,20 +16,7 @@ import {
 } from "../../../src/server/blocks/service.blocks"
 
 describe("test block service", () => {
-
-
-
-
-    it("Get height of a block by its Base58-encoded signature ", async () => {
-        const result = await blockHeightEncoded(
-            "3Ho1ZKnxzKAvrwo5RsMAesdiw6EW3f5Mn8etEhPP2t5z6N3iVK385ezvbNkxUen6yRUhwuiXg97P9uGMVeUpHG4f"
-        )
-        expect(result).toStrictEqual({
-            height: 1887361
-        })
-    })
-
-    it("Get block at specified height without transactions payload ", async () => {
+    it("blockAtHeaderOnly - Get block at specified height without transactions payload ", async () => {
         const result = await blockAtHeaderOnly(1)
         expect(result).toStrictEqual({
             version: 1,
@@ -49,7 +36,7 @@ describe("test block service", () => {
         })
     })
 
-    it("blockSeqHeaderOnly test ", async () => {
+    it(" blockSeqHeaderOnly test ", async () => {
         const result = await blockSeqHeaderOnly(1, 2)
         expect(result).toStrictEqual([
             {
@@ -89,7 +76,7 @@ describe("test block service", () => {
         ])
     })
 
-    it("blockLastHeaderOnly test ", async () => {
+    it(" blockLastHeaderOnly test ", async () => {
         const result = await blockLastHeaderOnly()
         //expect(result).toMatchObject(result)
         //https://stackoverflow.com/questions/47754777/jest-how-to-test-for-object-keys-and-values

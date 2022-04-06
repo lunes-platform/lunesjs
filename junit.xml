@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="16" failures="0" errors="0" time="32.694">
-  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="14" timestamp="2022-04-05T17:31:58" time="26.655" tests="16">
+<testsuites name="jest tests" tests="18" failures="0" errors="0" time="18.488">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="17" timestamp="2022-04-06T17:31:00" time="16.303" tests="18">
     <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0">
       <skipped/>
     </testcase>
@@ -43,9 +43,16 @@
     <testcase classname="blockChild function - suite test block service blockChild - error 404 " name="blockChild function - suite test block service blockChild - error 404 " time="0">
       <skipped/>
     </testcase>
-    <testcase classname="blockHeightEncoded function - suite test block service blockHeightEncoded - Get height of a block by its Base58-encoded signature " name="blockHeightEncoded function - suite test block service blockHeightEncoded - Get height of a block by its Base58-encoded signature " time="1.439">
+    <testcase classname="blockHeightEncoded function - suite test block service blockHeightEncoded - Get height of a block by its Base58-encoded signature " name="blockHeightEncoded function - suite test block service blockHeightEncoded - Get height of a block by its Base58-encoded signature " time="0">
+      <skipped/>
     </testcase>
-    <testcase classname="blockHeightEncoded function - suite test block service blockHeightEncoded - error 404 " name="blockHeightEncoded function - suite test block service blockHeightEncoded - error 404 " time="0.012">
+    <testcase classname="blockHeightEncoded function - suite test block service blockHeightEncoded - error 404 " name="blockHeightEncoded function - suite test block service blockHeightEncoded - error 404 " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="blockAtHeaderOnly function - suite test block service blockAtHeaderOnly - Get block at specified height without transactions payload " name="blockAtHeaderOnly function - suite test block service blockAtHeaderOnly - Get block at specified height without transactions payload " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="blockAtHeaderOnly function - suite test block service blockAtHeaderOnly - error 404 " name="blockAtHeaderOnly function - suite test block service blockAtHeaderOnly - error 404 " time="0.401">
     </testcase>
   </testsuite>
 </testsuites>
