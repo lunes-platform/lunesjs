@@ -2,10 +2,10 @@
     "name": "lunesjs",
     "version": "1.5.10",
     "description": "Library for communication with nodes in mainnet or testnet of the lunes-blockchain network",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
     "files": [
-        "/dist",
+        "/lib",
         "LICENSE",
         "README.md",
         "package.json"
@@ -19,10 +19,10 @@
     "author": "lunes-platform",
     "license": "Apache-2.0",
     "scripts": {
-        "build": "tsc --declaration",
-        "fmtc": "prettier -c",
         "fmt": "prettier -w .",
-        "test": "yarn jest"
+        "fmtc": "prettier -c",
+        "test": "yarn jest",
+        "build": "tsc"
     },
     "devDependencies": {
         "@types/jest": "^27.0.3",

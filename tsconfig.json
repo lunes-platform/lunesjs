@@ -3,10 +3,11 @@
         "noFallthroughCasesInSwitch": true,
         "noUnusedParameters": true,
         "noImplicitReturns": true,
-        "noUnusedLocals": true,
         "esModuleInterop": true,
+        "noUnusedLocals": true,
         "module": "commonjs",
-        "outDir": "./dist",
+        "declaration": true,
+        "outDir": "./lib",
         "target": "es6",
         "strict": true
     },
