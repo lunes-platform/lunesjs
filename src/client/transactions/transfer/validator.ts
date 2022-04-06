@@ -1,6 +1,6 @@
 import { WalletTypes } from "../../wallet/wallet.types"
 import { TransactionsTypes } from "../transactions.types"
-import cryptoUtils from "../../../utils/crypto"
+import { cryptoUtils } from "../../../utils/crypto"
 import { ITransfer } from "./transfer.types"
 import * as wasm from "lunesrs"
 import axios from "axios"

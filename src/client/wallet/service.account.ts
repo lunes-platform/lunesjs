@@ -1,5 +1,5 @@
 import { IAccount } from "./wallet.types"
-import cryptoUtils from "../../utils/crypto"
+import { cryptoUtils } from "../../utils/crypto"
 
 class Account implements IAccount {
     privateKey: string
