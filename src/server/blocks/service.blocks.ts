@@ -237,15 +237,28 @@ export async function blockAtHeaderOnly(
 
 /*
  * Get block without transactions payload at specified heights
+* max value (from) (to) 1 - 100 (99 difference)
+ * from value < to value
+ * `https://lunesnode.lunes.io/blocks/headers/seq/${from}/${to}
  */
 export async function blockSeqHeaderOnly(
     from: number,
     to: number
-): Promise<IBlock> {
-    const response = await axios.get(
-        `https://lunesnode.lunes.io/blocks/headers/seq/${from}/${to}`
-    )
-    return response.data
+): Promise<IBlock | IBlockError> {
+    const url = `${BASEURL}headers/seq/${from}/${to}`
+
+    const Max: boolean = to - from < 100
+
+    if (from > to || Max === false) {
+        const error: IBlockError = {
+            status: `error`,
+            message: `Too big sequences requested OR {from} cannot be bigger than {to}, change it`
+        }
+        return error
+    } else {
+        const response = await axios.get(url)
+        return response.data
+    }
 }
 
 /*

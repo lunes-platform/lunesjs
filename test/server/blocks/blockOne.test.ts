@@ -7,7 +7,7 @@ import {
     blockLast,
     blockChild,
     blockHeightEncoded,
-    blockAtHeaderOnly
+    blockAtHeaderOnly, blockSeqHeaderOnly
 } from "../../../src/server/blocks/service.blocks"
 
 describe("blockByHeight function- suite test block service", () => {
@@ -326,5 +326,68 @@ describe("blockAtHeaderOnly function - suite test block service", () => {
         }
 
         expect(result()).rejects.toThrow()
+    })
+})
+
+
+describe("blockSeqHeaderOnly function - suite test block service", () => {
+
+    it(" blockSeqHeaderOnly test ", async () => {
+        const result = await blockSeqHeaderOnly(1, 2)
+        expect(result).toStrictEqual([
+            {
+                blocksize: 312,
+                generator: "37jG983kttnpw4kAAQ6wi1yTyegkLN5LMNb",
+                height: 1,
+                "nxt-consensus": {
+                    "base-target": 153722867,
+                    "generation-signature": "11111111111111111111111111111111"
+                },
+                reference:
+                    "67rpwLCuS5DGA8KGZXKsVQ7dnPb9goRLoKfgGbLfQg9WoLUgNY77E2jT11fem3coV9nAkguBACzrU1iyZM4B8roQ",
+                signature:
+                    "soKTPcsb5cD97jnm64zF3pVuVUqUYx3caaDvuPyM6PXPY7eWCxeHeYvKSE2aJwZwRpXdRFdW1g5BQMFpYkHcf85",
+                timestamp: 1528077600000,
+                transactionCount: 2,
+                version: 1
+            },
+            {
+                blocksize: 227,
+                features: [2],
+                generator: "37oqFHsx1cRtLWtnp6YyQpud5WJk4v79VPu",
+                height: 2,
+                "nxt-consensus": {
+                    "base-target": 153722867,
+                    "generation-signature":
+                        "E28JsgAfipFaBZLvYBJZUJh2aAdZcMTKuS9KZ4jRzZ6q"
+                },
+                reference:
+                    "soKTPcsb5cD97jnm64zF3pVuVUqUYx3caaDvuPyM6PXPY7eWCxeHeYvKSE2aJwZwRpXdRFdW1g5BQMFpYkHcf85",
+                signature:
+                    "4qZHFNXz5CM4vTapEHoecqYthEacHje3pvesy2rGzj5yLrd52gN6iVwWuX3mBJTWvqJeHYHnNuWqWmQpFayZAxYX",
+                timestamp: 1528116151053,
+                transactionCount: 0,
+                version: 3
+            }
+        ])
+    })
+
+    it(" blockSeqHeaderOnly - error from > to ", async () => { 
+        const result = await blockSeqHeaderOnly(2, 1)
+        expect(result).toEqual({
+            message:
+                "Too big sequences requested OR {from} cannot be bigger than {to}, change it",
+            status: "error"
+        })
+    })
+
+
+    it(" blockSeqHeaderOnly - Max === false ", async () => { 
+        const result = await blockSeqHeaderOnly(1, 199)
+        expect(result).toEqual({
+            message:
+                "Too big sequences requested OR {from} cannot be bigger than {to}, change it",
+            status: "error"
+        })
     })
 })
