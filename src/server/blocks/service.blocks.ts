@@ -237,7 +237,7 @@ export async function blockAtHeaderOnly(
 
 /*
  * Get block without transactions payload at specified heights
-* max value (from) (to) 1 - 100 (99 difference)
+ * max value (from) (to) 1 - 100 (99 difference)
  * from value < to value
  * `https://lunesnode.lunes.io/blocks/headers/seq/${from}/${to}
  */
@@ -287,8 +287,8 @@ export async function blockLastHeaderOnly(): Promise<IBlock | IBlockError> {
         } else {
             reject(response.data)
         }
-    //const response = await axios.get(url)
-    //return response.data
+        //const response = await axios.get(url)
+        //return response.data
     })
 }
 
@@ -297,8 +297,9 @@ export async function blockLastHeaderOnly(): Promise<IBlock | IBlockError> {
  *
  * https://lunesnode.lunes.io/blocks/signature/${signature}`
  */
-export async function blockSignature(signature: string): Promise<IBlock | IBlockError> {
-
+export async function blockSignature(
+    signature: string
+): Promise<IBlock | IBlockError> {
     const url = `${BASEURL}signature/${signature}`
 
     return new Promise(async (resolve, reject) => {
@@ -321,11 +322,10 @@ export async function blockSignature(signature: string): Promise<IBlock | IBlock
 /*
  * Get genesis block data
  * `https://lunesnode.lunes.io/blocks/first
- * 
+ *
  */
 export async function blockFirst(): Promise<IBlock | IBlockError> {
     const url = `${BASEURL}first`
-
 
     return new Promise(async (resolve, reject) => {
         const response = await axios.get(url)
@@ -345,8 +345,8 @@ export async function blockFirst(): Promise<IBlock | IBlockError> {
         } else {
             reject(response.data)
         }
-    //const response = await axios.get(url)
-    //return response.data
+        //const response = await axios.get(url)
+        //return response.data
     })
 }
 
@@ -359,7 +359,7 @@ export async function blockAddress(
     address: string,
     from: number,
     to: number
-): Promise<any | IBlockError > {
+): Promise<any | IBlockError> {
     const url = `${BASEURL}address/${address}/${from}/${to}`
 
     const Max: boolean = to - from < 100
@@ -374,5 +374,4 @@ export async function blockAddress(
         const response = await axios.get(url)
         return response.data
     }
-
 }

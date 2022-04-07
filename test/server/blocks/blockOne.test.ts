@@ -7,7 +7,12 @@ import {
     blockLast,
     blockChild,
     blockHeightEncoded,
-    blockAtHeaderOnly, blockSeqHeaderOnly, blockLastHeaderOnly, blockSignature, blockFirst, blockAddress
+    blockAtHeaderOnly,
+    blockSeqHeaderOnly,
+    blockLastHeaderOnly,
+    blockSignature,
+    blockFirst,
+    blockAddress
 } from "../../../src/server/blocks/service.blocks"
 
 describe("blockByHeight function- suite test block service", () => {
@@ -329,9 +334,7 @@ describe("blockAtHeaderOnly function - suite test block service", () => {
     })
 })
 
-
 describe("blockSeqHeaderOnly function - suite test block service", () => {
-
     it(" blockSeqHeaderOnly test ", async () => {
         const result = await blockSeqHeaderOnly(1, 2)
         expect(result).toStrictEqual([
@@ -372,7 +375,7 @@ describe("blockSeqHeaderOnly function - suite test block service", () => {
         ])
     })
 
-    it(" blockSeqHeaderOnly - error from > to ", async () => { 
+    it(" blockSeqHeaderOnly - error from > to ", async () => {
         const result = await blockSeqHeaderOnly(2, 1)
         expect(result).toEqual({
             message:
@@ -381,8 +384,7 @@ describe("blockSeqHeaderOnly function - suite test block service", () => {
         })
     })
 
-
-    it(" blockSeqHeaderOnly - Max === false ", async () => { 
+    it(" blockSeqHeaderOnly - Max === false ", async () => {
         const result = await blockSeqHeaderOnly(1, 199)
         expect(result).toEqual({
             message:
@@ -392,22 +394,16 @@ describe("blockSeqHeaderOnly function - suite test block service", () => {
     })
 })
 
-
 describe(" blockLastHeaderOnly function - suite test block service", () => {
-
     it(" blockLastHeaderOnly test ", async () => {
         const result = await blockLastHeaderOnly()
         //expect(result).toMatchObject(result)
         //https://stackoverflow.com/questions/47754777/jest-how-to-test-for-object-keys-and-values
         expect(result).toHaveProperty("height") // true
     })
-
-
 })
 
-
 describe(" blockSignature - suite test block service", () => {
-
     it("blockSignature test", async () => {
         const result = await blockSignature(
             "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi"
@@ -435,21 +431,15 @@ describe(" blockSignature - suite test block service", () => {
     })
 
     it("blockSignature - error 404 ", async () => {
-
         const result = async () => {
             await blockChild("124afdsfaf")
         }
 
         expect(result()).rejects.toThrow()
-
-
     })
-
 })
 
-
 describe(" blockFirst - suite test block service", () => {
-
     it("blockFirst test ", async () => {
         const result = await blockFirst()
         expect(result).toStrictEqual({
@@ -492,13 +482,9 @@ describe(" blockFirst - suite test block service", () => {
             version: 1
         })
     })
-
 })
 
-
-
 describe(" blockAddress - suite test block service", () => {
-
     it("blockAddress test ", async () => {
         const result = await blockAddress(
             "385vc8T7brZYTaNb1QV4BjU4JN9S3MoeKZd",
@@ -529,32 +515,29 @@ describe(" blockAddress - suite test block service", () => {
         ])
     })
 
-
-    it(" blockAddress - error from > to ", async () => { 
+    it(" blockAddress - error from > to ", async () => {
         const result = await blockAddress(
             "385vc8T7brZYTaNb1QV4BjU4JN9S3MoeKZd",
-                    1889864, 1889863
+            1889864,
+            1889863
         )
         expect(result).toEqual({
             message:
                 "Too big sequences requested OR {from} cannot be bigger than {to}, change it",
             status: "error"
         })
-    })  
+    })
 
-
-    it(" blockAddress - error Max === false ", async () => { 
+    it(" blockAddress - error Max === false ", async () => {
         const result = await blockAddress(
             "385vc8T7brZYTaNb1QV4BjU4JN9S3MoeKZd",
-            1889863, 1889999, 
+            1889863,
+            1889999
         )
         expect(result).toEqual({
             message:
                 "Too big sequences requested OR {from} cannot be bigger than {to}, change it",
             status: "error"
         })
-    }) 
-
-
-
+    })
 })
