@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="25" failures="0" errors="0" time="29.151">
-  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="24" timestamp="2022-04-07T01:43:26" time="23.642" tests="25">
+<testsuites name="jest tests" tests="28" failures="0" errors="0" time="27.771">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="25" timestamp="2022-04-07T02:14:27" time="22.598" tests="28">
     <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0">
       <skipped/>
     </testcase>
@@ -73,7 +73,14 @@
     <testcase classname=" blockSignature - suite test block service blockSignature - error 404 " name=" blockSignature - suite test block service blockSignature - error 404 " time="0">
       <skipped/>
     </testcase>
-    <testcase classname=" blockFirst - suite test block service blockFirst test " name=" blockFirst - suite test block service blockFirst test " time="1.095">
+    <testcase classname=" blockFirst - suite test block service blockFirst test " name=" blockFirst - suite test block service blockFirst test " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname=" blockAddress - suite test block service blockAddress test " name=" blockAddress - suite test block service blockAddress test " time="1.138">
+    </testcase>
+    <testcase classname=" blockAddress - suite test block service  blockAddress - error from &gt; to " name=" blockAddress - suite test block service  blockAddress - error from &gt; to " time="0.001">
+    </testcase>
+    <testcase classname=" blockAddress - suite test block service  blockAddress - error Max === false " name=" blockAddress - suite test block service  blockAddress - error Max === false " time="0.001">
     </testcase>
   </testsuite>
 </testsuites>

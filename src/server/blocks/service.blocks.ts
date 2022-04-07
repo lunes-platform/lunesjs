@@ -359,10 +359,20 @@ export async function blockAddress(
     address: string,
     from: number,
     to: number
-): Promise<any> {
-    const url = `${BASEURL}first`
-    const response = await axios.get(
-        `https://lunesnode.lunes.io/blocks/address/${address}/${from}/${to}`
-    )
-    return response.data
+): Promise<any | IBlockError > {
+    const url = `${BASEURL}address/${address}/${from}/${to}`
+
+    const Max: boolean = to - from < 100
+
+    if (from > to || Max === false) {
+        const error: IBlockError = {
+            status: `error`,
+            message: `Too big sequences requested OR {from} cannot be bigger than {to}, change it`
+        }
+        return error
+    } else {
+        const response = await axios.get(url)
+        return response.data
+    }
+
 }
