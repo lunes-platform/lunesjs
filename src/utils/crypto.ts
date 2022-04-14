@@ -44,9 +44,9 @@ export const cryptoUtils = {
         chain: WalletTypes.Chain
     ): IAccount => {
         let seed = []
-        nWords = nWords != undefined ? Math.round(nWords / 3) : 4
-        for (let i = 0; i < nWords; i++) {
-            for (let n in wasm.randomTripleNumber()) {
+        seedLen = seedLen != undefined ? Math.round(seedLen / 3) : 4
+        for (let i = 0; i < seedLen; i++) {
+            for (let n of wasm.randomTripleNumber()) {
                 seed.push(walletConstants.wordsList[n])
             }
         }
