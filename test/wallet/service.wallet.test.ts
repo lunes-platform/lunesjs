@@ -1,11 +1,9 @@
-import { walletFactory } from "../../src/wallet/wallet.service"
-import { WalletTypes } from "../../src/wallet/wallet.types"
-import { cryptoUtils } from "../../src/utils/crypto"
+import lunesjs from "../../src/index"
 import * as wasm from "lunesrs"
 
-describe("Create Account from New Seed", () => {
+describe("Create Wallet from New Seed", () => {
     const newWallet = (n?: number) => {
-        return walletFactory({
+        return lunesjs.walletFactory({
             seedLen: n != undefined ? n : 12
         })
     }
@@ -20,24 +18,24 @@ describe("Create Account from New Seed", () => {
         { response: 15, result: 15 }
     ])(
         "The seed should be list of worlds multiple of 3",
-        ({response, result}) => {
+        ({ response, result }) => {
             const len = newWallet(response).seed.split(" ").length
             expect(len).toEqual(result)
         }
     )
     test.each([
-        {w1: newWallet(), w2: newWallet()},
-        {w1: newWallet(), w2: newWallet()},
-        {w1: newWallet(), w2: newWallet()},
-        {w1: newWallet(), w2: newWallet()},
-        {w1: newWallet(), w2: newWallet()},
-        {w1: newWallet(), w2: newWallet()},
-        {w1: newWallet(), w2: newWallet()},
-        {w1: newWallet(), w2: newWallet()},
-        {w1: newWallet(), w2: newWallet()},
-        {w1: newWallet(), w2: newWallet()},
-        {w1: newWallet(), w2: newWallet()},
-    ])("The seed should be list of worlds multiple of 3", ({w1, w2}) => {
+        { w1: newWallet(), w2: newWallet() },
+        { w1: newWallet(), w2: newWallet() },
+        { w1: newWallet(), w2: newWallet() },
+        { w1: newWallet(), w2: newWallet() },
+        { w1: newWallet(), w2: newWallet() },
+        { w1: newWallet(), w2: newWallet() },
+        { w1: newWallet(), w2: newWallet() },
+        { w1: newWallet(), w2: newWallet() },
+        { w1: newWallet(), w2: newWallet() },
+        { w1: newWallet(), w2: newWallet() },
+        { w1: newWallet(), w2: newWallet() }
+    ])("The seed should be list of worlds multiple of 3", ({ w1, w2 }) => {
         expect(w1.privateKey).not.toEqual(w2.privateKey)
         expect(w1.publicKey).not.toEqual(w2.publicKey)
         expect(w1.address).not.toEqual(w2.address)
@@ -47,107 +45,103 @@ describe("Create Account from New Seed", () => {
     })
 })
 
-describe("Create Account from Seed", () => {
+describe("Create Wallet from Seed", () => {
     const seed =
         "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit"
 
-    const createMainnetAccountFromSeed = (seed: string, nonce?: number) => {
-        return walletFactory({
+    const WalletMainnet = (seed: string, nonce?: number) => {
+        return lunesjs.walletFactory({
             seed: seed,
             nonce: nonce != undefined ? nonce : 0,
-            chain: WalletTypes.Chain.Mainnet
+            chain: 1
         })
     }
 
-    const createTestnetAccountFromSeed = (seed: string, nonce?: number) => {
-        return walletFactory({
+    const WalletTestnet = (seed: string, nonce?: number) => {
+        return lunesjs.walletFactory({
             seed: seed,
             nonce: nonce != undefined ? nonce : 0,
-            chain: WalletTypes.Chain.Testnet
+            chain: 0
         })
     }
 
-    it("Test Create Mainnet Account from seed", () => {
+    it("Test Create Mainnet Wallet from seed", () => {
         const prvk = "BnafXBSq1VDUdZ1nSjJoxhnQdBv2hk3o6dbV49TD1bzo"
         const pubk = "2uuQVr3B5aGgvSJ5BMCw4Cd19tdYdnMGoYnji99aPde4"
         const addr = "37o7aY3eZZTXmzrDa5e4Wj3Z4ZZuyV42Aaj"
-        const w = createMainnetAccountFromSeed(seed, 0)
+        const w = WalletMainnet(seed)
         expect(w.privateKey).toEqual(prvk)
         expect(w.publicKey).toEqual(pubk)
         expect(w.address).toEqual(addr)
     })
 
-    it("Test Create Testnet Account from seed", () => {
+    it("Test Create Testnet Wallet from seed", () => {
         const prvk = "BnafXBSq1VDUdZ1nSjJoxhnQdBv2hk3o6dbV49TD1bzo"
         const pubk = "2uuQVr3B5aGgvSJ5BMCw4Cd19tdYdnMGoYnji99aPde4"
         const addr = "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u"
-        const w = createTestnetAccountFromSeed(seed, 0)
+        const w = WalletTestnet(seed)
         expect(w.privateKey).toEqual(prvk)
         expect(w.publicKey).toEqual(pubk)
         expect(w.address).toEqual(addr)
     })
 
-    const mainnetNonce12345Address: [number, string][] = [
+    const Nonce0To4: [number, string][] = [
         [0, "37o7aY3eZZTXmzrDa5e4Wj3Z4ZZuyV42Aaj"],
         [1, "37tD32367v1fiWgW8waw3QTdYTKKGrCV3zw"],
         [2, "37qYK5eRJEr8a38hUXmxYv9aoQ8NpXH7Aqd"],
         [3, "37w8stLd9JQwUKBrBUQr1VryJuhS3RWqEen"],
         [4, "37vVbQVXEE4Lvs7X4wimsoxAvqBmoyHsWDJ"]
     ]
-    test.each(mainnetNonce12345Address)(
-        "Test Create Mainnet Account with range of nonces",
+    test.each(Nonce0To4)(
+        "Test Create Mainnet Wallet with range of nonces",
         (nonce, address) => {
-            expect(createMainnetAccountFromSeed(seed, nonce).address).toEqual(
-                address
-            )
+            expect(WalletMainnet(seed, nonce).address).toEqual(address)
         }
     )
 
-    const testnetNonce12345Address: [number, string][] = [
+    const Nonce0To1: [number, string][] = [
         [0, "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u"],
         [1, "37UsS2vnqCqCqhFN3vAbivLMkpp4L8GMCyP"],
         [2, "37SCi6Y81XffhDhZPWMdES2K1md7skK1mFu"],
         [3, "37XoGuEKrbEUbVki6SzWh1jhXHCB6jnKFxS"],
         [4, "37X9zRPDwWst43gNyvJSZKpu9CgWsHt1U8i"]
     ]
-    test.each(testnetNonce12345Address)(
-        "Test Create Testnet Account with range of nonces",
+    test.each(Nonce0To1)(
+        "Test Create Testnet Wallet with range of nonces",
         (nonce, address) => {
-            expect(createTestnetAccountFromSeed(seed, nonce).address).toEqual(
-                address
-            )
+            expect(WalletTestnet(seed, nonce).address).toEqual(address)
         }
     )
 })
 
-describe("Create Account from Private Key", () => {
+describe("Create Wallet from Private Key", () => {
     const privateKey = "BnafXBSq1VDUdZ1nSjJoxhnQdBv2hk3o6dbV49TD1bzo"
     const publicKey = "2uuQVr3B5aGgvSJ5BMCw4Cd19tdYdnMGoYnji99aPde4"
 
-    const createMainnetAccountFromPrivateKey = (privateKey: string) => {
-        return walletFactory({
+    const WalletMainnet = (privateKey: string) => {
+        return lunesjs.walletFactory({
             privateKey: privateKey,
-            chain: WalletTypes.Chain.Mainnet
+            chain: 1
         })
     }
 
-    const createTestnetAccountFromPrivateKey = (privateKey: string) => {
-        return walletFactory({
+    const WalletTestnet = (privateKey: string) => {
+        return lunesjs.walletFactory({
             privateKey: privateKey,
-            chain: WalletTypes.Chain.Testnet
+            chain: 0
         })
     }
 
-    it("Test Create Mainnet Account from Private Key", () => {
-        const w = createMainnetAccountFromPrivateKey(privateKey)
+    it("Test Create Mainnet Wallet from Private Key", () => {
+        const w = WalletMainnet(privateKey)
         const addr = "37o7aY3eZZTXmzrDa5e4Wj3Z4ZZuyV42Aaj"
         expect(w.privateKey).toEqual(privateKey)
         expect(w.publicKey).toEqual(publicKey)
         expect(w.address).toEqual(addr)
     })
 
-    it("Test Create Testnet Account from Private Key", () => {
-        const w = createTestnetAccountFromPrivateKey(privateKey)
+    it("Test Create Testnet Wallet from Private Key", () => {
+        const w = WalletTestnet(privateKey)
         const addr = "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u"
         expect(w.privateKey).toEqual(privateKey)
         expect(w.publicKey).toEqual(publicKey)
@@ -155,58 +149,48 @@ describe("Create Account from Private Key", () => {
     })
 })
 
-describe("Validate Account Address", () => {
-    const createMainnetAccount = () => {
-        return walletFactory({
-            chain: WalletTypes.Chain.Mainnet
+describe("Validate Wallet Address", () => {
+    const WalletMainnet = () => {
+        return lunesjs.walletFactory({
+            chain: 1
         }).address
     }
 
-    const createTestnetAccount = () => {
-        return walletFactory({
-            chain: WalletTypes.Chain.Testnet
+    const WalletTestnet = () => {
+        return lunesjs.walletFactory({
+            chain: 0
         }).address
     }
 
-    const addressMainnet = Array.from(new Array(20), () =>
-        createMainnetAccount()
-    )
+    const addressMainnet = Array.from(new Array(20), () => WalletMainnet())
 
-    const addressTestnet = Array.from(new Array(20), () =>
-        createTestnetAccount()
-    )
+    const addressTestnet = Array.from(new Array(20), () => WalletTestnet())
     test.each(addressMainnet)(
-        "Test Validating Mainnet Account Address",
+        "Test Validating Mainnet Wallet Address",
         (addressMainnet) => {
-            const result = cryptoUtils.validateAddress(
-                addressMainnet,
-                WalletTypes.Chain.Mainnet
-            )
+            const result = lunesjs.crypto.validateAddress(addressMainnet, 1)
             expect(result).toEqual(true)
         }
     )
 
     test.each(addressTestnet)(
-        "Test Validating Testnet Account Address",
+        "Test Validating Testnet Wallet Address",
         (addressTestnet) => {
-            const result = cryptoUtils.validateAddress(
-                addressTestnet,
-                WalletTypes.Chain.Mainnet
-            )
+            const result = lunesjs.crypto.validateAddress(addressTestnet, 1)
             expect(result).toEqual(false)
         }
     )
 })
 
 describe("Create Signatures", () => {
-    const newAccountMainnet = () => {
-        return walletFactory({
-            chain: WalletTypes.Chain.Mainnet
+    const newWalletMainnet = () => {
+        return lunesjs.walletFactory({
+            chain: 1
         })
     }
-    const newAccountTestnet = () => {
-        return walletFactory({
-            chain: WalletTypes.Chain.Mainnet
+    const newWalletTestnet = () => {
+        return lunesjs.walletFactory({
+            chain: 1
         })
     }
     const message = [
@@ -234,11 +218,14 @@ describe("Create Signatures", () => {
     ]
 
     test.each(message)(
-        "Test sign and validate signatures for Mainnet random Account with FastSignature function",
+        "Test sign and validate signatures for Mainnet random Wallet with FastSignature function",
         (message) => {
-            const w = newAccountMainnet()
-            const signature = cryptoUtils.fastSignature(w.privateKey, message)
-            const result = cryptoUtils.validateSignature(
+            const w = newWalletMainnet()
+            const signature = lunesjs.crypto.fastSignature(
+                w.privateKey,
+                message
+            )
+            const result = lunesjs.crypto.validateSignature(
                 w.publicKey,
                 message,
                 signature
@@ -247,11 +234,14 @@ describe("Create Signatures", () => {
         }
     )
     test.each(message)(
-        "Test sign and validate signatures for Testnet random Account with FastSignature function",
+        "Test sign and validate signatures for Testnet random Wallet with FastSignature function",
         (message) => {
-            const w = newAccountTestnet()
-            const signature = cryptoUtils.fastSignature(w.privateKey, message)
-            const result = cryptoUtils.validateSignature(
+            const w = newWalletTestnet()
+            const signature = lunesjs.crypto.fastSignature(
+                w.privateKey,
+                message
+            )
+            const result = lunesjs.crypto.validateSignature(
                 w.publicKey,
                 message,
                 signature
@@ -260,11 +250,14 @@ describe("Create Signatures", () => {
         }
     )
     test.each(message)(
-        "Test sign and validate signatures for Mainnet random Account with FullSignature function",
+        "Test sign and validate signatures for Mainnet random Wallet with FullSignature function",
         (message) => {
-            const w = newAccountMainnet()
-            const signature = cryptoUtils.fullSignature(w.privateKey, message)
-            const result = cryptoUtils.validateSignature(
+            const w = newWalletMainnet()
+            const signature = lunesjs.crypto.fullSignature(
+                w.privateKey,
+                message
+            )
+            const result = lunesjs.crypto.validateSignature(
                 w.publicKey,
                 message,
                 signature
@@ -273,11 +266,14 @@ describe("Create Signatures", () => {
         }
     )
     test.each(message)(
-        "Test sign and validate signatures for Testnet random Account with FullSignature function",
+        "Test sign and validate signatures for Testnet random Wallet with FullSignature function",
         (message) => {
-            const w = newAccountTestnet()
-            const signature = cryptoUtils.fullSignature(w.privateKey, message)
-            const result = cryptoUtils.validateSignature(
+            const w = newWalletTestnet()
+            const signature = lunesjs.crypto.fullSignature(
+                w.privateKey,
+                message
+            )
+            const result = lunesjs.crypto.validateSignature(
                 w.publicKey,
                 message,
                 signature

@@ -1,58 +1,47 @@
-import { IAccount, WalletTypes } from "../wallet/wallet.types"
-import walletConstants from "../wallet/constants"
+import { Wallet } from "../wallet/wallet.service"
+import Constants from "../wallet/constants"
 import * as wasm from "lunesrs"
 
-export const cryptoUtils = {
-    fromExistingSeed: (
-        seed: string,
-        nonce: number,
-        chain: WalletTypes.Chain
-    ): IAccount => {
+export const crypto = {
+    fromSeed: (seed: string, nonce: number, chain: number): Wallet => {
         const hidden_seed = wasm.hiddenSeed(nonce, seed)
         const privateKey = wasm.toPrivateKey(hidden_seed)
         const publicKey = wasm.toPublicKey(privateKey)
         const address = wasm.toAddress(1, chain, publicKey)
 
-        return {
-            nonce: nonce,
-            chain: chain,
-            seed: seed,
-            privateKey: wasm.arrayToBase58(privateKey),
-            publicKey: wasm.arrayToBase58(publicKey),
-            address: wasm.arrayToBase58(address)
-        }
+        return new Wallet(
+            wasm.arrayToBase58(privateKey),
+            wasm.arrayToBase58(publicKey),
+            wasm.arrayToBase58(address),
+            chain,
+            nonce,
+            seed
+        )
     },
-    fromPrivateKey: (
-        privateKey: string,
-        chain: WalletTypes.Chain
-    ): IAccount => {
+    fromPrivateKey: (privateKey: string, chain: number): Wallet => {
         const publicKey = wasm.toPublicKey(wasm.base58ToArray(privateKey))
         const address = wasm.toAddress(1, chain, publicKey)
 
-        return {
-            seed: "",
-            nonce: 0,
-            chain: chain,
-            privateKey: privateKey,
-            publicKey: wasm.arrayToBase58(publicKey),
-            address: wasm.arrayToBase58(address)
-        }
+        return new Wallet(
+            privateKey,
+            wasm.arrayToBase58(publicKey),
+            wasm.arrayToBase58(address),
+            chain,
+            0,
+            ""
+        )
     },
-    fromNewSeed: (
-        seedLen: number,
-        nonce: number,
-        chain: WalletTypes.Chain
-    ): IAccount => {
+    fromNewSeed: (seedLen: number, nonce: number, chain: number): Wallet => {
         let seed = []
         seedLen = seedLen != undefined ? Math.round(seedLen / 3) : 4
         for (let i = 0; i < seedLen; i++) {
             for (let n of wasm.randomTripleNumber()) {
-                seed.push(walletConstants.wordsList[n])
+                seed.push(Constants.wordsList[n])
             }
         }
-        return cryptoUtils.fromExistingSeed(seed.join(" "), nonce, chain)
+        return crypto.fromSeed(seed.join(" "), nonce, chain)
     },
-    validateAddress: (address: string, chain: WalletTypes.Chain): boolean => {
+    validateAddress: (address: string, chain: number): boolean => {
         return wasm.validateAddress(chain, wasm.base58ToArray(address))
     },
     validateSignature: (
@@ -66,7 +55,7 @@ export const cryptoUtils = {
             wasm.base58ToArray(signature)
         )
     },
-    fastSignature: (privateKey: string, message: string) => {
+    fastSignature: (privateKey: string, message: string): string => {
         return wasm.arrayToBase58(
             wasm.fastSignature(
                 wasm.base58ToArray(privateKey),
@@ -74,12 +63,15 @@ export const cryptoUtils = {
             )
         )
     },
-    fullSignature: (privateKey: string, message: string) => {
+    fullSignature: (privateKey: string, message: string): string => {
         return wasm.arrayToBase58(
             wasm.fullSignature(
                 wasm.base58ToArray(privateKey),
                 wasm.base58ToArray(message)
             )
         )
+    },
+    sameChainAddress: (): boolean => {
+        return true
     }
 }
