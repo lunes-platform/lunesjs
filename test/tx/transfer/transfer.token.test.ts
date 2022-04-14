@@ -1,8 +1,8 @@
-import { transferTokenFactory } from "../../../../src/tx/transfer/service.transfer"
-import { TransactionsTypes } from "../../../../src/tx/transactions.types"
-import { walletFactory } from "../../../../src/wallet/wallet.service"
-import validator from "../../../../src/tx/transfer/validator"
-import { WalletTypes } from "../../../../src/wallet/wallet.types"
+import { transferTokenFactory } from "../../../src/tx/transfer/service.transfer"
+import { TransactionsTypes } from "../../../src/tx/transactions.types"
+import { walletFactory } from "../../../src/wallet/wallet.service"
+import validator from "../../../src/tx/transfer/validator"
+import { WalletTypes } from "../../../src/wallet/wallet.types"
 import * as wasm from "lunesrs"
 
 describe("Transfer Token Suite", () => {
