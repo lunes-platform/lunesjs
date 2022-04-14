@@ -38,30 +38,8 @@ export const cryptoUtils = {
             address: wasm.arrayToBase58(address)
         }
     },
-    fromPublicKey: (publicKey: string, chain: WalletTypes.Chain): IAccount => {
-        const address = wasm.toAddress(1, chain, wasm.base58ToArray(publicKey))
-
-        return {
-            seed: "",
-            nonce: 0,
-            privateKey: "",
-            chain: chain,
-            publicKey: publicKey,
-            address: wasm.arrayToBase58(address)
-        }
-    },
-    fromAddress: (address: string, chain: WalletTypes.Chain): IAccount => {
-        return {
-            seed: "",
-            nonce: 0,
-            privateKey: "",
-            publicKey: "",
-            chain: chain,
-            address: address
-        }
-    },
     fromNewSeed: (
-        nWords: number,
+        seedLen: number,
         nonce: number,
         chain: WalletTypes.Chain
     ): IAccount => {
