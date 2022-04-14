@@ -1,8 +1,8 @@
-import { IAccount, WalletTypes } from "../client/wallet/wallet.types"
-import walletConstants from "../client/wallet/constants"
+import { IAccount, WalletTypes } from "../wallet/wallet.types"
+import walletConstants from "../wallet/constants"
 import * as wasm from "lunesrs"
 
-const cryptoUtils = {
+export const cryptoUtils = {
     fromExistingSeed: (
         seed: string,
         nonce: number,
@@ -105,5 +105,3 @@ const cryptoUtils = {
         )
     }
 }
-
-export default cryptoUtils

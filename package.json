@@ -1,6 +1,6 @@
 {
     "name": "lunesjs",
-    "version": "1.5.10",
+    "version": "1.6.0",
     "description": "Library for communication with nodes in mainnet or testnet of the lunes-blockchain network",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -10,7 +10,7 @@
         "README.md",
         "package.json"
     ],
-    "repository": "git@git.lunes.io:blockchain/labs/lunesjs.git",
+    "repository": "https://github.com/lunes-platform/lunesjs.git",
     "keywords": [
         "blockchain",
         "lunes",
@@ -19,9 +19,10 @@
     "author": "lunes-platform",
     "license": "Apache-2.0",
     "scripts": {
+        "deploy": "yarn build && yarn publish",
         "fmt": "prettier -w .",
         "fmtc": "prettier -c",
-        "test": "yarn jest",
+        "t": "yarn jest",
         "build": "tsc"
     },
     "devDependencies": {
@@ -34,6 +35,6 @@
     },
     "dependencies": {
         "axios": "^0.26.1",
-        "lunesrs": "^1.8.2-web"
+        "lunesrs": "^1.9.1"
     }
 }
