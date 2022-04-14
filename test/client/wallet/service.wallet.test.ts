@@ -1,14 +1,14 @@
-import { accountFactory } from "../../../src/client/wallet/service.account"
-import { WalletTypes } from "../../../src/client/wallet/wallet.types"
+import { walletFactory } from "../../../src/wallet/wallet.service"
+import { WalletTypes } from "../../../src/wallet/wallet.types"
 import { cryptoUtils } from "../../../src/utils/crypto"
 import * as wasm from "lunesrs"
 
 describe("Create Account from New Seed", () => {
     const createMainnetAccountFromNewSeed = () => {
-        return accountFactory()
+        return walletFactory()
     }
     const createTestnetAccountFromNewSeed = () => {
-        return accountFactory({ chain: WalletTypes.Chain.Testnet })
+        return walletFactory({ chain: WalletTypes.Chain.Testnet })
     }
 
     it("Test Address of Mainnet Account from New Seed", () => {
@@ -36,7 +36,7 @@ describe("Create Account from Seed", () => {
         "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit"
 
     const createMainnetAccountFromSeed = (seed: string, nonce?: number) => {
-        return accountFactory({
+        return walletFactory({
             seed: seed,
             nonce: nonce != undefined ? nonce : 0,
             chain: WalletTypes.Chain.Mainnet
@@ -44,7 +44,7 @@ describe("Create Account from Seed", () => {
     }
 
     const createTestnetAccountFromSeed = (seed: string, nonce?: number) => {
-        return accountFactory({
+        return walletFactory({
             seed: seed,
             nonce: nonce != undefined ? nonce : 0,
             chain: WalletTypes.Chain.Testnet
@@ -109,14 +109,14 @@ describe("Create Account from Private Key", () => {
     const publicKey = "2uuQVr3B5aGgvSJ5BMCw4Cd19tdYdnMGoYnji99aPde4"
 
     const createMainnetAccountFromPrivateKey = (privateKey: string) => {
-        return accountFactory({
+        return walletFactory({
             privateKey: privateKey,
             chain: WalletTypes.Chain.Mainnet
         })
     }
 
     const createTestnetAccountFromPrivateKey = (privateKey: string) => {
-        return accountFactory({
+        return walletFactory({
             privateKey: privateKey,
             chain: WalletTypes.Chain.Testnet
         })
@@ -143,14 +143,14 @@ describe("Create Account from Public Key", () => {
     const publicKey = "2uuQVr3B5aGgvSJ5BMCw4Cd19tdYdnMGoYnji99aPde4"
 
     const createMainnetAccountFromPublicKey = (publicKey: string) => {
-        return accountFactory({
+        return walletFactory({
             publicKey: publicKey,
             chain: WalletTypes.Chain.Mainnet
         })
     }
 
     const createTestnetAccountFromPublicKey = (publicKey: string) => {
-        return accountFactory({
+        return walletFactory({
             publicKey: publicKey,
             chain: WalletTypes.Chain.Testnet
         })
@@ -171,14 +171,14 @@ describe("Create Account from Public Key", () => {
 
 describe("Create Account from Address", () => {
     const createMainnetAccountFromAdress = () => {
-        return accountFactory({
+        return walletFactory({
             address: "37o7aY3eZZTXmzrDa5e4Wj3Z4ZZuyV42Aaj",
             chain: WalletTypes.Chain.Mainnet
         })
     }
 
     const createTestnetAccountFromAdress = () => {
-        return accountFactory({
+        return walletFactory({
             address: "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u",
             chain: WalletTypes.Chain.Mainnet
         })
@@ -199,13 +199,13 @@ describe("Create Account from Address", () => {
 
 describe("Validate Account Address", () => {
     const createMainnetAccount = () => {
-        return accountFactory({
+        return walletFactory({
             chain: WalletTypes.Chain.Mainnet
         }).address
     }
 
     const createTestnetAccount = () => {
-        return accountFactory({
+        return walletFactory({
             chain: WalletTypes.Chain.Testnet
         }).address
     }
@@ -242,12 +242,12 @@ describe("Validate Account Address", () => {
 
 describe("Create Signatures", () => {
     const newAccountMainnet = () => {
-        return accountFactory({
+        return walletFactory({
             chain: WalletTypes.Chain.Mainnet
         })
     }
     const newAccountTestnet = () => {
-        return accountFactory({
+        return walletFactory({
             chain: WalletTypes.Chain.Mainnet
         })
     }

@@ -1,5 +1,5 @@
 import { IAccount } from "./wallet.types"
-import { cryptoUtils } from "../../utils/crypto"
+import { cryptoUtils } from "../utils/crypto"
 
 class Account implements IAccount {
     privateKey: string
@@ -19,7 +19,7 @@ class Account implements IAccount {
     }
 }
 
-export function accountFactory({
+export function walletFactory({
     privateKey,
     publicKey,
     address,

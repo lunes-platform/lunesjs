@@ -1,17 +1,17 @@
-import { transferTokenFactory } from "../../../../src/client/transactions/transfer/service.transfer"
-import { TransactionsTypes } from "../../../../src/client/transactions/transactions.types"
-import { accountFactory } from "../../../../src/client/wallet/service.account"
-import validator from "../../../../src/client/transactions/transfer/validator"
-import { WalletTypes } from "../../../../src/client/wallet/wallet.types"
+import { transferTokenFactory } from "../../../../src/tx/transfer/service.transfer"
+import { TransactionsTypes } from "../../../../src/tx/transactions.types"
+import { walletFactory } from "../../../../src/wallet/wallet.service"
+import validator from "../../../../src/tx/transfer/validator"
+import { WalletTypes } from "../../../../src/wallet/wallet.types"
 import * as wasm from "lunesrs"
 
 describe("Transfer Token Suite", () => {
-    const senderAccount = accountFactory({
+    const senderAccount = walletFactory({
         privateKey: "8YMbX5BCQdazwgdVfeUpKuoUJrmYpMyGVAGAsNaHVj1u",
         chain: WalletTypes.Chain.Mainnet
     })
 
-    const recipientAccount = accountFactory({
+    const recipientAccount = walletFactory({
         privateKey: "G6E2xNBWtsRG8XBDmeTQQxZNHHUa6K9dnc9KrYtKyGwM",
         chain: WalletTypes.Chain.Mainnet
     })

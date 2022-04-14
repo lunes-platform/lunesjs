@@ -1,5 +1,5 @@
-import { IAccount, WalletTypes } from "../client/wallet/wallet.types"
-import walletConstants from "../client/wallet/constants"
+import { IAccount, WalletTypes } from "../wallet/wallet.types"
+import walletConstants from "../wallet/constants"
 import * as wasm from "lunesrs"
 
 export const cryptoUtils = {
