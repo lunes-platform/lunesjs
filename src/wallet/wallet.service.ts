@@ -21,17 +21,13 @@ class Account implements IAccount {
 
 export function walletFactory({
     privateKey,
-    publicKey,
-    address,
-    nWords,
+    seedLen,
     chain,
     nonce,
     seed
 }: {
     privateKey?: string
-    publicKey?: string
-    address?: string
-    nWords?: number
+    seedLen?: number
     chain?: number
     nonce?: number
     seed?: string
@@ -51,21 +47,10 @@ export function walletFactory({
                 chain != undefined ? chain : 1
             )
         })
-    } else if (publicKey != undefined) {
-        return new Account({
-            ...cryptoUtils.fromPublicKey(
-                publicKey,
-                chain != undefined ? chain : 1
-            )
-        })
-    } else if (address != undefined) {
-        return new Account({
-            ...cryptoUtils.fromAddress(address, chain != undefined ? chain : 0)
-        })
     } else {
         return new Account({
             ...cryptoUtils.fromNewSeed(
-                nWords != undefined ? nWords : 12,
+                seedLen != undefined ? seedLen : 12,
                 nonce != undefined ? nonce : 0,
                 chain != undefined ? chain : 1
             )

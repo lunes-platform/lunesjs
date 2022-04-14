@@ -1,33 +1,49 @@
-import { walletFactory } from "../../../src/wallet/wallet.service"
-import { WalletTypes } from "../../../src/wallet/wallet.types"
-import { cryptoUtils } from "../../../src/utils/crypto"
+import { walletFactory } from "../../src/wallet/wallet.service"
+import { WalletTypes } from "../../src/wallet/wallet.types"
+import { cryptoUtils } from "../../src/utils/crypto"
 import * as wasm from "lunesrs"
 
 describe("Create Account from New Seed", () => {
-    const createMainnetAccountFromNewSeed = () => {
-        return walletFactory()
-    }
-    const createTestnetAccountFromNewSeed = () => {
-        return walletFactory({ chain: WalletTypes.Chain.Testnet })
+    const newWallet = (n?: number) => {
+        return walletFactory({
+            seedLen: n != undefined ? n : 12
+        })
     }
 
-    it("Test Address of Mainnet Account from New Seed", () => {
-        const w = createMainnetAccountFromNewSeed()
-        expect(
-            cryptoUtils.validateAddress(
-                w.address != undefined ? w.address : "",
-                WalletTypes.Chain.Mainnet
-            )
-        ).toEqual(true)
-    })
-    it("Test Address of Testnet Account from New Seed", () => {
-        const w = createTestnetAccountFromNewSeed()
-        expect(
-            cryptoUtils.validateAddress(
-                w.address != undefined ? w.address : "",
-                WalletTypes.Chain.Testnet
-            )
-        ).toEqual(true)
+    test.each([
+        { response: 458, result: 459 },
+        { response: 802, result: 801 },
+        { response: 97, result: 96 },
+        { response: 31, result: 30 },
+        { response: 12, result: 12 },
+        { response: 21, result: 21 },
+        { response: 15, result: 15 }
+    ])(
+        "The seed should be list of worlds multiple of 3",
+        ({response, result}) => {
+            const len = newWallet(response).seed.split(" ").length
+            expect(len).toEqual(result)
+        }
+    )
+    test.each([
+        {w1: newWallet(), w2: newWallet()},
+        {w1: newWallet(), w2: newWallet()},
+        {w1: newWallet(), w2: newWallet()},
+        {w1: newWallet(), w2: newWallet()},
+        {w1: newWallet(), w2: newWallet()},
+        {w1: newWallet(), w2: newWallet()},
+        {w1: newWallet(), w2: newWallet()},
+        {w1: newWallet(), w2: newWallet()},
+        {w1: newWallet(), w2: newWallet()},
+        {w1: newWallet(), w2: newWallet()},
+        {w1: newWallet(), w2: newWallet()},
+    ])("The seed should be list of worlds multiple of 3", ({w1, w2}) => {
+        expect(w1.privateKey).not.toEqual(w2.privateKey)
+        expect(w1.publicKey).not.toEqual(w2.publicKey)
+        expect(w1.address).not.toEqual(w2.address)
+        expect(w1.seed).not.toEqual(w2.seed)
+        expect(w1.chain).toEqual(w2.chain)
+        expect(w1.nonce).toEqual(w2.nonce)
     })
 })
 
@@ -136,64 +152,6 @@ describe("Create Account from Private Key", () => {
         expect(w.privateKey).toEqual(privateKey)
         expect(w.publicKey).toEqual(publicKey)
         expect(w.address).toEqual(addr)
-    })
-})
-
-describe("Create Account from Public Key", () => {
-    const publicKey = "2uuQVr3B5aGgvSJ5BMCw4Cd19tdYdnMGoYnji99aPde4"
-
-    const createMainnetAccountFromPublicKey = (publicKey: string) => {
-        return walletFactory({
-            publicKey: publicKey,
-            chain: WalletTypes.Chain.Mainnet
-        })
-    }
-
-    const createTestnetAccountFromPublicKey = (publicKey: string) => {
-        return walletFactory({
-            publicKey: publicKey,
-            chain: WalletTypes.Chain.Testnet
-        })
-    }
-
-    it("Test Create Mainnet Account From Public Key", () => {
-        expect(createMainnetAccountFromPublicKey(publicKey).address).toEqual(
-            "37o7aY3eZZTXmzrDa5e4Wj3Z4ZZuyV42Aaj"
-        )
-    })
-
-    it("Test Create Testnet Account From Public Key", () => {
-        expect(createTestnetAccountFromPublicKey(publicKey).address).toEqual(
-            "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u"
-        )
-    })
-})
-
-describe("Create Account from Address", () => {
-    const createMainnetAccountFromAdress = () => {
-        return walletFactory({
-            address: "37o7aY3eZZTXmzrDa5e4Wj3Z4ZZuyV42Aaj",
-            chain: WalletTypes.Chain.Mainnet
-        })
-    }
-
-    const createTestnetAccountFromAdress = () => {
-        return walletFactory({
-            address: "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u",
-            chain: WalletTypes.Chain.Mainnet
-        })
-    }
-
-    it("Test Create Mainnet Account from Address", () => {
-        expect(createMainnetAccountFromAdress().address).toEqual(
-            "37o7aY3eZZTXmzrDa5e4Wj3Z4ZZuyV42Aaj"
-        )
-    })
-
-    it("Test Create Testnet Account from Address", () => {
-        expect(createTestnetAccountFromAdress().address).toEqual(
-            "37PmyYwMGrH4uBR5V4DjCEvHGw4f2pdXW5u"
-        )
     })
 })
 
