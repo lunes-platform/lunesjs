@@ -30,4 +30,4 @@ jobs:
               run: yarn install -D
 
             - name: Format Checker
-              run: yarn test
+              run: yarn t
