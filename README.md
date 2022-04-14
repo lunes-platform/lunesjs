@@ -2,6 +2,9 @@
 
 📦 Build based in the WebAssembly by Rust using [LunesRs](https://github.com/lunes-platform/lunesrs) for communication with nodes on the mainnet or testnet of the lunes-blockchain network Allows automation of asset submission, final issuance of token reissue, leasing, registration and creation of a new wallet.
 
+[![Deploy](https://github.com/lunes-platform/lunesjs/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/lunes-platform/lunesjs/actions/workflows/deploy.yml)
+[![Test](https://github.com/lunes-platform/lunesjs/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/lunes-platform/lunesjs/actions/workflows/test.yml)
+[![Lint](https://github.com/lunes-platform/lunesjs/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/lunes-platform/lunesjs/actions/workflows/lint.yml)
 ![npm](https://img.shields.io/npm/v/lunesjs)
 
 ![npm](https://img.shields.io/npm/dm/lunesjs)
