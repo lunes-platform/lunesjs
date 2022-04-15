@@ -59,7 +59,7 @@ export class TransferToken {
 
     async broadcast(node?: string) {
         return await broadcastTransfer(
-            node != undefined ? node : "https://lunesnode-testnet.lunes.io",
+            node != undefined ? node : "https://lunesnode.lunes.io",
             this
         )
     }
