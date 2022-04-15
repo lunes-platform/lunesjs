@@ -1,98 +1,104 @@
-import { transferTokenFactory } from "../../../src/tx/transfer/service.transfer"
-import { TransactionsTypes } from "../../../src/tx/transactions.types"
-import { walletFactory } from "../../../src/wallet/wallet.service"
-import validator from "../../../src/tx/transfer/validator"
-import { WalletTypes } from "../../../src/wallet/wallet.types"
-import * as wasm from "lunesrs"
+import lunesjs from "../../../src/index"
 
-describe("Transfer Token Suite", () => {
-    const senderAccount = walletFactory({
-        privateKey: "8YMbX5BCQdazwgdVfeUpKuoUJrmYpMyGVAGAsNaHVj1u",
-        chain: WalletTypes.Chain.Mainnet
+describe("Test Transfer Token", () => {
+    const sender = lunesjs.walletFactory({
+        privateKey: "8YMbX5BCQdazwgdVfeUpKuoUJrmYpMyGVAGAsNaHVj1u"
     })
 
-    const recipientAccount = walletFactory({
-        privateKey: "G6E2xNBWtsRG8XBDmeTQQxZNHHUa6K9dnc9KrYtKyGwM",
-        chain: WalletTypes.Chain.Mainnet
+    const receiver = lunesjs.walletFactory({
+        privateKey: "G6E2xNBWtsRG8XBDmeTQQxZNHHUa6K9dnc9KrYtKyGwM"
     })
 
-    const rawTx = {
-        type: TransactionsTypes.TransferToken.int,
-        sender: senderAccount.address,
-        senderPublicKey: senderAccount.publicKey,
-        recipient: recipientAccount.address,
-        amount: 100000000000,
-        timestamp: 1648349834003,
-        fee: TransactionsTypes.TransferToken.fee,
-        signature: "",
-        assetId: "",
-        feeAsset: ""
+    const createTx = (publicKey: string, address: string, value: number) => {
+        return lunesjs.transferTokenFactory({
+            senderPublicKey: publicKey,
+            receiver: address,
+            amount: value,
+            timestamp: 1649980377489,
+        })
     }
 
-    const message = validator.serialize(
-        rawTx.senderPublicKey,
-        rawTx.assetId,
-        rawTx.feeAsset,
-        rawTx.timestamp,
-        rawTx.amount,
-        rawTx.fee,
-        rawTx.recipient
-    )
-
-    const tx = transferTokenFactory(
-        senderAccount.publicKey,
-        recipientAccount.address,
-        100000000000,
-        undefined,
-        undefined,
-        1648349834003
-    )
-
-    it("Create a Transfer Transaction", () => {
-        expect(tx.transaction().recipient).toEqual(recipientAccount.address)
-        expect(tx.transaction().sender).toEqual(senderAccount.address)
-        expect(tx.transaction().amount).toEqual(100000000000)
-        expect(tx.transaction().type).toEqual(4)
-    })
-
-    it("Serialize Transfer Transaction ", () => {
-        expect(wasm.arrayToBase58(Uint8Array.from(message))).toEqual(
-            "2J2EfWqeqbH17PC5yfioAeQ5h27J76uduH5nafAUuJhKb8gHCSqpDFV4oGgWPwQkBgg9tfQjatWZu8eiYYe6NF67Sd5Hf7ieAsaZT5hZow9xgjefbfs5"
-        )
-        expect(message).toEqual(
-            new Uint8Array([
-                4, 28, 26, 172, 20, 253, 115, 23, 6, 248, 59, 119, 129, 151,
-                144, 5, 252, 208, 116, 12, 81, 146, 227, 208, 88, 57, 27, 134,
-                143, 7, 76, 94, 8, 0, 0, 0, 0, 1, 127, 201, 78, 107, 19, 0, 0,
-                0, 23, 72, 118, 232, 0, 0, 0, 0, 0, 0, 15, 66, 64, 1, 49, 146,
-                80, 170, 11, 139, 27, 185, 41, 131, 242, 219, 45, 180, 199, 38,
-                41, 173, 240, 198, 30, 146, 73, 23, 128
-            ])
-        )
-        expect(rawTx).toStrictEqual({
+    it("Test Create Transfer Token", () => {
+        const tx = createTx(sender.publicKey, receiver.address, 1000)
+        expect(tx.transaction()).toEqual({
             senderPublicKey: "2ti1GM7F7J78J347fqSWSVocueDV3RSCFkLSKqmhk35Z",
             recipient: "37xRcbn1LiT1Az4REoLhjpca93jPG1gTEwq",
             sender: "37tQRv7x2RHd32Ss2i1EFTWSTSsqkwXcaBe",
-            timestamp: 1648349834003,
-            amount: 100000000000,
+            timestamp: 1649980377489,
             signature: "",
-            fee: 1000000,
+            amount: Math.floor(1000 * 10e7),
             feeAsset: "",
             assetId: "",
-            type: 4
+            fee: 100000
         })
     })
+    test.each([
+        {
+            sender: lunesjs.walletFactory({ chain: 0 }),
+            receiver: lunesjs.walletFactory({ chain: 0}),
+            amount: 0,
+            timestamp: 1483228801,
+            fee: 100000,
+            test: "testing amount"
+        },
+        {
+            sender: lunesjs.walletFactory({ chain: 1 }),
+            receiver: lunesjs.walletFactory({ chain: 1 }),
+            amount: 1,
+            timestamp: 1483228799,
+            fee: 100000,
+            test: "testing timestamp"
+        },
+        {
+            sender: lunesjs.walletFactory({ chain: 1 }),
+            receiver: lunesjs.walletFactory({ chain: 1 }),
+            amount: 1,
+            timestamp: 1483228800,
+            fee: 99999,
+            test: "testing fee"
+        },
+        {
+            sender: lunesjs.walletFactory({ chain: 0 }),
+            receiver: lunesjs.walletFactory({ chain: 1 }),
+            amount: 1,
+            timestamp: 1483228800,
+            fee: 100000,
+            test: "testing diff address, Mainnet | Testnet"
+        },
+        {
+            sender: lunesjs.walletFactory({ chain: 1 }),
+            receiver: lunesjs.walletFactory({ chain: 0 }),
+            amount: 1,
+            timestamp: 1483228800,
+            fee: 100000,
+            test: "testing diff address, Testnet | Mainnet"
+        }
+    ])(
+        "Test Create Ivalid Transfer Token by \n[$test]",
+        ({ sender, receiver, amount, timestamp, fee }) => {
+            expect(() => {
+                lunesjs.transferTokenFactory({
+                    senderPublicKey: sender.publicKey,
+                    receiver: receiver.address,
+                    amount: amount,
+                    timestamp: timestamp,
+                    fee: fee,
+                    chain: sender.chain
+                })
+            }).toThrow()
+        }
+    )
 
-    it("Signed a Transfer Transaction", () => {
-        expect(tx.transaction()).toEqual(rawTx)
-        const sign = tx.sign(senderAccount.privateKey).signature
-        expect(tx.transaction().signature).not.toBe("")
+    it("Test Signature of Transfer Token", () => {
+        const tx = createTx(sender.publicKey, receiver.address, 1000)
+        const sign_tx = tx.sign(sender.privateKey)
 
-        const result = wasm.validateSignature(
-            wasm.base58ToArray(senderAccount.publicKey),
-            new Uint8Array(message),
-            wasm.base58ToArray(sign)
+        const response = lunesjs.crypto.validateSignature(
+            sign_tx.senderPublicKey,
+            sign_tx.message,
+            sign_tx.signature
         )
-        expect(result).toBe(true)
+
+        expect(response).toEqual(true)
     })
 })

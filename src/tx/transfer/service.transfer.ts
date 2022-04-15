@@ -1,58 +1,111 @@
-import { TransactionsTypes } from "../transactions.types"
-import { WalletTypes } from "../../wallet/wallet.types"
-import { BaseTransaction } from "../BaseTransaction"
-import { ITransfer } from "./transfer.types"
-import validator from "./validator"
+import { crypto } from "../../utils/crypto"
+import { signTransfer } from "./utils"
 import * as wasm from "lunesrs"
 
-class TransferToken implements BaseTransaction {
-    private tx: ITransfer
-    constructor(tx: ITransfer) {
-        this.tx = tx
+
+export class TransferToken {
+    senderPublicKey: string
+    timestamp: number
+    signature: string
+    recipient: string
+    feeAsset: string
+    message: string
+    assetId: string
+    amount: number
+    sender: string
+    type: number
+    fee: number
+    constructor(
+        senderPublicKey: string,
+        timestamp: number,
+        receiver: string,
+        feeAsset: string,
+        assetId: string,
+        amount: number,
+        sender: string,
+        fee: number
+    ) {
+        this.senderPublicKey = senderPublicKey
+        this.timestamp = timestamp
+        this.signature = ""
+        this.recipient = receiver
+        this.feeAsset = feeAsset
+        this.message = ""
+        this.assetId = assetId
+        this.amount = amount
+        this.sender = sender
+        this.type = 4
+        this.fee = fee
     }
 
-    transaction(): ITransfer {
-        return this.tx
+    transaction() {
+        return {
+            senderPublicKey: this.senderPublicKey,
+            timestamp: this.timestamp,
+            signature: this.signature,
+            recipient: this.recipient,
+            feeAsset: this.feeAsset,
+            assetId: this.assetId,
+            amount: this.amount,
+            sender: this.sender,
+            fee: this.fee
+        }
     }
 
-    sign(privateKey: WalletTypes.PrivateKey): ITransfer {
-        this.tx.signature = validator.sign(privateKey, this.tx)
-        return this.tx
-    }
-
-    async send() {
-        validator.send(this.tx)
+    sign(privateKey: string): TransferToken {
+        this.signature = signTransfer(privateKey, this)
+        return this
     }
 }
 
-export function transferTokenFactory(
-    senderPublicKey: string,
-    recipient: string,
-    amount: number,
-    assetId?: string,
-    chain?: WalletTypes.Chain,
-    timestamp?: number,
-    feeAsset?: string,
+export type Transfer = {
+    senderPublicKey: string
+    timestamp?: number
+    feeAsset?: string
+    receiver: string
+    assetId?: string
+    sender?: string
+    chain?: number
+    amount: number
     fee?: number
-): TransferToken {
-    const chain_id = chain != undefined ? chain : WalletTypes.Chain.Mainnet
-    if (
-        false == validator.ready(senderPublicKey, recipient, amount, chain_id)
-    ) {
-        throw new Error("dados invalidos")
+}
+
+export function transferTokenFactory(tx: Transfer): TransferToken {
+    const timestamp = tx.timestamp != undefined ? tx.timestamp : Date.now()
+    const feeAsset = tx.feeAsset != undefined ? tx.feeAsset : ""
+    const assetId = tx.assetId != undefined ? tx.assetId : ""
+    const fee = tx.fee != undefined ? tx.fee : 100000
+    const chain = tx.chain != undefined ? tx.chain : 1
+    const sender = wasm.arrayToBase58(
+        wasm.toAddress(
+            1,
+            chain,
+            wasm.base58ToArray(tx.senderPublicKey)
+        )
+    )
+
+    if (timestamp < 1483228800) {
+        throw new Error(
+            `Timestamp should be greater than 1483228800, but ${timestamp}`
+        )
     }
-    return new TransferToken({
-        senderPublicKey: senderPublicKey,
-        recipient: recipient,
-        amount: amount,
-        sender: wasm.arrayToBase58(
-            wasm.toAddress(1, chain_id, wasm.base58ToArray(senderPublicKey))
-        ),
-        timestamp: timestamp != undefined ? timestamp : new Date().getTime(),
-        feeAsset: feeAsset != undefined ? feeAsset : "",
-        assetId: assetId != undefined ? assetId : "",
-        type: TransactionsTypes.TransferToken.int,
-        fee: fee != undefined ? fee : TransactionsTypes.TransferToken.fee,
-        signature: ""
-    })
+    if (tx.amount <= 0) {
+        throw new Error(`Amount should be greater than 0, but ${tx.amount}`)
+    }
+    if (fee < 100000) {
+        throw new Error(`Fee should be greater than 100000, but ${fee}`)
+    }
+    if (crypto.sameChainAddress(tx.receiver, sender) != true) {
+        throw new Error("Sender AND Receiver should be same chain")
+    }
+    return new TransferToken(
+        tx.senderPublicKey,
+        timestamp,
+        tx.receiver,
+        feeAsset,
+        assetId,
+        Math.floor(tx.amount * 10e7),
+        sender,
+        fee
+    )
 }
