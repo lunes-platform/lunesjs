@@ -1,5 +1,5 @@
-import * as wasm from "lunesrs"
 import { TransferToken } from "./service.transfer"
+import * as wasm from "lunesrs"
 
 export function serializeTransfer(tx: TransferToken): Uint8Array {
     const tokenId: Uint8Array =
