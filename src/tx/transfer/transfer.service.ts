@@ -1,7 +1,6 @@
+import { signTransfer, broadcastTransfer } from "./utils"
 import { crypto } from "../../utils/crypto"
-import { signTransfer } from "./utils"
 import * as wasm from "lunesrs"
-
 
 export class TransferToken {
     senderPublicKey: string
@@ -48,6 +47,7 @@ export class TransferToken {
             assetId: this.assetId,
             amount: this.amount,
             sender: this.sender,
+            type: this.type,
             fee: this.fee
         }
     }
@@ -56,15 +56,21 @@ export class TransferToken {
         this.signature = signTransfer(privateKey, this)
         return this
     }
+
+    async broadcast(node?: string) {
+        return await broadcastTransfer(
+            node != undefined ? node : "https://lunesnode-testnet.lunes.io",
+            this
+        )
+    }
 }
 
 export type Transfer = {
     senderPublicKey: string
+    receiverAddress: string
     timestamp?: number
     feeAsset?: string
-    receiver: string
     assetId?: string
-    sender?: string
     chain?: number
     amount: number
     fee?: number
@@ -77,11 +83,7 @@ export function transferTokenFactory(tx: Transfer): TransferToken {
     const fee = tx.fee != undefined ? tx.fee : 100000
     const chain = tx.chain != undefined ? tx.chain : 1
     const sender = wasm.arrayToBase58(
-        wasm.toAddress(
-            1,
-            chain,
-            wasm.base58ToArray(tx.senderPublicKey)
-        )
+        wasm.toAddress(1, chain, wasm.base58ToArray(tx.senderPublicKey))
     )
 
     if (timestamp < 1483228800) {
@@ -95,13 +97,13 @@ export function transferTokenFactory(tx: Transfer): TransferToken {
     if (fee < 100000) {
         throw new Error(`Fee should be greater than 100000, but ${fee}`)
     }
-    if (crypto.sameChainAddress(tx.receiver, sender) != true) {
+    if (crypto.sameChainAddress(tx.receiverAddress, sender) != true) {
         throw new Error("Sender AND Receiver should be same chain")
     }
     return new TransferToken(
         tx.senderPublicKey,
         timestamp,
-        tx.receiver,
+        tx.receiverAddress,
         feeAsset,
         assetId,
         Math.floor(tx.amount * 10e7),

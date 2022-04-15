@@ -1,5 +1,6 @@
-import { TransferToken } from "./service.transfer"
+import { TransferToken } from "./transfer.service"
 import * as wasm from "lunesrs"
+import axios from "axios"
 
 export function serializeTransfer(tx: TransferToken): Uint8Array {
     const tokenId: Uint8Array =
@@ -36,3 +37,67 @@ export function signTransfer(
         )
     )
 }
+
+export async function broadcastTransfer(
+    node: string,
+    tx: TransferToken
+): Promise<TransferSuccess | TransferFail> {
+    return new Promise(async (resolve) => {
+        axios
+            .post(`${node}/transactions/broadcast`, tx.transaction())
+            .then((res) => {
+                const x: TransferSuccess = {
+                    isSuccess: true,
+                    response: {
+                        senderPublicKey: res.data.senderPublicKey,
+                        timestamp: res.data.timestamp,
+                        signature: res.data.signature,
+                        recipient: res.data.recipient,
+                        feeAsset: res.data.feeAsset,
+                        assetId: res.data.assetId,
+                        sender: res.data.sender,
+                        amount: res.data.amount,
+                        type: res.data.type,
+                        fee: res.data.fee,
+                        id: res.data.id
+                    }
+                }
+                resolve(x)
+            })
+            .catch(erro => {
+                resolve({
+                    isSuccess: false,
+                    response: {
+                        codeError: erro.response.data.error,
+                        message: erro.response.data.message
+                    }
+                })
+            })
+    })
+}
+
+type TransferSuccess = {
+    isSuccess: boolean
+    response: {
+        senderPublicKey: string
+        timestamp: number
+        signature: string
+        recipient: string
+        feeAsset: string
+        assetId: string
+        sender: string
+        amount: number
+        type: number
+        fee: number
+        id: string
+    }
+}
+
+type TransferFail = {
+    isSuccess: boolean
+    response: {
+        codeError: number
+        message: string
+    }
+}
+
