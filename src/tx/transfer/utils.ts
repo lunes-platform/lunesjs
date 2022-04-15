@@ -1,7 +1,7 @@
-import { ITransfer } from "./transfer.types"
 import * as wasm from "lunesrs"
+import { TransferToken } from "./service.transfer"
 
-export function serializeTransfer(tx: ITransfer): Uint8Array {
+export function serializeTransfer(tx: TransferToken): Uint8Array {
     const tokenId: Uint8Array =
         tx.assetId != ""
             ? new Uint8Array([1, ...wasm.base58ToArray(tx.assetId)])
@@ -12,38 +12,27 @@ export function serializeTransfer(tx: ITransfer): Uint8Array {
             : new Uint8Array([0])
 
     return new Uint8Array([
-        ...[4],
+        ...[tx.type],
         ...wasm.base58ToArray(tx.senderPublicKey),
         ...tokenId,
         ...tokenFee,
         ...wasm.serializeUInteger(BigInt(tx.timestamp)),
         ...wasm.serializeUInteger(BigInt(tx.amount)),
         ...wasm.serializeUInteger(BigInt(tx.fee)),
-        ...wasm.base58ToArray(tx.receiver)
+        ...wasm.base58ToArray(tx.recipient)
     ])
 }
 
-
-export function signTransfer(privateKey: string, tx: ITransfer): string {
-    const message = serializeTransfer(tx)
+export function signTransfer(
+    senderPrivateKey: string,
+    tx: TransferToken
+): string {
+    tx.message = wasm.arrayToBase58(serializeTransfer(tx))
 
     return wasm.arrayToBase58(
         wasm.fastSignature(
-            wasm.base58ToArray(privateKey),
-            message
+            wasm.base58ToArray(senderPrivateKey),
+            wasm.base58ToArray(tx.message)
         )
     )
-}
-
-export interface ITransfer {
-    senderPublicKey: string
-    timestamp: number
-    signature: string
-    receiver: string
-    feeAsset: string
-    assetId: string
-    amount: number
-    sender: string
-    type: number
-    fee: number
 }
