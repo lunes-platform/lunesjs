@@ -12,7 +12,7 @@ describe("Test Transfer Token", () => {
     const createTx = (publicKey: string, address: string, value: number) => {
         return lunesjs.transferTokenFactory({
             senderPublicKey: publicKey,
-            receiver: address,
+            receiverAddress: address,
             amount: value,
             timestamp: 1649980377489,
         })
@@ -100,5 +100,21 @@ describe("Test Transfer Token", () => {
         )
 
         expect(response).toEqual(true)
+    })
+
+    it("Test Broadcast of Transfer Token", async () => {
+        const sender = lunesjs.walletFactory({chain: 0})
+        const receiver = lunesjs.walletFactory({chain: 0})
+        const tx = lunesjs.transferTokenFactory({
+            senderPublicKey: sender.publicKey,
+            receiver: receiver.address,
+            amount: 1000,
+            chain: sender.chain
+        })
+
+        tx.sign(sender.privateKey)
+        const x = await tx.broadcast()
+
+        expect(x).toEqual({})
     })
 })

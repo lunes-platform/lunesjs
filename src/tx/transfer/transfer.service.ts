@@ -1,5 +1,5 @@
+import { signTransfer, broadcastTransfer } from "./utils"
 import { crypto } from "../../utils/crypto"
-import { signTransfer } from "./utils"
 import * as wasm from "lunesrs"
 
 
@@ -56,15 +56,21 @@ export class TransferToken {
         this.signature = signTransfer(privateKey, this)
         return this
     }
+
+    async broadcast(node?: string) {
+        return await broadcastTransfer(
+            node != undefined ? node : "https://lunesnode-testnet.lunes.io",
+            this
+        )
+    }
 }
 
 export type Transfer = {
     senderPublicKey: string
+    receiverAddress: string
     timestamp?: number
     feeAsset?: string
-    receiver: string
     assetId?: string
-    sender?: string
     chain?: number
     amount: number
     fee?: number

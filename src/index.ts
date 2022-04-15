@@ -1,4 +1,4 @@
-import { transferTokenFactory } from "./tx/transfer/service.transfer"
+import { transferTokenFactory } from "./tx/transfer/transfer.service"
 import { walletFactory } from "./wallet/wallet.service"
 import { crypto } from "./utils/crypto"
 

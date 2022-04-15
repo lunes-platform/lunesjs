@@ -1,5 +1,6 @@
-import { TransferToken } from "./service.transfer"
+import { TransferToken } from "./transfer.service"
 import * as wasm from "lunesrs"
+import axios from "axios"
 
 export function serializeTransfer(tx: TransferToken): Uint8Array {
     const tokenId: Uint8Array =
@@ -35,4 +36,13 @@ export function signTransfer(
             wasm.base58ToArray(tx.message)
         )
     )
+}
+
+export async function broadcastTransfer(node: string, tx: TransferToken) {
+    return axios.post(
+        `${node}/transactions/broadcast`,
+        tx.transaction()
+    ).then(response => {
+        return response
+    })
 }
