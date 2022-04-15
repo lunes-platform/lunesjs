@@ -2,7 +2,6 @@ import { signTransfer, broadcastTransfer } from "./utils"
 import { crypto } from "../../utils/crypto"
 import * as wasm from "lunesrs"
 
-
 export class TransferToken {
     senderPublicKey: string
     timestamp: number
@@ -48,6 +47,7 @@ export class TransferToken {
             assetId: this.assetId,
             amount: this.amount,
             sender: this.sender,
+            type: this.type,
             fee: this.fee
         }
     }
@@ -83,11 +83,7 @@ export function transferTokenFactory(tx: Transfer): TransferToken {
     const fee = tx.fee != undefined ? tx.fee : 100000
     const chain = tx.chain != undefined ? tx.chain : 1
     const sender = wasm.arrayToBase58(
-        wasm.toAddress(
-            1,
-            chain,
-            wasm.base58ToArray(tx.senderPublicKey)
-        )
+        wasm.toAddress(1, chain, wasm.base58ToArray(tx.senderPublicKey))
     )
 
     if (timestamp < 1483228800) {
@@ -101,13 +97,13 @@ export function transferTokenFactory(tx: Transfer): TransferToken {
     if (fee < 100000) {
         throw new Error(`Fee should be greater than 100000, but ${fee}`)
     }
-    if (crypto.sameChainAddress(tx.receiver, sender) != true) {
+    if (crypto.sameChainAddress(tx.receiverAddress, sender) != true) {
         throw new Error("Sender AND Receiver should be same chain")
     }
     return new TransferToken(
         tx.senderPublicKey,
         timestamp,
-        tx.receiver,
+        tx.receiverAddress,
         feeAsset,
         assetId,
         Math.floor(tx.amount * 10e7),

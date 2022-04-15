@@ -72,8 +72,10 @@ export const crypto = {
         )
     },
     sameChainAddress: (addr1: string, addr2: string): boolean => {
-        const x = crypto.validateAddress(addr1, 1) && crypto.validateAddress(addr2, 1)
-        const y = crypto.validateAddress(addr1, 0) && crypto.validateAddress(addr2, 0)
+        const x =
+            crypto.validateAddress(addr1, 1) && crypto.validateAddress(addr2, 1)
+        const y =
+            crypto.validateAddress(addr1, 0) && crypto.validateAddress(addr2, 0)
 
         return x || y
     }
