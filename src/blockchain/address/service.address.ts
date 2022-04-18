@@ -1,16 +1,22 @@
-import { IAddressError } from "./address.types"
+import { IAddress, IAddressError } from "./address.types"
 
 import axios from "axios"
 
-
-const BASEURL = "https://lunesnode.lunes.io/addresses/"
+const BASEURL = "https://lunesnode.lunes.io/"
 
 /*
- * This function get wallet accounts addresses
- * --- validation: {from} {to}
- *
- */
+/assets/{asset_id}/distribution
+/assets/balance/{address}
+assets/balance/{address}/{asset_id}
 
+
+/leasing/active/{address}
+
+/addresses
+/addresses/alias/by-alias/{alias}
+/addresses/balance/{address}
+addresses/alias/by-address/{address}
+/*
 
 
 
@@ -23,7 +29,7 @@ const BASEURL = "https://lunesnode.lunes.io/addresses/"
 export async function validateAddr(
     address: String
 ): Promise<any | IAddressError> {
-    const url = `${BASEURL}validate/${address}`
+    const url = `${BASEURL}addresses/validate/${address}`
 
     if (typeof address !== "string") {
         const error: IAddressError = {
@@ -31,7 +37,7 @@ export async function validateAddr(
             message: `the type of address cannot different of string`
         }
         return error
-    } else   {
+    } else {
         const response = await axios.get(url)
         //return response.data
         if (
@@ -45,23 +51,74 @@ export async function validateAddr(
                 message: `system error, come back later`
             }
             return error
-        } else if (response.data.valid === false){ 
+        } else if (response.data.valid === false) {
             const error: IAddressError = {
                 status: `error`,
                 message: `address invalid`
             }
             return error
-
-        } else if(response.status === 200) {return response.data}
-    
-    
+        } else if (response.status === 200) {
+            return response.data
+        }
     }
 
     // const response = await axios.get(url)
     // return response.data
 }
 
+/*
+ * This function check Account's balances for all assets
+ * --- validation: {address} : string
+ * GET /assets/balance/{address}
+ */
+export async function assetBalance(address: String): Promise<IAddress | IAddressError> {
 
+    const url = `${BASEURL}assets/balance/${address}`
+
+    if (typeof address !== "string") {
+        const error: IAddressError = {
+            status: `error`,
+            message: `the type of address cannot different of string`
+        } 
+        return error
+    } else  {
+        return new Promise(async (resolve, reject) => { 
+            const response = await axios.get(url)
+            
+            if (response.status === 400) {
+                const error: IAddressError = {
+                    status: `error`,
+                    message: `invalid address`
+            } 
+            return error
+ 
+        } else if (response.status === 200) {
+                resolve(response.data)
+            } else {
+                reject(response.data)
+            }
+        })
+    }
+
+}
+//const response = await axios.get(url)
+//return response.data
+
+/*
+ * This function check Account's balances for all assets
+ * --- validation: {address} : string
+ * GET /assets/balance/{address}
+
+export async function assetBalance(address: String):  Promise<any>  {
+    
+}
+ */
+
+/*
+/assets/{asset_id}/distribution
+/assets/balance/{address}
+assets/balance/{address}/{asset_id}
+*/
 
 /*
  * This function check whether address {address} is valid or not

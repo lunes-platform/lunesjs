@@ -1,4 +1,7 @@
-import { validateAddr } from "../../../src/blockchain/address/service.address"
+import {
+    validateAddr,
+    assetBalance
+} from "../../../src/blockchain/address/service.address"
 
 describe("validateAddr function- suite test block service", () => {
     it("validateAddr - validate address, passing true addrress", async () => {
@@ -17,3 +20,47 @@ describe("validateAddr function- suite test block service", () => {
         })
     })
 })
+
+describe("ASSETS  functions - suite test ASSETS service", () => {
+    it("assetBalance  - check asset, passing true addrress", async () => {
+        const result = await assetBalance("387LjpQ5fdBdcY4nRcfDU7gPYdesbc1Md4D")
+        expect(result).toStrictEqual({
+            address: "387LjpQ5fdBdcY4nRcfDU7gPYdesbc1Md4D",
+            balances: [
+                {
+                    assetId: "FJL6J61NFWmZksXh3KnZdbN4ZWwgkZkUswWQ1G9DLvUk",
+                    balance: 13140000,
+                    issueTransaction: {
+                        assetId: "FJL6J61NFWmZksXh3KnZdbN4ZWwgkZkUswWQ1G9DLvUk",
+                        decimals: 8,
+                        description:
+                            "Reward Token for lunesrealnode.com Leasers",
+                        fee: 100000000,
+                        id: "FJL6J61NFWmZksXh3KnZdbN4ZWwgkZkUswWQ1G9DLvUk",
+                        name: "NEO Token",
+                        quantity: 1000000000000000,
+                        reissuable: true,
+                        sender: "37kGaGFGgzw5E6cr5thLVsxiXHoJSMuso92",
+                        senderPublicKey:
+                            "EkUV6ihoPtvXKX8q6KhkSasihjxWZcXivBuf4HpN4sRp",
+                        signature:
+                            "5uEUY5JgQ9756RAPCHNStsFNyLGU9pp1kv3q3N2MdwUnYAyzvU7wdtG5MTsKwNmYDvkTUwHP6fjaJqH6rzuCm7NP",
+                        timestamp: 1529557133065,
+                        type: 3
+                    },
+                    quantity: 1000000000000000,
+                    reissuable: true
+                }
+            ]
+        })
+    })
+    it("assetBalance temp  - check asset, passing invalid addrress", async () => {
+        const result = await assetBalance("387LjpQ5fdBdcY4nRcfDU7gPYdesbc1Md4Dm")
+        expect(result).toStrictEqual("invalid address")
+    })
+})
+
+/*
+describe("validateAddr function- suite test block service", () => {
+
+})*/
