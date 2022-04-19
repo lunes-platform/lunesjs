@@ -35,6 +35,6 @@
     },
     "dependencies": {
         "axios": "^0.26.1",
-        "lunesrs": "^1.9.1"
+        "lunesrs": "^1.9.3"
     }
 }

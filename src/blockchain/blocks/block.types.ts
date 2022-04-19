@@ -1,3 +1,5 @@
+import { AxiosResponse } from "axios"
+
 interface INxtConsensus {
     generationSignature: string
     baseTarget: number
@@ -17,7 +19,7 @@ interface ITransaction {
 }
 
 interface IHeader {
-    nxtConsensus: Array<INxtConsensus>
+    nxtConsensus: INxtConsensus
     transactionCount: number
     features: Array<number>
     timestamp: number
@@ -31,39 +33,51 @@ interface IHeader {
 }
 
 export interface IBlock {
+    isSuccess: boolean
     header: IHeader
     body: Array<ITransaction>
 }
 
-/*{
-    "status": "error",
-    "details": "No block for this height"
-  }
-  */
-
 export interface IBlockError {
-    status: string
-    message: string
+    isSuccess: boolean
+    response: {
+        codeError: number
+        message: string
+    }
 }
 
-/*
- export class IError extends Error{
-
-    public readonly status: string;
-    public readonly code: number;
-
-    constructor  ( status:string, code:number) {
-        super();
-        
-        this.status = status;
-        this.code = code;
-        Object.setPrototypeOf(this, new.target.prototype);
-        Error.captureStackTrace(this);
+export function mountBlock(r: AxiosResponse<any, any>): IBlock {
+    let block: IBlock = {
+        isSuccess: true,
+        header: {
+            nxtConsensus: {
+                baseTarget: r.data["nxt-consensus"]["base-target"],
+                generationSignature:
+                    r.data["nxt-consensus"]["generation-signature"]
+            },
+            transactionCount: r.data.transactionCount,
+            features: r.data.features != undefined ? r.data.features : [],
+            timestamp: r.data.timestamp,
+            reference: r.data.reference,
+            generator: r.data.generator,
+            signature: r.data.signature,
+            blocksize: r.data.blocksize,
+            version: r.data.version,
+            height: r.data.height,
+            fee: r.data.fee
+        },
+        body: r.data.transactions
     }
 
- }
-*/
+    return block
+}
 
-//    super(description);
-//Object.setPrototypeOf(this, new.target.prototype);
-//Error.captureStackTrace(this);
+export function mountErr(e: string): IBlockError {
+    return {
+        isSuccess: false,
+        response: {
+            codeError: 1,
+            message: e
+        }
+    }
+}
