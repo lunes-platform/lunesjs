@@ -1,72 +1,46 @@
 {
     "name": "lunesjs",
-    "version": "1.3.1",
+    "version": "1.7.2",
     "description": "Library for communication with nodes in mainnet or testnet of the lunes-blockchain network",
-    "main": "index.js",
-    "repository": "git@git.lunes.io:blockchain/labs/lunesjs.git",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "files": [
+        "/lib",
+        "LICENSE",
+        "README.md",
+        "package.json"
+    ],
+    "repository": "https://github.com/lunes-platform/lunesjs.git",
     "keywords": [
         "blockchain",
         "lunes",
         "client"
     ],
     "author": "lunes-platform",
-    "license": "Apache 2.0",
+    "license": "Apache-2.0",
     "scripts": {
-        "build": "tsc",
-        "test": "yarn jest",
-        "autotest": "yarn jest --watchAll",
-        "watch": "tsc --watch",
         "wheel": "nodemon ./build/src/main.js",
+        "deploy": "yarn build && yarn publish",
+        "autotest": "yarn jest --watchAll",
         "postinstall": "husky install",
-        "commit": "cz",
-        "fmt": "prettier -w ."
+        "watch": "tsc --watch",
+        "fmt": "prettier -w .",
+        "fmtc": "prettier -c",
+        "test": "yarn jest",
+        "t": "yarn jest",
+        "build": "tsc",
+        "commit": "cz"
     },
     "devDependencies": {
-        "@commitlint/cli": "^16.1.0",
-        "@commitlint/config-conventional": "^16.0.0",
         "@types/jest": "^27.0.3",
-        "cz-conventional-changelog": "^3.0.1",
-        "husky": "^7.0.4",
         "jest": "^27.4.5",
         "jest-junit": "^13.0.0",
-        "nodemon": "^2.0.15",
-        "prettier": "2.5.1",
+        "prettier": "2.6.2",
         "ts-jest": "^27.1.2",
         "typescript": "^4.5.4"
     },
     "dependencies": {
         "axios": "^0.26.1",
-        "base-x": "^3.0.9",
-        "lunesrs": "1.5.5"
-    },
-    "lint-staged": {
-        "**/*": "prettier --write"
-    },
-    "config": {
-        "commitizen": {
-            "path": "./node_modules/cz-conventional-changelog",
-            "types": {
-                "added": {
-                    "description": "Add a new feature",
-                    "title": "Added"
-                },
-                "merged": {
-                    "description": "Resolves an issue and merge it to prod",
-                    "title": "Merged"
-                },
-                "fixed": {
-                    "description": "Fix a bug",
-                    "title": "Fixed"
-                },
-                "refactored": {
-                    "description": "Does not add a feature or fix a bug",
-                    "title": "Refactored"
-                },
-                "deprecated": {
-                    "description": "Breaks compatibility with an earlier version",
-                    "title": "Deprecated"
-                }
-            }
-        }
+        "lunesrs": "^1.9.1"
     }
 }

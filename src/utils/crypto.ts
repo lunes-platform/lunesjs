@@ -1,72 +1,48 @@
-import { IAccount, WalletTypes } from "../client/wallet/wallet.types"
-import walletConstants from "../client/wallet/constants"
+import { Wallet } from "../wallet/wallet.service"
+import Constants from "../wallet/constants"
 import * as wasm from "lunesrs"
 
-const cryptoUtils = {
-    fromExistingSeed: (
-        seed: string,
-        nonce: number,
-        chain: WalletTypes.Chain
-    ): IAccount => {
+export const crypto = {
+    fromSeed: (seed: string, nonce: number, chain: number): Wallet => {
         const hidden_seed = wasm.hiddenSeed(nonce, seed)
-        const privateKey = wasm.toPrivateKeyHex(wasm.fromStrHex(hidden_seed))
-        const publicKey = wasm.toPublicKeyHex(wasm.fromStrHex(privateKey))
-        const address = wasm.toAddressHex(1, chain, wasm.fromStrHex(publicKey))
+        const privateKey = wasm.toPrivateKey(hidden_seed)
+        const publicKey = wasm.toPublicKey(privateKey)
+        const address = wasm.toAddress(1, chain, publicKey)
 
-        return {
-            nonce: nonce,
-            chain: chain,
-            seed: seed,
-            privateKey: wasm.hexToB58(privateKey),
-            publicKey: wasm.hexToB58(publicKey),
-            address: wasm.hexToB58(address)
-        }
+        return new Wallet(
+            wasm.arrayToBase58(privateKey),
+            wasm.arrayToBase58(publicKey),
+            wasm.arrayToBase58(address),
+            chain,
+            nonce,
+            seed
+        )
     },
-    fromPrivateKey: (
-        privateKey: string,
-        chain: WalletTypes.Chain
-    ): IAccount => {
-        const publicKey = wasm.toPublicKeyHex(wasm.b58ToVec(privateKey))
-        const address = wasm.toAddressHex(1, chain, wasm.fromStrHex(publicKey))
+    fromPrivateKey: (privateKey: string, chain: number): Wallet => {
+        const publicKey = wasm.toPublicKey(wasm.base58ToArray(privateKey))
+        const address = wasm.toAddress(1, chain, publicKey)
 
-        return {
-            chain: chain,
-            privateKey: privateKey,
-            publicKey: wasm.hexToB58(publicKey),
-            address: wasm.hexToB58(address)
-        }
+        return new Wallet(
+            privateKey,
+            wasm.arrayToBase58(publicKey),
+            wasm.arrayToBase58(address),
+            chain,
+            0,
+            ""
+        )
     },
-    fromPublicKey: (publicKey: string, chain: WalletTypes.Chain): IAccount => {
-        const address = wasm.toAddressHex(1, chain, wasm.b58ToVec(publicKey))
-
-        return {
-            chain: chain,
-            publicKey: publicKey,
-            address: wasm.hexToB58(address)
-        }
-    },
-    fromAddress: (address: string, chain: WalletTypes.Chain): IAccount => {
-        return {
-            chain: chain,
-            address: address
-        }
-    },
-    fromNewSeed: (
-        nWords: number,
-        nonce: number,
-        chain: WalletTypes.Chain
-    ): IAccount => {
+    fromNewSeed: (seedLen: number, nonce: number, chain: number): Wallet => {
         let seed = []
-        nWords = nWords != undefined ? Math.round(nWords / 3) : 4
-        for (let i = 0; i < nWords; i++) {
-            for (let n in wasm.randomTripleNumber()) {
-                seed.push(walletConstants.wordsList[n])
+        seedLen = seedLen != undefined ? Math.round(seedLen / 3) : 4
+        for (let i = 0; i < seedLen; i++) {
+            for (let n of wasm.randomTripleNumber()) {
+                seed.push(Constants.wordsList[n])
             }
         }
-        return cryptoUtils.fromExistingSeed(seed.join(" "), nonce, chain)
+        return crypto.fromSeed(seed.join(" "), nonce, chain)
     },
-    validateAddress: (address: string, chain: WalletTypes.Chain): boolean => {
-        return wasm.validateAddress(chain, wasm.b58ToVec(address))
+    validateAddress: (address: string, chain: number): boolean => {
+        return wasm.validateAddress(chain, wasm.base58ToArray(address))
     },
     validateSignature: (
         publicKey: string,
@@ -74,31 +50,33 @@ const cryptoUtils = {
         signature: string
     ): boolean => {
         return wasm.validateSignature(
-            wasm.toVecu32(wasm.b58ToVec(publicKey)),
-            wasm.stringToVecu32(message),
-            wasm.toVecu32(wasm.b58ToVec(signature))
+            wasm.base58ToArray(publicKey),
+            wasm.base58ToArray(message),
+            wasm.base58ToArray(signature)
         )
     },
-    fastSignature: (privateKey: string, message: string) => {
-        return wasm.hexToB58(
-            wasm.vecu32ToHex(
-                wasm.fastSignature(
-                    wasm.toVecu32(wasm.b58ToVec(privateKey)),
-                    wasm.stringToVecu32(message)
-                )
+    fastSignature: (privateKey: string, message: string): string => {
+        return wasm.arrayToBase58(
+            wasm.fastSignature(
+                wasm.base58ToArray(privateKey),
+                wasm.base58ToArray(message)
             )
         )
     },
-    fullSignature: (privateKey: string, message: string) => {
-        return wasm.hexToB58(
-            wasm.vecu32ToHex(
-                wasm.fullSignature(
-                    wasm.toVecu32(wasm.b58ToVec(privateKey)),
-                    wasm.stringToVecu32(message)
-                )
+    fullSignature: (privateKey: string, message: string): string => {
+        return wasm.arrayToBase58(
+            wasm.fullSignature(
+                wasm.base58ToArray(privateKey),
+                wasm.base58ToArray(message)
             )
         )
+    },
+    sameChainAddress: (addr1: string, addr2: string): boolean => {
+        const x =
+            crypto.validateAddress(addr1, 1) && crypto.validateAddress(addr2, 1)
+        const y =
+            crypto.validateAddress(addr1, 0) && crypto.validateAddress(addr2, 0)
+
+        return x || y
     }
 }
-
-export default cryptoUtils
