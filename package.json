@@ -19,17 +19,11 @@
     "author": "lunes-platform",
     "license": "Apache-2.0",
     "scripts": {
-        "wheel": "nodemon ./build/src/main.js",
-        "deploy": "yarn build && yarn publish",
-        "autotest": "yarn jest --watchAll",
-        "postinstall": "husky install",
-        "watch": "tsc --watch",
         "fmt": "prettier -w .",
         "fmtc": "prettier -c",
         "test": "yarn jest",
         "t": "yarn jest",
-        "build": "tsc",
-        "commit": "cz"
+        "build": "tsc"
     },
     "devDependencies": {
         "@types/jest": "^27.0.3",
