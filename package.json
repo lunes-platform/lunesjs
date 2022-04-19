@@ -21,6 +21,7 @@
     "scripts": {
         "fmt": "prettier -w .",
         "fmtc": "prettier -c",
+        "test": "yarn jest",
         "t": "yarn jest",
         "build": "tsc"
     },
