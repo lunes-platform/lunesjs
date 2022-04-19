@@ -64,7 +64,7 @@ export async function broadcastTransfer(
                 }
                 resolve(x)
             })
-            .catch(erro => {
+            .catch((erro) => {
                 resolve({
                     isSuccess: false,
                     response: {
@@ -100,4 +100,3 @@ type TransferFail = {
         message: string
     }
 }
-
