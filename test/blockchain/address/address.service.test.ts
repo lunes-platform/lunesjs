@@ -57,24 +57,19 @@ describe("ASSETS  functions - suite test ASSETS service", () => {
     })
 
     it("assetBalance -error 400  - check asset, passing invalid addrress", async () => {
-        
         ///const result = await assetOne("387LjpQ5fdBdcY4nRcfDU7gPYdesbc1Md4Dm")
         //expect(result).toStrictEqual("invalid address")
-       // expect(result()).rejects.toThrow()
+        // expect(result()).rejects.toThrow()
 
-        const result = async () => { await assetBalance("387LjpQ5fdBdcY4nRcfDU7gPYdesbc1Md4Dm")}
+        const result = async () => {
+            await assetBalance("387LjpQ5fdBdcY4nRcfDU7gPYdesbc1Md4Dm")
+        }
 
-        expect(result()).rejects.toThrow()    
-    
+        expect(result()).rejects.toThrow()
     })
-
 })
 
-
-
-
-
-
+//37qrqmmQ8jwJJB2aXMnXt98kiwezyzb5ww7 richlist com vários assets
 
 /*
 describe("validateAddr function- suite test block service", () => {
