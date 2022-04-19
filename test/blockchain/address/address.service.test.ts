@@ -1,7 +1,7 @@
 //import { IAddress, IAddressError } from "../../../src/blockchain/address/address.types"
 import {
     validateAddr,
-    assetBalance
+    assetBalance, assetDistribution
 } from "../../../src/blockchain/address/service.address"
 
 describe("validateAddr function- suite test block service", () => {
@@ -69,6 +69,25 @@ describe("ASSETS  functions - suite test ASSETS service", () => {
     })
 })
 
+
+
+describe(" assetDistribution function- suite test ASSET DIST service", () => {
+    it("assetDistribution  - check ASSET DIST, passing VALID assetID", async () => {
+        const result = await assetDistribution("4xxGB1BgeiegawpZnvFssacbKzFuPKoueGD7k7xjmJn8")
+        expect(result).toStrictEqual({
+            "37rjJJQvE1g9qENxGTKubD3XkK5s5RAJS2f": 0,
+            "385ZRVhNfK7oZhPFeBRgpvChdZrzPhwjDZR": 1
+          })
+
+    })
+
+    it("assetDistribution  - check ASSET DIST, passing inexistent assetID", async () => {
+        const result = await assetDistribution("abracadabra")
+        expect(result).toStrictEqual({})
+
+    })
+
+})
 //37qrqmmQ8jwJJB2aXMnXt98kiwezyzb5ww7 richlist com vários assets
 
 /*

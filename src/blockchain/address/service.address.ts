@@ -114,14 +114,42 @@ export async function assetBalance(
  * This function show Asset balance distribution by account
  * --- validation: {assetId} string
  * GET /assets/{assetId}/distribution
-
-export async function assetDistribution(assetId:String):  Promise<any | IAddressError>  {
-    
-    const url = `${BASEURL}assets/{assetId}/distribution`
-    
-
-}
  */
+export async function assetDistribution(assetId: String):  Promise<any | IAddressError>  {
+
+    const url = `${BASEURL}assets/${assetId}/distribution`
+
+    if (typeof assetId !== "string") {
+        const error: IAddressError = {
+            status: `error`,
+            message: `the type of asset Id cannot different of string`
+        }
+        return error
+    } else {
+        return new Promise(async (resolve, reject) => {
+            const response = await axios.get(url)
+
+            if (
+                response.status === 404 ||
+                response.status === 401 ||
+                response.status === 403 ||
+                response.status === 501) {
+                const error: IAddressError = {
+                    status: `error`,
+                    message: `system error, come back later`
+                }
+                return error
+            } else if (response.status === 200) {
+                resolve(response.data)
+            } else {
+                reject(response.data)
+            } return response.data
+        })        
+
+
+    }
+}
+
 
 //const response = await axios.get(url)
 //return response.data
