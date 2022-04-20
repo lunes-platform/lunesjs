@@ -1,11 +1,20 @@
+/**
+ * Welcome to service.blocs.ts
+ * @author Lunes Platform <development@lunes.io>
+ */
+
 import axios from "axios"
 import { mountBlock, IBlock, IBlockError, mountErr } from "./block.types"
 
 const BASEURL = "https://lunesnode.lunes.io/blocks/"
 
-/*
+/**
  * This function get blockchain `height` e return a full block
- * --- validation: zero number, big number and string type
+ * 
+ * @type {height: number}
+ * validation: different from zero number, big number and string type
+ * 
+ * @returns Promise<IBlock | IBlockError> {@link blockByHeight} containing the parameter height.
  */
 export async function blockByHeight(
     height: number
@@ -27,11 +36,11 @@ export async function blockByHeight(
         return new Promise(async (resolve) => {
             axios
                 .get(url)
-                .then((r) => {
-                    resolve(mountBlock(r))
+                .then((blockchainResponse) => {
+                    resolve(mountBlock(blockchainResponse))
                 })
-                .catch((e) => {
-                    resolve(mountErr(e))
+                .catch((blockchainError) => {
+                    resolve(mountErr(blockchainError))
                 })
         })
     }
