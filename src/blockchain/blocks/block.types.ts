@@ -46,38 +46,38 @@ export interface IBlockError {
     }
 }
 
-export function mountBlock(r: AxiosResponse<any, any>): IBlock {
+export function mountBlock(blockchainResponse: AxiosResponse<any, any>): IBlock {
     let block: IBlock = {
         isSuccess: true,
         header: {
             nxtConsensus: {
-                baseTarget: r.data["nxt-consensus"]["base-target"],
+                baseTarget: blockchainResponse.data["nxt-consensus"]["base-target"],
                 generationSignature:
-                    r.data["nxt-consensus"]["generation-signature"]
+                blockchainResponse.data["nxt-consensus"]["generation-signature"]
             },
-            transactionCount: r.data.transactionCount,
-            features: r.data.features != undefined ? r.data.features : [],
-            timestamp: r.data.timestamp,
-            reference: r.data.reference,
-            generator: r.data.generator,
-            signature: r.data.signature,
-            blocksize: r.data.blocksize,
-            version: r.data.version,
-            height: r.data.height,
-            fee: r.data.fee
+            transactionCount: blockchainResponse.data.transactionCount,
+            features: blockchainResponse.data.features != undefined ? blockchainResponse.data.features : [],
+            timestamp: blockchainResponse.data.timestamp,
+            reference: blockchainResponse.data.reference,
+            generator: blockchainResponse.data.generator,
+            signature: blockchainResponse.data.signature,
+            blocksize: blockchainResponse.data.blocksize,
+            version: blockchainResponse.data.version,
+            height: blockchainResponse.data.height,
+            fee: blockchainResponse.data.fee
         },
-        body: r.data.transactions
+        body: blockchainResponse.data.transactions
     }
 
     return block
 }
 
-export function mountErr(e: string): IBlockError {
+export function mountErr(blockchainError: string): IBlockError {
     return {
         isSuccess: false,
         response: {
             codeError: 1,
-            message: e
+            message: blockchainError
         }
     }
 }
