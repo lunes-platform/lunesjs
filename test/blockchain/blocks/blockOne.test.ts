@@ -70,32 +70,23 @@ describe("actualHeight function - suite test block service", () => {
     })
 })
 
-// describe("blockAverageDelay function - suite test block service", () => {
-//     it("blockAverageDelay - see Average delay ", async () => {
-//         const result = await blockAverageDelay(
-//             "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
-//             1
-//         )
-//         expect(result).toMatchObject({
-//             delay: expect.any(Number)
-//         })
-//     })
+describe("blockAverageDelay function - suite test block service", () => {
+    it("blockAverageDelay - see Average delay ", async () => {
+        const result = await blocks.blockAverageDelay(
+            "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
+            1
+        )
+        expect(result).toStrictEqual(1011)
+    })
 
-//     it("blockAverageDelay - blockNum >9 error ", async () => {
-//         const result = await blockAverageDelay(
-//             "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
-//             10
-//         )
-//         // expect(result).toMatchObject({
-//         // delay: expect.any(Number)
-//         // })
-//         expect(result).toEqual({
-//             message:
-//                 "the blockNum cannot be less than or equal to zero or greater than nine",
-//             status: "error"
-//         })
-//     })
-// })
+    it("blockAverageDelay - blockNum >9 error ", async () => {
+        const result = await blocks.blockAverageDelay(
+            "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
+            10
+        )
+        expect(result.isSuccess).toEqual(false)
+    })
+})
 
 // describe("blockSeq function - suite test block service", () => {
 //     it("blockSeq - Get block at specified heights ", async () => {

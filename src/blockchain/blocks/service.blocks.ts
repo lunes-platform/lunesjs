@@ -54,7 +54,7 @@ export async function blockByHeight(
 
 
 /**
- * This function get a blockchain height
+ * # This function get a blockchain height
  * 
  * @returns Promise<any | IBlockError> {@link blockHeight} .
  * 
@@ -76,51 +76,46 @@ export async function actualHeight(): Promise<number | number> {
 
 }
 
-// /**
-//  * Average delay in milliseconds between last blockNum blocks starting from block with signature
-//  * 
-//  * @type {signature: string, blockNum: number }
-//  * 
-//  * @returns Promise<any | IBlockError> {@link blockAverageDelay} containing the paramms signature and blockNum.
-//  * 
-//  * --- signature = signature block - Base58-encoded signature
-//  * 
-//  *  --- blockNum = 1 to 9 - Number of blocks to count delay
-//  */
+/**
+ * # Average delay in milliseconds between last blockNum blocks starting from block with signature
+ * 
+ * @type {signature: string, blockNum: number }
+ * 
+ * @returns Promise<any | IBlockError> {@link blockAverageDelay} containing the paramms signature and blockNum.
+ * 
+ * --- signature = signature block - Base58-encoded signature
+ * 
+ *  --- blockNum = 1 to 9 - Number of blocks to count delay
+ */
 
-//  export async function blockAverageDelay(
-//     signature: string,
-//     blockNum: number
-// ): Promise<any | IBlockError> {
-//     const url = `${BASEURL}delay/${signature}/${blockNum}`
+ export async function blockAverageDelay(
+    signature: string,
+    blockNum: number
+): Promise<any | IBlockError> {
+    const url = `${BASEURL}delay/${signature}/${blockNum}`
 
-//     if (blockNum <= 0 || blockNum > 9) {
-//         // const error: IBlockError = {
-//         //     status: `error`,
-//         //     message: `the blockNum cannot be less than or equal to zero or greater than nine`
-//         // }
-//         // return error
-//         const error: IBlockError = {
-//             isSuccess: false,
-//             response: {
-//                 codeError: -1,
-//                 message: `the blockNum cannot be less than or equal to zero or greater than nine`
-//             }
-//         } 
-//         return error 
-//     } else {
-//         return new Promise(async (resolve) => {
-//             axios
-//                 .get(url)
-//                 .then((blockchainResponse) => {
-//                     resolve(mountBlock(blockchainResponse))
-//                 })
-//                 .catch((blockchainError) => {
-//                     resolve(mountErr(blockchainError))
-//                 })
-//         })
-//     }
-// }
+    if (blockNum <= 0 || blockNum > 9) {
+        const error: IBlockError = {
+            isSuccess: false,
+            response: {
+                codeError: -1,
+                message: `the blockNum cannot be less than or equal to zero or greater than nine`
+            }
+        } 
+        return error 
+    } else {
+        return new Promise(async (resolve) => {
+            axios
+                .get(url)
+                .then((r) => {
+                    resolve(r.data.delay)
+                })
+                .catch((blockchainError) => {
+                    resolve(mountErr(blockchainError))
+                })
+        })
+    }
+}
 
 
 
