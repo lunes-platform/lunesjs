@@ -75,124 +75,125 @@ describe("blockHeight function - suite test block service", () => {
 
 // describe("blockAverageDelay function - suite test block service", () => {
 //     it("blockAverageDelay - see Average delay ", async () => {
-//         const result = await blockAverageDelay(
+//         const result = await blocks.blockAverageDelay(
 //             "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
 //             1
 //         )
-//         expect(result).toMatchObject({
-//             delay: expect.any(Number)
-//         })
-//     })
-
-//     it("blockAverageDelay - blockNum >9 error ", async () => {
-//         const result = await blockAverageDelay(
-//             "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
-//             10
-//         )
+//         expect(result.isSuccess).toEqual(true)
 //         // expect(result).toMatchObject({
-//         // delay: expect.any(Number)
+//         //     delay: expect.any(Number)
 //         // })
-//         expect(result).toEqual({
-//             message:
-//                 "the blockNum cannot be less than or equal to zero or greater than nine",
-//             status: "error"
-//         })
 //     })
+
+//     // it("blockAverageDelay - blockNum >9 error ", async () => {
+//     //     const result = await blockAverageDelay(
+//     //         "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
+//     //         10
+//     //     )
+//     //     // expect(result).toMatchObject({
+//     //     // delay: expect.any(Number)
+//     //     // })
+//     //     expect(result).toEqual({
+//     //         message:
+//     //             "the blockNum cannot be less than or equal to zero or greater than nine",
+//     //         status: "error"
+//     //     })
+//     // })
 // })
 
-// describe("blockSeq function - suite test block service", () => {
-//     it("blockSeq - Get block at specified heights ", async () => {
-//         const result = await blockSeq(1, 2)
-//         expect(result).toStrictEqual([
-//             {
-//                 blocksize: 312,
-//                 fee: 0,
-//                 generator: "37jG983kttnpw4kAAQ6wi1yTyegkLN5LMNb",
-//                 height: 1,
-//                 "nxt-consensus": {
-//                     "base-target": 153722867,
-//                     "generation-signature": "11111111111111111111111111111111"
-//                 },
-//                 reference:
-//                     "67rpwLCuS5DGA8KGZXKsVQ7dnPb9goRLoKfgGbLfQg9WoLUgNY77E2jT11fem3coV9nAkguBACzrU1iyZM4B8roQ",
-//                 signature:
-//                     "soKTPcsb5cD97jnm64zF3pVuVUqUYx3caaDvuPyM6PXPY7eWCxeHeYvKSE2aJwZwRpXdRFdW1g5BQMFpYkHcf85",
-//                 timestamp: 1528077600000,
-//                 transactionCount: 2,
-//                 transactions: [
-//                     {
-//                         amount: 5072853761500800,
-//                         fee: 0,
-//                         id: "Er65mP3Mgs5PDZNmj2hmtVeBvF3gFp6SqVbqNrE8dq99bFve4EbCwh4efaQb5U5HT77e6Xhzi6DpL2G16sga8Jn",
-//                         recipient: "37oqFHsx1cRtLWtnp6YyQpud5WJk4v79VPu",
-//                         signature:
-//                             "Er65mP3Mgs5PDZNmj2hmtVeBvF3gFp6SqVbqNrE8dq99bFve4EbCwh4efaQb5U5HT77e6Xhzi6DpL2G16sga8Jn",
-//                         timestamp: 1528077600000,
-//                         type: 1
-//                     },
-//                     {
-//                         amount: 10000000000000000,
-//                         fee: 0,
-//                         id: "D3rtv9DWiRGmKpiTeknbug4gUuxBY6LMTVquR21ijUgcbTGdPyp4iHFAL4byCwSjnLpsE3nqkJSqkubQ4RmLTGW",
-//                         recipient: "3826zwbgHauHXAoppU4we3hsJc9GtRCpSvz",
-//                         signature:
-//                             "D3rtv9DWiRGmKpiTeknbug4gUuxBY6LMTVquR21ijUgcbTGdPyp4iHFAL4byCwSjnLpsE3nqkJSqkubQ4RmLTGW",
-//                         timestamp: 1528077600000,
-//                         type: 1
-//                     }
-//                 ],
-//                 version: 1
-//             },
-//             {
-//                 blocksize: 227,
-//                 features: [2],
-//                 fee: 0,
-//                 generator: "37oqFHsx1cRtLWtnp6YyQpud5WJk4v79VPu",
-//                 height: 2,
-//                 "nxt-consensus": {
-//                     "base-target": 153722867,
-//                     "generation-signature":
-//                         "E28JsgAfipFaBZLvYBJZUJh2aAdZcMTKuS9KZ4jRzZ6q"
-//                 },
-//                 reference:
-//                     "soKTPcsb5cD97jnm64zF3pVuVUqUYx3caaDvuPyM6PXPY7eWCxeHeYvKSE2aJwZwRpXdRFdW1g5BQMFpYkHcf85",
-//                 signature:
-//                     "4qZHFNXz5CM4vTapEHoecqYthEacHje3pvesy2rGzj5yLrd52gN6iVwWuX3mBJTWvqJeHYHnNuWqWmQpFayZAxYX",
-//                 timestamp: 1528116151053,
-//                 transactionCount: 0,
-//                 transactions: [],
-//                 version: 3
-//             }
-//         ])
-//     })
+describe("blockSeq function - suite test block service", () => {
+    it("blockSeq - Get block at specified heights ", async () => {
+        const result = await blocks.blockSeq(1, 2)
+        expect(result).toStrictEqual([
+            {
+                blocksize: 312,
+                fee: 0,
+                generator: "37jG983kttnpw4kAAQ6wi1yTyegkLN5LMNb",
+                height: 1,
+                "nxt-consensus": {
+                    "base-target": 153722867,
+                    "generation-signature": "11111111111111111111111111111111"
+                },
+                reference:
+                    "67rpwLCuS5DGA8KGZXKsVQ7dnPb9goRLoKfgGbLfQg9WoLUgNY77E2jT11fem3coV9nAkguBACzrU1iyZM4B8roQ",
+                signature:
+                    "soKTPcsb5cD97jnm64zF3pVuVUqUYx3caaDvuPyM6PXPY7eWCxeHeYvKSE2aJwZwRpXdRFdW1g5BQMFpYkHcf85",
+                timestamp: 1528077600000,
+                transactionCount: 2,
+                transactions: [
+                    {
+                        amount: 5072853761500800,
+                        fee: 0,
+                        id: "Er65mP3Mgs5PDZNmj2hmtVeBvF3gFp6SqVbqNrE8dq99bFve4EbCwh4efaQb5U5HT77e6Xhzi6DpL2G16sga8Jn",
+                        recipient: "37oqFHsx1cRtLWtnp6YyQpud5WJk4v79VPu",
+                        signature:
+                            "Er65mP3Mgs5PDZNmj2hmtVeBvF3gFp6SqVbqNrE8dq99bFve4EbCwh4efaQb5U5HT77e6Xhzi6DpL2G16sga8Jn",
+                        timestamp: 1528077600000,
+                        type: 1
+                    },
+                    {
+                        amount: 10000000000000000,
+                        fee: 0,
+                        id: "D3rtv9DWiRGmKpiTeknbug4gUuxBY6LMTVquR21ijUgcbTGdPyp4iHFAL4byCwSjnLpsE3nqkJSqkubQ4RmLTGW",
+                        recipient: "3826zwbgHauHXAoppU4we3hsJc9GtRCpSvz",
+                        signature:
+                            "D3rtv9DWiRGmKpiTeknbug4gUuxBY6LMTVquR21ijUgcbTGdPyp4iHFAL4byCwSjnLpsE3nqkJSqkubQ4RmLTGW",
+                        timestamp: 1528077600000,
+                        type: 1
+                    }
+                ],
+                version: 1
+            },
+            {
+                blocksize: 227,
+                features: [2],
+                fee: 0,
+                generator: "37oqFHsx1cRtLWtnp6YyQpud5WJk4v79VPu",
+                height: 2,
+                "nxt-consensus": {
+                    "base-target": 153722867,
+                    "generation-signature":
+                        "E28JsgAfipFaBZLvYBJZUJh2aAdZcMTKuS9KZ4jRzZ6q"
+                },
+                reference:
+                    "soKTPcsb5cD97jnm64zF3pVuVUqUYx3caaDvuPyM6PXPY7eWCxeHeYvKSE2aJwZwRpXdRFdW1g5BQMFpYkHcf85",
+                signature:
+                    "4qZHFNXz5CM4vTapEHoecqYthEacHje3pvesy2rGzj5yLrd52gN6iVwWuX3mBJTWvqJeHYHnNuWqWmQpFayZAxYX",
+                timestamp: 1528116151053,
+                transactionCount: 0,
+                transactions: [],
+                version: 3
+            }
+        ])
+    })
 
-//     it("blockSeq - from > to error ", async () => {
-//         const result = await blockSeq(2, 1)
-//         expect(result).toEqual({
-//             message:
-//                 "Too big sequences requested OR {from} cannot be bigger than {to}, change it",
-//             status: "error"
-//         })
-//     })
+    it("blockSeq - from > to error ", async () => {
+        const result = await blocks.blockSeq(2, 1)
+        expect(result).toEqual({
+            message:
+                "Too big sequences requested OR {from} cannot be bigger than {to}, change it",
+            status: "error"
+        })
+    })
 
-//     it("blockSeq - big sequences ", async () => {
-//         const result = await blockSeq(1, 101)
-//         expect(result).toEqual({
-//             message:
-//                 "Too big sequences requested OR {from} cannot be bigger than {to}, change it",
-//             status: "error"
-//         })
-//     })
+    it("blockSeq - big sequences ", async () => {
+        const result = await blocks.blockSeq(1, 101)
+        expect(result).toEqual({
+            message:
+                "Too big sequences requested OR {from} cannot be bigger than {to}, change it",
+            status: "error"
+        })
+    })
 
-//     it("blockSeq - max === false ", async () => {
-//         const result = await blockSeq(1, 200)
-//         expect(result).toEqual({
-//             message:
-//                 "Too big sequences requested OR {from} cannot be bigger than {to}, change it",
-//             status: "error"
-//         })
-//     })
-// })
+    it("blockSeq - max === false ", async () => {
+        const result = await blocks.blockSeq(1, 200)
+        expect(result).toEqual({
+            message:
+                "Too big sequences requested OR {from} cannot be bigger than {to}, change it",
+            status: "error"
+        })
+    })
+})
 
 // describe("blockLast function - suite test block service", () => {
 //     it("blockLast - Get last block data ", async () => {

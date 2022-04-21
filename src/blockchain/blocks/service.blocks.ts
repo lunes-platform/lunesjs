@@ -68,64 +68,144 @@ export async function blockHeight(): Promise<any | IBlockError> {
     })
 
 }
-// /*
+
+// /**
 //  * Average delay in milliseconds between last blockNum blocks starting from block with signature
+//  * 
+//  * @type {signature: string, blockNum: number }
+//  * 
+//  * @returns Promise<any | IBlockError> {@link blockAverageDelay} containing the paramms signature and blockNum.
+//  * 
 //  * --- signature = signature block - Base58-encoded signature
-//  * --- blockNum = 1 to 9 - Number of blocks to count delay
+//  * 
+//  *  --- blockNum = 1 to 9 - Number of blocks to count delay
 //  */
 
-// export async function blockAverageDelay(
+//  export async function blockAverageDelay(
 //     signature: string,
 //     blockNum: number
 // ): Promise<any | IBlockError> {
 //     const url = `${BASEURL}delay/${signature}/${blockNum}`
 
 //     if (blockNum <= 0 || blockNum > 9) {
+//         // const error: IBlockError = {
+//         //     status: `error`,
+//         //     message: `the blockNum cannot be less than or equal to zero or greater than nine`
+//         // }
+//         // return error
 //         const error: IBlockError = {
-//             status: `error`,
-//             message: `the blockNum cannot be less than or equal to zero or greater than nine`
-//         }
-//         return error
-//     } else {
-//         //const response = await axios.get(url)
-//         //return response.data
-//         return new Promise(async (resolve, reject) => {
-//             const response = await axios.get(url)
-//             if (response.status === 200) {
-//                 resolve(response.data)
-//             } else {
-//                 reject(response.data)
+//             isSuccess: false,
+//             response: {
+//                 codeError: -1,
+//                 message: `the blockNum cannot be less than or equal to zero or greater than nine`
 //             }
+//         } 
+//         return error 
+//     } else {
+//         return new Promise(async (resolve) => {
+//             axios
+//                 .get(url)
+//                 .then((blockchainResponse) => {
+//                     resolve(mountBlock(blockchainResponse))
+//                 })
+//                 .catch((blockchainError) => {
+//                     resolve(mountErr(blockchainError))
+//                 })
 //         })
 //     }
 // }
 
-// /*
-//  * Get block at specified heights
-//  * max value (from) (to) 1 - 100 (99 difference)
-//  * from value < to value
-//  * `https://lunesnode.lunes.io/blocks/seq/${from}/${to}`
-//  */
 
-// export async function blockSeq(
-//     from: number,
-//     to: number
-// ): Promise<IBlock | IBlockError> {
-//     const url = `${BASEURL}seq/${from}/${to}`
-//     //`https://lunesnode.lunes.io/blocks/seq/${from}/${to}`
-//     const Max: boolean = to - from < 100
 
-//     if (from > to || Max === false) {
-//         const error: IBlockError = {
-//             status: `error`,
-//             message: `Too big sequences requested OR {from} cannot be bigger than {to}, change it`
-//         }
-//         return error
-//     } else {
-//         const response = await axios.get(url)
-//         return response.data
-//     }
-// }
+/*
+export async function blockAverageDelay(
+    signature: string,
+    blockNum: number
+): Promise<any | IBlockError> {
+    const url = `${BASEURL}delay/${signature}/${blockNum}`
+
+    if (blockNum <= 0 || blockNum > 9) {
+        const error: IBlockError = {
+            status: `error`,
+            message: `the blockNum cannot be less than or equal to zero or greater than nine`
+        }
+        return error
+    } else {
+        //const response = await axios.get(url)
+        //return response.data
+        return new Promise(async (resolve, reject) => {
+            const response = await axios.get(url)
+            if (response.status === 200) {
+                resolve(response.data)
+            } else {
+                reject(response.data)
+            }
+        })
+    }
+}
+*/
+
+
+/**
+ * This function Get block at specified heights
+ * 
+ * @type {from: number, to: number}
+ * validation: max value (from) (to) 1 - 100 (99 difference)
+ * 
+ * from value < to value
+ * 
+ * @returns Promise<IBlock | IBlockError> {@link blockSeq} containing the params from and to.
+ */
+export async function blockSeq(
+    from: number,
+    to: number
+): Promise<IBlock | IBlockError> {
+    const url = `${BASEURL}seq/${from}/${to}`
+    //`https://lunesnode.lunes.io/blocks/seq/${from}/${to}`
+    const Max: boolean = to - from < 100
+
+    if (from > to || Max === false) {
+        const error: IBlockError = {
+            isSuccess: false,
+            response: {
+            codeError: -1,
+            message: `Too big sequences requested OR {from} cannot be bigger than {to}, change it`
+            }
+        }
+        return error
+    } else {
+        const response = await axios.get(url)
+        return response.data
+    }
+}
+
+/*
+export async function blockSeq(
+    from: number,
+    to: number
+): Promise<IBlock | IBlockError> {
+    const url = `${BASEURL}seq/${from}/${to}`
+    //`https://lunesnode.lunes.io/blocks/seq/${from}/${to}`
+    const Max: boolean = to - from < 100
+
+    if (from > to || Max === false) {
+        const error: IBlockError = {
+            status: `error`,
+            message: `Too big sequences requested OR {from} cannot be bigger than {to}, change it`
+        }
+        return error
+    } else {
+        const response = await axios.get(url)
+        return response.data
+    }
+}
+*/
+
+
+
+
+
+
 
 // /*
 //  * Get last block data
