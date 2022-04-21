@@ -57,8 +57,10 @@ export async function blockByHeight(
  * This function get a blockchain height
  * 
  * @returns Promise<any | IBlockError> {@link blockHeight} .
+ * 
+ * If server off line, return error
  */
-export async function blockHeight(): Promise<number | number> {
+export async function actualHeight(): Promise<number | number> {
     const url = `${BASEURL}height`
 
     return new Promise(async (resolve) => {

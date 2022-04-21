@@ -1,76 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="8" failures="3" errors="0" time="29.188">
-  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="3" skipped="4" timestamp="2022-04-21T16:55:34" time="23.521" tests="8">
-    <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0">
+<testsuites name="jest tests" tests="4" failures="0" errors="0" time="28.04">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="1" timestamp="2022-04-21T18:30:37" time="22.286" tests="4">
+    <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0.01">
+    </testcase>
+    <testcase classname="blockByHeight function- suite test block service blockbyHeight - block testing error, passing i32Max " name="blockByHeight function- suite test block service blockbyHeight - block testing error, passing i32Max " time="0.001">
+    </testcase>
+    <testcase classname="blockByHeight function- suite test block service blockByHeight- receive number 10 param to get fetch" name="blockByHeight function- suite test block service blockByHeight- receive number 10 param to get fetch" time="0.984">
+    </testcase>
+    <testcase classname="actualHeight function - suite test block service actualHeight - see height block from node " name="actualHeight function - suite test block service actualHeight - see height block from node " time="0">
       <skipped/>
-    </testcase>
-    <testcase classname="blockByHeight function- suite test block service blockbyHeight - block testing error, passing i32Max " name="blockByHeight function- suite test block service blockbyHeight - block testing error, passing i32Max " time="0">
-      <skipped/>
-    </testcase>
-    <testcase classname="blockByHeight function- suite test block service blockByHeight- receive number 10 param to get fetch" name="blockByHeight function- suite test block service blockByHeight- receive number 10 param to get fetch" time="0">
-      <skipped/>
-    </testcase>
-    <testcase classname="blockHeight function - suite test block service blockHeight - see height block from node " name="blockHeight function - suite test block service blockHeight - see height block from node " time="0">
-      <skipped/>
-    </testcase>
-    <testcase classname="blockSeq function - suite test block service blockSeq - Get block at specified heights " name="blockSeq function - suite test block service blockSeq - Get block at specified heights " time="1.028">
-    </testcase>
-    <testcase classname="blockSeq function - suite test block service blockSeq - from &gt; to error " name="blockSeq function - suite test block service blockSeq - from &gt; to error " time="0.024">
-      <failure>Error: expect(received).toEqual(expected) // deep equality
-
-- Expected  - 1
-+ Received  + 4
-
-  Object {
-+   &quot;isSuccess&quot;: false,
-+   &quot;response&quot;: Object {
-+     &quot;codeError&quot;: -1,
-      &quot;message&quot;: &quot;Too big sequences requested OR {from} cannot be bigger than {to}, change it&quot;,
--   &quot;status&quot;: &quot;error&quot;,
-+   },
-  }
-    at /workspaces/lunesjs/test/blockchain/blocks/blockOne.test.ts:172:24
-    at Generator.next (&lt;anonymous&gt;)
-    at fulfilled (/workspaces/lunesjs/test/blockchain/blocks/blockOne.test.ts:28:58)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)</failure>
-    </testcase>
-    <testcase classname="blockSeq function - suite test block service blockSeq - big sequences " name="blockSeq function - suite test block service blockSeq - big sequences " time="0.004">
-      <failure>Error: expect(received).toEqual(expected) // deep equality
-
-- Expected  - 1
-+ Received  + 4
-
-  Object {
-+   &quot;isSuccess&quot;: false,
-+   &quot;response&quot;: Object {
-+     &quot;codeError&quot;: -1,
-      &quot;message&quot;: &quot;Too big sequences requested OR {from} cannot be bigger than {to}, change it&quot;,
--   &quot;status&quot;: &quot;error&quot;,
-+   },
-  }
-    at /workspaces/lunesjs/test/blockchain/blocks/blockOne.test.ts:181:24
-    at Generator.next (&lt;anonymous&gt;)
-    at fulfilled (/workspaces/lunesjs/test/blockchain/blocks/blockOne.test.ts:28:58)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)</failure>
-    </testcase>
-    <testcase classname="blockSeq function - suite test block service blockSeq - max === false " name="blockSeq function - suite test block service blockSeq - max === false " time="0.007">
-      <failure>Error: expect(received).toEqual(expected) // deep equality
-
-- Expected  - 1
-+ Received  + 4
-
-  Object {
-+   &quot;isSuccess&quot;: false,
-+   &quot;response&quot;: Object {
-+     &quot;codeError&quot;: -1,
-      &quot;message&quot;: &quot;Too big sequences requested OR {from} cannot be bigger than {to}, change it&quot;,
--   &quot;status&quot;: &quot;error&quot;,
-+   },
-  }
-    at /workspaces/lunesjs/test/blockchain/blocks/blockOne.test.ts:190:24
-    at Generator.next (&lt;anonymous&gt;)
-    at fulfilled (/workspaces/lunesjs/test/blockchain/blocks/blockOne.test.ts:28:58)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)</failure>
     </testcase>
   </testsuite>
 </testsuites>

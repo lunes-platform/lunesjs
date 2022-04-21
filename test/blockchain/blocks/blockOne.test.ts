@@ -63,9 +63,9 @@ describe("blockByHeight function- suite test block service", () => {
 })
 
 
-describe("blockHeight function - suite test block service", () => {
-    it("blockHeight - see height block from node ", async () => {
-        const result = await blocks.blockHeight()
+describe("actualHeight function - suite test block service", () => {
+    it("actualHeight - see height block from node ", async () => {
+        const result = await blocks.actualHeight()
         expect(result).toBeGreaterThan(0)
     })
 })
