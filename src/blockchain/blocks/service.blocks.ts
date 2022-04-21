@@ -9,11 +9,17 @@ import { mountBlock, IBlock, IBlockError, mountErr } from "./block.types"
 const BASEURL = "https://lunesnode.lunes.io/blocks/"
 
 /**
- * This function get blockchain `height` e return a full block
- * 
+ * # This function get blockchain `height` e return a full block
+ *
+ * ## Example
+ *
+ * ```javascript
+ * import * as lunesjs from "lunesjs"
+ *
+ * const block = lunesjs.blockchain.blocks.height(10)
+ * ```
  * @type {height: number}
  * validation: different from zero number, big number and string type
- * 
  * @returns Promise<IBlock | IBlockError> {@link blockByHeight} containing the parameter height.
  */
 export async function blockByHeight(
@@ -52,18 +58,17 @@ export async function blockByHeight(
  * 
  * @returns Promise<any | IBlockError> {@link blockHeight} .
  */
-
-export async function blockHeight(): Promise<any | IBlockError> {
+export async function blockHeight(): Promise<number | number> {
     const url = `${BASEURL}height`
 
     return new Promise(async (resolve) => {
         axios
             .get(url)
-            .then((any) => {
-                resolve(any)
+            .then((r) => {
+                resolve(r.data.height)
             })
-            .catch((blockchainError) => {
-                resolve(mountErr(blockchainError))
+            .catch(() => {
+                resolve(-1)
             })
     })
 
