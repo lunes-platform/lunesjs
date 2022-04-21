@@ -46,33 +46,28 @@ export async function blockByHeight(
     }
 }
 
-// /*
-//  * This function get a blockchain height
-//  */
-// export async function blockHeight(): Promise<any | IBlockError> {
-//     const url = `${BASEURL}height`
 
-//     return new Promise(async (resolve, reject) => {
-//         const response = await axios.get(url)
-//         if (
-//             response.status === 404 ||
-//             response.status === 401 ||
-//             response.status === 403 ||
-//             response.status === 501
-//         ) {
-//             const error: IBlockError = {
-//                 status: `error`,
-//                 message: `system error, come back later`
-//             }
-//             return error
-//         } else if (response.status === 200) {
-//             resolve(response.data)
-//         } else {
-//             reject(response.data)
-//         }
-//     })
-// }
+/**
+ * This function get a blockchain height
+ * 
+ * @returns Promise<any | IBlockError> {@link blockHeight} .
+ */
 
+export async function blockHeight(): Promise<any | IBlockError> {
+    const url = `${BASEURL}height`
+
+    return new Promise(async (resolve) => {
+        axios
+            .get(url)
+            .then((any) => {
+                resolve(any)
+            })
+            .catch((blockchainError) => {
+                resolve(mountErr(blockchainError))
+            })
+    })
+
+}
 // /*
 //  * Average delay in milliseconds between last blockNum blocks starting from block with signature
 //  * --- signature = signature block - Base58-encoded signature

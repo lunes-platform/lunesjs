@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="3" failures="0" errors="0" time="25.995">
-  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="0" timestamp="2022-04-20T23:03:57" time="21.076" tests="3">
-    <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0.01">
+<testsuites name="jest tests" tests="6" failures="0" errors="0" time="26.178">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="5" timestamp="2022-04-21T01:11:28" time="21.245" tests="6">
+    <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0">
+      <skipped/>
     </testcase>
-    <testcase classname="blockByHeight function- suite test block service blockbyHeight - block testing error, passing i32Max " name="blockByHeight function- suite test block service blockbyHeight - block testing error, passing i32Max " time="0.002">
+    <testcase classname="blockByHeight function- suite test block service blockbyHeight - block testing error, passing i32Max " name="blockByHeight function- suite test block service blockbyHeight - block testing error, passing i32Max " time="0">
+      <skipped/>
     </testcase>
-    <testcase classname="blockByHeight function- suite test block service blockByHeight- receive number 10 param to get fetch" name="blockByHeight function- suite test block service blockByHeight- receive number 10 param to get fetch" time="1.168">
+    <testcase classname="blockByHeight function- suite test block service blockByHeight- receive number 10 param to get fetch" name="blockByHeight function- suite test block service blockByHeight- receive number 10 param to get fetch" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="blockHeight function - suite test block service blockHeight - see height block from node " name="blockHeight function - suite test block service blockHeight - see height block from node " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="blockHeightTEMP function - suite test block service blockHeightTEMP - see height block from node " name="blockHeightTEMP function - suite test block service blockHeightTEMP - see height block from node " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="blockHeightTWP function - suite test block service blockHeightTWO - see height block from node " name="blockHeightTWP function - suite test block service blockHeightTWO - see height block from node " time="1.136">
     </testcase>
   </testsuite>
 </testsuites>

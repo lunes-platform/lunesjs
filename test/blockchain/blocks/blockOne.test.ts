@@ -62,14 +62,16 @@ describe("blockByHeight function- suite test block service", () => {
     })
 })
 
-// describe("blockHeight function - suite test block service", () => {
-//     it("blockHeight - see height block from node ", async () => {
-//         const result = await blockHeight()
-//         expect(result).toMatchObject({
-//             height: expect.any(Number)
-//         })
-//     })
-// })
+
+describe("blockHeight function - suite test block service", () => {
+    it("blockHeight - see height block from node ", async () => {
+        const result = await blocks.blockHeight()
+        //expect(result.isSuccess).toEqual(undefined)
+         expect(result).toMatchObject({
+             height: expect.any(Number)
+         })
+    })
+})
 
 // describe("blockAverageDelay function - suite test block service", () => {
 //     it("blockAverageDelay - see Average delay ", async () => {
