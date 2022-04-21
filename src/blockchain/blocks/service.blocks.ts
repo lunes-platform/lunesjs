@@ -119,37 +119,8 @@ export async function actualHeight(): Promise<number | number> {
 
 
 
-/*
-export async function blockAverageDelay(
-    signature: string,
-    blockNum: number
-): Promise<any | IBlockError> {
-    const url = `${BASEURL}delay/${signature}/${blockNum}`
-
-    if (blockNum <= 0 || blockNum > 9) {
-        const error: IBlockError = {
-            status: `error`,
-            message: `the blockNum cannot be less than or equal to zero or greater than nine`
-        }
-        return error
-    } else {
-        //const response = await axios.get(url)
-        //return response.data
-        return new Promise(async (resolve, reject) => {
-            const response = await axios.get(url)
-            if (response.status === 200) {
-                resolve(response.data)
-            } else {
-                reject(response.data)
-            }
-        })
-    }
-}
-*/
-
-
 /**
- * This function Get block at specified heights
+ * # This function Get block at specified heights
  * 
  * @type {from: number, to: number}
  * validation: max value (from) (to) 1 - 100 (99 difference)
@@ -161,7 +132,7 @@ export async function blockAverageDelay(
 export async function blockSeq(
     from: number,
     to: number
-): Promise<IBlock | IBlockError> {
+): Promise<any | IBlockError> {
     const url = `${BASEURL}seq/${from}/${to}`
     //`https://lunesnode.lunes.io/blocks/seq/${from}/${to}`
     const Max: boolean = to - from < 100
@@ -176,8 +147,18 @@ export async function blockSeq(
         }
         return error
     } else {
-        const response = await axios.get(url)
-        return response.data
+        //const response = await axios.get(url)
+        //return response.data
+        return new Promise(async (resolve) => {
+            axios
+                .get(url)
+                .then((r) => {
+                    resolve(r.data)
+                })
+                .catch((blockchainError) => {
+                    resolve(mountErr(blockchainError))
+                })
+        })
     }
 }
 
