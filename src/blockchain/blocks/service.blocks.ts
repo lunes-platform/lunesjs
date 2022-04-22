@@ -53,39 +53,38 @@ async function byHeight(height: number): Promise<IBlock | IBlockError> {
 }
 
 
-// /**
-//  * # This function get a blockchain height
-//  *
-//  * @returns Promise<any | IBlockError> {@link actualHeight} .
-//  *
-//  * If server off line, return error
-//  */
-// export async function actualHeight(): Promise<number | number> {
-//    // const url = `${BASEURL}height`
+/**
+ * # This function get a blockchain height
+ *
+ * @returns Promise<any | IBlockError> {@link actualHeight} .
+ *
+ * If server off line, return error
+ */
+export async function actualHeight(): Promise<number | number> {
+   // const url = `${BASEURL}height`
 
-//  /*   return new Promise(async (resolve) => {
-//         axios
-//             .get(url)
-//             .then((r) => {
-//                 resolve(r.data.height)
-//             })
-//             .catch(() => {
-//                 resolve(-1)
-//             })
-//     })
-// */
+ /*   return new Promise(async (resolve) => {
+        axios
+            .get(url)
+            .then((r) => {
+                resolve(r.data.height)
+            })
+            .catch(() => {
+                resolve(-1)
+            })
+    })
+*/
 
-// lunesNode.interceptors.response.use(
-//     (blockchainResponse) => {
-//         return Promise.resolve(mountBlock(blockchainResponse))
-//     },
-//     (blockchainError) => {
-//         console.log(blockchainError)
-//         return Promise.resolve(mountErr(blockchainError))
-//     }
-// )
-// return lunesNode.get(`/blocks/height`)
-// }
+    lunesNode.interceptors.response.use(
+        (blockchainResponse) => {
+            return Promise.resolve(mountBlock(blockchainResponse))
+        },
+        (blockchainError) => {
+            console.log(blockchainError)
+            return Promise.resolve(mountErr(blockchainError))
+    })
+    return lunesNode.get(`/blocks/height`)
+}
 
 // /**
 //  * # Average delay in milliseconds between last blockNum blocks starting from block with signature
