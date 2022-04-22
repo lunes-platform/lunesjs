@@ -1,6 +1,11 @@
 /**
+ * Copyright (c) Lunes Platform
+ * 
  * Welcome to service.blocs.ts
  * @author Lunes Platform <development@lunes.io>
+ * 
+ * This source code is licensed under the Apache license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 import { mountBlock, IBlock, IBlockError, mountErr } from "./block.types"
@@ -47,17 +52,18 @@ async function byHeight(height: number): Promise<IBlock | IBlockError> {
     }
 }
 
+
 // /**
 //  * # This function get a blockchain height
 //  *
-//  * @returns Promise<any | IBlockError> {@link blockHeight} .
+//  * @returns Promise<any | IBlockError> {@link actualHeight} .
 //  *
 //  * If server off line, return error
 //  */
 // export async function actualHeight(): Promise<number | number> {
-//     const url = `${BASEURL}height`
+//    // const url = `${BASEURL}height`
 
-//     return new Promise(async (resolve) => {
+//  /*   return new Promise(async (resolve) => {
 //         axios
 //             .get(url)
 //             .then((r) => {
@@ -67,6 +73,18 @@ async function byHeight(height: number): Promise<IBlock | IBlockError> {
 //                 resolve(-1)
 //             })
 //     })
+// */
+
+// lunesNode.interceptors.response.use(
+//     (blockchainResponse) => {
+//         return Promise.resolve(mountBlock(blockchainResponse))
+//     },
+//     (blockchainError) => {
+//         console.log(blockchainError)
+//         return Promise.resolve(mountErr(blockchainError))
+//     }
+// )
+// return lunesNode.get(`/blocks/height`)
 // }
 
 // /**

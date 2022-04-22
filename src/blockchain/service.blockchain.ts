@@ -3,7 +3,7 @@ import axios from "axios"
 
 export const lunesNode = axios.create({
     baseURL: "https://lunesnode.lunes.io",
-    timeout: 1000
+    timeout: 2000
 })
 
 export const blockchain = {
