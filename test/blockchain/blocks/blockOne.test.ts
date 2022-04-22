@@ -170,13 +170,18 @@ describe("blockSeq function - suite test block service", () => {
     })
 })
 
-// describe("blockLast function - suite test block service", () => {
-//     it("blockLast - Get last block data ", async () => {
-//         const result = await blockLast()
-//         expect(result).toMatchObject(result)
-//         //https://stackoverflow.com/questions/47754777/jest-how-to-test-for-object-keys-and-values
-//     })
-// })
+describe("blockLast function - suite test block service", () => {
+    it("blockLast - Get last block data ", async () => {
+        const result = await blocks.blockLast()
+
+        //ok
+        expect(result.isSuccess).toEqual(true)
+
+        //see received 
+        //expect(result).toStrictEqual("")
+
+    })
+})
 
 // describe("blockChild function - suite test block service", () => {
 //     it("blockChild - Get children of specified block ", async () => {
