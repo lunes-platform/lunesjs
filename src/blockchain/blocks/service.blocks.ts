@@ -20,7 +20,7 @@ import { lunesNode } from "../service.blockchain"
  * ```javascript
  * import * as lunesjs from "lunesjs"
  *
- * const block = lunesjs.blockchain.blocks.height(10)
+ * const block = lunesjs.blockchain.blocks.byHeight(10)
  * ```
  * @param {number} height - number of block in blockchain
  * should be greater than 0 and less than 2147483647
@@ -54,30 +54,25 @@ async function byHeight(height: number): Promise<IBlock | IBlockError> {
 
 
 /**
- * # This function get a blockchain height
+ * # This function get a blockchain actual height
+ * {@link actualHeight} 
+ * 
+ *  ## Example
  *
- * @returns Promise<any | IBlockError> {@link actualHeight} .
+ * ```javascript
+ * import * as lunesjs from "lunesjs"
+ *
+ * const block = lunesjs.blockchain.blocks.actualHeight()
+ * ```
  *
  * If server off line, return error
+ * @returns Promise<any | IBlockError> .
  */
 export async function actualHeight(): Promise<number | number> {
-   // const url = `${BASEURL}height`
-
- /*   return new Promise(async (resolve) => {
-        axios
-            .get(url)
-            .then((r) => {
-                resolve(r.data.height)
-            })
-            .catch(() => {
-                resolve(-1)
-            })
-    })
-*/
 
     lunesNode.interceptors.response.use(
-        (blockchainResponse) => {
-            return Promise.resolve(mountBlock(blockchainResponse))
+        (r) => {
+            return Promise.resolve(r.data.height)
         },
         (blockchainError) => {
             console.log(blockchainError)
@@ -430,5 +425,5 @@ export async function actualHeight(): Promise<number | number> {
 // }
 
 export const blocks = {
-    byHeight
+    byHeight, actualHeight
 }

@@ -61,12 +61,12 @@ describe("blockByHeight function- suite test block service", () => {
     })
 })
 
-// describe("actualHeight function - suite test block service", () => {
-//     it("actualHeight - see height block from node ", async () => {
-//         const result = await blocks.actualHeight()
-//         expect(result).toBeGreaterThan(0)
-//     })
-// })
+describe("actualHeight function - suite test block service", () => {
+    it("actualHeight - see height block from node ", async () => {
+        const result = await lunesjs.blockchain.blocks.actualHeight()
+        expect(result).toBeGreaterThan(0)
+    })
+})
 
 // describe("blockAverageDelay function - suite test block service", () => {
 //     it("blockAverageDelay - see Average delay ", async () => {
