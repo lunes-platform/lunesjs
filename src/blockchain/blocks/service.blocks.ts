@@ -331,19 +331,12 @@ export async function blockSeqHeaderOnly(
 
 
 
-/*
- * 
- *
- * `https://lunesnode.lunes.io/blocks/headers/last`
- */
-
-
 /**
  * # Get last block data without transactions payload
  * 
  * If server off line, return error
  * 
- * @returns Promise<IBlock | IBlockError> {@link blockHeightEncoded} .
+ * @returns Promise<IBlock | IBlockError> {@link blockLastHeaderOnly} .
  */
 export async function blockLastHeaderOnly(): Promise<IBlock | IBlockError> {
     const url = `${BASEURL}headers/last`
@@ -363,22 +356,48 @@ export async function blockLastHeaderOnly(): Promise<IBlock | IBlockError> {
 }
 
 
-/*
 
-export async function blockLastHeaderOnly(): Promise<IBlock | IBlockError> {
-    const url = `${BASEURL}headers/last`
+/**
+ * # Get block by a specified Base58-encoded signature
+ * 
+ * If server off line, return error
+ * 
+ * @returns Promise<IBlock | IBlockError> {@link blockSignature} .
+ */
+export async function blockSignature(
+    signature: string
+): Promise<IBlock | IBlockError> {
+    const url = `${BASEURL}signature/${signature}`
+
+    return new Promise(async (resolve) => {
+        axios
+            .get(url)
+            .then((blockchainResponse) => {
+                resolve(mountBlock(blockchainResponse))
+            })
+            .catch((blockchainError) => {
+                resolve(mountErr(blockchainError))
+            })
+    })
+
+
+}
+
+
+
+/*
+export async function blockSignature(
+    signature: string
+): Promise<IBlock | IBlockError> {
+    const url = `${BASEURL}signature/${signature}`
 
     return new Promise(async (resolve, reject) => {
         const response = await axios.get(url)
-        if (
-            response.status === 404 ||
-            response.status === 401 ||
-            response.status === 403 ||
-            response.status === 501
-        ) {
+
+        if (response.status === 404) {
             const error: IBlockError = {
                 status: `error`,
-                message: `system error, come back later`
+                message: `block does not exist, try later`
             }
             return error
         } else if (response.status === 200) {
@@ -386,42 +405,14 @@ export async function blockLastHeaderOnly(): Promise<IBlock | IBlockError> {
         } else {
             reject(response.data)
         }
-        //const response = await axios.get(url)
-        //return response.data
     })
 }
+
 
 */
 
 
 
-
-// /*
-//  * Get block by a specified Base58-encoded signature
-//  *
-//  * https://lunesnode.lunes.io/blocks/signature/${signature}`
-//  */
-// export async function blockSignature(
-//     signature: string
-// ): Promise<IBlock | IBlockError> {
-//     const url = `${BASEURL}signature/${signature}`
-
-//     return new Promise(async (resolve, reject) => {
-//         const response = await axios.get(url)
-
-//         if (response.status === 404) {
-//             const error: IBlockError = {
-//                 status: `error`,
-//                 message: `block does not exist, try later`
-//             }
-//             return error
-//         } else if (response.status === 200) {
-//             resolve(response.data)
-//         } else {
-//             reject(response.data)
-//         }
-//     })
-// }
 
 // /*
 //  * Get genesis block data

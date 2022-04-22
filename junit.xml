@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="21" failures="0" errors="0" time="17.664">
-  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="20" timestamp="2022-04-22T02:30:55" time="15.316" tests="21">
+<testsuites name="jest tests" tests="23" failures="0" errors="0" time="20.572">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="21" timestamp="2022-04-22T02:50:06" time="18.027" tests="23">
     <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0">
       <skipped/>
     </testcase>
@@ -61,7 +61,12 @@
     <testcase classname="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly - Max === false " name="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly - Max === false " time="0">
       <skipped/>
     </testcase>
-    <testcase classname=" blockLastHeaderOnly function - suite test block service  blockLastHeaderOnly test " name=" blockLastHeaderOnly function - suite test block service  blockLastHeaderOnly test " time="1.23">
+    <testcase classname=" blockLastHeaderOnly function - suite test block service  blockLastHeaderOnly test " name=" blockLastHeaderOnly function - suite test block service  blockLastHeaderOnly test " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname=" blockSignature - suite test block service blockSignature test" name=" blockSignature - suite test block service blockSignature test" time="1.064">
+    </testcase>
+    <testcase classname=" blockSignature - suite test block service blockSignature - error 404 " name=" blockSignature - suite test block service blockSignature - error 404 " time="0.56">
     </testcase>
   </testsuite>
 </testsuites>

@@ -311,41 +311,27 @@ describe(" blockLastHeaderOnly function - suite test block service", () => {
     })
 })
 
-// describe(" blockSignature - suite test block service", () => {
-//     it("blockSignature test", async () => {
-//         const result = await blockSignature(
-//             "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi"
-//         )
-//         expect(result).toStrictEqual({
-//             version: 3,
-//             timestamp: 1528116159255,
-//             reference:
-//                 "5f6NF1TUgJ5xHyGdys8T19iETr4dSTo182r82Z4RTRzYj1wAYBRLTJhsBiRWHDTNZWKsqF4j3bAH5Ng1YxXCCLik",
-//             "nxt-consensus": {
-//                 "base-target": 112701916,
-//                 "generation-signature":
-//                     "GrEEg2Uc25GfVG5Cp4xXLgvB4hYYE2KLrwLEvg48z2sT"
-//             },
-//             features: [2],
-//             generator: "37oqFHsx1cRtLWtnp6YyQpud5WJk4v79VPu",
-//             signature:
-//                 "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
-//             blocksize: 227,
-//             transactionCount: 0,
-//             fee: 0,
-//             transactions: [],
-//             height: 10
-//         })
-//     })
 
-//     it("blockSignature - error 404 ", async () => {
-//         const result = async () => {
-//             await blockChild("124afdsfaf")
-//         }
+describe(" blockSignature - suite test block service", () => {
+    it("blockSignature test", async () => {
+        const result = await blocks.blockSignature(
+            "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi"
+        )
+        expect(result.isSuccess).toEqual(true) 
 
-//         expect(result()).rejects.toThrow()
-//     })
-// })
+    })
+
+    it("blockSignature - error 404 ", async () => {
+        // const result = async () => {
+        //     await blocks.blockSignature("124afdsfaf")
+        // }
+
+        // expect(result()).rejects.toThrow()
+
+        const result = await blocks.blockSignature("124afdsfaf")
+        expect(result.isSuccess).toEqual(false) 
+    })
+})
 
 // describe(" blockFirst - suite test block service", () => {
 //     it("blockFirst test ", async () => {
