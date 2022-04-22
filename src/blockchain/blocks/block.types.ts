@@ -46,17 +46,25 @@ export interface IBlockError {
     }
 }
 
-export function mountBlock(blockchainResponse: AxiosResponse<any, any>): IBlock {
+export function mountBlock(
+    blockchainResponse: AxiosResponse<any, any>
+): IBlock {
     let block: IBlock = {
         isSuccess: true,
         header: {
             nxtConsensus: {
-                baseTarget: blockchainResponse.data["nxt-consensus"]["base-target"],
+                baseTarget:
+                    blockchainResponse.data["nxt-consensus"]["base-target"],
                 generationSignature:
-                blockchainResponse.data["nxt-consensus"]["generation-signature"]
+                    blockchainResponse.data["nxt-consensus"][
+                        "generation-signature"
+                    ]
             },
             transactionCount: blockchainResponse.data.transactionCount,
-            features: blockchainResponse.data.features != undefined ? blockchainResponse.data.features : [],
+            features:
+                blockchainResponse.data.features != undefined
+                    ? blockchainResponse.data.features
+                    : [],
             timestamp: blockchainResponse.data.timestamp,
             reference: blockchainResponse.data.reference,
             generator: blockchainResponse.data.generator,
@@ -81,4 +89,3 @@ export function mountErr(blockchainError: string): IBlockError {
         }
     }
 }
-
