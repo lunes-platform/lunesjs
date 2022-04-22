@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="11" failures="0" errors="0" time="28.331">
-  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="10" timestamp="2022-04-22T00:11:14" time="22.795" tests="11">
+<testsuites name="jest tests" tests="13" failures="0" errors="0" time="14.465">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="11" timestamp="2022-04-22T00:57:33" time="12.243" tests="13">
     <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0">
       <skipped/>
     </testcase>
@@ -31,7 +31,12 @@
     <testcase classname="blockSeq function - suite test block service blockSeq - max === false " name="blockSeq function - suite test block service blockSeq - max === false " time="0">
       <skipped/>
     </testcase>
-    <testcase classname="blockLast function - suite test block service blockLast - Get last block data " name="blockLast function - suite test block service blockLast - Get last block data " time="1.664">
+    <testcase classname="blockLast function - suite test block service blockLast - Get last block data " name="blockLast function - suite test block service blockLast - Get last block data " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="blockChild function - suite test block service blockChild - Get children of specified block " name="blockChild function - suite test block service blockChild - Get children of specified block " time="0.841">
+    </testcase>
+    <testcase classname="blockChild function - suite test block service blockChild - error 404 " name="blockChild function - suite test block service blockChild - error 404 " time="0.616">
     </testcase>
   </testsuite>
 </testsuites>

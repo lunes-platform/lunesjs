@@ -191,64 +191,34 @@ export async function blockLast(): Promise<IBlock | IBlockError> {
 }
 
 
-/*
- * Get last block data
+/**
+ * # This function Get children of specified block
+ * 
+ * @type {signature: stringr}
+ * validation: string
+ * 
+ * @returns Promise<IBlock | IBlockError> {@link blockChild} containing the parameter signature.
  */
-/*
-export async function blockLast(): Promise<any | IBlockError> {
-    const url = `${BASEURL}last`
-    return new Promise(async (resolve, reject) => {
-        const response = await axios.get(url)
-        if (
-            response.status === 404 ||
-            response.status === 401 ||
-            response.status === 403 ||
-            response.status === 501
-        ) {
-            const error: IBlockError = {
-                status: `error`,
-                message: `system error, come back later`
-            }
-            return error
-        } else if (response.status === 200) {
-            resolve(response.data)
-        } else {
-            reject(response.data)
-        }
-        //`https://lunesnode.lunes.io/blocks/last
-        //const response = await axios.get(url)
-        //return response.data
+export async function blockChild(
+    signature: string
+): Promise<IBlock | IBlockError> {
+    const url = `${BASEURL}child/${signature}`
+
+    return new Promise(async (resolve) => {
+        axios
+            .get(url)
+            .then((blockchainResponse) => {
+                resolve(mountBlock(blockchainResponse))
+            })
+            .catch((blockchainError) => {
+                resolve(mountErr(blockchainError))
+            })
     })
+
 }
 
-*/
 
 
-
-
-// /*
-//  * Get children of specified block
-//  */
-// export async function blockChild(
-//     signature: string
-// ): Promise<IBlock | IBlockError> {
-//     const url = `${BASEURL}child/${signature}`
-//     return new Promise(async (resolve, reject) => {
-//         const response = await axios.get(url)
-
-//         if (response.status === 404) {
-//             const error: IBlockError = {
-//                 status: `error`,
-//                 message: `block does not exist, try later`
-//             }
-//             return error
-//         } else if (response.status === 200) {
-//             resolve(response.data)
-//         } else {
-//             reject(response.data)
-//         }
-//     })
-// }
 
 // /*
 //  * Get height of a block by its Base58-encoded signature
