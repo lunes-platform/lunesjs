@@ -302,14 +302,14 @@ describe("blockSeqHeaderOnly function - suite test block service", () => {
     })
 })
 
-// describe(" blockLastHeaderOnly function - suite test block service", () => {
-//     it(" blockLastHeaderOnly test ", async () => {
-//         const result = await blockLastHeaderOnly()
-//         //expect(result).toMatchObject(result)
-//         //https://stackoverflow.com/questions/47754777/jest-how-to-test-for-object-keys-and-values
-//         expect(result).toHaveProperty("height") // true
-//     })
-// })
+describe(" blockLastHeaderOnly function - suite test block service", () => {
+    it(" blockLastHeaderOnly test ", async () => {
+        const result = await blocks.blockLastHeaderOnly()
+
+        //expect(result).toHaveProperty("height") // true
+        expect(result.isSuccess).toEqual(true) 
+    })
+})
 
 // describe(" blockSignature - suite test block service", () => {
 //     it("blockSignature test", async () => {

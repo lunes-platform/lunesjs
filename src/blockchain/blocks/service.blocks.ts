@@ -294,7 +294,7 @@ export async function blockAtHeaderOnly(
  * 
  * from value < to value
  * 
- * @returns Promise<IBlock | IBlockError> {@link blockSeqHeaderOnly} containing the params from and to.
+ * @returns Promise<any | IBlockError> {@link blockSeqHeaderOnly} containing the params from and to.
  */
 export async function blockSeqHeaderOnly(
     from: number,
@@ -330,62 +330,71 @@ export async function blockSeqHeaderOnly(
 }
 
 
+
+/*
+ * 
+ *
+ * `https://lunesnode.lunes.io/blocks/headers/last`
+ */
+
+
+/**
+ * # Get last block data without transactions payload
+ * 
+ * If server off line, return error
+ * 
+ * @returns Promise<IBlock | IBlockError> {@link blockHeightEncoded} .
+ */
+export async function blockLastHeaderOnly(): Promise<IBlock | IBlockError> {
+    const url = `${BASEURL}headers/last`
+
+    return new Promise(async (resolve) => {
+        axios
+            .get(url)
+            .then((blockchainResponse) => {
+                resolve(mountBlock(blockchainResponse))
+            })
+            .catch((blockchainError) => {
+                resolve(mountErr(blockchainError))
+            })
+    })
+
+
+}
+
+
 /*
 
-export async function blockSeqHeaderOnly(
-    from: number,
-    to: number
-): Promise<IBlock | IBlockError> {
-    const url = `${BASEURL}headers/seq/${from}/${to}`
+export async function blockLastHeaderOnly(): Promise<IBlock | IBlockError> {
+    const url = `${BASEURL}headers/last`
 
-    const Max: boolean = to - from < 100
-
-    if (from > to || Max === false) {
-        const error: IBlockError = {
-            status: `error`,
-            message: `Too big sequences requested OR {from} cannot be bigger than {to}, change it`
-        }
-        return error
-    } else {
+    return new Promise(async (resolve, reject) => {
         const response = await axios.get(url)
-        return response.data
-    }
+        if (
+            response.status === 404 ||
+            response.status === 401 ||
+            response.status === 403 ||
+            response.status === 501
+        ) {
+            const error: IBlockError = {
+                status: `error`,
+                message: `system error, come back later`
+            }
+            return error
+        } else if (response.status === 200) {
+            resolve(response.data)
+        } else {
+            reject(response.data)
+        }
+        //const response = await axios.get(url)
+        //return response.data
+    })
 }
 
 */
 
 
 
-// /*
-//  * Get last block data without transactions payload
-//  *
-//  * `https://lunesnode.lunes.io/blocks/headers/last`
-//  */
-// export async function blockLastHeaderOnly(): Promise<IBlock | IBlockError> {
-//     const url = `${BASEURL}headers/last`
-
-//     return new Promise(async (resolve, reject) => {
-//         const response = await axios.get(url)
-//         if (
-//             response.status === 404 ||
-//             response.status === 401 ||
-//             response.status === 403 ||
-//             response.status === 501
-//         ) {
-//             const error: IBlockError = {
-//                 status: `error`,
-//                 message: `system error, come back later`
-//             }
-//             return error
-//         } else if (response.status === 200) {
-//             resolve(response.data)
-//         } else {
-//             reject(response.data)
-//         }
-//         //const response = await axios.get(url)
-//         //return response.data
-//     })
-// }
 
 // /*
 //  * Get block by a specified Base58-encoded signature

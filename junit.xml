@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="20" failures="0" errors="0" time="29.69">
-  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="17" timestamp="2022-04-22T02:17:08" time="24.175" tests="20">
+<testsuites name="jest tests" tests="21" failures="0" errors="0" time="17.664">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="20" timestamp="2022-04-22T02:30:55" time="15.316" tests="21">
     <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0">
       <skipped/>
     </testcase>
@@ -52,11 +52,16 @@
     <testcase classname="blockAtHeaderOnly function - suite test block service blockAtHeaderOnly - error 404 " name="blockAtHeaderOnly function - suite test block service blockAtHeaderOnly - error 404 " time="0">
       <skipped/>
     </testcase>
-    <testcase classname="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly test " name="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly test " time="1.436">
+    <testcase classname="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly test " name="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly test " time="0">
+      <skipped/>
     </testcase>
-    <testcase classname="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly - error from &gt; to " name="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly - error from &gt; to " time="0.001">
+    <testcase classname="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly - error from &gt; to " name="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly - error from &gt; to " time="0">
+      <skipped/>
     </testcase>
-    <testcase classname="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly - Max === false " name="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly - Max === false " time="0.002">
+    <testcase classname="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly - Max === false " name="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly - Max === false " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname=" blockLastHeaderOnly function - suite test block service  blockLastHeaderOnly test " name=" blockLastHeaderOnly function - suite test block service  blockLastHeaderOnly test " time="1.23">
     </testcase>
   </testsuite>
 </testsuites>
