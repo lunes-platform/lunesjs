@@ -52,74 +52,87 @@ async function byHeight(height: number): Promise<IBlock | IBlockError> {
 }
 
 
-/**
- * # This function get a blockchain actual height
- * {@link actualHeight} 
- * 
- *  ## Example
- *
- * ```javascript
- * import * as lunesjs from "lunesjs"
- *
- * const block = lunesjs.blockchain.blocks.actualHeight()
- * ```
- *
- * If server off line, return error
- * @returns Promise<any | IBlockError> .
- */
-export async function actualHeight(): Promise<number | IBlockError> {
-
-    lunesNode.interceptors.response.use(
-        (r) => {
-            return Promise.resolve(r.data.height)
-        },
-        (blockchainError) => {
-            console.log(blockchainError)
-            return Promise.resolve(-1)
-    })
-    return lunesNode.get(`/blocks/height`)
-}
-
 // /**
-//  * # Average delay in milliseconds between last blockNum blocks starting from block with signature
+//  * # This function get a blockchain actual height
+//  * {@link actualHeight} 
+//  * 
+//  *  ## Example
 //  *
-//  * @type {signature: string, blockNum: number }
+//  * ```javascript
+//  * import * as lunesjs from "lunesjs"
 //  *
-//  * @returns Promise<any | IBlockError> {@link blockAverageDelay} containing the paramms signature and blockNum.
+//  * const block = lunesjs.blockchain.blocks.actualHeight()
+//  * ```
 //  *
-//  * --- signature = signature block - Base58-encoded signature
-//  *
-//  *  --- blockNum = 1 to 9 - Number of blocks to count delay
+//  * If server off line, return error
+//  * @returns Promise<any | IBlockError> .
 //  */
+// export async function actualHeight(): Promise<number | IBlockError> {
 
-// export async function blockAverageDelay(
-//     signature: string,
-//     blockNum: number
-// ): Promise<any | IBlockError> {
-//     const url = `${BASEURL}delay/${signature}/${blockNum}`
-
-//     if (blockNum <= 0 || blockNum > 9) {
-//         const error: IBlockError = {
-//             isSuccess: false,
-//             response: {
-//                 codeError: -1,
-//                 message: `the blockNum cannot be less than or equal to zero or greater than nine`
-//             }
-//         }
-//         return error
-//     } else {
-//         return new Promise(async (resolve) => {
-//             axios
-//                 .get(url)
-//                 .then((r) => {
-//                     resolve(r.data.delay)
-//                 })
-//                 .catch((blockchainError) => {
-//                     resolve(mountErr(blockchainError))
-//                 })
-//         })
-//     }
+//     lunesNode.interceptors.response.use(
+//         (r) => {
+//             return Promise.resolve(r.data.height)
+//         },
+//         (blockchainError) => {
+//             console.log(blockchainError)
+//             return Promise.resolve(mountErr(blockchainError))
+//     })
+//     return lunesNode.get(`/blocks/height`)
 // }
+/*   return new Promise(async (resolve) => {
+        axios
+            .get(url)
+            .then((r) => {
+                resolve(r.data.height)
+            })
+            .catch(() => {
+                resolve(-1)
+            })
+    })
+*/
+
+
+
+
+/**
+ * # Average delay in milliseconds between last blockNum blocks starting from block with signature
+ *
+ * @type {signature: string, blockNum: number }
+ *
+ * @returns Promise<any | IBlockError> {@link blockAverageDelay} containing the paramms signature and blockNum.
+ *
+ * --- signature = signature block - Base58-encoded signature
+ *
+ *  --- blockNum = 1 to 9 - Number of blocks to count delay
+ */
+export async function blockAverageDelay(
+    signature: string,
+    blockNum: number
+): Promise<any | IBlockError> {
+    const url = `${BASEURL}delay/${signature}/${blockNum}`
+
+    if (blockNum <= 0 || blockNum > 9) {
+        const error: IBlockError = {
+            isSuccess: false,
+            response: {
+                codeError: -1,
+                message: `the blockNum cannot be less than or equal to zero or greater than nine`
+            }
+        }
+        return error
+    } else {
+        return new Promise(async (resolve) => {
+            axios
+                .get(url)
+                .then((r) => {
+                    resolve(r.data.delay)
+                })
+                .catch((blockchainError) => {
+                    resolve(mountErr(blockchainError))
+                })
+        })
+    }
+}
 
 // /**
 //  * # This function Get block at specified heights
