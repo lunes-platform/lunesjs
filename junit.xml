@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="17" failures="0" errors="0" time="30.28">
-  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="15" timestamp="2022-04-22T01:45:48" time="24.697" tests="17">
+<testsuites name="jest tests" tests="20" failures="0" errors="0" time="29.69">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="17" timestamp="2022-04-22T02:17:08" time="24.175" tests="20">
     <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0">
       <skipped/>
     </testcase>
@@ -46,9 +46,17 @@
     <testcase classname="blockHeightEncoded function - suite test block service blockHeightEncoded - error 404 " name="blockHeightEncoded function - suite test block service blockHeightEncoded - error 404 " time="0">
       <skipped/>
     </testcase>
-    <testcase classname="blockAtHeaderOnly function - suite test block service blockAtHeaderOnly - Get block at specified height without transactions payload " name="blockAtHeaderOnly function - suite test block service blockAtHeaderOnly - Get block at specified height without transactions payload " time="1.472">
+    <testcase classname="blockAtHeaderOnly function - suite test block service blockAtHeaderOnly - Get block at specified height without transactions payload " name="blockAtHeaderOnly function - suite test block service blockAtHeaderOnly - Get block at specified height without transactions payload " time="0">
+      <skipped/>
     </testcase>
-    <testcase classname="blockAtHeaderOnly function - suite test block service blockAtHeaderOnly - error 404 " name="blockAtHeaderOnly function - suite test block service blockAtHeaderOnly - error 404 " time="0.583">
+    <testcase classname="blockAtHeaderOnly function - suite test block service blockAtHeaderOnly - error 404 " name="blockAtHeaderOnly function - suite test block service blockAtHeaderOnly - error 404 " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly test " name="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly test " time="1.436">
+    </testcase>
+    <testcase classname="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly - error from &gt; to " name="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly - error from &gt; to " time="0.001">
+    </testcase>
+    <testcase classname="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly - Max === false " name="blockSeqHeaderOnly function - suite test block service  blockSeqHeaderOnly - Max === false " time="0.002">
     </testcase>
   </testsuite>
 </testsuites>

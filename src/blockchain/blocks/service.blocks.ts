@@ -246,12 +246,6 @@ export async function blockHeightEncoded(
 
 
 
-
-
-/*
- * 
- */
-
 /**
  * # This function Get block at specified height without transactions payload
  * 
@@ -290,69 +284,77 @@ export async function blockAtHeaderOnly(
 }
 
 
+/**
+ * # This function Get block without transactions payload at specified heights
+ * 
+ * @type {from: number, to: number}
+ * validation: 
+ * 
+ * max value (from) (to) 1 - 100 (99 difference)
+ * 
+ * from value < to value
+ * 
+ * @returns Promise<IBlock | IBlockError> {@link blockSeqHeaderOnly} containing the params from and to.
+ */
+export async function blockSeqHeaderOnly(
+    from: number,
+    to: number
+): Promise<any | IBlockError> {
+    const url = `${BASEURL}headers/seq/${from}/${to}`
+
+    const Max: boolean = to - from < 100
+
+    if (from > to || Max === false) {
+        const error: IBlockError = {
+            isSuccess: false,
+            response: {
+            codeError: -1,
+            message: `Too big sequences requested OR {from} cannot be bigger than {to}, change it`
+        }
+    }
+        return error
+    } else {
+        return new Promise(async (resolve) => {
+            axios
+                .get(url)
+                .then((r) => {
+                    resolve(r.data)
+                })
+                .catch((blockchainError) => {
+                    resolve(mountErr(blockchainError))
+                })
+        })
+        // const response = await axios.get(url)
+        // return response.data
+    }
+}
+
+
 /*
 
-export async function blockAtHeaderOnly(
-    height: number
+export async function blockSeqHeaderOnly(
+    from: number,
+    to: number
 ): Promise<IBlock | IBlockError> {
-    const url = `${BASEURL}headers/at/${height}`
+    const url = `${BASEURL}headers/seq/${from}/${to}`
 
-    if (typeof height === "string") {
+    const Max: boolean = to - from < 100
+
+    if (from > to || Max === false) {
         const error: IBlockError = {
             status: `error`,
-            message: `block cannot receive string type `
+            message: `Too big sequences requested OR {from} cannot be bigger than {to}, change it`
         }
         return error
     } else {
-        return new Promise(async (resolve, reject) => {
-            const response = await axios.get(url)
-
-            if (response.status === 404) {
-                const error: IBlockError = {
-                    status: `error`,
-                    message: `The requested resource could not be found but may be available again in the future, try later`
-                }
-                return error
-            } else if (response.status === 200) {
-                resolve(response.data)
-            } else {
-                reject(response.data)
-            }
-        })
+        const response = await axios.get(url)
+        return response.data
     }
 }
 
 */
 
 
-
-
-
-// /*
-//  * Get block without transactions payload at specified heights
-//  * max value (from) (to) 1 - 100 (99 difference)
-//  * from value < to value
-//  * `https://lunesnode.lunes.io/blocks/headers/seq/${from}/${to}
-//  */
-// export async function blockSeqHeaderOnly(
-//     from: number,
-//     to: number
-// ): Promise<IBlock | IBlockError> {
-//     const url = `${BASEURL}headers/seq/${from}/${to}`
-
-//     const Max: boolean = to - from < 100
-
-//     if (from > to || Max === false) {
-//         const error: IBlockError = {
-//             status: `error`,
-//             message: `Too big sequences requested OR {from} cannot be bigger than {to}, change it`
-//         }
-//         return error
-//     } else {
-//         const response = await axios.get(url)
-//         return response.data
-//     }
-// }
 
 // /*
 //  * Get last block data without transactions payload
