@@ -127,7 +127,7 @@ export async function actualHeight(): Promise<number | number> {
  * 
  * from value < to value
  * 
- * @returns Promise<IBlock | IBlockError> {@link blockSeq} containing the params from and to.
+ * @returns Promise<any | IBlockError> {@link blockSeq} containing the params from and to.
  */
 export async function blockSeq(
     from: number,
@@ -164,8 +164,14 @@ export async function blockSeq(
 
 
 
-/*
- * Get last block data
+
+
+/**
+ * # This function Get last block data
+ * 
+ * If server off line, return error
+ * 
+ * @returns Promise<IBlock | IBlockError> {@link blockLast} , no params.
  */
 export async function blockLast(): Promise<IBlock | IBlockError> {
     const url = `${BASEURL}last`
