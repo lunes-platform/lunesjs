@@ -199,30 +199,35 @@ describe("blockChild function - suite test block service", () => {
         // }
 
         // expect(action()).rejects.toThrow()
+
         const result = await blocks.blockChild("124afdsfaf")
        //ok
        expect(result.isSuccess).toEqual(false)
     })
 })
 
-// describe("blockHeightEncoded function - suite test block service", () => {
-//     it("blockHeightEncoded - Get height of a block by its Base58-encoded signature ", async () => {
-//         const result = await blockHeightEncoded(
-//             "3Ho1ZKnxzKAvrwo5RsMAesdiw6EW3f5Mn8etEhPP2t5z6N3iVK385ezvbNkxUen6yRUhwuiXg97P9uGMVeUpHG4f"
-//         )
-//         expect(result).toStrictEqual({
-//             height: 1887361
-//         })
-//     })
+describe("blockHeightEncoded function - suite test block service", () => {
+    it("blockHeightEncoded - Get height of a block by its Base58-encoded signature ", async () => {
+        const result = await blocks.blockHeightEncoded(
+            "3Ho1ZKnxzKAvrwo5RsMAesdiw6EW3f5Mn8etEhPP2t5z6N3iVK385ezvbNkxUen6yRUhwuiXg97P9uGMVeUpHG4f"
+        )
+        expect(result).toStrictEqual({
+            height: 1887361
+        })
+    })
 
-//     it("blockHeightEncoded - error 404 ", async () => {
-//         const result = async () => {
-//             await blockHeightEncoded("124afdsfaf")
-//         }
+    it("blockHeightEncoded - error 404 ", async () => {
+        // const result = async () => {
+        //     await blocks.blockHeightEncoded("124afdsfaf")
+        // }
 
-//         expect(result()).rejects.toThrow()
-//     })
-// })
+        // expect(result()).rejects.toThrow()
+
+        const result = await blocks.blockHeightEncoded("124afdsfaf")
+        //ok
+       expect(result.isSuccess).toEqual(false)
+    })
+})
 
 // describe("blockAtHeaderOnly function - suite test block service", () => {
 //     it("blockAtHeaderOnly - Get block at specified height without transactions payload ", async () => {

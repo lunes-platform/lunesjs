@@ -194,7 +194,7 @@ export async function blockLast(): Promise<IBlock | IBlockError> {
 /**
  * # This function Get children of specified block
  * 
- * @type {signature: stringr}
+ * @type {signature: string}
  * validation: string
  * 
  * @returns Promise<IBlock | IBlockError> {@link blockChild} containing the parameter signature.
@@ -219,30 +219,64 @@ export async function blockChild(
 
 
 
+/**
+ * # This function Get height of a block by its Base58-encoded signature
+ * 
+ * @type {signature: string}
+ * validation: string
+ * 
+ * @returns Promise<any | IBlockError> {@link blockHeightEncoded} containing the parameter signature.
+ */
+export async function blockHeightEncoded(
+    signature: string
+): Promise<any | IBlockError> {
+    const url = `${BASEURL}height/${signature}`
+    return new Promise(async (resolve) => {
+        axios
+            .get(url)
+            .then((response) => {
+                resolve(response.data)
+            })
+            .catch((blockchainError) => {
+                resolve(mountErr(blockchainError))
+            })
+    })
 
-// /*
-//  * Get height of a block by its Base58-encoded signature
-//  */
-// export async function blockHeightEncoded(
-//     signature: string
-// ): Promise<any | IBlockError> {
-//     const url = `${BASEURL}height/${signature}`
-//     return new Promise(async (resolve, reject) => {
-//         const response = await axios.get(url)
+}
 
-//         if (response.status === 404) {
-//             const error: IBlockError = {
-//                 status: `error`,
-//                 message: `block does not exist, try later`
-//             }
-//             return error
-//         } else if (response.status === 200) {
-//             resolve(response.data)
-//         } else {
-//             reject(response.data)
-//         }
-//     })
-// }
+
+
+
+
+/*
+ * Get height of a block by its Base58-encoded signature
+ */
+/*
+export async function blockHeightEncoded(
+    signature: string
+): Promise<any | IBlockError> {
+    const url = `${BASEURL}height/${signature}`
+    return new Promise(async (resolve, reject) => {
+        const response = await axios.get(url)
+
+        if (response.status === 404) {
+            const error: IBlockError = {
+                status: `error`,
+                message: `block does not exist, try later`
+            }
+            return error
+        } else if (response.status === 200) {
+            resolve(response.data)
+        } else {
+            reject(response.data)
+        }
+    })
+}
+
+
+*/
+
+
 
 // /*
 //  * Get block at specified height without transactions payload
