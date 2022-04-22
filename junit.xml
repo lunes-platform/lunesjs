@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="4" failures="0" errors="0" time="30.403">
-  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="3" timestamp="2022-04-22T21:30:37" time="24.735" tests="4">
+<testsuites name="jest tests" tests="4" failures="0" errors="0" time="33.719">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="3" timestamp="2022-04-22T22:00:07" time="28.069" tests="4">
     <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0">
       <skipped/>
     </testcase>
@@ -10,7 +10,7 @@
     <testcase classname="blockByHeight function- suite test block service blockByHeight- receive number 10 param to get fetch" name="blockByHeight function- suite test block service blockByHeight- receive number 10 param to get fetch" time="0">
       <skipped/>
     </testcase>
-    <testcase classname="actualHeight function - suite test block service actualHeight - see height block from node " name="actualHeight function - suite test block service actualHeight - see height block from node " time="1.274">
+    <testcase classname="actualHeight function - suite test block service actualHeight - see height block from node " name="actualHeight function - suite test block service actualHeight - see height block from node " time="1.346">
     </testcase>
   </testsuite>
 </testsuites>
