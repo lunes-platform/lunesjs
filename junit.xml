@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="23" failures="0" errors="0" time="20.572">
-  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="21" timestamp="2022-04-22T02:50:06" time="18.027" tests="23">
+<testsuites name="jest tests" tests="24" failures="0" errors="0" time="28.478">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="23" timestamp="2022-04-22T03:26:46" time="24.403" tests="24">
     <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0">
       <skipped/>
     </testcase>
@@ -64,9 +64,13 @@
     <testcase classname=" blockLastHeaderOnly function - suite test block service  blockLastHeaderOnly test " name=" blockLastHeaderOnly function - suite test block service  blockLastHeaderOnly test " time="0">
       <skipped/>
     </testcase>
-    <testcase classname=" blockSignature - suite test block service blockSignature test" name=" blockSignature - suite test block service blockSignature test" time="1.064">
+    <testcase classname=" blockSignature - suite test block service blockSignature test" name=" blockSignature - suite test block service blockSignature test" time="0">
+      <skipped/>
     </testcase>
-    <testcase classname=" blockSignature - suite test block service blockSignature - error 404 " name=" blockSignature - suite test block service blockSignature - error 404 " time="0.56">
+    <testcase classname=" blockSignature - suite test block service blockSignature - error 404 " name=" blockSignature - suite test block service blockSignature - error 404 " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname=" blockFirst - suite test block service blockFirst test " name=" blockFirst - suite test block service blockFirst test " time="1.259">
     </testcase>
   </testsuite>
 </testsuites>
