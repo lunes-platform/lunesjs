@@ -249,67 +249,84 @@ export async function blockHeightEncoded(
 
 
 /*
- * Get height of a block by its Base58-encoded signature
+ * 
  */
-/*
-export async function blockHeightEncoded(
-    signature: string
-): Promise<any | IBlockError> {
-    const url = `${BASEURL}height/${signature}`
-    return new Promise(async (resolve, reject) => {
-        const response = await axios.get(url)
 
-        if (response.status === 404) {
-            const error: IBlockError = {
-                status: `error`,
-                message: `block does not exist, try later`
+/**
+ * # This function Get block at specified height without transactions payload
+ * 
+ * @type {height: number}
+ * validation: number
+ * 
+ * @returns Promise<IBlock | IBlockError> {@link blockAtHeaderOnly} containing the parameter height.
+ */
+export async function blockAtHeaderOnly(
+    height: number
+): Promise<IBlock | IBlockError> {
+    const url = `${BASEURL}headers/at/${height}`
+
+    if (typeof height === "string") {
+        const error: IBlockError = {
+            isSuccess: false,
+            response: {
+            codeError: -1,
+            message: `block cannot receive string type `
+
             }
-            return error
-        } else if (response.status === 200) {
-            resolve(response.data)
-        } else {
-            reject(response.data)
         }
-    })
+        return error
+    } else {
+        return new Promise(async (resolve) => {
+            axios
+                .get(url)
+                .then((blockchainResponse) => {
+                    resolve(mountBlock(blockchainResponse))
+                })
+                .catch((blockchainError) => {
+                    resolve(mountErr(blockchainError))
+                })
+        })
+    }
 }
 
+
+/*
+
+export async function blockAtHeaderOnly(
+    height: number
+): Promise<IBlock | IBlockError> {
+    const url = `${BASEURL}headers/at/${height}`
+
+    if (typeof height === "string") {
+        const error: IBlockError = {
+            status: `error`,
+            message: `block cannot receive string type `
+        }
+        return error
+    } else {
+        return new Promise(async (resolve, reject) => {
+            const response = await axios.get(url)
+
+            if (response.status === 404) {
+                const error: IBlockError = {
+                    status: `error`,
+                    message: `The requested resource could not be found but may be available again in the future, try later`
+                }
+                return error
+            } else if (response.status === 200) {
+                resolve(response.data)
+            } else {
+                reject(response.data)
+            }
+        })
+    }
+}
 
 */
 
 
 
-// /*
-//  * Get block at specified height without transactions payload
-//  */
-// export async function blockAtHeaderOnly(
-//     height: number
-// ): Promise<IBlock | IBlockError> {
-//     const url = `${BASEURL}headers/at/${height}`
 
-//     if (typeof height === "string") {
-//         const error: IBlockError = {
-//             status: `error`,
-//             message: `block cannot receive string type `
-//         }
-//         return error
-//     } else {
-//         return new Promise(async (resolve, reject) => {
-//             const response = await axios.get(url)
-
-//             if (response.status === 404) {
-//                 const error: IBlockError = {
-//                     status: `error`,
-//                     message: `The requested resource could not be found but may be available again in the future, try later`
-//                 }
-//                 return error
-//             } else if (response.status === 200) {
-//                 resolve(response.data)
-//             } else {
-//                 reject(response.data)
-//             }
-//         })
-//     }
-// }
 
 // /*
 //  * Get block without transactions payload at specified heights

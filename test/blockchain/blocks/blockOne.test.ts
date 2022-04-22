@@ -229,35 +229,24 @@ describe("blockHeightEncoded function - suite test block service", () => {
     })
 })
 
-// describe("blockAtHeaderOnly function - suite test block service", () => {
-//     it("blockAtHeaderOnly - Get block at specified height without transactions payload ", async () => {
-//         const result = await blockAtHeaderOnly(1)
-//         expect(result).toStrictEqual({
-//             version: 1,
-//             timestamp: 1528077600000,
-//             reference:
-//                 "67rpwLCuS5DGA8KGZXKsVQ7dnPb9goRLoKfgGbLfQg9WoLUgNY77E2jT11fem3coV9nAkguBACzrU1iyZM4B8roQ",
-//             "nxt-consensus": {
-//                 "base-target": 153722867,
-//                 "generation-signature": "11111111111111111111111111111111"
-//             },
-//             generator: "37jG983kttnpw4kAAQ6wi1yTyegkLN5LMNb",
-//             signature:
-//                 "soKTPcsb5cD97jnm64zF3pVuVUqUYx3caaDvuPyM6PXPY7eWCxeHeYvKSE2aJwZwRpXdRFdW1g5BQMFpYkHcf85",
-//             blocksize: 312,
-//             transactionCount: 2,
-//             height: 1
-//         })
-//     })
+describe("blockAtHeaderOnly function - suite test block service", () => {
+    it("blockAtHeaderOnly - Get block at specified height without transactions payload ", async () => {
+        const result = await blocks.blockAtHeaderOnly(1)
+        expect(result.isSuccess).toEqual(true) 
+    })
 
-//     it("blockAtHeaderOnly - error 404 ", async () => {
-//         const result = async () => {
-//             await blockAtHeaderOnly(11111111111)
-//         }
+    it("blockAtHeaderOnly - error 404 ", async () => {
+        // const result = async () => {
+        //     await blocks.blockAtHeaderOnly(11111111111)
+        // }
 
-//         expect(result()).rejects.toThrow()
-//     })
-// })
+        // expect(result()).rejects.toThrow()
+
+        const result = await blocks.blockAtHeaderOnly(11111111111)
+        //ok
+        expect(result.isSuccess).toEqual(false)       
+    })
+})
 
 // describe("blockSeqHeaderOnly function - suite test block service", () => {
 //     it(" blockSeqHeaderOnly test ", async () => {
