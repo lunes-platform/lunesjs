@@ -342,60 +342,52 @@ describe(" blockFirst - suite test block service", () => {
     })
 })
 
-// describe(" blockAddress - suite test block service", () => {
-//     it("blockAddress test ", async () => {
-//         const result = await blockAddress(
-//             "385vc8T7brZYTaNb1QV4BjU4JN9S3MoeKZd",
-//             1889863,
-//             1889864
-//         )
-//         expect(result).toStrictEqual([
-//             {
-//                 blocksize: 225,
-//                 features: [],
-//                 fee: 0,
-//                 generator: "385vc8T7brZYTaNb1QV4BjU4JN9S3MoeKZd",
-//                 height: 1889864,
-//                 "nxt-consensus": {
-//                     "base-target": 51,
-//                     "generation-signature":
-//                         "9iHAgT78TCbzv5HfhxVzzRnM132n45UGqGbvH59FvBoB"
-//                 },
-//                 reference:
-//                     "9zvED5KcnvkYsKLFxiCXQDiEsyXrKdtVH23b3qPt2FhAh3BrhUaZbqtndYWCbn4GmPrZvDbwY1vwqrxdgyazGfH",
-//                 signature:
-//                     "353wWZjKZzLiYKkVbgXLrxsK7dzYo9pEgw2pV31rXLnb1EdZbraZThrpg92swhrtQh1J353rPesvcB1mMEAoQtzP",
-//                 timestamp: 1648218628090,
-//                 transactionCount: 0,
-//                 transactions: [],
-//                 version: 3
-//             }
-//         ])
-//     })
+describe(" blockAddress - suite test block service", () => {
+    it("blockAddress test ", async () => {
+        const result = await blocks.blockAddress(
+            "385vc8T7brZYTaNb1QV4BjU4JN9S3MoeKZd",
+            1889863,
+            1889864
+        )
+        expect(result).toStrictEqual([
+            {
+                blocksize: 225,
+                features: [],
+                fee: 0,
+                generator: "385vc8T7brZYTaNb1QV4BjU4JN9S3MoeKZd",
+                height: 1889864,
+                "nxt-consensus": {
+                    "base-target": 51,
+                    "generation-signature":
+                        "9iHAgT78TCbzv5HfhxVzzRnM132n45UGqGbvH59FvBoB"
+                },
+                reference:
+                    "9zvED5KcnvkYsKLFxiCXQDiEsyXrKdtVH23b3qPt2FhAh3BrhUaZbqtndYWCbn4GmPrZvDbwY1vwqrxdgyazGfH",
+                signature:
+                    "353wWZjKZzLiYKkVbgXLrxsK7dzYo9pEgw2pV31rXLnb1EdZbraZThrpg92swhrtQh1J353rPesvcB1mMEAoQtzP",
+                timestamp: 1648218628090,
+                transactionCount: 0,
+                transactions: [],
+                version: 3
+            }
+        ])
+    })
 
-//     it(" blockAddress - error from > to ", async () => {
-//         const result = await blockAddress(
-//             "385vc8T7brZYTaNb1QV4BjU4JN9S3MoeKZd",
-//             1889864,
-//             1889863
-//         )
-//         expect(result).toEqual({
-//             message:
-//                 "Too big sequences requested OR {from} cannot be bigger than {to}, change it",
-//             status: "error"
-//         })
-//     })
+    it(" blockAddress - error from > to ", async () => {
+        const result = await blocks.blockAddress(
+            "385vc8T7brZYTaNb1QV4BjU4JN9S3MoeKZd",
+            1889864,
+            1889863
+        )
+        expect(result.isSuccess).toEqual(false)
+    })
 
-//     it(" blockAddress - error Max === false ", async () => {
-//         const result = await blockAddress(
-//             "385vc8T7brZYTaNb1QV4BjU4JN9S3MoeKZd",
-//             1889863,
-//             1889999
-//         )
-//         expect(result).toEqual({
-//             message:
-//                 "Too big sequences requested OR {from} cannot be bigger than {to}, change it",
-//             status: "error"
-//         })
-//     })
-// })
+    it(" blockAddress - error Max === false ", async () => {
+        const result = await blocks.blockAddress(
+            "385vc8T7brZYTaNb1QV4BjU4JN9S3MoeKZd",
+            1889863,
+            1889999
+        )
+        expect(result.isSuccess).toEqual(false)
+    })
+})

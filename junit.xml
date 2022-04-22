@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="24" failures="0" errors="0" time="28.478">
-  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="23" timestamp="2022-04-22T03:26:46" time="24.403" tests="24">
+<testsuites name="jest tests" tests="27" failures="0" errors="0" time="21.977">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="24" timestamp="2022-04-22T03:48:59" time="18.96" tests="27">
     <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0">
       <skipped/>
     </testcase>
@@ -70,7 +70,14 @@
     <testcase classname=" blockSignature - suite test block service blockSignature - error 404 " name=" blockSignature - suite test block service blockSignature - error 404 " time="0">
       <skipped/>
     </testcase>
-    <testcase classname=" blockFirst - suite test block service blockFirst test " name=" blockFirst - suite test block service blockFirst test " time="1.259">
+    <testcase classname=" blockFirst - suite test block service blockFirst test " name=" blockFirst - suite test block service blockFirst test " time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname=" blockAddress - suite test block service blockAddress test " name=" blockAddress - suite test block service blockAddress test " time="1.262">
+    </testcase>
+    <testcase classname=" blockAddress - suite test block service  blockAddress - error from &gt; to " name=" blockAddress - suite test block service  blockAddress - error from &gt; to " time="0.003">
+    </testcase>
+    <testcase classname=" blockAddress - suite test block service  blockAddress - error Max === false " name=" blockAddress - suite test block service  blockAddress - error Max === false " time="0.004">
     </testcase>
   </testsuite>
 </testsuites>
