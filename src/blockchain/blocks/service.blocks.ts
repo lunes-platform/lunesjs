@@ -92,24 +92,28 @@ async function byHeight(height: number): Promise<IBlock | IBlockError> {
 */
 
 
-
-
 /**
  * # Average delay in milliseconds between last blockNum blocks starting from block with signature
+ * {@link blockAverageDelay}
  *
+ * ## Example
+ *
+ * ```javascript
+ * import * as lunesjs from "lunesjs"
+ *
+ * const block = lunesjs.blockchain.blocks.blockaverageDelay("dsfs112", 1)
+ * ```
  * @type {signature: string, blockNum: number }
- *
- * @returns Promise<any | IBlockError> {@link blockAverageDelay} containing the paramms signature and blockNum.
- *
- * --- signature = signature block - Base58-encoded signature
+ * 
+ *  --- signature = signature block - Base58-encoded signature
  *
  *  --- blockNum = 1 to 9 - Number of blocks to count delay
+ * @returns Promise<IBlock | IBlockError>
  */
 export async function blockAverageDelay(
     signature: string,
     blockNum: number
 ): Promise<any | IBlockError> {
-    const url = `${BASEURL}delay/${signature}/${blockNum}`
 
     if (blockNum <= 0 || blockNum > 9) {
         const error: IBlockError = {
@@ -121,16 +125,16 @@ export async function blockAverageDelay(
         }
         return error
     } else {
-        return new Promise(async (resolve) => {
-            axios
-                .get(url)
-                .then((r) => {
-                    resolve(r.data.delay)
-                })
-                .catch((blockchainError) => {
-                    resolve(mountErr(blockchainError))
-                })
-        })
+        lunesNode.interceptors.response.use(
+            (r) => {
+                return Promise.resolve(r.data.delay)
+            },
+            (blockchainError) => {
+                console.log(blockchainError)
+                return Promise.resolve(mountErr(blockchainError))
+            }
+        )
+        return lunesNode.get(`/blocks/delay/${signature}/${blockNum}`)
     }
 }
 
@@ -452,5 +456,5 @@ export async function blockAverageDelay(
 // }
 
 export const blocks = {
-    byHeight, actualHeight
+    byHeight, blockAverageDelay
 }

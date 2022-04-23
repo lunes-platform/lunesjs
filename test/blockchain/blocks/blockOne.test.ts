@@ -61,6 +61,9 @@ describe("blockByHeight function- suite test block service", () => {
     })
 })
 
+
+
+
 // describe("actualHeight function - suite test block service", () => {
 //     it("actualHeight - see height block from node ", async () => {
 //         const result = await lunesjs.blockchain.blocks.actualHeight()
@@ -73,7 +76,7 @@ describe("blockByHeight function- suite test block service", () => {
 
 describe("blockAverageDelay function - suite test block service", () => {
     it("blockAverageDelay - see Average delay ", async () => {
-        const result = await blocks.blockAverageDelay(
+        const result = await lunesjs.blockchain.blocks.blockAverageDelay(
             "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
             1
         )
@@ -81,7 +84,7 @@ describe("blockAverageDelay function - suite test block service", () => {
     })
 
     it("blockAverageDelay - blockNum >9 error ", async () => {
-        const result = await blocks.blockAverageDelay(
+        const result = await lunesjs.blockchain.blocks.blockAverageDelay(
             "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
             10
         )
