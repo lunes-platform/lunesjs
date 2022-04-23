@@ -476,5 +476,5 @@ async function byHeight(height: number): Promise<IBlock | IBlockError> {
 // }
 
 export const blocks = {
-    byHeight, blockAverageDelay
+    byHeight
 }
