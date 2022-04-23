@@ -113,7 +113,7 @@ async function byHeight(height: number): Promise<IBlock | IBlockError> {
 export async function blockAverageDelay(
     signature: string,
     blockNum: number
-): Promise<any | IBlockError> {
+): Promise<number | IBlockError> {
 
     if (blockNum <= 0 || blockNum > 9) {
         const error: IBlockError = {
@@ -138,48 +138,68 @@ export async function blockAverageDelay(
     }
 }
 
-// /**
-//  * # This function Get block at specified heights
-//  *
-//  * @type {from: number, to: number}
-//  * validation: max value (from) (to) 1 - 100 (99 difference)
-//  *
-//  * from value < to value
-//  *
-//  * @returns Promise<any | IBlockError> {@link blockSeq} containing the params from and to.
-//  */
-// export async function blockSeq(
-//     from: number,
-//     to: number
-// ): Promise<any | IBlockError> {
-//     const url = `${BASEURL}seq/${from}/${to}`
-//     //`https://lunesnode.lunes.io/blocks/seq/${from}/${to}`
-//     const Max: boolean = to - from < 100
 
-//     if (from > to || Max === false) {
-//         const error: IBlockError = {
-//             isSuccess: false,
-//             response: {
-//                 codeError: -1,
-//                 message: `Too big sequences requested OR {from} cannot be bigger than {to}, change it`
-//             }
-//         }
-//         return error
-//     } else {
-//         //const response = await axios.get(url)
-//         //return response.data
-//         return new Promise(async (resolve) => {
-//             axios
-//                 .get(url)
-//                 .then((r) => {
-//                     resolve(r.data)
-//                 })
-//                 .catch((blockchainError) => {
-//                     resolve(mountErr(blockchainError))
-//                 })
-//         })
-//     }
-// }
+
+
+
+
+
+/**
+ * # This function Get block at specified heights
+ * {@link blockSeq}
+ *
+ * ## Example
+ *
+ * ```javascript
+ * import * as lunesjs from "lunesjs"
+ *
+ * const block = lunesjs.blockchain.blocks.blockaverageDelay("dsfs112", 1)
+ * ```
+ * @type {from: number, to: number}
+ * 
+ * validation: max value (from) (to) 1 - 100 (99 difference)
+ *
+ * from value < to value
+ * @returns Promise<any | IBlockError>
+ */
+export async function blockSeq(
+    from: number,
+    to: number
+): Promise<any | IBlockError> {
+    //const url = `${BASEURL}seq/${from}/${to}`
+    //`https://lunesnode.lunes.io/blocks/seq/${from}/${to}`
+    const Max: boolean = to - from < 100
+
+    if (from > to || Max === false) {
+        const error: IBlockError = {
+            isSuccess: false,
+            response: {
+                codeError: -1,
+                message: `Too big sequences requested OR {from} cannot be bigger than {to}, change it`
+            }
+        }
+        return error
+    } else {
+
+        lunesNode.interceptors.response.use(
+            (blockchainResponse) => {
+                return Promise.resolve(mountBlock(blockchainResponse))
+            },
+            (blockchainError) => {
+                console.log(blockchainError)
+                return Promise.resolve(mountErr(blockchainError))
+            }
+        )
+        return lunesNode.get(`/blocks/seq/${from}/${to}`)
+
+    }
+}
+
+
+
+
+
+
 
 // /**
 //  * # This function Get last block data

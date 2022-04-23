@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="5" failures="0" errors="0" time="13.363">
-  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="3" timestamp="2022-04-23T04:47:34" time="11.109" tests="5">
+<testsuites name="jest tests" tests="5" failures="0" errors="0" time="34.623">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="0" skipped="4" timestamp="2022-04-23T14:21:36" time="24.828" tests="5">
     <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0">
       <skipped/>
     </testcase>
@@ -10,9 +10,10 @@
     <testcase classname="blockByHeight function- suite test block service blockByHeight- receive number 10 param to get fetch" name="blockByHeight function- suite test block service blockByHeight- receive number 10 param to get fetch" time="0">
       <skipped/>
     </testcase>
-    <testcase classname="blockAverageDelay function - suite test block service blockAverageDelay - see Average delay " name="blockAverageDelay function - suite test block service blockAverageDelay - see Average delay " time="0.904">
+    <testcase classname="blockAverageDelay function - suite test block service blockAverageDelay - see Average delay " name="blockAverageDelay function - suite test block service blockAverageDelay - see Average delay " time="1.558">
     </testcase>
-    <testcase classname="blockAverageDelay function - suite test block service blockAverageDelay - blockNum &gt;9 error " name="blockAverageDelay function - suite test block service blockAverageDelay - blockNum &gt;9 error " time="0.001">
+    <testcase classname="blockAverageDelay function - suite test block service blockAverageDelay - blockNum &gt;9 error " name="blockAverageDelay function - suite test block service blockAverageDelay - blockNum &gt;9 error " time="0">
+      <skipped/>
     </testcase>
   </testsuite>
 </testsuites>
