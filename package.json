@@ -1,6 +1,6 @@
 {
     "name": "lunesjs",
-    "version": "1.7.2",
+    "version": "1.8.0",
     "description": "Library for communication with nodes in mainnet or testnet of the lunes-blockchain network",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
