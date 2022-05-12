@@ -1,41 +1,32 @@
-import { serializeTransfer } from "./utils"
-import { crypto } from "../../utils/crypto"
 import * as wasm from "lunesrs"
+import { serializeStake } from "./utils"
+import { crypto } from "../../utils/crypto"
 import signer from "../../utils/signer"
 import broadcast from "../../utils/broadcast"
 
-export class TransferToken {
+export class Stake {
     senderPublicKey: string
     timestamp: number
     signature: string
     recipient: string
-    feeAsset: string
     message: string
-    assetId: string
     amount: number
-    sender: string
     type: number
     fee: number
     constructor(
         senderPublicKey: string,
         timestamp: number,
         receiver: string,
-        feeAsset: string,
-        assetId: string,
         amount: number,
-        sender: string,
         fee: number
     ) {
         this.senderPublicKey = senderPublicKey
         this.timestamp = timestamp
         this.signature = ""
         this.recipient = receiver
-        this.feeAsset = feeAsset
         this.message = ""
-        this.assetId = assetId
         this.amount = amount
-        this.sender = sender
-        this.type = 4
+        this.type = 8
         this.fee = fee
     }
 
@@ -45,19 +36,16 @@ export class TransferToken {
             timestamp: this.timestamp,
             signature: this.signature,
             recipient: this.recipient,
-            feeAsset: this.feeAsset,
-            assetId: this.assetId,
             amount: this.amount,
-            sender: this.sender,
             type: this.type,
             fee: this.fee
         }
     }
 
-    sign(privateKey: string): TransferToken {
-        ;[this.signature, this.message] = signer<TransferToken>(
+    sign(privateKey: string): Stake {
+        ;[this.signature, this.message] = signer<Stake>(
             privateKey,
-            serializeTransfer,
+            serializeStake,
             this
         )
         return this
@@ -71,21 +59,17 @@ export class TransferToken {
     }
 }
 
-export type Transfer = {
+export type createStake = {
     senderPublicKey: string
     receiverAddress: string
     timestamp?: number
-    feeAsset?: string
-    assetId?: string
     chain?: number
     amount: number
     fee?: number
 }
 
-export function transferTokenFactory(tx: Transfer): TransferToken {
+export function createStakeFactory(tx: createStake): Stake {
     const timestamp = tx.timestamp != undefined ? tx.timestamp : Date.now()
-    const feeAsset = tx.feeAsset != undefined ? tx.feeAsset : ""
-    const assetId = tx.assetId != undefined ? tx.assetId : ""
     const fee = tx.fee != undefined ? tx.fee : 100000
     const chain = tx.chain != undefined ? tx.chain : 1
     const sender = wasm.arrayToBase58(
@@ -106,14 +90,11 @@ export function transferTokenFactory(tx: Transfer): TransferToken {
     if (crypto.sameChainAddress(tx.receiverAddress, sender) != true) {
         throw new Error("Sender AND Receiver should be same chain")
     }
-    return new TransferToken(
+    return new Stake(
         tx.senderPublicKey,
         timestamp,
         tx.receiverAddress,
-        feeAsset,
-        assetId,
         Math.floor(tx.amount * 10e7),
-        sender,
         fee
     )
 }
