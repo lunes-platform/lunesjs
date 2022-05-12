@@ -1,3 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="0" failures="0" errors="0" time="16.554">
+<testsuites name="jest tests" tests="5" failures="1" errors="0" time="20.948">
+  <testsuite name="blockByHeight function- suite test block service" errors="0" failures="1" skipped="0" timestamp="2022-05-12T01:09:46" time="18.33" tests="5">
+    <testcase classname="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" name="blockByHeight function- suite test block service blockByHeight - block testing error, passing -1 number" time="0.009">
+    </testcase>
+    <testcase classname="blockByHeight function- suite test block service blockbyHeight - block testing error, passing i32Max " name="blockByHeight function- suite test block service blockbyHeight - block testing error, passing i32Max " time="0.002">
+    </testcase>
+    <testcase classname="blockByHeight function- suite test block service blockByHeight- receive number 10 param to get fetch" name="blockByHeight function- suite test block service blockByHeight- receive number 10 param to get fetch" time="1.28">
+    </testcase>
+    <testcase classname="blockAverageDelay function - suite test block service blockAverageDelay - see Average delay " name="blockAverageDelay function - suite test block service blockAverageDelay - see Average delay " time="1.084">
+      <failure>Error: expect(received).toEqual(expected) // deep equality
+
+Expected: true
+Received: false
+    at /workspaces/lunesjs/test/blockchain/blocks/blockOne.test.ts:99:34
+    at Generator.next (&lt;anonymous&gt;)
+    at fulfilled (/workspaces/lunesjs/test/blockchain/blocks/blockOne.test.ts:5:58)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)</failure>
+    </testcase>
+    <testcase classname="blockAverageDelay function - suite test block service blockAverageDelay - blockNum &gt;9 error " name="blockAverageDelay function - suite test block service blockAverageDelay - blockNum &gt;9 error " time="0.002">
+    </testcase>
+  </testsuite>
 </testsuites>

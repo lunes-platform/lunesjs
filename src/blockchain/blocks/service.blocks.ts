@@ -65,7 +65,7 @@ async function byHeight(height: number): Promise<IBlock | IBlockError> {
 //  * ```
 //  *
 //  * If server off line, return error
-//  * @returns Promise<any | IBlockError> .
+//  * @returns Promise<number | IBlockError> .
 //  */
 // export async function actualHeight(): Promise<number | IBlockError> {
 
@@ -79,64 +79,66 @@ async function byHeight(height: number): Promise<IBlock | IBlockError> {
 //     })
 //     return lunesNode.get(`/blocks/height`)
 // }
-/*   return new Promise(async (resolve) => {
-        axios
-            .get(url)
-            .then((r) => {
-                resolve(r.data.height)
-            })
-            .catch(() => {
-                resolve(-1)
-            })
-    })
-*/
+// /*   return new Promise(async (resolve) => {
+//         axios
+//             .get(url)
+//             .then((r) => {
+//                 resolve(r.data.height)
+//             })
+//             .catch(() => {
+//                 resolve(-1)
+//             })
+//     })
+// */
 
 
-// /**
-//  * # Average delay in milliseconds between last blockNum blocks starting from block with signature
-//  * {@link blockAverageDelay}
-//  *
-//  * ## Example
-//  *
-//  * ```javascript
-//  * import * as lunesjs from "lunesjs"
-//  *
-//  * const block = lunesjs.blockchain.blocks.blockaverageDelay("dsfs112", 1)
-//  * ```
-//  * @type {signature: string, blockNum: number }
-//  * 
-//  *  --- signature = signature block - Base58-encoded signature
-//  *
-//  *  --- blockNum = 1 to 9 - Number of blocks to count delay
-//  * @returns Promise<IBlock | IBlockError>
-//  */
-// export async function blockAverageDelay(
-//     signature: string,
-//     blockNum: number
-// ): Promise<number | IBlockError> {
+/**
+ * # Average delay in milliseconds between last blockNum blocks starting from block with signature
+ * {@link blockAverageDelay}
+ *
+ * ## Example
+ *
+ * ```javascript
+ * import * as lunesjs from "lunesjs"
+ *
+ * const block = lunesjs.blockchain.blocks.blockaverageDelay("dsfs112", 1)
+ * ```
+ * @type {signature: string, blockNum: number }
+ * 
+ *  --- signature = signature block - Base58-encoded signature
+ *
+ *  --- blockNum = 1 to 9 - Number of blocks to count delay
+ * @returns Promise<IBlock | IBlockError>
+ */
+export async function blockAverageDelay(
+    signature: string,
+    blockNum: number
+): Promise<any | IBlockError> {
 
-//     if (blockNum <= 0 || blockNum > 9) {
-//         const error: IBlockError = {
-//             isSuccess: false,
-//             response: {
-//                 codeError: -1,
-//                 message: `the blockNum cannot be less than or equal to zero or greater than nine`
-//             }
-//         }
-//         return error
-//     } else {
-//         lunesNode.interceptors.response.use(
-//             (r) => {
-//                 return Promise.resolve(r.data.delay)
-//             },
-//             (blockchainError) => {
-//                 console.log(blockchainError)
-//                 return Promise.resolve(mountErr(blockchainError))
-//             }
-//         )
-//         return lunesNode.get(`/blocks/delay/${signature}/${blockNum}`)
-//     }
-// }
+    if (blockNum <= 0 || blockNum > 9) {
+        const error: IBlockError = {
+            isSuccess: false,
+            response: {
+                codeError: -1,
+                message: `the blockNum cannot be less than or equal to zero or greater than nine`
+            }
+        }
+        return error
+    } else {
+        lunesNode.interceptors.response.use(
+            (r) => {
+                //return r.data.delay
+                return Promise.resolve(r.data.delay)
+                //promise não funciona em undefined
+            },
+            (blockchainError) => {
+                console.log(blockchainError)
+                return Promise.resolve(mountErr(blockchainError))
+            }
+        )
+        return lunesNode.get(`/blocks/delay/${signature}/${blockNum}`)
+    }
+}
 
 
 
@@ -476,5 +478,5 @@ async function byHeight(height: number): Promise<IBlock | IBlockError> {
 // }
 
 export const blocks = {
-    byHeight
+    byHeight, blockAverageDelay
 }

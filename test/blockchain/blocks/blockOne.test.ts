@@ -1,6 +1,8 @@
 import lunesjs from "../../../src/index"
 
+
 describe("blockByHeight function- suite test block service", () => {
+
     it("blockByHeight - block testing error, passing -1 number", async () => {
         const result = await lunesjs.blockchain.blocks.byHeight(-1)
 
@@ -67,30 +69,46 @@ describe("blockByHeight function- suite test block service", () => {
 // describe("actualHeight function - suite test block service", () => {
 //     it("actualHeight - see height block from node ", async () => {
 //         const result = await lunesjs.blockchain.blocks.actualHeight()
-//         expect(result).toBeGreaterThan(0)
+//         //expect(result).toBeGreaterThan(0)
+//         // somente o teste individual, funciona, quando roda o yarn t blockOne.test.ts quebra os demais testes
+
+//         //expect(result).toEqual(expect.any(Number));
+//         // somente o teste individual, funciona, quando roda o yarn t blockOne.test.ts quebra os demais testes
+
+
+
+//        expect(result).toContain(result)
+//        //verificar o valor recebido e o valor esperado, somente para entender os testes acima
+
+
 //     })
 // })
 
 
 
 
-// describe("blockAverageDelay function - suite test block service", () => {
-//     it("blockAverageDelay - see Average delay ", async () => {
-//         const result = await lunesjs.blockchain.blocks.blockAverageDelay(
-//             "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
-//             1
-//         )
-//         expect(result).toStrictEqual(1011)
-//     })
+describe("blockAverageDelay function - suite test block service", () => {
 
-//     it("blockAverageDelay - blockNum >9 error ", async () => {
-//         const result = await lunesjs.blockchain.blocks.blockAverageDelay(
-//             "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
-//             10
-//         )
-//         expect(result.isSuccess).toEqual(false)
-//     })
-// })
+    it("blockAverageDelay - see Average delay ", async () => {
+         
+        const result = await lunesjs.blockchain.blocks.blockAverageDelay(
+            "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
+            1
+        )
+        //expect(result).toStrictEqual(1011)
+        expect(result.isSuccess).toEqual(true)
+
+    })
+
+    it("blockAverageDelay - blockNum >9 error ", async () => {
+        
+        const result = await lunesjs.blockchain.blocks.blockAverageDelay(
+            "3TzngGgQ2xsC1huRantEWNZzG3FoCPA5rCRdqenCy1jGxyRb16nb6p4Xy9ZM4FnypTdWXE31QsZ5EkTTnzTDrjKi",
+            10
+        )
+        expect(result.isSuccess).toEqual(false)
+    })
+})
 
 // describe("blockSeq function - suite test block service", () => {
 //     it("blockSeq - Get block at specified heights ", async () => {

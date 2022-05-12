@@ -30,6 +30,7 @@ interface IHeader {
     version: number
     height: number
     fee: number
+    //delay: number //testando colocar delay não foi
 }
 
 export interface IBlock {
@@ -72,7 +73,8 @@ export function mountBlock(
             blocksize: blockchainResponse.data.blocksize,
             version: blockchainResponse.data.version,
             height: blockchainResponse.data.height,
-            fee: blockchainResponse.data.fee
+            fee: blockchainResponse.data.fee,
+            //delay: blockchainResponse.data.delay //testando colocar delay  não foi
         },
         body: blockchainResponse.data.transactions
     }
