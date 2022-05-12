@@ -19,22 +19,22 @@
     "author": "lunes-platform",
     "license": "Apache-2.0",
     "scripts": {
-        "deploy": "yarn build && yarn publish",
         "fmt": "prettier -w .",
         "fmtc": "prettier -c",
+        "test": "yarn jest",
         "t": "yarn jest",
         "build": "tsc"
     },
     "devDependencies": {
-        "@types/jest": "^27.0.3",
-        "jest": "^27.4.5",
-        "jest-junit": "^13.0.0",
+        "@types/jest": "^27.5.1",
+        "jest": "^28.1.0",
+        "jest-junit": "^13.2.0",
         "prettier": "2.6.2",
-        "ts-jest": "^27.1.2",
-        "typescript": "^4.5.4"
+        "ts-jest": "^28.0.2",
+        "typescript": "^4.6.4"
     },
     "dependencies": {
-        "axios": "^0.26.1",
+        "axios": "^0.27.2",
         "lunesrs": "^1.9.4"
     }
 }

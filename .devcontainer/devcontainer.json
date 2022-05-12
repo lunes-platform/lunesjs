@@ -8,7 +8,8 @@
         "esbenp.prettier-vscode",
         "mhutchie.git-graph",
         "Tyriar.sort-lines",
-        "eamodio.gitlens"
+        "eamodio.gitlens",
+        "vespa-dev-works.jestRunIt"
     ],
     "postCreateCommand": "yarn install &&  yarn upgrade --latest"
 }
