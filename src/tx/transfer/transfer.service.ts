@@ -92,20 +92,11 @@ export function transferTokenFactory(tx: Transfer): TransferToken {
         wasm.toAddress(1, chain, wasm.base58ToArray(tx.senderPublicKey))
     )
 
-    if (timestamp < 1483228800) {
-        throw new Error(
-            `Timestamp should be greater than 1483228800, but ${timestamp}`
-        )
-    }
-    if (tx.amount <= 0) {
-        throw new Error(`Amount should be greater than 0, but ${tx.amount}`)
-    }
-    if (fee < 100000) {
-        throw new Error(`Fee should be greater than 100000, but ${fee}`)
-    }
-    if (crypto.sameChainAddress(tx.receiverAddress, sender) != true) {
-        throw new Error("Sender AND Receiver should be same chain")
-    }
+    if (crypto.sameChainAddress(tx.receiverAddress, sender) != true) throw new Error("Sender AND Receiver should be same chain")
+    if (timestamp < 1483228800) throw new Error(`Timestamp should be greater than 1483228800, but ${timestamp}`)
+    if (tx.amount <= 0) throw new Error(`Amount should be greater than 0, but ${tx.amount}`)
+    if (fee < 100000) throw new Error(`Fee should be greater than 100000, but ${fee}`)
+
     return new TransferToken(
         tx.senderPublicKey,
         timestamp,

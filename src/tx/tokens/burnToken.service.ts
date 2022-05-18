@@ -1,33 +1,31 @@
-import * as wasm from "lunesrs"
-import { serializeStake } from "./utils"
-import { crypto } from "../../utils/crypto"
-import signer from "../../utils/signer"
+import { serializeBurnToken } from "./utils"
 import broadcast from "../../utils/broadcast"
+import signer from "../../utils/signer"
 
-export class Stake {
+export class BurnToken {
     senderPublicKey: string
     timestamp: number
     signature: string
-    recipient: string
+    quantity: number
+    assetId: string
     message: string
-    amount: number
     type: number
     fee: number
     constructor(
         senderPublicKey: string,
         timestamp: number,
-        receiver: string,
-        amount: number,
+        quantity: number,
+        assetId: string,
         fee: number
     ) {
         this.senderPublicKey = senderPublicKey
         this.timestamp = timestamp
+        this.quantity = quantity
+        this.assetId = assetId
         this.signature = ""
-        this.recipient = receiver
         this.message = ""
-        this.amount = amount
-        this.type = 8
         this.fee = fee
+        this.type = 5
     }
 
     transaction() {
@@ -35,17 +33,17 @@ export class Stake {
             senderPublicKey: this.senderPublicKey,
             timestamp: this.timestamp,
             signature: this.signature,
-            recipient: this.recipient,
-            amount: this.amount,
+            quantity: this.quantity,
+            assetId: this.assetId,
             type: this.type,
             fee: this.fee
         }
     }
 
-    sign(privateKey: string): Stake {
-        ;[this.signature, this.message] = signer<Stake>(
+    sign(privateKey: string): BurnToken {
+        ;[this.signature, this.message] = signer<BurnToken>(
             privateKey,
-            serializeStake,
+            serializeBurnToken,
             this
         )
         return this
@@ -59,33 +57,27 @@ export class Stake {
     }
 }
 
-export type createStake = {
+export type Reissue = {
     senderPublicKey: string
-    receiverAddress: string
     timestamp?: number
-    chain?: number
-    amount: number
+    quantity: number
+    tokenId: string
     fee?: number
 }
 
-export function createStakeFactory(tx: createStake): Stake {
+export function burnTokenFactory(tx: Reissue): BurnToken {
     const timestamp = tx.timestamp != undefined ? tx.timestamp : Date.now()
     const fee = tx.fee != undefined ? tx.fee : 100000
-    const chain = tx.chain != undefined ? tx.chain : 1
-    const sender = wasm.arrayToBase58(
-        wasm.toAddress(1, chain, wasm.base58ToArray(tx.senderPublicKey))
-    )
 
-    if (crypto.sameChainAddress(tx.receiverAddress, sender) != true) throw new Error("Sender AND Receiver should be same chain")
     if (timestamp < 1483228800) throw new Error(`Timestamp should be greater than 1483228800, but ${timestamp}`)
-    if (tx.amount <= 0) throw new Error(`Amount should be greater than 0, but ${tx.amount}`)
+    if (tx.quantity <= 0) throw new Error(`Amount should be greater than 0, but ${tx.quantity}`)
     if (fee < 100000) throw new Error(`Fee should be greater than 100000, but ${fee}`)
 
-    return new Stake(
+    return new BurnToken(
         tx.senderPublicKey,
         timestamp,
-        tx.receiverAddress,
-        Math.floor(tx.amount * 10e7),
+        Math.floor(tx.quantity * 10e7),
+        tx.tokenId,
         fee
     )
 }
