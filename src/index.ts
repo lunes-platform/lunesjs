@@ -6,6 +6,7 @@ import { crypto } from "./utils/crypto"
 import { issueTokenFactory } from "./tx/tokens/issueToken.service"
 import { issueNFTFactory } from "./tx/tokens/issueToken.service"
 import { reissueTokenFactory } from "./tx/tokens/reissueToken.service"
+import { burnTokenFactory } from "./tx/tokens/burnToken.service"
 
 export default {
     transferTokenFactory,
@@ -13,6 +14,7 @@ export default {
     reissueTokenFactory,
     createStakeFactory,
     issueTokenFactory,
+    burnTokenFactory,
     issueNFTFactory,
     walletFactory,
     crypto
