@@ -2,7 +2,7 @@ import { serializeIssueToken } from "./utils"
 import broadcast from "../../utils/broadcast"
 import signer from "../../utils/signer"
 
-export class IssueToken {
+export class Token {
     senderPublicKey: string
     description: string
     reissuable: number
@@ -52,8 +52,8 @@ export class IssueToken {
         }
     }
 
-    sign(privateKey: string): IssueToken {
-        ;[this.signature, this.message] = signer<IssueToken>(
+    sign(privateKey: string): Token {
+        ;[this.signature, this.message] = signer<Token>(
             privateKey,
             serializeIssueToken,
             this
@@ -69,7 +69,7 @@ export class IssueToken {
     }
 }
 
-export type Issue = {
+export type _Token = {
     senderPublicKey: string
     description: string
     reissuable?: boolean
@@ -80,7 +80,7 @@ export type Issue = {
     fee?: number
 }
 
-export function issueTokenFactory(tx: Issue): IssueToken {
+export function issueTokenFactory(tx: _Token): Token {
     const timestamp = tx.timestamp != undefined ? tx.timestamp : Date.now()
     const decimals = tx.decimals != undefined ? tx.decimals : 8
     const fee = tx.fee != undefined ? tx.fee : 100000
@@ -99,13 +99,42 @@ export function issueTokenFactory(tx: Issue): IssueToken {
     if (decimals > 8) throw new Error(`Decimals should be less than 8, but ${decimals}`)
     if (fee < 100000) throw new Error(`Fee should be greater than 100000, but ${fee}`)
 
-    return new IssueToken(
+    return new Token(
         tx.senderPublicKey,
         tx.description,
         reissuable(),
         timestamp,
         Math.floor(tx.quantity * 10e7),
         decimals,
+        tx.name,
+        fee
+    )
+}
+
+export type NFT = {
+    senderPublicKey: string
+    description: string
+    timestamp?: number
+    name: string
+    fee?: number
+}
+
+export function issueNFTFactory(tx: NFT): Token {
+    const timestamp = tx.timestamp != undefined ? tx.timestamp : Date.now()
+    const fee = tx.fee != undefined ? tx.fee : 100000
+
+    if (tx.description.length > 1000) throw new Error(`Description should be less than 1000, but ${tx.description.length}`)
+    if (timestamp < 1483228800) throw new Error(`Timestamp should be greater than 1483228800, but ${timestamp}`)
+    if (tx.name.length > 16) throw new Error(`Name should be less than 16 char, but ${tx.name.length}`)
+    if (fee < 100000) throw new Error(`Fee should be greater than 100000, but ${fee}`)
+
+    return new Token(
+        tx.senderPublicKey,
+        tx.description,
+        0,
+        timestamp,
+        1,
+        0,
         tx.name,
         fee
     )
