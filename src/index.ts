@@ -5,10 +5,12 @@ import { walletFactory } from "./wallet/wallet.service"
 import { crypto } from "./utils/crypto"
 import { issueTokenFactory } from "./tx/tokens/issueToken.service"
 import { issueNFTFactory } from "./tx/tokens/issueToken.service"
+import { reissueTokenFactory } from "./tx/tokens/reissueToken.service"
 
 export default {
     transferTokenFactory,
     withdrawStakeFactory,
+    reissueTokenFactory,
     createStakeFactory,
     issueTokenFactory,
     issueNFTFactory,
