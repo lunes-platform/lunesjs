@@ -5,10 +5,7 @@ describe("Test Burn Token", () => {
         privateKey: "8YMbX5BCQdazwgdVfeUpKuoUJrmYpMyGVAGAsNaHVj1u"
     })
 
-    const createTx = (
-        publicKey: string,
-        quant: number,
-    ) => {
+    const createTx = (publicKey: string, quant: number) => {
         return lunesjs.burnTokenFactory({
             senderPublicKey: publicKey,
             tokenId: "TokenTest",
@@ -31,11 +28,8 @@ describe("Test Burn Token", () => {
     })
 
     it("Burn Ivalid Token by quantity", () => {
-        expect(() => {
-            createTx(sender.publicKey, 0)
-        }).toThrow()
-        }
-    )
+        expect(() => createTx(sender.publicKey, 0)).toThrow()
+    })
 
     it("Signature of Burn Token", () => {
         const tx = createTx(sender.publicKey, 1000)

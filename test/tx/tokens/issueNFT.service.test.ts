@@ -5,9 +5,7 @@ describe("Test Issue NFT", () => {
         privateKey: "8YMbX5BCQdazwgdVfeUpKuoUJrmYpMyGVAGAsNaHVj1u"
     })
 
-    const createTx = (
-        publicKey: string,
-    ) => {
+    const createTx = (publicKey: string) => {
         return lunesjs.issueNFTFactory({
             senderPublicKey: publicKey,
             description: "My new Test Token",
@@ -59,13 +57,7 @@ describe("Test Issue NFT", () => {
         }
     ])(
         "Issue Ivalid Token by \n[$describe]",
-        ({
-            publicKey,
-            describe,
-            name,
-            timestamp,
-            fee
-        }) => {
+        ({ publicKey, describe, name, timestamp, fee }) => {
             expect(() => {
                 lunesjs.issueNFTFactory({
                     senderPublicKey: publicKey,

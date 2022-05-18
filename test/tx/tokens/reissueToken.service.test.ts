@@ -5,11 +5,7 @@ describe("Test Reissue Token", () => {
         privateKey: "8YMbX5BCQdazwgdVfeUpKuoUJrmYpMyGVAGAsNaHVj1u"
     })
 
-    const createTx = (
-        publicKey: string,
-        quant: number,
-        reisssue: boolean
-    ) => {
+    const createTx = (publicKey: string, quant: number, reisssue: boolean) => {
         return lunesjs.reissueTokenFactory({
             senderPublicKey: publicKey,
             tokenId: "TokenTest",
@@ -34,11 +30,8 @@ describe("Test Reissue Token", () => {
     })
 
     it("Reissue Ivalid Token by quantity", () => {
-        expect(() => {
-            createTx(sender.publicKey, 0, true)
-        }).toThrow()
-        }
-    )
+        expect(() => createTx(sender.publicKey, 0, true)).toThrow()
+    })
 
     it("Signature of Reissue Token", () => {
         const tx = createTx(sender.publicKey, 1000, true)
