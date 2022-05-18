@@ -64,13 +64,8 @@ export function withdrawStakeFactory(tx: withdrawStake): WithdrawStake {
     const timestamp = tx.timestamp != undefined ? tx.timestamp : Date.now()
     const fee = tx.fee != undefined ? tx.fee : 100000
 
-    if (timestamp < 1483228800) {
-        throw new Error(
-            `Timestamp should be greater than 1483228800, but ${timestamp}`
-        )
-    }
-    if (fee < 100000) {
-        throw new Error(`Fee should be greater than 100000, but ${fee}`)
-    }
+    if (timestamp < 1483228800) throw new Error(`Timestamp should be greater than 1483228800, but ${timestamp}`)
+    if (fee < 100000) throw new Error(`Fee should be greater than 100000, but ${fee}`)
+
     return new WithdrawStake(tx.senderPublicKey, timestamp, tx.id, fee)
 }
